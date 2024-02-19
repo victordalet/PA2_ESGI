@@ -5,9 +5,15 @@ export interface Location {
     deleted_at?: string;
     created_by?: string;
     name: string;
-    image?: string;
+    picture?: string;
     description: string;
     accepted?: boolean;
+    address: string;
+    latitude: number;
+    longitude: number;
+    capacity: number;
+    price: number;
+    type: string;
 };
 
 export interface LocationUser {

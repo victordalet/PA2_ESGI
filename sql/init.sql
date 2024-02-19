@@ -20,7 +20,12 @@ create table location(
     name        varchar(100) not null,
     description varchar(220) not null,
     price       int          not null,
-    picture     varchar(100) not null
+    picture     varchar(100) not null,
+    address     varchar(100) not null,
+    capacity    int          not null,
+    type        varchar(100) not null,
+    latitude    float        not null,
+    longitude   float        not null
 );
 
 create table location_occupation(
