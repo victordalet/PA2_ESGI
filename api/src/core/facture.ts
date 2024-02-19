@@ -9,7 +9,7 @@ export interface Facture {
     price?: number;
     duration?: number;
     type: string;
-    notation?: number;
+    notification?: number;
     notification_interval?: number;
 }
 
