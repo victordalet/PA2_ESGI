@@ -51,7 +51,7 @@ export class MessageService {
         return this.db.query("INSERT INTO MESSAGE (message, created_at ,updated_at, to_user, created_by) VALUES (?, ?, ?)", [message.message, new Date(), new Date(), message.created_at, message.deleted_at]);
     }
 
-    updateMessage(id: number, message: UserMessage) {
+    updateMessage(id: number, message: BodyMessage) {
         return this.db.query("UPDATE MESSAGE SET message = ?, updated_at = ? WHERE id = ?", [message.message, new Date(), id]);
     }
 

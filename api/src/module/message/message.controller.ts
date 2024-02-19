@@ -49,7 +49,7 @@ export class MessageController {
     @ApiOperation({summary: 'Update message'})
     @ApiOkResponse({description: 'Message updated'})
     @ApiBadRequestResponse({description: 'Request body is not valid'})
-    updateMessage(@Param('id') id: number, @Body() body: UserMessage) {
+    updateMessage(@Param('id') id: number, @Body() body: BodyMessage) {
         return this.messageService.updateMessage(id, body);
     }
 
