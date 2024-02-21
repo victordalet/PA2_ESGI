@@ -6,9 +6,19 @@ import {SubscriptionModule} from "./subscription/subscription.module";
 import {LocationModule} from "./location/location.module";
 import {FactureModule} from "./facture/facture.module";
 import {ServiceModule} from "./service/service.module";
+import {ProviderModule} from "./provider/provider.module";
 
 @Module({
-    imports: [UserModule, TicketModule, MessageModule, SubscriptionModule, LocationModule, FactureModule, ServiceModule]
+    imports: [
+        UserModule,
+        TicketModule,
+        MessageModule,
+        SubscriptionModule,
+        LocationModule,
+        FactureModule,
+        ServiceModule,
+        ProviderModule
+    ]
 })
 export class AppModule {
 }

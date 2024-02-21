@@ -1,7 +1,6 @@
 import {Body, Controller, Delete, Get, Param, Post, Put} from "@nestjs/common";
 import {ApiBadRequestResponse, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiTags} from "@nestjs/swagger";
 import {MessageService} from "./message.service";
-import {UserMessage} from "../../core/user";
 import {BodyMessage} from "./message.model";
 
 @Controller({path: 'message'})
