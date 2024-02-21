@@ -36,14 +36,6 @@ export class UserController {
         return await this.userService.createConnection(body.email, body.password);
     }
 
-
-    @Post('verify')
-    @ApiOperation({summary: 'Verify connection'})
-    @ApiOkResponse({description: 'connection'})
-    async verifyConnection(@Body() body: UserBody) {
-        return await this.userService.verifyConnection(body.connection);
-    }
-
     @Post()
     @ApiOperation({summary: 'Create user'})
     @ApiOkResponse({description: 'user'})

@@ -25,4 +25,4 @@ jobs:
           compose-file: "./docker-compose.yml"
           down-flags: "--volumes"
           services: |
-            mysql-db
+            api

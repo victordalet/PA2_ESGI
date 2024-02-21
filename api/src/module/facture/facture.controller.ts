@@ -3,14 +3,14 @@ import {ApiBadRequestResponse, ApiCreatedResponse, ApiOkResponse, ApiOperation, 
 import {FactureModel} from "./facture.model";
 import {FactureService} from "./facture.service";
 
-@Controller('facture')
+@Controller({path: 'facture'})
 @ApiTags('facture')
 export class FactureController {
 
     private readonly factureService: FactureService;
 
-    constructor(factureService: FactureService) {
-        this.factureService = factureService;
+    constructor() {
+        this.factureService = new FactureService();
     }
 
     @Get()

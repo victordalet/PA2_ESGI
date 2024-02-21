@@ -1,61 +1,43 @@
-import {Connection} from "mysql2/promise";
-import {DatabaseEntity} from "../../database/mysql.entity";
 import {MessageTicket, Ticket} from "../../core/ticket";
+import {TicketRepository} from "./ticket.repository";
 
 export class TicketService {
-    private db: Connection;
-    private database: DatabaseEntity;
+
+    private TicketRepository: TicketRepository;
 
     constructor() {
-        this.database = new DatabaseEntity();
-        setTimeout(() => {
-            this.db = this.database.db;
-        }, 500);
+        this.TicketRepository = new TicketRepository();
     }
 
     async getTickets() {
-        const [rows, filed] = await this.db.query("SELECT * FROM TICKET");
-        const tickets: Ticket[] = [];
-        if (rows instanceof Array) {
-            rows.forEach((row: any) => {
-                tickets.push(row);
-            });
-        }
-        return tickets;
+        return await this.TicketRepository.getTickets();
     }
 
     createTicket(ticket: Ticket) {
-        return this.db.query("INSERT INTO TICKET (title, description,created_at ,updated_at,) VALUES (?, ?, ?, ?)", [ticket.name, ticket.description, new Date(), new Date()]);
+        return this.TicketRepository.createTicket(ticket);
     }
 
     updateTicket(id: number, ticket: Ticket) {
-        return this.db.query("UPDATE TICKET SET title = ?, description = ? , updated_at = ? WHERE id = ?", [ticket.name, ticket.description, new Date(), id]);
+        return this.TicketRepository.updateTicket(id, ticket);
     }
 
     deleteTicket(id: number) {
-        return this.db.query("DELETE FROM TICKET WHERE id = ?", [id]);
+        return this.TicketRepository.deleteTicket(id);
     }
 
     createMessageTicket(id: number, message: any) {
-        return this.db.query("INSERT INTO TICKET_MESSAGE (ticket_id, message) VALUES (?, ?)", [id, message.message]);
+        return this.TicketRepository.createMessageTicket(id, message);
     }
 
     async getMessageTickets(id: number) {
-        const [row, field] = await this.db.query("SELECT * FROM TICKET_MESSAGE WHERE ticket_id = ?", [id]);
-        const messages: MessageTicket[] = [];
-        if (row instanceof Array) {
-            row.forEach((message: any) => {
-                messages.push(message);
-            });
-        }
-        return messages;
+        return await this.TicketRepository.getMessageTickets(id);
     }
 
     updateMessageTicket(id: number, messageId: number, message: any) {
-        return this.db.query("UPDATE TICKET_MESSAGE SET message = ? WHERE id = ?", [message.message, messageId]);
+        return this.TicketRepository.updateMessageTicket(id, messageId, message);
     }
 
     deleteMessageTicket(id: number, messageId: number) {
-        return this.db.query("DELETE FROM TICKET_MESSAGE WHERE id = ?", [messageId]);
+        return this.TicketRepository.deleteMessageTicket(id, messageId);
     }
 }
