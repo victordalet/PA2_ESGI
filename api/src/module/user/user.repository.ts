@@ -97,4 +97,9 @@ export class UserRepository {
     async isFoundToken(token: string) {
         const [row, field] = await this.db.query("SELECT email FROM USER WHERE connection = ?", [token]);
     }
+
+    async isAdminToken(token: string) {
+        const [row, field] = await this.db.query("SELECT role FROM USER WHERE connection = ?", [token]);
+        return row[0].role === "admin";
+    }
 }

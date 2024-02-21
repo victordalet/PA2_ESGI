@@ -1,22 +1,26 @@
-import {Body, Controller, Delete, Get, Param, Post, Put} from "@nestjs/common";
+import {Body, Controller, Delete, Get, Headers, Param, Post, Put} from "@nestjs/common";
 import {ApiBadRequestResponse, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiTags} from "@nestjs/swagger";
 import {BodySubscription} from "./subscription.model";
 import {SubscriptionService} from "./subscription.service";
+import {TokenValidation} from "../../validation/token/token.validation";
 
 @Controller({path: 'subscription'})
 @ApiTags('Subscription')
 export class SubscriptionController {
     private subscriptionService: SubscriptionService;
+    private tokenValidation: TokenValidation;
 
     constructor() {
         this.subscriptionService = new SubscriptionService();
+        this.tokenValidation = new TokenValidation();
     }
 
     @Get()
     @ApiOperation({summary: 'Get multiple subscriptions'})
     @ApiOkResponse({description: 'List of subscriptions'})
     @ApiBadRequestResponse({description: 'Request param is not valid'})
-    getSubscriptions() {
+    async getSubscriptions(@Headers('authorization') token: string) {
+        await this.tokenValidation.validateAdminToken(token);
         return this.subscriptionService.getSubscriptions();
     }
 
@@ -24,7 +28,8 @@ export class SubscriptionController {
     @ApiOperation({summary: 'Create subscription'})
     @ApiCreatedResponse({description: 'Subscription created'})
     @ApiBadRequestResponse({description: 'Request body is not valid'})
-    createSubscription(@Body() body: BodySubscription) {
+    async createSubscription(@Headers('authorization') token: string, @Body() body: BodySubscription) {
+        await this.tokenValidation.validateAdminToken(token);
         return this.subscriptionService.createSubscription(body);
     }
 
@@ -32,7 +37,8 @@ export class SubscriptionController {
     @ApiOperation({summary: 'Update subscription'})
     @ApiOkResponse({description: 'Subscription updated'})
     @ApiBadRequestResponse({description: 'Request body is not valid'})
-    updateSubscription(@Param('id') id: number, @Body() body: BodySubscription) {
+    async updateSubscription(@Headers('authorization') token: string, @Param('id') id: number, @Body() body: BodySubscription) {
+        await this.tokenValidation.validateAdminToken(token);
         return this.subscriptionService.updateSubscription(id, body);
     }
 
@@ -40,7 +46,8 @@ export class SubscriptionController {
     @ApiOperation({summary: 'Delete subscription'})
     @ApiOkResponse({description: 'Subscription deleted'})
     @ApiBadRequestResponse({description: 'Request param is not valid'})
-    deleteSubscription(@Param('id') id: number) {
+    async deleteSubscription(@Headers('authorization') token: string, @Param('id') id: number) {
+        await this.tokenValidation.validateAdminToken(token);
         return this.subscriptionService.deleteSubscription(id);
     }
 
@@ -48,7 +55,8 @@ export class SubscriptionController {
     @ApiOperation({summary: 'Check if user is subscribed'})
     @ApiOkResponse({description: 'User is subscribed'})
     @ApiBadRequestResponse({description: 'Request param is not valid'})
-    userIsSubscribed(@Param('email') email: string) {
+    async userIsSubscribed(@Headers('authorization') token: string, @Param('email') email: string) {
+        await this.tokenValidation.validateAdminToken(token);
         return this.subscriptionService.userIsSubscribed(email);
     }
 }

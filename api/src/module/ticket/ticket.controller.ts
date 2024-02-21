@@ -1,23 +1,27 @@
-import {Body, Controller, Delete, Get, Param, Post, Put} from "@nestjs/common";
+import {Body, Controller, Delete, Get, Headers, Param, Post, Put} from "@nestjs/common";
 import {ApiBadRequestResponse, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiTags} from "@nestjs/swagger";
 import {BodyTicket, BodyTicketMessage} from "./ticket.model";
 import {TicketService} from "./ticket.service";
+import {TokenValidation} from "../../validation/token/token.validation";
 
 @Controller({path: 'ticket'})
 @ApiTags('Ticket')
 export class TicketController {
 
     private ticketService: TicketService;
+    private tokenValidation: TokenValidation;
 
     constructor() {
         this.ticketService = new TicketService();
+        this.tokenValidation = new TokenValidation();
     }
 
     @Get()
     @ApiOperation({summary: 'Get multiple tickets'})
     @ApiOkResponse({description: 'List of tickets'})
     @ApiBadRequestResponse({description: 'Request param is not valid'})
-    getTickets() {
+    async getTickets(@Headers('authorization') token: string) {
+        await this.tokenValidation.validateAdminToken(token);
         return this.ticketService.getTickets();
     }
 
@@ -25,7 +29,8 @@ export class TicketController {
     @ApiOperation({summary: 'Create ticket'})
     @ApiCreatedResponse({description: 'Ticket created'})
     @ApiBadRequestResponse({description: 'Request body is not valid'})
-    createTicket(@Body() body: BodyTicket) {
+    async createTicket(@Headers('authorization') token: string, @Body() body: BodyTicket) {
+        await this.tokenValidation.validateAdminToken(token);
         return this.ticketService.createTicket(body);
     }
 
@@ -33,7 +38,8 @@ export class TicketController {
     @ApiOperation({summary: 'Update ticket'})
     @ApiOkResponse({description: 'Ticket updated'})
     @ApiBadRequestResponse({description: 'Request body is not valid'})
-    updateTicket(@Param('id') id: number, @Body() body: BodyTicket) {
+    async updateTicket(@Headers('authorization') token: string, @Param('id') id: number, @Body() body: BodyTicket) {
+        await this.tokenValidation.validateAdminToken(token);
         return this.ticketService.updateTicket(id, body);
     }
 
@@ -41,7 +47,8 @@ export class TicketController {
     @ApiOperation({summary: 'Delete ticket'})
     @ApiOkResponse({description: 'Ticket deleted'})
     @ApiBadRequestResponse({description: 'Request param is not valid'})
-    deleteTicket(@Param('id') id: number) {
+    async deleteTicket(@Headers('authorization') token: string, @Param('id') id: number) {
+        await this.tokenValidation.validateAdminToken(token);
         return this.ticketService.deleteTicket(id);
     }
 
@@ -49,7 +56,8 @@ export class TicketController {
     @ApiOperation({summary: 'Create message ticket'})
     @ApiCreatedResponse({description: 'Message ticket created'})
     @ApiBadRequestResponse({description: 'Request body is not valid'})
-    createMessageTicket(@Param('id') id: number, @Body() body: BodyTicketMessage) {
+    async createMessageTicket(@Headers('authorization') token: string, @Param('id') id: number, @Body() body: BodyTicketMessage) {
+        await this.tokenValidation.validateAdminToken(token);
         return this.ticketService.createMessageTicket(id, body);
     }
 
@@ -57,7 +65,8 @@ export class TicketController {
     @ApiOperation({summary: 'Get multiple message tickets'})
     @ApiOkResponse({description: 'List of message tickets'})
     @ApiBadRequestResponse({description: 'Request param is not valid'})
-    getMessageTickets(@Param('id') id: number) {
+    async getMessageTickets(@Headers('authorization') token: string, @Param('id') id: number) {
+        await this.tokenValidation.validateAdminToken(token);
         return this.ticketService.getMessageTickets(id);
     }
 
@@ -65,7 +74,8 @@ export class TicketController {
     @ApiOperation({summary: 'Update message ticket'})
     @ApiOkResponse({description: 'Message ticket updated'})
     @ApiBadRequestResponse({description: 'Request body is not valid'})
-    updateMessageTicket(@Param('id') id: number, @Param('messageId') messageId: number, @Body() body: BodyTicketMessage) {
+    async updateMessageTicket(@Headers('authorization') token: string, @Param('id') id: number, @Param('messageId') messageId: number, @Body() body: BodyTicketMessage) {
+        await this.tokenValidation.validateAdminToken(token);
         return this.ticketService.updateMessageTicket(id, messageId, body);
     }
 
@@ -73,7 +83,8 @@ export class TicketController {
     @ApiOperation({summary: 'Delete message ticket'})
     @ApiOkResponse({description: 'Message ticket deleted'})
     @ApiBadRequestResponse({description: 'Request param is not valid'})
-    deleteMessageTicket(@Param('id') id: number, @Param('messageId') messageId: number) {
+    async deleteMessageTicket(@Headers('authorization') token: string, @Param('id') id: number, @Param('messageId') messageId: number) {
+        await this.tokenValidation.validateAdminToken(token);
         return this.ticketService.deleteMessageTicket(id, messageId);
     }
 

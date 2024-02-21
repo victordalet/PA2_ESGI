@@ -1,22 +1,26 @@
-import {Body, Controller, Delete, Get, Param, Post, Put} from "@nestjs/common";
+import {Body, Controller, Delete, Get, Headers, Param, Post, Put} from "@nestjs/common";
 import {ApiBadRequestResponse, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiTags} from "@nestjs/swagger";
 import {MessageService} from "./message.service";
 import {BodyMessage} from "./message.model";
+import {TokenValidation} from "../../validation/token/token.validation";
 
 @Controller({path: 'message'})
 @ApiTags('Message')
 export class MessageController {
     private messageService: MessageService;
+    private tokenValidation: TokenValidation;
 
     constructor() {
         this.messageService = new MessageService();
+        this.tokenValidation = new TokenValidation();
     }
 
     @Get()
     @ApiOperation({summary: 'Get multiple messages'})
     @ApiOkResponse({description: 'List of messages'})
     @ApiBadRequestResponse({description: 'Request param is not valid'})
-    getMessages() {
+    async getMessages(@Headers('authorization') token: string) {
+        await this.tokenValidation.validateAdminToken(token);
         return this.messageService.getMessages();
     }
 
@@ -24,7 +28,8 @@ export class MessageController {
     @ApiOperation({summary: 'Get multiple messages'})
     @ApiOkResponse({description: 'List of messages'})
     @ApiBadRequestResponse({description: 'Request param is not valid'})
-    getMessageByMail(@Param('email') email: string) {
+    async getMessageByMail(@Headers('authorization') token: string, @Param('email') email: string) {
+        await this.tokenValidation.validateAdminToken(token);
         return this.messageService.getMessagesByEmailFrom(email);
     }
 
@@ -32,7 +37,8 @@ export class MessageController {
     @ApiOperation({summary: 'Get multiple messages'})
     @ApiOkResponse({description: 'List of messages'})
     @ApiBadRequestResponse({description: 'Request param is not valid'})
-    getMessageByMailTo(@Param('email') email: string) {
+    async getMessageByMailTo(@Headers('authorization') token: string, @Param('email') email: string) {
+        await this.tokenValidation.validateAdminToken(token);
         return this.messageService.getMessagesByEmailTo(email);
     }
 
@@ -40,7 +46,8 @@ export class MessageController {
     @ApiOperation({summary: 'Create message'})
     @ApiCreatedResponse({description: 'Message created'})
     @ApiBadRequestResponse({description: 'Request body is not valid'})
-    createMessage(@Body() body: BodyMessage) {
+    async createMessage(@Headers('authorization') token: string, @Body() body: BodyMessage) {
+        await this.tokenValidation.validateAdminToken(token);
         return this.messageService.createMessage(body);
     }
 
@@ -48,7 +55,8 @@ export class MessageController {
     @ApiOperation({summary: 'Update message'})
     @ApiOkResponse({description: 'Message updated'})
     @ApiBadRequestResponse({description: 'Request body is not valid'})
-    updateMessage(@Param('id') id: number, @Body() body: BodyMessage) {
+    async updateMessage(@Headers('authorization') token: string, @Param('id') id: number, @Body() body: BodyMessage) {
+        await this.tokenValidation.validateAdminToken(token);
         return this.messageService.updateMessage(id, body);
     }
 
@@ -56,7 +64,8 @@ export class MessageController {
     @ApiOperation({summary: 'Delete message'})
     @ApiOkResponse({description: 'Message deleted'})
     @ApiBadRequestResponse({description: 'Request param is not valid'})
-    deleteMessage(@Param('id') id: number) {
+    async deleteMessage(@Headers('authorization') token: string, @Param('id') id: number) {
+        await this.tokenValidation.validateAdminToken(token);
         return this.messageService.deleteMessage(id);
     }
 

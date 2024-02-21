@@ -75,12 +75,4 @@ export class UserService {
         await this.UserRepository.updateRoleAdmin(userInformation);
     }
 
-
-    async isFoundToken(token: string): Promise<boolean> {
-        const row = await this.UserRepository.isFoundToken(token);
-        if (Array.isArray(row)) {
-            return !!row[0];
-        }
-        return false;
-    }
 }
