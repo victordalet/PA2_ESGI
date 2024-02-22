@@ -23,3 +23,10 @@ services:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+
+  back-office:
+    build: back-office/
+    ports:
+      - ${BACK_OFFICE_PORT}:3000
+    environment:
+      API_HOST: ${API_HOST}
