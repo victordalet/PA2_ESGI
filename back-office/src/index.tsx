@@ -4,9 +4,7 @@ import React from 'react';
 import {BrowserRouter, Routes, Route} from "react-router-dom";
 
 import {Connection, Home} from './app/providers';
-import Models from './app/models';
-
-const models = new Models();
+import './sass/index.scss';
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
@@ -14,7 +12,7 @@ const root = ReactDOM.createRoot(
 
 root.render(
     <React.StrictMode>
-        <Provider {...models.getStores()}>
+        <Provider>
             <BrowserRouter>
                 <Routes>
                     <Route path={"/login"} element={<Connection/>}></Route>

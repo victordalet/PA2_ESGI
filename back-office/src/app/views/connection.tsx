@@ -1,6 +1,5 @@
 import {PureComponent} from 'react';
-import {ViewProps} from "../../@types/Connection";
-import './index.scss';
+import {ViewProps} from "../@types/Connection";
 
 export default class Connection extends PureComponent<ViewProps> {
     render() {

@@ -2,7 +2,7 @@ import {observer} from 'mobx-react';
 import React, {Component} from 'react';
 
 import {ControllerProps} from '../@types/Connection';
-import View from '../views/Connection';
+import View from '../views/connection';
 import {ControllerState} from "../@types/Connection";
 import * as Process from "process";
 
@@ -33,7 +33,7 @@ export default class ConnectionController extends Component<ControllerProps, Con
             } else {
                 console.log('error');
             }
-        })
+        });
     };
 
     private onInputChange = (name: string) => (

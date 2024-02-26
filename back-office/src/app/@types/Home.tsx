@@ -3,15 +3,9 @@ import React from 'react';
 import ViewModel from '../view-models/Home';
 
 export interface ViewProps {
-    users: string[];
-    addInputValue: string;
-    asyncLoading: boolean;
-    onAddUserAsync: () => Promise<void>;
-    onAddUser: (e: React.FormEvent<HTMLElement>) => void;
     onInputChange: (
         name: string
     ) => (e: React.ChangeEvent<HTMLInputElement>) => void;
-    onRemoveUser: (name: string) => (e: React.FormEvent<HTMLElement>) => void;
 }
 
 export interface ControllerProps {
