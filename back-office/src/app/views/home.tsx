@@ -1,11 +1,10 @@
-import React, {Component} from 'react';
+import React from 'react';
 
 import {ViewProps} from '../@types/Home';
 import {Navbar} from "../../components/navbar";
-import {Table} from "../../components/table";
 
 
-export default class HomeView extends Component<ViewProps> {
+export default class HomeView extends React.Component <ViewProps> {
 
 
     data: number[] = [

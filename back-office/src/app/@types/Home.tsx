@@ -15,8 +15,3 @@ export interface ControllerProps {
 export interface ControllerState {
     addInput: string;
 }
-
-export interface ViewUserLineProps {
-    userName: string;
-    onRemoveUser: (e: React.FormEvent<HTMLElement>) => void;
-}

@@ -18,12 +18,12 @@ export class Navbar extends React.Component {
         },
         {
             name: "User",
-            url: "/about",
+            url: "/user",
             icon: 'ai-people-multiple'
         },
         {
-            name: "Annonce",
-            url: "/annonce",
+            name: "Location",
+            url: "/location",
             icon: 'ai-book-close'
         },
         {
@@ -33,7 +33,7 @@ export class Navbar extends React.Component {
         },
         {
             name: "Langues",
-            url: "/langue",
+            url: "/language",
             icon: "ai-language"
         },
         {

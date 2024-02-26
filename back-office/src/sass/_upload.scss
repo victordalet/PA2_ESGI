@@ -1,0 +1,61 @@
+.drop-container {
+    position: absolute;
+    top: 30%;
+    left: 40%;
+    display: flex;
+    gap: 10px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    padding: 20px;
+    border-radius: 10px;
+    border: 2px dashed $secondaryColor;
+    color: $secondaryColor;
+    cursor: pointer;
+    transition: background .2s ease-in-out, border .2s ease-in-out;
+
+    &:hover, &.drag-active {
+        background: #eee;
+        border-color: #111;
+    }
+
+    &:hover .drop-title, &.drag-active .drop-title {
+        color: #222;
+    }
+
+    .drop-title {
+        color: #444;
+        font-size: 20px;
+        font-weight: bold;
+        text-align: center;
+        transition: color .2s ease-in-out;
+    }
+
+    input[type=file] {
+        width: 350px;
+        max-width: 100%;
+        color: #444;
+        padding: 5px;
+        background: #fff;
+        border-radius: 10px;
+        border: 1px solid #555;
+
+
+        &::file-selector-button {
+            margin-right: 20px;
+            border: none;
+            background: $secondaryColor;
+            padding: 10px 20px;
+            border-radius: 10px;
+            color: #fff;
+            cursor: pointer;
+            transition: background .2s ease-in-out;
+        }
+
+        &::file-selector-button:hover {
+            background: $primaryColor;
+        }
+    }
+
+}
