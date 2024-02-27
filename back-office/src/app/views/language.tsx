@@ -5,7 +5,12 @@ import {Table} from "../../components/table";
 
 
 export default class LanguageView extends React.Component <ViewProps> {
+
+
     render() {
+
+        const {postFile} = this.props;
+
         return (
             <div>
                 <Navbar/>

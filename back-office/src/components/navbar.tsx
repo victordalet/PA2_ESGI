@@ -47,11 +47,17 @@ export class Navbar extends React.Component {
             icon: "ai-ticket"
         },
         {
+            name: "Theme",
+            url: "#",
+            icon: "ai-flashlight"
+        },
+        {
             name: "Log out",
             url: "/login",
             icon: "ai-lock-on"
         }
     ];
+
 
     render() {
         return (
@@ -59,7 +65,15 @@ export class Navbar extends React.Component {
                 <ul>
                     {this.navItems.map((item, index) => (
                         <li key={index}>
-                            <a href={item.url}>
+                            <a href={item.url} onClick={() => {
+                                if (item.name === "Theme") {
+                                    if (document.body.style.backgroundColor === "black") {
+                                        document.body.style.backgroundColor = "white";
+                                    } else {
+                                        document.body.style.backgroundColor = "black";
+                                    }
+                                }
+                            }}>
                                 <i className={item.icon}></i>
                                 <span>{item.name}</span>
                             </a>
