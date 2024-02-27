@@ -14,3 +14,7 @@ export interface ControllerState {
     email: string;
     password: string;
 }
+
+export interface dataConnection {
+    connection: string | null;
+}

@@ -2,13 +2,16 @@ import {User} from "../../core/user";
 import {sha256} from 'js-sha256';
 import {uid} from 'uid';
 import {UserRepository} from "./user.repository";
+import {TokenValidation} from "../../validation/token/token.validation";
 
 export class UserService {
 
     private UserRepository: UserRepository;
+    private tokenValidation: TokenValidation;
 
     constructor() {
         this.UserRepository = new UserRepository();
+        this.tokenValidation = new TokenValidation();
     }
 
     async CreateUser(userInformation: User) {
@@ -25,8 +28,7 @@ export class UserService {
     }
 
     async createConnection(email: string, password: string) {
-        const user = await this.GetUserByEmail(email);
-        if (user.password === sha256(password)) {
+        if (await this.UserRepository.isGoodPassword(email, sha256(password))) {
             const connection = uid(32);
             await this.UserRepository.createConnection(connection, email);
             return {connection: connection};
@@ -73,6 +75,20 @@ export class UserService {
             throw new Error("User is not admin");
         }
         await this.UserRepository.updateRoleAdmin(userInformation);
+    }
+
+    async createConnectionAdmin(email: string, password: string) {
+        if (await this.UserRepository.isGoodPasswordAdmin(email, sha256(password))) {
+            return await this.createConnection(email, password);
+        } else {
+            return {connection: null};
+        }
+
+    }
+
+    async isAdmin(token: string) {
+        await this.tokenValidation.validateAdminToken(token);
+        return {connection: true};
     }
 
 }

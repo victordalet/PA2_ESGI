@@ -1,10 +1,9 @@
 import {observer} from 'mobx-react';
 import React, {Component} from 'react';
 
-import {ControllerProps} from '../@types/Connection';
+import {ControllerProps, dataConnection} from '../@types/Connection';
 import View from '../views/connection';
 import {ControllerState} from "../@types/Connection";
-import * as Process from "process";
 
 
 @observer
@@ -16,7 +15,8 @@ export default class ConnectionController extends Component<ControllerProps, Con
     };
 
     private testLogin = () => {
-        fetch(Process.env.API_HOST + '/connection', {
+        const apiPath = process.env.API_HOST || 'http://localhost:3001';
+        fetch(apiPath + '/user/connectionAdmin', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -26,13 +26,17 @@ export default class ConnectionController extends Component<ControllerProps, Con
                 password: this.state.password
             })
         }).then((res) => {
-            if (res.status === 200) {
-                res.json().then((data) => {
-                    console.log(data);
-                });
-            } else {
-                console.log('error');
-            }
+            res.json().then((data: dataConnection) => {
+                if (data.connection != null) {
+                    localStorage.setItem('token', data.connection);
+                    window.location.href = "/home";
+                } else {
+                    this.setState({
+                        email: '',
+                        password: ''
+                    });
+                }
+            });
         });
     };
 

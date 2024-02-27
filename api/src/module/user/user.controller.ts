@@ -41,6 +41,20 @@ export class UserController {
         return await this.userService.createConnection(body.email, body.password);
     }
 
+    @Post('connectionAdmin')
+    @ApiOperation({summary: 'Create connection admin'})
+    @ApiOkResponse({description: 'connection'})
+    async createConnectionAdmin(@Body() body: UserBody) {
+        return await this.userService.createConnectionAdmin(body.email, body.password);
+    }
+
+    @Post('isAdmin')
+    @ApiOperation({summary: 'Check if user is admin'})
+    @ApiOkResponse({description: 'user'})
+    async isAdmin(@Headers('authorization') token: string) {
+        return await this.userService.isAdmin(token);
+    }
+
     @Post()
     @ApiOperation({summary: 'Create user'})
     @ApiOkResponse({description: 'user'})
@@ -92,5 +106,6 @@ export class UserController {
     async updateRoleAdmin(@Headers('authorization') token: string, @Body() body: UserBody) {
         return await this.userService.UpdateRoleAdmin(body);
     }
+
 
 }

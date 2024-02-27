@@ -94,12 +94,13 @@ export class UserRepository {
                 userInformation.email]);
     }
 
-    async isFoundToken(token: string) {
-        const [row, field] = await this.db.query("SELECT email FROM USER WHERE connection = ?", [token]);
+    async isGoodPassword(email: string, password: string): Promise<boolean> {
+        const [row, field] = await this.db.query("SELECT password FROM USER WHERE email = ?", [email]);
+        return row[0]?.password === password;
     }
 
-    async isAdminToken(token: string) {
-        const [row, field] = await this.db.query("SELECT role FROM USER WHERE connection = ?", [token]);
-        return row[0].role === "admin";
+    async isGoodPasswordAdmin(email: string, password: string): Promise<boolean> {
+        const [row, field] = await this.db.query("SELECT password FROM USER WHERE email = ? and rules = 'ADMIN'", [email]);
+        return row[0]?.password === password;
     }
 }
