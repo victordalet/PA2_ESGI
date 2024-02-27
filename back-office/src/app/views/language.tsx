@@ -9,7 +9,7 @@ export default class LanguageView extends React.Component <ViewProps> {
         return (
             <div>
                 <Navbar/>
-                <Table/>
+                <Table head={[]} body={[]}/>
                 <label htmlFor="text" className="drop-container" id="dropcontainer">
                     <span className="drop-title">Drop files here</span>
                     or

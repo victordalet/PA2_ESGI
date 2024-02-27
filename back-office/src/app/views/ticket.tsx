@@ -9,7 +9,7 @@ export default class TicketView extends React.Component <ViewProps> {
         return (
             <div>
                 <Navbar/>
-                <Table/>
+                <Table body={[]} head={[]}/>
             </div>
         );
     }

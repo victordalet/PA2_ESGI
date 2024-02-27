@@ -69,4 +69,23 @@ export class MessageController {
         return this.messageService.deleteMessage(id);
     }
 
+
+    @Get('illegible')
+    @ApiOperation({summary: 'Get illegible messages'})
+    @ApiOkResponse({description: 'List of messages'})
+    @ApiBadRequestResponse({description: 'Request param is not valid'})
+    async getIllegibleMessages(@Headers('authorization') token: string) {
+        await this.tokenValidation.validateAdminToken(token);
+        return this.messageService.getIllegibleMessages();
+    }
+
+    @Post('illegible')
+    @ApiOperation({summary: 'Add illegible word'})
+    @ApiOkResponse({description: 'Word added'})
+    @ApiBadRequestResponse({description: 'Request body is not valid'})
+    async addIllegibleWord(@Headers('authorization') token: string, @Body() body: { word: string }) {
+        await this.tokenValidation.validateAdminToken(token);
+        return this.messageService.addIllegibleWord(body.word);
+    }
+
 }

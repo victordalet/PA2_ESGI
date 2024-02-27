@@ -1,4 +1,5 @@
-import React from "react";
+import React, {useEffect} from "react";
+import {ResponseIllegibleMessage} from "../app/@types/message";
 
 
 export interface TableData {
@@ -6,22 +7,13 @@ export interface TableData {
     body: string[][],
 }
 
-export class Table extends React.Component {
+export class Table extends React.Component  <TableData> {
 
-    data: TableData = {
-        head: [
-            "email",
-            "name",
-            "nb_annonce"
-        ],
-        body: [
-            ["victor", "victor@test.com", "2"],
-            ["victor", "victor@test.com", "2"],
-        ]
-    };
+    data = this.props;
 
 
     render() {
+
         return (
             <div className="table">
                 <div className={"table-header"}>

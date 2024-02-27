@@ -12,8 +12,8 @@ export interface User {
 
 export interface UserMessage {
     message: string;
-    from: string;
-    to: string;
+    created_by: string;
+    to_user: string;
     created_at?: string;
     updated_at?: string;
     deleted_at?: string;

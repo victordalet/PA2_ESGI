@@ -59,5 +59,5 @@ export default class HomeController extends Component<
                 onInputChange={this.onInputChange}
             />
         );
-    };
+    }
 }

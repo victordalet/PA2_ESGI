@@ -13,7 +13,7 @@ export class MessageRepository {
     }
 
     async getMessages() {
-        const [rows, filed] = await this.db.query("SELECT * FROM MESSAGE");
+        const [rows, filed] = await this.db.query("SELECT * FROM message");
         const messages: any[] = [];
         if (rows instanceof Array) {
             rows.forEach((row: any) => {
@@ -24,11 +24,11 @@ export class MessageRepository {
     }
 
     async createMessage(message: any) {
-        return this.db.query("INSERT INTO MESSAGE (message, created_at ,updated_at, to_user, created_by) VALUES (?, ?, ?, ?, ?)", [message.message, new Date(), new Date(), message.to_user, message.created_by]);
+        return this.db.query("INSERT INTO message (message, created_at ,updated_at, to_user, created_by) VALUES (?, ?, ?, ?, ?)", [message.message, new Date(), new Date(), message.to_user, message.created_by]);
     }
 
     async updateMessage(id: number, message: any) {
-        return this.db.query("UPDATE MESSAGE SET message = ?, updated_at = ? WHERE id = ?", [message.message, new Date(), id]);
+        return this.db.query("UPDATE message SET message = ?, updated_at = ? WHERE id = ?", [message.message, new Date(), id]);
     }
 
     async deleteMessage(id: number) {
@@ -36,7 +36,7 @@ export class MessageRepository {
     }
 
     async getMessagesByEmailFrom(email: string) {
-        const [rows, filed] = await this.db.query("SELECT * FROM MESSAGE WHERE created_by = ?", [email]);
+        const [rows, filed] = await this.db.query("SELECT * FROM message WHERE created_by = ?", [email]);
         const messages: any[] = [];
         if (rows instanceof Array) {
             rows.forEach((row: any) => {
@@ -47,7 +47,7 @@ export class MessageRepository {
     }
 
     async getMessagesByEmailTo(email: string) {
-        const [rows, filed] = await this.db.query("SELECT * FROM MESSAGE WHERE to_user = ?", [email]);
+        const [rows, filed] = await this.db.query("SELECT * FROM message WHERE to_user = ?", [email]);
         const messages: any[] = [];
         if (rows instanceof Array) {
             rows.forEach((row: any) => {
@@ -55,5 +55,20 @@ export class MessageRepository {
             });
         }
         return messages;
+    }
+
+    async getIllegibleWords() {
+        const [rows, filed] = await this.db.query("SELECT word FROM bad_world");
+        const words: string[] = [];
+        if (rows instanceof Array) {
+            rows.forEach((row: any) => {
+                words.push(row.word);
+            });
+        }
+        return words;
+    }
+
+    async addIllegibleWord(word: string) {
+        return this.db.query("INSERT INTO bad_world (word) VALUES (?)", [word]);
     }
 }

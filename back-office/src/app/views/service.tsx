@@ -9,7 +9,7 @@ export default class ServiceView extends React.Component <ViewProps> {
         return (
             <div>
                 <Navbar/>
-                <Table/>
+                <Table head={[]} body={[]}/>
             </div>
         );
     }

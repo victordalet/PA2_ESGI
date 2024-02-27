@@ -206,3 +206,10 @@ create table TICKET_MESSAGE
     created_by varchar(100) not null references USER (email),
     message    varchar(220) not null
 );
+
+
+create table bad_world
+(
+    id         int primary key auto_increment,
+    word       varchar(100) not null
+);

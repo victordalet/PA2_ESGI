@@ -30,11 +30,6 @@ export default class ConnectionController extends Component<ControllerProps, Con
                 if (data.connection != null) {
                     localStorage.setItem('token', data.connection);
                     window.location.href = "/home";
-                } else {
-                    this.setState({
-                        email: '',
-                        password: ''
-                    });
                 }
             });
         });
