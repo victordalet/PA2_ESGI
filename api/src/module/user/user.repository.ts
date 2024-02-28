@@ -26,7 +26,14 @@ export class UserRepository {
     }
 
     async getUser(): Promise<User[]> {
-        const [rows, filed] = await this.db.query("SELECT email, name, password, role, address, updated_at, created_at, deleted_at, connection FROM USER");
+        const [rows, filed] = await this.db.query("SELECT email, name, password, rules, address, updated_at, created_at, deleted_at ,connection FROM USER");
+        const [rows2, filed2] = await this.db.query("SELECT user_email FROM subscription");
+        const userSubscription: string[] = []
+        if (rows2 instanceof Array) {
+            rows2.forEach((row: any) => {
+                userSubscription.push(row.user_email);
+            });
+        }
         const users: User[] = [];
         if (rows instanceof Array) {
             rows.forEach((row: any) => {
@@ -34,15 +41,18 @@ export class UserRepository {
                     email: row.email,
                     name: row.name,
                     password: row.password,
-                    role: row.role,
+                    role: row.rules,
                     address: row.address,
                     updated_at: row.updated_at,
                     created_at: row.created_at,
                     deleted_at: row.deleted_at,
-                    token: row.connection
+                    token: row.connection,
+                    premium: userSubscription.includes(row.email)
                 });
             });
         }
+
+
         return users;
     }
 

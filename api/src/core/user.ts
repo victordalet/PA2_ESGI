@@ -8,6 +8,7 @@ export interface User {
     deleted_at?: string;
     address?: string;
     token?: string;
+    premium?: boolean;
 }
 
 export interface UserMessage {

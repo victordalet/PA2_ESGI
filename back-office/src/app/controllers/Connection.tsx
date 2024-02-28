@@ -4,6 +4,7 @@ import React, {Component} from 'react';
 import {ControllerProps, dataConnection} from '../@types/Connection';
 import View from '../views/connection';
 import {ControllerState} from "../@types/Connection";
+import ConnectionViewModel from "../view-models/Connection";
 
 
 @observer
@@ -13,6 +14,8 @@ export default class ConnectionController extends Component<ControllerProps, Con
         email: '',
         password: ''
     };
+
+    private connectionViewModel = new ConnectionViewModel();
 
 
     private testLogin = () => {
@@ -27,10 +30,15 @@ export default class ConnectionController extends Component<ControllerProps, Con
                 password: this.state.password
             })
         }).then((res) => {
+            if (res.type === 'cors') {
+                this.connectionViewModel.openPopup();
+            }
             res.json().then((data: dataConnection) => {
                 if (data.connection != null) {
                     localStorage.setItem('token', data.connection);
                     window.location.href = "/home";
+                } else {
+                    this.connectionViewModel.openPopup();
                 }
             });
         });

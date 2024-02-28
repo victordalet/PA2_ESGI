@@ -1,5 +1,5 @@
 import {User} from "../../core/user";
-import {sha256} from 'js-sha256';
+import {sha512} from 'js-sha512';
 import {uid} from 'uid';
 import {UserRepository} from "./user.repository";
 import {TokenValidation} from "../../validation/token/token.validation";
@@ -28,7 +28,7 @@ export class UserService {
     }
 
     async createConnection(email: string, password: string) {
-        if (await this.UserRepository.isGoodPassword(email, sha256(password))) {
+        if (await this.UserRepository.isGoodPassword(email, sha512(password))) {
             const connection = uid(32);
             await this.UserRepository.createConnection(connection, email);
             return {connection: connection};
@@ -55,7 +55,7 @@ export class UserService {
 
     async UpdatePassword(userInformation: User) {
         const user = await this.GetUserByEmail(userInformation.email);
-        if (user.password !== sha256(userInformation.password)) {
+        if (user.password !== sha512(userInformation.password)) {
             throw new Error("Old password is incorrect");
         }
         await this.UserRepository.updatePassword(userInformation);
@@ -78,7 +78,7 @@ export class UserService {
     }
 
     async createConnectionAdmin(email: string, password: string) {
-        if (await this.UserRepository.isGoodPasswordAdmin(email, sha256(password))) {
+        if (await this.UserRepository.isGoodPasswordAdmin(email, sha512(password))) {
             return await this.createConnection(email, password);
         } else {
             return {connection: null};

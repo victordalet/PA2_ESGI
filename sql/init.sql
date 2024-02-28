@@ -213,3 +213,8 @@ create table bad_world
     id         int primary key auto_increment,
     word       varchar(100) not null
 );
+
+
+
+
+insert into USER (email, password, name, rules, created_at, updated_at, address) values ("victor.dalet@affluences.com","2af8512a8d99c1e07a2f7968f5cc054cb492bad2523e34f0da4e39e8eda2476ad816f55f6da747e87db83d21bcc55ca6f98415fe44e0bb3d034b3e5ad27e5e66","victor","ADMIN",NOW(),NOW(),"paris");

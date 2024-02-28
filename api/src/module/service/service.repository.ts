@@ -16,10 +16,19 @@ export class ServiceRepository {
 
     async getServices(): Promise<Service[]> {
         const [rows, filed] = await this.db.query("SELECT * FROM service");
-        const services: any[] = [];
+        const [rows2, filed2] = await this.db.query("SELECT user_email FROM service_by_user");
+        const services: Service[] = [];
         if (rows instanceof Array) {
-            rows.forEach((row: any) => {
+            rows.forEach((row) => {
                 services.push(row);
+                services[services.length - 1].nb_use = 0;
+                if (rows2 instanceof Array) {
+                    rows2.forEach((row2) => {
+                        if (row2.email === row.email) {
+                            services[services.length - 1].nb_use++;
+                        }
+                    });
+                }
             });
         }
         return services;

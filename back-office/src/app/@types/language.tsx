@@ -6,5 +6,4 @@ export interface ViewProps {
 
 export interface ControllerProps {
     viewModel: ViewModel;
-    postFile: (file: File) => void;
 }

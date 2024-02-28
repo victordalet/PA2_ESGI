@@ -6,10 +6,16 @@ import {Table} from "../../components/table";
 
 export default class LocationView extends React.Component <ViewProps> {
     render() {
+
+
+        const {
+            data
+        } = this.props;
+
         return (
             <div>
                 <Navbar/>
-                <Table head={[]} body={[]}/>
+                <Table head={["location"]} body={[]}/>
             </div>
         );
     }

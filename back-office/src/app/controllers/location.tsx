@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 
-import {ControllerProps, ControllerState} from '../@types/Home';
+import {ControllerProps, ControllerState} from '../@types/location';
 import View from '../views/location';
+import {Navbar} from "../../components/navbar";
 
 @observer
 export default class LocationController extends Component<
@@ -10,12 +11,21 @@ export default class LocationController extends Component<
     ControllerState
 > {
 
+    state: ControllerState = {
+        data: []
+    };
+
 
     render() {
 
 
+        if (this.state.data.length === 0) {
+            return <div><Navbar/></div>;
+        }
         return (
-            <View />
+
+            <View
+                data={this.state.data}/>
         );
     }
 }

@@ -17,6 +17,6 @@ export default class User extends Component {
 
     render() {
 
-        return <Controller viewModel={this.viewModel}/>;
+        return <Controller viewModel={this.viewModel} />;
     }
 }
