@@ -12,6 +12,8 @@ services:
       - ${MYSQL_PORT}:3306
     volumes:
       - ./sql/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - web
 
   api:
     build: api/
@@ -23,6 +25,8 @@ services:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    networks:
+      - web
 
   back-office:
     build: back-office/
@@ -30,3 +34,9 @@ services:
       - ${BACK_OFFICE_PORT}:3000
     environment:
       API_HOST: ${API_HOST}
+    networks:
+      - web
+
+networks:
+  web:
+    external: true
