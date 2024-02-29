@@ -1,9 +1,11 @@
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 
-import {ControllerProps, ControllerState} from '../@types/Home';
+import {ControllerProps, ControllerState, StatsUser} from '../@types/Home';
 import View from '../views/home';
+import HomeViewModel from "../view-models/Home";
 import {dataConnection} from "../@types/Connection";
+import {Navbar} from "../../components/navbar";
 
 @observer
 export default class HomeController extends Component<
@@ -11,21 +13,41 @@ export default class HomeController extends Component<
     ControllerState
 > {
     state = {
-        addInput: ''
+        addInput: '',
+        stats: {
+            nb_users: 0,
+            nb_remove_user: 0,
+            nb_premium: 0,
+            nb_users_created_this_week: []
+        }
     };
+
+    homeViewModel = new HomeViewModel();
 
     constructor(props: any, context: any) {
         super(props, context);
         this.haveToken();
+        this.fetchStats();
+        this.homeViewModel.animationStart();
     }
 
-    private onInputChange = (name: string) => (
-        e: React.ChangeEvent<HTMLInputElement>
-    ) => {
-        this.setState<any>({
-            [name]: e.target.value
+    private fetchStats = () => {
+        const apiPath = process.env.API_HOST || 'http://localhost:3001';
+        fetch(apiPath + '/user/stats', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'authorization': localStorage.getItem('token') || ''
+            }
+        }).then((res) => {
+            res.json().then((data: StatsUser) => {
+                console.log(data);
+                this.setState({
+                    stats: data
+                });
+            });
         });
-    };
+    }
 
 
     haveToken = () => {
@@ -54,9 +76,15 @@ export default class HomeController extends Component<
         const {viewModel} = this.props;
         const {addInput} = this.state;
 
+        if (this.state.stats.nb_users === 0) {
+            return (
+                <Navbar/>
+            );
+        }
+
         return (
             <View
-                onInputChange={this.onInputChange}
+                stats={this.state.stats}
             />
         );
     }

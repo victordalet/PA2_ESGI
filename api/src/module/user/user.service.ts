@@ -1,4 +1,4 @@
-import {User} from "../../core/user";
+import {StatsUser, User} from "../../core/user";
 import {sha512} from 'js-sha512';
 import {uid} from 'uid';
 import {UserRepository} from "./user.repository";
@@ -7,11 +7,9 @@ import {TokenValidation} from "../../validation/token/token.validation";
 export class UserService {
 
     private UserRepository: UserRepository;
-    private tokenValidation: TokenValidation;
 
     constructor() {
         this.UserRepository = new UserRepository();
-        this.tokenValidation = new TokenValidation();
     }
 
     async CreateUser(userInformation: User) {
@@ -87,8 +85,29 @@ export class UserService {
     }
 
     async isAdmin(token: string) {
-        await this.tokenValidation.validateAdminToken(token);
         return {connection: true};
+    }
+
+    async getStats(): Promise<StatsUser> {
+        const users = await this.GetUser();
+        let date = new Date();
+        const weekStats = [];
+        for (let i = 0; i < 10; i++) {
+            const userTest = users.filter(user => new Date(user.created_at) < new Date(date.toISOString()))
+            date.setDate(date.getDate() - 1);
+            weekStats.push(userTest.filter(user => new Date(user.created_at) > new Date(date.toISOString())).length);
+        }
+        weekStats.map((value, index) => {
+            weekStats[index] = value / users.length * 100;
+        })
+        return {
+            nb_users: users.length,
+            nb_remove_user: users.filter(user => user.deleted_at).length,
+            nb_premium: users.filter(user => user.premium).length,
+            nb_users_created_this_week: weekStats
+        }
+
+
     }
 
 }

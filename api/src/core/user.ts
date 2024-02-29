@@ -19,3 +19,11 @@ export interface UserMessage {
     updated_at?: string;
     deleted_at?: string;
 }
+
+
+export interface StatsUser {
+    nb_users: number;
+    nb_remove_user: number;
+    nb_premium: number;
+    nb_users_created_this_week: number[];
+}

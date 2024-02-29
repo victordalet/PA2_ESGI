@@ -33,6 +33,15 @@ export class UserController {
         return await this.userService.GetUserByEmail(params.email);
     }
 
+    @Post('stats')
+    @ApiOperation({summary: 'Get stats'})
+    @ApiOkResponse({description: 'stats'})
+    @ApiNotFoundResponse({description: 'No stats found'})
+    async getStats(@Headers('authorization') token: string) {
+        await this.tokenValidation.validateAdminToken(token);
+        return await this.userService.getStats();
+    }
+
 
     @Post('connection')
     @ApiOperation({summary: 'Create connection'})
