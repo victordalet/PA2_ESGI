@@ -22,8 +22,8 @@ export class TokenRepository {
     }
 
     async isAdminToken(token: string): Promise<boolean> {
-        const [row, field] = await this.db.query("SELECT role FROM USER WHERE connection = ?", [token]);
-        return row[0].role === 'admin';
+        const [row, field] = await this.db.query("SELECT rules FROM USER WHERE connection = ?", [token]);
+        return row[0]?.rules === 'ADMIN';
     }
 
 }

@@ -26,7 +26,14 @@ export class UserRepository {
     }
 
     async getUser(): Promise<User[]> {
-        const [rows, filed] = await this.db.query("SELECT email, name, password, role, address, updated_at, created_at, deleted_at, connection FROM USER");
+        const [rows, filed] = await this.db.query("SELECT email, name, password, rules, address, updated_at, created_at, deleted_at ,connection FROM USER");
+        const [rows2, filed2] = await this.db.query("SELECT user_email FROM subscription");
+        const userSubscription: string[] = []
+        if (rows2 instanceof Array) {
+            rows2.forEach((row: any) => {
+                userSubscription.push(row.user_email);
+            });
+        }
         const users: User[] = [];
         if (rows instanceof Array) {
             rows.forEach((row: any) => {
@@ -34,15 +41,18 @@ export class UserRepository {
                     email: row.email,
                     name: row.name,
                     password: row.password,
-                    role: row.role,
+                    role: row.rules,
                     address: row.address,
                     updated_at: row.updated_at,
                     created_at: row.created_at,
                     deleted_at: row.deleted_at,
-                    token: row.connection
+                    token: row.connection,
+                    premium: userSubscription.includes(row.email)
                 });
             });
         }
+
+
         return users;
     }
 
@@ -55,7 +65,7 @@ export class UserRepository {
     }
 
     async getUserByEmail(email: string): Promise<User> {
-        const [row, field] = await this.db.query("SELECT email, name, password, role, address, updated_at, created_at, deleted_at, connection FROM USER WHERE email = ?", [email]);
+        const [row, field] = await this.db.query("SELECT email, name, password, rules, address, updated_at, created_at, deleted_at, connection FROM USER WHERE email = ?", [email]);
         return row[0];
     }
 
@@ -64,7 +74,7 @@ export class UserRepository {
     }
 
     async updateUser(userInformation: User) {
-        await this.db.query("UPDATE USER SET name = ?, password = ?, role = ?, address = ?, updated_at = ? WHERE email = ?",
+        await this.db.query("UPDATE USER SET name = ?, password = ?, rules = ?, address = ?, updated_at = ? WHERE email = ?",
             [userInformation.name,
                 sha256(userInformation.password),
                 userInformation.role,
@@ -81,25 +91,26 @@ export class UserRepository {
     }
 
     async updateRole(userInformation: User) {
-        await this.db.query("UPDATE USER SET role = 'user_request_to_admin', updated_at = ? WHERE email = ?",
+        await this.db.query("UPDATE USER SET rules = 'user_request_to_admin', updated_at = ? WHERE email = ?",
             [userInformation.role,
                 new Date(),
                 userInformation.email]);
     }
 
     async updateRoleAdmin(userInformation: User) {
-        await this.db.query("UPDATE USER SET role = ?, updated_at = ? WHERE email = ?",
+        await this.db.query("UPDATE USER SET rules = ?, updated_at = ? WHERE email = ?",
             [userInformation.role,
                 new Date(),
                 userInformation.email]);
     }
 
-    async isFoundToken(token: string) {
-        const [row, field] = await this.db.query("SELECT email FROM USER WHERE connection = ?", [token]);
+    async isGoodPassword(email: string, password: string): Promise<boolean> {
+        const [row, field] = await this.db.query("SELECT password FROM USER WHERE email = ?", [email]);
+        return row[0]?.password === password;
     }
 
-    async isAdminToken(token: string) {
-        const [row, field] = await this.db.query("SELECT role FROM USER WHERE connection = ?", [token]);
-        return row[0].role === "admin";
+    async isGoodPasswordAdmin(email: string, password: string): Promise<boolean> {
+        const [row, field] = await this.db.query("SELECT password FROM USER WHERE email = ? and rules = 'ADMIN'", [email]);
+        return row[0]?.password === password;
     }
 }

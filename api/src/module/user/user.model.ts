@@ -19,19 +19,19 @@ export class UserBody {
 
     @ApiProperty({example: 'test', description: 'name of user'})
     @IsString()
-    name: string;
+    name?: string;
 
     @ApiProperty({example: 'admin', description: 'role of user'})
     @IsString()
-    role: string;
+    role?: string;
 
     @ApiProperty({example: '2021-11-02T15:00:00Z', description: 'created_at'})
     @IsString()
-    created_at: string;
+    created_at?: string;
 
     @ApiProperty({example: '2021-11-02T15:00:00Z', description: 'updated_at'})
     @IsString()
-    updated_at: string;
+    updated_at?: string;
 
     @ApiProperty({example: '2021-11-02T15:00:00Z', description: 'deleted_at'})
     @IsString()
@@ -39,7 +39,7 @@ export class UserBody {
 
     @ApiProperty({example: 'address', description: 'address of user'})
     @IsString()
-    address: string;
+    address?: string;
 
     @ApiProperty({example: 'connection', description: 'connection'})
     @IsString()

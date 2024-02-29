@@ -23,3 +23,10 @@ services:
       MYSQL_DATABASE: test
       MYSQL_USER: test
       MYSQL_PASSWORD: test
+
+  back-office:
+    build: back-office/
+    ports:
+      - "3001:3001"
+    environment:
+      API_HOST: api

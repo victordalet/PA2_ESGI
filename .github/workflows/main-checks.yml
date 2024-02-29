@@ -27,3 +27,4 @@ jobs:
           services: |
             mysql-db
             api
+            back-office

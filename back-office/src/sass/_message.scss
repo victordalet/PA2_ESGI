@@ -1,0 +1,40 @@
+.container-add-message {
+
+    height: 30px;
+    position: absolute;
+    top: 30%;
+    left: 40%;
+
+    .input {
+        position: relative;
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        max-width: 400px;
+        margin: 0 auto;
+        border-radius: 2px;
+        padding: 1.4rem 2rem 1.6rem;
+
+        &:after {
+            content: "";
+            position: absolute;
+            z-index: 999;
+            height: 2px;
+            border-bottom-left-radius: 2px;
+            border-bottom-right-radius: 2px;
+            background-size: 500% auto;
+        }
+
+        input {
+            flex-grow: 1;
+            color: $secondaryColor;
+            font-size: 1.8rem;
+            line-height: 2.4rem;
+            vertical-align: middle;
+            border: 2px solid $secondaryColor;
+
+        }
+
+    }
+
+}

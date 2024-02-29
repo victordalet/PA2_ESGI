@@ -33,4 +33,27 @@ export class MessageService {
     async deleteMessage(id: number) {
         return await this.MessageRepository.deleteMessage(id);
     }
+
+    async getIllegibleMessages() {
+        const messages = await this.MessageRepository.getMessages();
+        const illegibleWords = await this.MessageRepository.getIllegibleWords();
+        return messages.map((message: UserMessage) => {
+            const words = message.message.split(' ');
+            let nbIllegibleWords = 0;
+            words.forEach((word: string) => {
+                if (illegibleWords.includes(word)) {
+                    nbIllegibleWords++;
+                }
+            });
+            return {
+                created_by: message.created_by,
+                nb_illegible_words: nbIllegibleWords
+            };
+        });
+
+    }
+
+    async addIllegibleWord(word: string) {
+        return await this.MessageRepository.addIllegibleWord(word);
+    }
 }

@@ -8,6 +8,7 @@ export interface Service {
     description: string;
     price: number;
     duration: number;
+    nb_use?: number;
 }
 
 export interface ServiceOther {

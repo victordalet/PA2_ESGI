@@ -7,6 +7,7 @@ import {LocationModule} from "./location/location.module";
 import {FactureModule} from "./facture/facture.module";
 import {ServiceModule} from "./service/service.module";
 import {ProviderModule} from "./provider/provider.module";
+import {LanguageModule} from "./language/language.module";
 
 @Module({
     imports: [
@@ -17,7 +18,8 @@ import {ProviderModule} from "./provider/provider.module";
         LocationModule,
         FactureModule,
         ServiceModule,
-        ProviderModule
+        ProviderModule,
+        LanguageModule
     ]
 })
 export class AppModule {
