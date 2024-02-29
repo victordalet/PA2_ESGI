@@ -56,6 +56,13 @@
     overflow: hidden;
 
 
+    h3 {
+        color: #FFFFFF;
+        position: absolute;
+        left: 20px;
+        top: 20px;
+    }
+
     .bar {
         width: 20px;
         background-color: $primaryColor;

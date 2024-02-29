@@ -4,6 +4,7 @@ import {observer} from 'mobx-react';
 import {ControllerProps, ControllerState, resultData} from '../@types/service';
 import View from '../views/service';
 import {Navbar} from "../../components/navbar";
+import {haveToken} from "../../security/token";
 
 @observer
 export default class ServiceControllers extends Component<
@@ -13,6 +14,7 @@ export default class ServiceControllers extends Component<
 
     constructor(props: ControllerProps) {
         super(props);
+        haveToken();
         this.getData();
     }
 

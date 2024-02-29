@@ -4,6 +4,7 @@ import {observer} from 'mobx-react';
 import {ControllerProps, ControllerState} from '../@types/ticket';
 import View from '../views/ticket';
 import {Navbar} from "../../components/navbar";
+import {haveToken} from "../../security/token";
 
 @observer
 export default class TicketControllers extends Component<
@@ -13,6 +14,7 @@ export default class TicketControllers extends Component<
 
     constructor(props: ControllerProps) {
         super(props);
+        haveToken();
         this.getData();
     }
 

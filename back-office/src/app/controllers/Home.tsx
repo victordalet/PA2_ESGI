@@ -4,7 +4,7 @@ import {observer} from 'mobx-react';
 import {ControllerProps, ControllerState, StatsUser} from '../@types/Home';
 import View from '../views/home';
 import HomeViewModel from "../view-models/Home";
-import {dataConnection} from "../@types/Connection";
+import {haveToken} from "../../security/token";
 import {Navbar} from "../../components/navbar";
 
 @observer
@@ -26,7 +26,7 @@ export default class HomeController extends Component<
 
     constructor(props: any, context: any) {
         super(props, context);
-        this.haveToken();
+        haveToken();
         this.fetchStats();
         this.homeViewModel.animationStart();
     }
@@ -50,27 +50,7 @@ export default class HomeController extends Component<
     }
 
 
-    haveToken = () => {
-        if (localStorage.getItem('token') === null || undefined) {
-            document.location.href = '/login';
-        } else {
-            const apiPath = process.env.API_HOST || 'http://localhost:3001';
-            fetch(apiPath + '/user/isAdmin', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'authorization': localStorage.getItem('token') || ''
-                }
-            }).then((res) => {
-                console.log(res);
-                res.json().then((data: dataConnection) => {
-                    if (!data.connection) {
-                        document.location.href = '/login';
-                    }
-                });
-            });
-        }
-    };
+
 
     render() {
         const {viewModel} = this.props;

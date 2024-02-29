@@ -3,12 +3,17 @@ import {observer} from 'mobx-react';
 
 import {ControllerProps} from '../@types/language';
 import View from '../views/language';
+import {haveToken} from "../../security/token";
 
 @observer
 export default class LanguageControllers extends Component<
     ControllerProps
 > {
 
+    constructor(props: any, context: any) {
+        super(props, context);
+        haveToken();
+    }
 
     postFile = async () => {
         const element = document.querySelector<HTMLInputElement>("#file");

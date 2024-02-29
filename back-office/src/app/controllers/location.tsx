@@ -4,6 +4,7 @@ import {observer} from 'mobx-react';
 import {ControllerProps, ControllerState, DataResponse} from '../@types/location';
 import View from '../views/location';
 import {Navbar} from "../../components/navbar";
+import {haveToken} from "../../security/token";
 
 @observer
 export default class LocationController extends Component<
@@ -13,8 +14,10 @@ export default class LocationController extends Component<
 
     constructor(props: ControllerProps) {
         super(props);
+        haveToken();
         this.getData();
     }
+
 
     state: ControllerState = {
         data: []

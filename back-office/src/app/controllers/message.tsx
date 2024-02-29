@@ -4,6 +4,7 @@ import {observer} from 'mobx-react';
 import {ControllerProps, ControllerState, ResponseIllegibleMessage} from '../@types/message';
 import View from '../views/message';
 import {Navbar} from "../../components/navbar";
+import {haveToken} from "../../security/token";
 
 @observer
 export default class MessageControllers extends Component<
@@ -14,6 +15,7 @@ export default class MessageControllers extends Component<
 
     constructor(props: ControllerProps) {
         super(props);
+        haveToken();
         this.getIllegibleMessage();
     }
 

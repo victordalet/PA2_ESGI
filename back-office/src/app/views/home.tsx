@@ -31,6 +31,7 @@ export default class HomeView extends React.Component <ViewProps> {
                 </div>
 
                 <div className={"chart-stats"}>
+                    <h3>Nb user during last days</h3>
                     {stats.nb_users_created_this_week.map(number => (
                         <div className={"bar"} style={{height: number.toString() + '%'}}></div>
                     ))}
