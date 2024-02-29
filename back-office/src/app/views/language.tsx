@@ -17,7 +17,8 @@ export default class LanguageView extends React.Component <ViewProps> {
                 <label htmlFor="text" className="drop-container" id="dropcontainer">
                     <span className="drop-title">Drop files here</span>
                     or
-                    <input type="file" id="images" accept="text/*" required/>
+                    <input type="file" id="file" accept="text/*" required/>
+                    <button onClick={postFile}>Upload</button>
                 </label>
             </div>
         );

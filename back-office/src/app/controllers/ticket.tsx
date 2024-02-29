@@ -18,7 +18,7 @@ export default class TicketControllers extends Component<
 
     state: ControllerState = {
         data: []
-    }
+    };
 
     getData = () => {
         const apiPath = process.env.API_HOST || 'http://localhost:3001';
@@ -35,7 +35,7 @@ export default class TicketControllers extends Component<
                 });
             });
         });
-    }
+    };
 
 
     render() {

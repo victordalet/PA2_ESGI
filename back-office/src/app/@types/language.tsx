@@ -1,7 +1,7 @@
 import ViewModel from '../view-models/language';
 
 export interface ViewProps {
-    postFile: (file: File) => void;
+    postFile: () => void;
 }
 
 export interface ControllerProps {
