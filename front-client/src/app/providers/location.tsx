@@ -2,11 +2,11 @@ import {inject} from 'mobx-react';
 import {Component} from 'react';
 
 
-import Controller from '../controllers/premium';
-import ViewModel from '../view-models/premium';
+import Controller from '../controllers/location';
+import ViewModel from '../view-models/location';
 
 @inject()
-export default class Premium extends Component {
+export default class Location extends Component {
     private readonly viewModel: ViewModel;
 
     constructor(props: any) {

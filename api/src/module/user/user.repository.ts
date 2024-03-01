@@ -113,4 +113,5 @@ export class UserRepository {
         const [row, field] = await this.db.query("SELECT password FROM USER WHERE email = ? and rules = 'ADMIN'", [email]);
         return row[0]?.password === password;
     }
+
 }

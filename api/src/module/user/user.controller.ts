@@ -61,7 +61,16 @@ export class UserController {
     @ApiOperation({summary: 'Check if user is admin'})
     @ApiOkResponse({description: 'user'})
     async isAdmin(@Headers('authorization') token: string) {
+        await this.tokenValidation.validateAdminToken(token);
         return await this.userService.isAdmin(token);
+    }
+
+    @Post('isUser')
+    @ApiOperation({summary: 'Check if user is user'})
+    @ApiOkResponse({description: 'user'})
+    async isUser(@Headers('authorization') token: string) {
+        await this.tokenValidation.validateToken(token);
+        return await this.userService.isUser(token);
     }
 
     @Post()

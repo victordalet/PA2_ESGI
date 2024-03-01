@@ -1,0 +1,29 @@
+.container-service, .container-location {
+    position: absolute;
+    top: 0;
+    left: 50px;
+    width: calc(100% - 50px);
+    min-height: 100vh;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    flex-direction: column;
+
+
+    h2 {
+        font-size: 3em;
+        font-weight: bold;
+        font-family: 'Inter', serif;
+        margin-top: 50px;
+    }
+
+    .container-card {
+        display: grid;
+        margin-top: 50px;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 20px;
+        width: 90vw;
+    }
+
+
+}

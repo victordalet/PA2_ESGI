@@ -20,32 +20,37 @@ export default class HomeView extends React.Component <ViewProps> {
             <div className="home-page">
                 <Navbar/>
                 <div className={"container-home-page"}>
+                    <h1>Welcome to Paris Caretaker Services</h1>
                     <h3>Last Location : </h3>
                     <div className={"container-last-location"}>
                         {
                             location.map((l, index) => {
-                                return (
-                                    <Card cardInfo={{
-                                        title: l.name,
-                                        description: l.description,
-                                        price: l.price,
-                                        location: l.address
-                                    }}></Card>
-                                );
+                                if (index > location.length - 6) {
+                                    return (
+                                        <Card cardInfo={{
+                                            title: l.name,
+                                            description: l.description,
+                                            price: l.price,
+                                            location: l.address
+                                        }}></Card>
+                                    );
+                                }
                             })
                         }
                     </div>
-                    <h3>Services : </h3>
+                    <h3>Last Services : </h3>
                     <div className={"container-last-services"}>
                         {
                             service.map((s, index) => {
-                                return (
-                                    <Card cardInfo={{
-                                        title: s.name,
-                                        description: s.description,
-                                        price: s.price
-                                    }}></Card>
-                                );
+                                if (index > service.length - 6) {
+                                    return (
+                                        <Card cardInfo={{
+                                            title: s.name,
+                                            description: s.description,
+                                            price: s.price
+                                        }}></Card>
+                                    );
+                                }
                             })
                         }
                     </div>

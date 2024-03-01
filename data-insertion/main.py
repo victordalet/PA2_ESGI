@@ -16,7 +16,8 @@ class Main:
             password=sys.argv[3],
             database=sys.argv[4]
         )
-        self.run()
+        for i in range(int(sys.argv[5])):
+            self.run()
 
     def run(self):
         self.insert_user()

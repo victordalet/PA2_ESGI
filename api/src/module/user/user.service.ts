@@ -88,6 +88,10 @@ export class UserService {
         return {connection: true};
     }
 
+    async isUser(token: string) {
+        return {connection: true};
+    }
+
     async getStats(): Promise<StatsUser> {
         const users = await this.GetUser();
         let date = new Date();

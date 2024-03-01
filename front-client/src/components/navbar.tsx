@@ -62,7 +62,7 @@ export class Navbar extends React.Component {
                         <li key={index}>
                             <a href={item.url} onClick={() => {
                                 if (item.name === "Theme") {
-                                    if (document.body.style.backgroundColor !== "black") {
+                                    if (document.body.style.backgroundColor === "black") {
                                         document.body.style.backgroundColor = "#e1e1ff";
                                     } else {
                                         document.body.style.backgroundColor = "black";
