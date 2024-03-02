@@ -6,3 +6,4 @@ export {default as Location} from './location';
 export {default as Resa} from './resa';
 export {default as Settings} from './settings';
 export {default as Sign} from './sign';
+export {default as Reserve} from './reserve';
