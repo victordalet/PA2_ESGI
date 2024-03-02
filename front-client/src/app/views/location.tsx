@@ -15,7 +15,7 @@ export default class LocationView extends React.Component <ViewProps> {
                 <Navbar/>
                 <div className="container-location">
                     <div className="container-filter"></div>
-                    <h2>Locations :</h2>
+                    <h2>Locations</h2>
                     <div className={"container-card"}>
                         {
                             location.map((location: LocationResponse) => {

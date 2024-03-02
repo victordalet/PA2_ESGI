@@ -1,4 +1,5 @@
 import React from "react";
+import {haveToken} from "../security/token";
 
 
 export interface NavigationItem {
@@ -28,7 +29,7 @@ export class Navbar extends React.Component {
         },
         {
             name: "Mes reservation",
-            url: "/my-reservation",
+            url: "/resa",
             icon: "ai-cart"
         },
         {
@@ -47,7 +48,7 @@ export class Navbar extends React.Component {
             icon: "ai-flashlight"
         },
         {
-            name: "Log out",
+            name: "Log in / out",
             url: "/login",
             icon: "ai-lock-on"
         }

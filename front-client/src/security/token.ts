@@ -5,14 +5,13 @@ export const haveToken = () => {
         document.location.href = '/login';
     } else {
         const apiPath = process.env.API_HOST || 'http://localhost:3001';
-        fetch(apiPath + '/user/isAdmin', {
+        fetch(apiPath + '/user/isUser', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'authorization': localStorage.getItem('token') || ''
             }
         }).then((res) => {
-            console.log(res);
             res.json().then((data: dataConnection) => {
                 if (!data.connection) {
                     document.location.href = '/login';

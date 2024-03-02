@@ -27,8 +27,8 @@
 
 
         .free, .premium {
-            width: 30vw;
-            height: 35vh;
+            width: 25vw;
+            height: 45vh;
             border-radius: 20px;
             transition: .2s;
             display: flex;
@@ -51,11 +51,15 @@
 
                 li {
 
-                    width: 35%;
+                    width: 55%;
 
                     i {
                         color: #399d39;
                         margin-right: .5rem;
+                    }
+
+                    i.ai-circle-minus-fill {
+                        color: #ff0000;
                     }
 
                     margin-bottom: .5rem;
@@ -87,15 +91,6 @@
 
         }
 
-        .free {
-            ul {
-                li {
-                    i {
-                        color: #ff0000;
-                    }
-                }
-            }
-        }
 
     }
 }

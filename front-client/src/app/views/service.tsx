@@ -12,7 +12,7 @@ export default class ServiceView extends React.Component<ViewProps> {
                 <Navbar/>
                 <div className="container-service">
                     <div className="container-filter"></div>
-                    <h2>Services :</h2>
+                    <h2>Services</h2>
                     <div className={"container-card"}>
                         {
                             service.map((s: ServiceResponse) => {
