@@ -5,10 +5,13 @@ import {BrowserRouter, Routes, Route} from "react-router-dom";
 
 import {Connection, Home, Location, Premium, Resa, Service, Settings, Sign} from './app/providers';
 import './sass/index.scss';
+import {isBot} from "./security/isBot";
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
 );
+
+isBot();
 
 root.render(
     <React.StrictMode>

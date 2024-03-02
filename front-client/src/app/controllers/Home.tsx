@@ -4,7 +4,6 @@ import {observer} from 'mobx-react';
 import {ControllerProps, ControllerState} from '../@types/Home';
 import View from '../views/home';
 import HomeViewModel from "../view-models/Home";
-import {haveToken} from "../../security/token";
 import {Navbar} from "../../components/navbar";
 
 @observer
@@ -21,6 +20,7 @@ export default class HomeController extends Component<
 
     constructor(props: any, context: any) {
         super(props, context);
+
         this.fetchService();
         this.fetchLocation();
         this.homeViewModel.animationStart();
