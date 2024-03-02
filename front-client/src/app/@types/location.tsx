@@ -2,6 +2,10 @@ import ViewModel from "../view-models/location";
 
 export interface ViewProps {
     location: LocationResponse[];
+    filterByPrice: () => void;
+    filterLocationByNameOrDescription: () => void;
+    filterLocationByCity: () => void;
+    filterLocationByCapacity: () => void;
 }
 
 export interface ControllerProps {
@@ -10,6 +14,7 @@ export interface ControllerProps {
 
 export interface ControllerState {
     location: LocationResponse[];
+    locationNoFilter: LocationResponse[];
 }
 
 

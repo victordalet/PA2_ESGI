@@ -1,7 +1,8 @@
 import React from "react";
 import ServiceView from "../views/service";
-import {ControllerProps, ControllerState} from "../@types/service";
+import {ControllerProps, ControllerState, ServiceResponse} from "../@types/service";
 import {Navbar} from "../../components/navbar";
+import ServiceViewModel from "../view-models/service";
 
 export default class Controller extends React.Component<
     ControllerProps,
@@ -9,13 +10,17 @@ export default class Controller extends React.Component<
 > {
 
 
+    private serviceViewModel: ServiceViewModel;
+
     constructor(props: ControllerProps) {
         super(props);
         this.fetchService();
+        this.serviceViewModel = new ServiceViewModel();
     }
 
     state = {
         service: [],
+        serviceNoFilter: []
     };
 
 
@@ -29,17 +34,44 @@ export default class Controller extends React.Component<
             }
         }).then((res) => {
             res.json().then((data) => {
-                this.setState({service: data});
+                this.setState({service: data, serviceNoFilter: data});
             });
+        });
+    };
+
+    filterByPrice = () => {
+        const select = document.querySelector<HTMLSelectElement>('select');
+        if (select) {
+            if (select.value === '0') {
+                this.setState({
+                    service: this.serviceViewModel.filterByASC(this.state.serviceNoFilter)
+                });
+            } else {
+                this.setState({
+                    service: this.serviceViewModel.filterByDSC(this.state.serviceNoFilter)
+                });
+            }
+        }
+    };
+
+    filterServiceByNameOrDescription = () => {
+        const input = document.querySelector<HTMLInputElement>('input');
+        const text = input ? input.value : '';
+        this.setState({
+            service: this.serviceViewModel.filterServiceByNameOrDescription(this.state.serviceNoFilter, text)
         });
     };
 
     render() {
 
-        if (this.state.service.length === 0) {
+        if (this.state.serviceNoFilter.length === 0) {
             return <Navbar/>;
         }
 
-        return <ServiceView service={this.state.service}/>;
+        return <ServiceView
+            service={this.state.service}
+            filterByPrice={this.filterByPrice}
+            filterServiceByNameOrDescription={this.filterServiceByNameOrDescription}
+        />;
     }
 }

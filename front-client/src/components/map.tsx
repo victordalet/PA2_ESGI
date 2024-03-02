@@ -25,7 +25,7 @@ export class MapComponents extends React.Component<{ dataCoordinate: Coordinate[
                 overflow: 'hidden',
                 border: '2px solid #000'
             }}>
-                <MapContainer center={[48.88, 2.34]} zoom={10} scrollWheelZoom={false}>
+                <MapContainer center={[48.88, 2.34]} zoom={10} scrollWheelZoom={true}>
                     <TileLayer
                         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

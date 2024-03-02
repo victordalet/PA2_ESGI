@@ -5,14 +5,24 @@ import {Navbar} from "../../components/navbar";
 export default class ServiceView extends React.Component<ViewProps> {
     render() {
 
-        const {service} = this.props;
+        const {
+            service,
+            filterByPrice,
+            filterServiceByNameOrDescription
+        } = this.props;
 
         return (
             <div>
                 <Navbar/>
                 <div className="container-service">
-                    <div className="container-filter"></div>
                     <h2>Services</h2>
+                    <div className="container-filter">
+                        <input type="text" onChange={()=>{filterServiceByNameOrDescription();}} placeholder="Search..."/>
+                        <select onChange={() => {filterByPrice();}}>
+                            <option value="0" >ascending price</option>
+                            <option value="1">descending price</option>
+                        </select>
+                    </div>
                     <div className={"container-card"}>
                         {
                             service.map((s: ServiceResponse) => {

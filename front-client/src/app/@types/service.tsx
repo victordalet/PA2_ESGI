@@ -1,6 +1,8 @@
 import ViewModel from "../view-models/service";
 
 export interface ViewProps {
+    filterByPrice: () => void;
+    filterServiceByNameOrDescription: () => void;
     service: ServiceResponse[];
 }
 
@@ -10,6 +12,7 @@ export interface ControllerProps {
 
 export interface ControllerState {
     service: ServiceResponse[];
+    serviceNoFilter: ServiceResponse[];
 }
 
 
