@@ -19,3 +19,10 @@
 ```bash
 docker-compose up
 ```
+
+---
+## Train Chat bot
+
+```bash
+py train.py (nb_epoch)
+```
