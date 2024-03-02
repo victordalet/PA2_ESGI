@@ -30,3 +30,9 @@ services:
       - "3001:3001"
     environment:
       API_HOST: api
+
+
+  chat-bot:
+    build: chat-bot/
+    ports:
+      - "5000:5000"
