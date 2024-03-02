@@ -1,4 +1,4 @@
-import {PureComponent} from 'react';
+import React, {PureComponent} from 'react';
 import {ViewProps} from "../@types/Connection";
 import {PopupError} from "../../components/popup";
 
@@ -19,7 +19,7 @@ export default class Connection extends PureComponent<ViewProps> {
                         <form action="">
                             <input onChange={
                                 onInputChange('email')
-                            } className={"filed"} type="text" placeholder="Username"/>
+                            } className={"filed"} type="text" placeholder="Email"/>
                             <input onChange={
                                 onInputChange('password')
                             } className={"filed"} type="password" placeholder="Password"/>
@@ -27,6 +27,7 @@ export default class Connection extends PureComponent<ViewProps> {
 
 
                         <button type="submit" onClick={testLogin} className={"submit"}>Log in</button>
+                        <a href={'sign-in'}>Sign in</a>
                     </div>
                 </div>
             </div>

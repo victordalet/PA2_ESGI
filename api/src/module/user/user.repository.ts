@@ -16,11 +16,11 @@ export class UserRepository {
     }
 
     async createUser(userInformation: User) {
-        await this.db.query("INSERT INTO USER(name, email, password, role , address, created_at, updated_at) " +
+        await this.db.query("INSERT INTO USER(name, email, password, rules , address, created_at, updated_at) " +
             "VALUES(?,?,?,?,?,?,?)", [userInformation.name,
             userInformation.email,
             sha256(userInformation.password),
-            userInformation.role,
+            userInformation.role || "user",
             userInformation.address,
             new Date(), new Date()]);
     }

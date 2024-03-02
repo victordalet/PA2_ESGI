@@ -3,7 +3,7 @@ import {Provider} from 'mobx-react';
 import React from 'react';
 import {BrowserRouter, Routes, Route} from "react-router-dom";
 
-import {Connection, Home, Location, Premium, Resa, Service, Settings} from './app/providers';
+import {Connection, Home, Location, Premium, Resa, Service, Settings, Sign} from './app/providers';
 import './sass/index.scss';
 
 const root = ReactDOM.createRoot(
@@ -21,6 +21,7 @@ root.render(
                     <Route path={"/location"} element={<Location/>}></Route>
                     <Route path={"/resa"} element={<Resa/>}></Route>
                     <Route path={"/settings"} element={<Settings/>}></Route>
+                    <Route path={"/sign-in"} element={<Sign/>}></Route>
                     <Route path={"*"} element={<Home/>}></Route>
                 </Routes>
             </BrowserRouter>

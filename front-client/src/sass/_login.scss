@@ -101,6 +101,20 @@
                 }
             }
 
+            a {
+                color: #fff;
+                margin-top: 20%;
+                display: block;
+                text-align: center;
+                opacity: 1;
+                visibility: visible;
+                -webkit-transition: all .3s ease;
+
+                &:hover {
+                    color: rgba(256, 256, 256, 0.7);
+                }
+            }
+
 
         }
 
