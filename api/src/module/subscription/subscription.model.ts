@@ -17,4 +17,8 @@ export class BodySubscription {
     @ApiProperty({example: 'updated_at', description: 'Updated at'})
     @IsString()
     updated_at?: string;
+
+    @ApiProperty({example: '10', description: 'Price'})
+    @IsNumber()
+    price?: number;
 }

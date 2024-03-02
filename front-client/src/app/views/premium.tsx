@@ -1,13 +1,17 @@
 import React from "react";
 import {Navbar} from "../../components/navbar";
 import {PopupError} from "../../components/popup";
+import {ViewProps} from "../@types/premium";
 
-export class PremiumView extends React.Component {
+export class PremiumView extends React.Component <ViewProps> {
     render() {
+
+        const {subscribe, deleteSubscription} = this.props;
+
         return (
             <div>
                 <Navbar/>
-                <PopupError text={"Revoke"}/>
+                <PopupError text={"Action successful"}/>
                 <div className="container-premium">
                     <h2>PREMIUM OFFER</h2>
                     <div className="container-comp">
@@ -19,9 +23,9 @@ export class PremiumView extends React.Component {
                                 <li><i className="ai-circle-minus-fill"></i>Permanent reduction of 5%</li>
                                 <li><i className="ai-circle-minus-fill"></i>Services offered</li>
                                 <li><i className="ai-circle-minus-fill"></i>Services VIP</li>
-                                <li><i className="ai-circle-minux-fill"></i>Renewal bonus of the subscription</li>
+                                <li><i className="ai-circle-minus-fill"></i>Renewal bonus of the subscription</li>
                             </ul>
-                            <button>Revoke</button>
+                            <button onClick={deleteSubscription}>Revoke</button>
                         </div>
                         <div className={"premium"}>
                             <h3>Bag Packer</h3>
@@ -33,7 +37,7 @@ export class PremiumView extends React.Component {
                                 <li><i className="ai-circle-minus-fill"></i>Services VIP</li>
                                 <li><i className="ai-circle-plus-fill"></i>Renewal bonus of the subscription</li>
                             </ul>
-                            <button>Subscribe</button>
+                            <button onClick={() => subscribe(10)}>Subscribe</button>
                         </div>
                         <div className={"premium"}>
                             <h3>Exploratory</h3>
@@ -45,7 +49,7 @@ export class PremiumView extends React.Component {
                                 <li><i className="ai-circle-plus-fill"></i>Services VIP</li>
                                 <li><i className="ai-circle-plus-fill"></i>Renewal bonus of the subscription</li>
                             </ul>
-                            <button>Subscribe</button>
+                            <button onClick={() => subscribe(19)}>Subscribe</button>
                         </div>
                     </div>
                 </div>
