@@ -9,9 +9,11 @@ export class PopupError extends React.Component <{ text: string }> {
         return (
             <div className={"pop-up"}>
                 <div className={"close"} onClick={() => {
-                    const root = document.querySelector<HTMLElement>('.pop-up');
+                    const root = document.querySelectorAll<HTMLElement>('.pop-up');
                     if (root) {
-                        root.style.transform = 'translateX(-350px)';
+                        root.forEach((element) => {
+                            element.style.transform = 'translateX(-350px)';
+                        });
                     }
                 }}>
                     <i className="ai-circle-x-fill"></i>

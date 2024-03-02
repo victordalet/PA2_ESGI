@@ -1,6 +1,10 @@
 import ViewModel from "../view-models/settings";
 
 export interface ViewProps {
+    changeEmail: () => void;
+    changePassword: () => void;
+    changeUsername: () => void;
+    data: resultData;
 }
 
 export interface ControllerProps {
@@ -8,4 +12,13 @@ export interface ControllerProps {
 }
 
 export interface ControllerState {
+    data: resultData[];
+}
+
+
+export interface resultData {
+    email: string;
+    token: string;
+    role: string;
+    name: string;
 }

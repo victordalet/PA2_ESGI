@@ -51,20 +51,24 @@ export class UserService {
         return await this.UserRepository.updateUser(userInformation);
     }
 
-    async UpdatePassword(userInformation: User) {
-        const user = await this.GetUserByEmail(userInformation.email);
-        if (user.password !== sha512(userInformation.password)) {
-            throw new Error("Old password is incorrect");
-        }
+    async updatePassword(userInformation: User, token: string) {
+        userInformation.password = sha512(userInformation.password);
+        userInformation.token = token;
         await this.UserRepository.updatePassword(userInformation);
     }
 
+    async updateEmail(userInformation: User, token: string) {
+        userInformation.token = token;
+        return await this.UserRepository.updateEmail(userInformation);
+    }
+
+    async updateUsername(userInformation: User, token: string) {
+        userInformation.token = token;
+        return await this.UserRepository.updateUsername(userInformation);
+    }
+
     async UpdateRole(userInformation: User) {
-        const user = await this.GetUserByEmail(userInformation.email);
-        if (user.token !== userInformation.token) {
-            throw new Error("Connection is incorrect");
-        }
-        await this.UserRepository.updateRole(userInformation);
+        return await this.UserRepository.updateRole(userInformation);
     }
 
     async UpdateRoleAdmin(userInformation: User) {
