@@ -1,19 +1,21 @@
-import * as fs from 'fs';
+import {LanguageRepository} from "./language.repository";
+import {Language} from "../../core/langue";
 
 export class LanguageService {
-    async getLanguageFileByName(name: string) {
-        return fs.readFileSync('file/' + name + '.txt', 'utf8');
+
+    private languageRepository: LanguageRepository;
+
+
+    constructor() {
+        this.languageRepository = new LanguageRepository();
     }
 
-    async getNameLanguage() {
-        return fs.readdirSync('file');
+    async getLanguageFileByName() {
+        return await this.languageRepository.getLanguage();
     }
 
-    async postLanguageFile(file: any) {
-        fs.writeFileSync('file/' + file.name + ".txt", file);
+    async postWord(languageParam: Language) {
+        return await this.languageRepository.addWord(languageParam.words, languageParam.translation, languageParam.language);
     }
 
-    async deleteLanguageFile(name: string) {
-        fs.unlinkSync(name);
-    }
 }

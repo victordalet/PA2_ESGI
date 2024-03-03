@@ -1,6 +1,8 @@
 import React, {PureComponent} from 'react';
 import {ViewProps} from "../@types/Connection";
 import {PopupError} from "../../components/popup";
+import {ChatBot} from "../../components/chatBot";
+import {Language} from "../../components/language";
 
 export default class Connection extends PureComponent<ViewProps> {
     render() {
@@ -13,6 +15,8 @@ export default class Connection extends PureComponent<ViewProps> {
         return (
             <div className={"login-page"}>
                 <PopupError text={"Connection failed"}/>
+                <ChatBot/>
+                <Language/>
                 <div className={"container-log"}>
                     <div className={"log"}>
                         <h3>Log in</h3>

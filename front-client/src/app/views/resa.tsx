@@ -2,6 +2,8 @@ import React from "react";
 import {Navbar} from "../../components/navbar";
 import {ViewProps} from "../@types/resa";
 import {Card} from "../../components/card";
+import {ChatBot} from "../../components/chatBot";
+import {Language} from "../../components/language";
 
 export class ResaView extends React.Component <ViewProps> {
 
@@ -13,6 +15,8 @@ export class ResaView extends React.Component <ViewProps> {
         return (
             <div>
                 <Navbar/>
+                <ChatBot/>
+                <Language/>
                 <div className={"container-service"}>
                     <h2>Your Reservation</h2>
                     <div className={"container-card"}>

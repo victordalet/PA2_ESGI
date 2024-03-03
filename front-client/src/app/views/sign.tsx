@@ -1,6 +1,8 @@
 import React from "react";
 import {PopupError} from "../../components/popup";
 import {ViewProps} from "../@types/sign";
+import {ChatBot} from "../../components/chatBot";
+import {Language} from "../../components/language";
 
 export class SignView extends React.Component<ViewProps> {
 
@@ -12,6 +14,8 @@ export class SignView extends React.Component<ViewProps> {
         return (
             <div className={"login-page"}>
                 <PopupError text={"Fill in all fields"}/>
+                <ChatBot/>
+                <Language/>
                 <div className={"container-log"}>
                     <div className={"log"}>
                         <h3>Sign in</h3>

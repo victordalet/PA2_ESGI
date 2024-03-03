@@ -2,6 +2,8 @@ import {ServiceResponse, ViewProps} from "../@types/service";
 import React from "react";
 import {Navbar} from "../../components/navbar";
 import {Card} from "../../components/card";
+import {ChatBot} from "../../components/chatBot";
+import {Language} from "../../components/language";
 
 export default class ServiceView extends React.Component<ViewProps> {
     render() {
@@ -15,6 +17,8 @@ export default class ServiceView extends React.Component<ViewProps> {
         return (
             <div>
                 <Navbar/>
+                <ChatBot/>
+                <Language/>
                 <div className="container-service">
                     <h2>Services</h2>
                     <div className="container-filter">
