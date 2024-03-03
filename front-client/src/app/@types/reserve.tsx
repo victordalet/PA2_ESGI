@@ -11,6 +11,7 @@ export interface ViewProps {
     messages: MessageLocation[];
     addMessage: () => void;
     deleteOccupation: () => void;
+    downloadFacture: () => void;
 }
 
 export interface ControllerProps {

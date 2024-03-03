@@ -1,8 +1,9 @@
-import {Body, Controller, Delete, Get, Headers, Param, Post, Put} from "@nestjs/common";
-import {ApiBadRequestResponse, ApiOkResponse, ApiOperation, ApiTags} from "@nestjs/swagger";
+import {Body, Controller, Delete, Get, Headers, Param, Patch, Post, Put} from "@nestjs/common";
+import {ApiBadRequestResponse, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiTags} from "@nestjs/swagger";
 import {ServiceService} from "./service.service";
 import {ServiceModel} from "./service.model";
 import {TokenValidation} from "../../validation/token/token.validation";
+import {LocationAvailability} from "../../core/location";
 
 @Controller('service')
 @ApiTags('Service')
@@ -51,6 +52,7 @@ export class ServiceController {
         await this.tokenValidation.validateAdminToken(token);
         return this.serviceService.deleteService(id);
     }
+
 
 
 }

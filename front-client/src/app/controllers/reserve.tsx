@@ -5,6 +5,7 @@ import {LocationResponse} from "../@types/location";
 import {Navbar} from "../../components/navbar";
 import {ServiceResponse} from "../@types/service";
 import ReserveViewModel from "../view-models/reserve";
+import {PDFDocument, StandardFonts, rgb} from 'pdf-lib';
 
 export default class Controller extends React.Component<
     ControllerProps,
@@ -16,12 +17,16 @@ export default class Controller extends React.Component<
     private readonly type: boolean;
     private reserveViewModel: ReserveViewModel;
     private readonly idResa: number;
+    private readonly isService: boolean;
+    private readonly apiSubPath: string;
 
     constructor(props: ControllerProps) {
         super(props);
         this.idResa = 0;
         this.id = parseInt(document.location.href.split('?')[1].split('&')[0]);
         this.type = document.location.href.split('&a=')[1].includes('true');
+        this.isService = document.location.href.includes('service');
+        this.apiSubPath = this.isService ? '/service' : '/location';
         if (this.type) {
             this.idResa = parseInt(document.location.href.split('&id2=')[1]);
             this.isAlsoReserved();
@@ -43,7 +48,7 @@ export default class Controller extends React.Component<
 
     private fetchLocation = () => {
         const apiPath = process.env.API_HOST || 'http://localhost:3001';
-        fetch(apiPath + '/location', {
+        fetch(apiPath + this.apiSubPath, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -58,7 +63,7 @@ export default class Controller extends React.Component<
 
     public addNotation = async (note: number) => {
         const API_PATH = process.env.API_HOST || 'http://localhost:3001';
-        await fetch(API_PATH + '/location/add-notation', {
+        await fetch(API_PATH + this.apiSubPath + '/add-notation', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -69,11 +74,12 @@ export default class Controller extends React.Component<
                 notation: note
             })
         });
+        this.reserveViewModel.openPopupNote();
     };
 
     private isAlsoReserved = () => {
         const API_PATH = process.env.API_HOST || 'http://localhost:3001';
-        fetch(API_PATH + '/location/is-occupied-by-user', {
+        fetch(API_PATH + this.apiSubPath + '/is-occupied-by-user', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -94,7 +100,7 @@ export default class Controller extends React.Component<
 
     private isOccupied = async (dateStart: string, dateEnd: string) => {
         const apiPath = process.env.API_HOST || 'http://localhost:3001';
-        const response = await fetch(apiPath + '/location/is-occupied', {
+        const response = await fetch(apiPath + this.apiSubPath + '/is-occupied', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -112,7 +118,7 @@ export default class Controller extends React.Component<
 
     public getStartNotation = () => {
         const apiPath = process.env.API_HOST || 'http://localhost:3001';
-        fetch(apiPath + '/location/get-notation', {
+        fetch(apiPath + this.apiSubPath + '/get-notation', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -136,7 +142,7 @@ export default class Controller extends React.Component<
                 this.reserveViewModel.openPopupBadDate();
             } else if (!await this.isOccupied(dateStart.value, dateEnd.value)) {
                 const apiPath = process.env.API_HOST || 'http://localhost:3001';
-                await fetch(apiPath + '/location/occupation', {
+                await fetch(apiPath + this.apiSubPath + '/occupation', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -158,7 +164,7 @@ export default class Controller extends React.Component<
 
     private getMessages = async () => {
         const apiPath = process.env.API_HOST || 'http://localhost:3001';
-        const response = await fetch(apiPath + '/location/get-messages', {
+        const response = await fetch(apiPath + this.apiSubPath + '/get-messages', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -170,14 +176,13 @@ export default class Controller extends React.Component<
         });
         const messages = await response.json();
         this.setState({messages: messages[0]});
-
     };
 
     public addMessage = async () => {
         const message = document.querySelector<HTMLInputElement>('#message-input');
         if (message !== null) {
             const apiPath = process.env.API_HOST || 'http://localhost:3001';
-            await fetch(apiPath + '/location/add-message', {
+            await fetch(apiPath + this.apiSubPath + '/add-message', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -194,7 +199,7 @@ export default class Controller extends React.Component<
 
     public deleteOccupation = async () => {
         const apiPath = process.env.API_HOST || 'http://localhost:3001';
-        await fetch(apiPath + '/location/occupation', {
+        await fetch(apiPath + this.apiSubPath + '/occupation', {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
@@ -207,6 +212,28 @@ export default class Controller extends React.Component<
         document.location.href = '/location';
     };
 
+
+    public downloadFacture = async () => {
+        const pdfDoc = await PDFDocument.create();
+        const timesRomanFont = await pdfDoc.embedFont(StandardFonts.TimesRoman);
+        const page = pdfDoc.addPage();
+        const {width, height} = page.getSize();
+        const fontSize = 30;
+        page.drawText('Facture', {
+            x: 50,
+            y: height - 4 * fontSize,
+            size: fontSize,
+            font: timesRomanFont,
+            color: rgb(0, 0, 0),
+        });
+        const pdfBytes = await pdfDoc.save();
+        const blob = new Blob([pdfBytes], {type: 'application/pdf'});
+        const link = document.createElement('a');
+        link.href = window.URL.createObjectURL(blob);
+        link.download = 'facture.pdf';
+        link.click();
+    };
+
     render() {
 
         if (this.state.data.name === undefined) {
@@ -214,6 +241,7 @@ export default class Controller extends React.Component<
         }
 
         return <ReserveView
+            downloadFacture={this.downloadFacture}
             deleteOccupation={this.deleteOccupation}
             messages={this.state.messages}
             addMessage={this.addMessage}

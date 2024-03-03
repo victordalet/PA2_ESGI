@@ -17,13 +17,15 @@ export class ReserveView extends React.Component <ViewProps> {
             notation,
             messages,
             addMessage,
-            deleteOccupation
+            deleteOccupation,
+            downloadFacture
         } = this.props;
 
         return (
             <div>
                 <Navbar/>
                 <PopupError text={"Bad date"}/>
+                <PopupError text={"Note have been saved"}/>
                 <div className={"container-location-reservation"}>
                     <h1>{data.name}</h1>
                     <div className={"description"}>
@@ -64,7 +66,7 @@ export class ReserveView extends React.Component <ViewProps> {
                                             <button id={"cancel"} onClick={deleteOccupation}
                                                     style={{marginBottom: '20px', background: '#c91919'}}>Cancel
                                             </button>
-                                            <button id={"facture"}>My facture</button>
+                                            <button id={"facture"} onClick={downloadFacture}>My facture</button>
                                         </div>
                                     )
                             }

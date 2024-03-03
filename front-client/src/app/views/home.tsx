@@ -32,11 +32,11 @@ export default class HomeView extends React.Component <ViewProps> {
                                                 window.location.href = '/reserve?' + l.id + '&a=false';
                                             }}
                                             cardInfo={{
-                                            title: l.name,
-                                            description: l.description,
-                                            price: l.price,
-                                            location: l.address
-                                        }}></Card>
+                                                title: l.name,
+                                                description: l.description,
+                                                price: l.price,
+                                                location: l.address
+                                            }}></Card>
                                     );
                                 }
                             })
@@ -48,11 +48,15 @@ export default class HomeView extends React.Component <ViewProps> {
                             service.map((s, index) => {
                                 if (index > service.length - 6) {
                                     return (
-                                        <Card cardInfo={{
-                                            title: s.name,
-                                            description: s.description,
-                                            price: s.price
-                                        }}></Card>
+                                        <Card
+                                            onclick={() => {
+                                                window.location.href = '/reserve?' + s.id + '&service=true&a=true';
+                                            }}
+                                            cardInfo={{
+                                                title: s.name,
+                                                description: s.description,
+                                                price: s.price
+                                            }}></Card>
                                     );
                                 }
                             })
