@@ -15,6 +15,7 @@ export interface Location {
     price: number;
     type: string;
     is_occupy_by?: string;
+    location_occupation_id?: number;
 }
 
 export interface LocationAvailability {
@@ -22,6 +23,7 @@ export interface LocationAvailability {
     from_datetime?: string;
     to_datetime?: string;
     notation?: number;
+    location_occupation_id?: number;
 }
 
 export interface LocationMessage {

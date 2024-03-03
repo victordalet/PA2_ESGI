@@ -42,7 +42,10 @@ export class LocationService {
     }
 
     async getNotationLocation(locationId: number) {
-        return await this.LocationRepository.getNotationLocation(locationId);
+        const rows = await this.LocationRepository.getNotationLocation(locationId);
+        if (rows instanceof Array) {
+            return rows.map((row: any) => row.notation).reduce((a: number, b: number) => a + b, 0) / rows.length;
+        }
     }
 
     async getMessagesByLocationOccupationId(locationOccupationId: number) {
@@ -51,5 +54,13 @@ export class LocationService {
 
     async addMessageByLocationOccupationId(locationOccupationId: number, message: string) {
         return await this.LocationRepository.addMessageToLocationOccupation(locationOccupationId, message);
+    }
+
+    async deleteLocationOccupation(locationId: number) {
+        return await this.LocationRepository.deleteLocationOccupation(locationId);
+    }
+
+    async getLocationOccupationByUser(token: string) {
+        return await this.LocationRepository.getLocationOccupationByUser(token);
     }
 }

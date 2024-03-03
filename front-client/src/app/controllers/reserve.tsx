@@ -15,12 +15,15 @@ export default class Controller extends React.Component<
     private readonly id: number;
     private readonly type: boolean;
     private reserveViewModel: ReserveViewModel;
+    private readonly idResa: number;
 
     constructor(props: ControllerProps) {
         super(props);
-        this.id = parseInt(document.location.href.split('?')[1]);
-        this.type = document.location.href.split('&a=')[1] === 'true';
+        this.idResa = 0;
+        this.id = parseInt(document.location.href.split('?')[1].split('&')[0]);
+        this.type = document.location.href.split('&a=')[1].includes('true');
         if (this.type) {
+            this.idResa = parseInt(document.location.href.split('&id2=')[1]);
             this.isAlsoReserved();
         }
         this.getStartNotation();
@@ -62,7 +65,7 @@ export default class Controller extends React.Component<
                 'authorization': localStorage.getItem('token') || ''
             },
             body: JSON.stringify({
-                location_id: this.id,
+                location_id: this.idResa,
                 notation: note
             })
         });
@@ -145,7 +148,7 @@ export default class Controller extends React.Component<
                         to_datetime: dateEnd.value
                     })
                 });
-                document.location.reload();
+                document.location.href = '/resa';
             } else {
                 this.reserveViewModel.openPopupBadDate();
             }
@@ -162,7 +165,7 @@ export default class Controller extends React.Component<
                 'authorization': localStorage.getItem('token') || ''
             },
             body: JSON.stringify({
-                location_id: this.id
+                location_id: this.idResa
             })
         });
         const messages = await response.json();
@@ -181,12 +184,27 @@ export default class Controller extends React.Component<
                     'authorization': localStorage.getItem('token') || ''
                 },
                 body: JSON.stringify({
-                    location_occupation_id: this.id,
+                    location_occupation_id: this.idResa,
                     message: message.value
                 })
             });
             document.location.reload();
         }
+    };
+
+    public deleteOccupation = async () => {
+        const apiPath = process.env.API_HOST || 'http://localhost:3001';
+        await fetch(apiPath + '/location/occupation', {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                'authorization': localStorage.getItem('token') || ''
+            },
+            body: JSON.stringify({
+                location_id: this.id
+            })
+        });
+        document.location.href = '/location';
     };
 
     render() {
@@ -196,6 +214,7 @@ export default class Controller extends React.Component<
         }
 
         return <ReserveView
+            deleteOccupation={this.deleteOccupation}
             messages={this.state.messages}
             addMessage={this.addMessage}
             notation={this.state.notation}

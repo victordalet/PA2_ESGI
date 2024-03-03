@@ -10,6 +10,7 @@ export interface ViewProps {
     notation: number;
     messages: MessageLocation[];
     addMessage: () => void;
+    deleteOccupation: () => void;
 }
 
 export interface ControllerProps {

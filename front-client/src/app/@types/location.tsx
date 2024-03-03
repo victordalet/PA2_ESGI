@@ -35,4 +35,5 @@ export interface LocationResponse {
     price: number;
     type: string;
     is_occupy_by?: string;
+    location_occupation_id?: number;
 }

@@ -36,6 +36,7 @@ create table location_occupation
     to_datetime   datetime not null,
     location_id   int      not null references location (id),
     user_email    varchar(100) not null references USER (email),
+    deleted_at    datetime,
     notation      int
 );
 

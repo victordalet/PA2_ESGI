@@ -42,7 +42,7 @@ export default class LocationView extends React.Component <ViewProps> {
                                         price: location.price,
                                         location: location.address
                                     }} onclick={() => {
-                                        window.location.href = '/reserve?' + location.id?.toString();
+                                        window.location.href = '/reserve?' + location.id?.toString() + '&a=false';
                                     }}/>
                                 );
                             })

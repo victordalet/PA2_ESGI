@@ -29,7 +29,7 @@ export default class HomeView extends React.Component <ViewProps> {
                                     return (
                                         <Card
                                             onclick={() => {
-                                                window.location.href = '/reserve?' + l.id;
+                                                window.location.href = '/reserve?' + l.id + '&a=false';
                                             }}
                                             cardInfo={{
                                             title: l.name,

@@ -16,7 +16,8 @@ export class ReserveView extends React.Component <ViewProps> {
             addNotation,
             notation,
             messages,
-            addMessage
+            addMessage,
+            deleteOccupation
         } = this.props;
 
         return (
@@ -60,7 +61,7 @@ export class ReserveView extends React.Component <ViewProps> {
                                     ) :
                                     (
                                         <div className={"reservation"}>
-                                            <button id={"cancer"}
+                                            <button id={"cancel"} onClick={deleteOccupation}
                                                     style={{marginBottom: '20px', background: '#c91919'}}>Cancel
                                             </button>
                                             <button id={"facture"}>My facture</button>

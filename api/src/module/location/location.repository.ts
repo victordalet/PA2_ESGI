@@ -1,5 +1,6 @@
 import {Connection} from "mysql2/promise";
 import {DatabaseEntity} from "../../database/mysql.entity";
+import {Location} from "../../core/location";
 
 export class LocationRepository {
     private db: Connection;
@@ -38,7 +39,7 @@ export class LocationRepository {
     }
 
     async locationIsOccupied(locationId: number, fromDatetime: string, toDatetime: string) {
-        const [rows, filed] = await this.db.query("SELECT * FROM location_occupation WHERE location_id = ?", [locationId]);
+        const [rows, filed] = await this.db.query("SELECT * FROM location_occupation WHERE location_id = ? AND deleted_at IS NULL", [locationId]);
         if (rows instanceof Array) {
             return rows.some((row: any) => {
                 return (new Date(fromDatetime) >= new Date(row.from_datetime) && new Date(fromDatetime) <= new Date(row.to_datetime)) || (new Date(toDatetime) >= new Date(row.from_datetime) && new Date(toDatetime) <= new Date(row.to_datetime)) || (new Date(fromDatetime) <= new Date(row.from_datetime) && new Date(toDatetime) >= new Date(row.to_datetime));
@@ -47,14 +48,34 @@ export class LocationRepository {
 
     }
 
+    async getLocationOccupationByUser(token: string): Promise<any> {
+        const [rows, filed] = await this.db.query("SELECT email FROM USER WHERE connection = ?", [token]);
+        const [rows2, filed2] = await this.db.query("SELECT * FROM location_occupation WHERE user_email = ? AND deleted_at IS NULL", [rows[0].email]);
+        const locations: any[] = [];
+        if (rows2 instanceof Array) {
+            for (let i = 0; i < rows2.length; i++) {
+                const r: any = rows2[i];
+                const [location, filed3] = await this.db.query("SELECT * FROM location WHERE id = ?", [r.location_id]);
+                location[0].location_occupation_id = r.id;
+                locations.push(location[0]);
+            }
+        }
+        return locations;
+
+    }
+
     async addLocationOccupation(locationId: number, token: string, fromDatetime: string, toDatetime: string) {
         const [rows, filed] = await this.db.query("SELECT email FROM USER WHERE connection = ?", [token]);
         return this.db.query("INSERT INTO location_occupation (from_datetime, to_datetime, location_id, user_email) VALUES (?, ?, ?, ?)", [fromDatetime, toDatetime, locationId, rows[0].email]);
     }
 
+    async deleteLocationOccupation(locationId: number) {
+        return this.db.query("UPDATE location_occupation SET deleted_at = ? WHERE location_id = ? ", [new Date(), locationId]);
+    }
+
     async locationIsOccupiedByUser(locationId: number, token: string) {
         const [rows, filed] = await this.db.query("SELECT email FROM USER WHERE connection = ?", [token]);
-        const [rows2, filed2] = await this.db.query("SELECT * FROM location_occupation WHERE location_id = ? AND user_email = ?", [locationId, rows[0].email]);
+        const [rows2, filed2] = await this.db.query("SELECT * FROM location_occupation WHERE location_id = ? AND user_email = ? AND deleted_at IS NULL", [locationId, rows[0].email]);
         if (rows2 instanceof Array) {
             return rows2.length > 0;
         }
@@ -66,9 +87,7 @@ export class LocationRepository {
 
     async getNotationLocation(locationId: number) {
         const [rows, filed] = await this.db.query("SELECT notation FROM location_occupation WHERE location_id = ?", [locationId]);
-        if (rows instanceof Array) {
-            return rows.map((row: any) => row.notation).reduce((a: number, b: number) => a + b, 0) / rows.length;
-        }
+        return rows;
     }
 
     async getMessagesByLocationOccupationId(locationOccupationId: number) {
