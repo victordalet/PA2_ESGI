@@ -1,0 +1,15 @@
+.select-translation {
+
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 10;
+    background-color: $primaryColor;
+    border: none;
+    color: white;
+    font-family: 'Inter', sans-serif;
+    width: 7vw;
+    height: 3vh;
+    border-radius: 5px;
+    text-align: center;
+}

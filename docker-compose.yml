@@ -55,6 +55,15 @@ services:
     networks:
       - web
 
+  front-bail:
+    build: front-bail/
+    ports:
+      - ${FRONT_BAIL_PORT}:3000
+    environment:
+      API_HOST: ${API_HOST}
+    networks:
+      - web
+
 networks:
   web:
     external: true
