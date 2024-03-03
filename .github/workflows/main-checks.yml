@@ -28,3 +28,4 @@ jobs:
             mysql-db
             api
             back-office
+            front-client

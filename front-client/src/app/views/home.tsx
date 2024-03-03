@@ -27,7 +27,11 @@ export default class HomeView extends React.Component <ViewProps> {
                             location.map((l, index) => {
                                 if (index > location.length - 6) {
                                     return (
-                                        <Card cardInfo={{
+                                        <Card
+                                            onclick={() => {
+                                                window.location.href = '/reserve?' + l.id;
+                                            }}
+                                            cardInfo={{
                                             title: l.name,
                                             description: l.description,
                                             price: l.price,

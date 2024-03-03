@@ -3,6 +3,7 @@ import {ApiBadRequestResponse, ApiCreatedResponse, ApiOkResponse, ApiOperation, 
 import {LocationService} from "./location.service";
 import {LocationModel} from "./location.model";
 import {TokenValidation} from "../../validation/token/token.validation";
+import {LocationAvailability, LocationMessage} from "../../core/location";
 
 @Controller({path: 'location'})
 @ApiTags('Location')
@@ -31,6 +32,69 @@ export class LocationController {
     async createLocation(@Headers('authorization') token: string, @Body() body: LocationModel) {
         await this.tokenValidation.validateAdminToken(token);
         return this.locationService.createLocation(body);
+    }
+
+    @Post('occupation')
+    @ApiOperation({summary: 'Add location occupation'})
+    @ApiCreatedResponse({description: 'Location occupation added'})
+    @ApiBadRequestResponse({description: 'Request body is not valid'})
+    async addLocationOccupation(@Headers('authorization') token: string, @Body() body: LocationAvailability) {
+        await this.tokenValidation.validateToken(token);
+        return this.locationService.addLocationOccupation(body, token);
+    }
+
+    @Post('is-occupied-by-user')
+    @ApiOperation({summary: 'Check if location is occupied by user'})
+    @ApiOkResponse({description: 'Location is occupied by user'})
+    @ApiBadRequestResponse({description: 'Request param is not valid'})
+    async locationIsOccupiedByUser(@Headers('authorization') token: string, @Body() body: LocationAvailability) {
+        await this.tokenValidation.validateToken(token);
+        return this.locationService.locationIsOccupiedByUser(body.location_id, token);
+    }
+
+    @Post('add-notation')
+    @ApiOperation({summary: 'Add location notation'})
+    @ApiCreatedResponse({description: 'Location notation added'})
+    @ApiBadRequestResponse({description: 'Request body is not valid'})
+    async addLocationNotation(@Headers('authorization') token: string, @Body() body: LocationAvailability) {
+        await this.tokenValidation.validateToken(token);
+        return this.locationService.addLocationNotation(body.location_id, body.notation);
+    }
+
+    @Post('get-notation')
+    @ApiOperation({summary: 'Get location notation'})
+    @ApiCreatedResponse({description: 'Location notation'})
+    @ApiBadRequestResponse({description: 'Request body is not valid'})
+    async getNotationLocation(@Headers('authorization') token: string, @Body() body: LocationAvailability) {
+        await this.tokenValidation.validateToken(token);
+        return this.locationService.getNotationLocation(body.location_id);
+    }
+
+    @Post('is-occupied')
+    @ApiOperation({summary: 'Check if location is occupied'})
+    @ApiOkResponse({description: 'Location is occupied'})
+    @ApiBadRequestResponse({description: 'Request body is not valid'})
+    async locationIsOccupied(@Headers('authorization') token: string, @Body() body: LocationAvailability) {
+        await this.tokenValidation.validateToken(token);
+        return this.locationService.locationIsOccupied(body);
+    }
+
+    @Post('add-message')
+    @ApiOperation({summary: 'Add message to location occupation'})
+    @ApiCreatedResponse({description: 'Message added'})
+    @ApiBadRequestResponse({description: 'Request body is not valid'})
+    async addMessageByLocationOccupationId(@Headers('authorization') token: string, @Body() body: LocationMessage) {
+        await this.tokenValidation.validateToken(token);
+        return this.locationService.addMessageByLocationOccupationId(body.location_occupation_id, body.message);
+    }
+
+    @Post('get-messages')
+    @ApiOperation({summary: 'Get messages by location occupation id'})
+    @ApiCreatedResponse({description: 'Messages'})
+    @ApiBadRequestResponse({description: 'Request body is not valid'})
+    async getMessagesByLocationOccupationId(@Headers('authorization') token: string, @Body() body: LocationAvailability) {
+        await this.tokenValidation.validateToken(token);
+        return this.locationService.getMessagesByLocationOccupationId(body.location_id);
     }
 
     @Put(':id')

@@ -17,20 +17,15 @@ export interface Location {
     is_occupy_by?: string;
 }
 
-export interface LocationUser {
-    location_id: number;
-    user_id: number;
-}
-
-export interface LocationNotation {
-    location_id: number;
-    user_id: number;
-    notation: number;
-}
-
 export interface LocationAvailability {
     location_id: number;
-    from_datetime: string;
-    to_datetime: string;
+    from_datetime?: string;
+    to_datetime?: string;
+    notation?: number;
+}
+
+export interface LocationMessage {
+    location_occupation_id: number;
+    message: string;
 }
 

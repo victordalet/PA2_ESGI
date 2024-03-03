@@ -1,4 +1,4 @@
-import {Location} from "../../core/location";
+import {Location, LocationAvailability} from "../../core/location";
 import {LocationRepository} from "./location.repository";
 
 export class LocationService {
@@ -23,5 +23,33 @@ export class LocationService {
 
     async deleteLocation(id: number) {
         return await this.LocationRepository.deleteLocation(id);
+    }
+
+    async locationIsOccupied(body: LocationAvailability) {
+        return await this.LocationRepository.locationIsOccupied(body.location_id, body.from_datetime, body.to_datetime);
+    }
+
+    async addLocationOccupation(body: LocationAvailability, token: string) {
+        return await this.LocationRepository.addLocationOccupation(body.location_id, token, body.from_datetime, body.to_datetime);
+    }
+
+    async locationIsOccupiedByUser(locationId: number, token: string) {
+        return {is_occupied: await this.LocationRepository.locationIsOccupiedByUser(locationId, token)};
+    }
+
+    async addLocationNotation(locationId: number, notation: number) {
+        return await this.LocationRepository.addNotationLocation(locationId, notation);
+    }
+
+    async getNotationLocation(locationId: number) {
+        return await this.LocationRepository.getNotationLocation(locationId);
+    }
+
+    async getMessagesByLocationOccupationId(locationOccupationId: number) {
+        return await this.LocationRepository.getMessagesByLocationOccupationId(locationOccupationId);
+    }
+
+    async addMessageByLocationOccupationId(locationOccupationId: number, message: string) {
+        return await this.LocationRepository.addMessageToLocationOccupation(locationOccupationId, message);
     }
 }

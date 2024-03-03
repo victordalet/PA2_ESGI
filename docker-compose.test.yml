@@ -30,3 +30,10 @@ services:
       - "3001:3001"
     environment:
       API_HOST: api
+
+  front-client:
+    build: front-client/
+    ports:
+      - "3003:3000"
+    environment:
+      API_HOST: "3001"
