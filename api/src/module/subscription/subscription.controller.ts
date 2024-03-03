@@ -33,6 +33,15 @@ export class SubscriptionController {
         return this.subscriptionService.createSubscription(body);
     }
 
+    @Post('subscribe')
+    @ApiOperation({summary: 'Subscribe user'})
+    @ApiCreatedResponse({description: 'User subscribed'})
+    @ApiBadRequestResponse({description: 'Request body is not valid'})
+    async subscribeUser(@Headers('authorization') token: string, @Body() body: BodySubscription) {
+        await this.tokenValidation.validateToken(token);
+        return this.subscriptionService.subscribeUserByToken(token, body);
+    }
+
     @Put(':id')
     @ApiOperation({summary: 'Update subscription'})
     @ApiOkResponse({description: 'Subscription updated'})
@@ -42,13 +51,22 @@ export class SubscriptionController {
         return this.subscriptionService.updateSubscription(id, body);
     }
 
-    @Delete(':id')
+    @Delete('/by_id/:id')
     @ApiOperation({summary: 'Delete subscription'})
     @ApiOkResponse({description: 'Subscription deleted'})
     @ApiBadRequestResponse({description: 'Request param is not valid'})
     async deleteSubscription(@Headers('authorization') token: string, @Param('id') id: number) {
         await this.tokenValidation.validateAdminToken(token);
         return this.subscriptionService.deleteSubscription(id);
+    }
+
+    @Delete('unsubscribe')
+    @ApiOperation({summary: 'Unsubscribe user'})
+    @ApiOkResponse({description: 'User unsubscribed'})
+    @ApiBadRequestResponse({description: 'Request body is not valid'})
+    async unsubscribeUser(@Headers('authorization') token: string) {
+        await this.tokenValidation.validateToken(token);
+        return this.subscriptionService.unsubscribeUserByToken(token);
     }
 
     @Get(':email')

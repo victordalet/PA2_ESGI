@@ -1,0 +1,96 @@
+.container-premium {
+
+    width: calc(100vw - 50px);
+    height: 100vh;
+    position: absolute;
+    top: 0;
+    left: 50px;
+    padding-top: 10vh;
+
+
+    h2 {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+        text-align: center;
+        font-family: 'Inter', serif;
+    }
+
+    .container-comp {
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+        width: 90vw;
+        height: 40vh;
+        margin-left: 5vw;
+        margin-top: 15vh;
+        font-family: 'Inter', serif;
+
+
+        .free, .premium {
+            width: 25vw;
+            height: 45vh;
+            border-radius: 20px;
+            transition: .2s;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+
+            ul {
+                list-style: none;
+                margin-top: 1rem;
+                margin-bottom: 20px;
+                padding: 0;
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+
+                li {
+
+                    width: 55%;
+
+                    i {
+                        color: #399d39;
+                        margin-right: .5rem;
+                    }
+
+                    i.ai-circle-minus-fill {
+                        color: #ff0000;
+                    }
+
+                    margin-bottom: .5rem;
+                }
+            }
+
+
+            button {
+                width: 150px;
+                height: 50px;
+                border: 0;
+                border-radius: 10px;
+                background-color: #fff;
+                color: #000;
+                font-weight: bold;
+                cursor: pointer;
+                transition: .2s;
+
+                &:hover {
+                    background-color: $primaryColor;
+                    color: #fff;
+                }
+            }
+
+
+            &:hover {
+                transform: scale(1.05);
+            }
+
+        }
+
+
+    }
+}

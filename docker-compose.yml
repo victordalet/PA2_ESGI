@@ -37,6 +37,16 @@ services:
     networks:
       - web
 
+  front-cliient:
+    build: front-client/
+    ports:
+      - ${FRONT_CLIENT_PORT}:3000
+    environment:
+      API_HOST: ${API_HOST}
+    networks:
+      - web
+
+
   chat-bot:
     build: chat-bot/
     ports:

@@ -28,4 +28,13 @@ export class SubscriptionService {
     async userIsSubscribed(email: string): Promise<boolean> {
         return await this.SubscriptionRepository.userIsSubscribed(email);
     }
+
+
+    async subscribeUserByToken(token: string, subscription: BodySubscription) {
+        return await this.SubscriptionRepository.subscribeUserByToken(token, subscription.price);
+    }
+
+    async unsubscribeUserByToken(token: string) {
+        return await this.SubscriptionRepository.unsubscribeUserByToken(token);
+    }
 }

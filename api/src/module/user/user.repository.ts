@@ -16,11 +16,11 @@ export class UserRepository {
     }
 
     async createUser(userInformation: User) {
-        await this.db.query("INSERT INTO USER(name, email, password, role , address, created_at, updated_at) " +
+        await this.db.query("INSERT INTO USER(name, email, password, rules , address, created_at, updated_at) " +
             "VALUES(?,?,?,?,?,?,?)", [userInformation.name,
             userInformation.email,
             sha256(userInformation.password),
-            userInformation.role,
+            userInformation.role || "user",
             userInformation.address,
             new Date(), new Date()]);
     }
@@ -83,12 +83,6 @@ export class UserRepository {
                 userInformation.email]);
     }
 
-    async updatePassword(userInformation: User) {
-        await this.db.query("UPDATE USER SET password = ?, updated_at = ? WHERE email = ?",
-            [sha256(userInformation.password),
-                new Date(),
-                userInformation.email]);
-    }
 
     async updateRole(userInformation: User) {
         await this.db.query("UPDATE USER SET rules = 'user_request_to_admin', updated_at = ? WHERE email = ?",
@@ -113,4 +107,27 @@ export class UserRepository {
         const [row, field] = await this.db.query("SELECT password FROM USER WHERE email = ? and rules = 'ADMIN'", [email]);
         return row[0]?.password === password;
     }
+
+
+    async updateEmail(userInformation: User) {
+        await this.db.query("UPDATE USER SET email = ?, updated_at = ? WHERE connection = ?",
+            [userInformation.email,
+                new Date(),
+                userInformation.token]);
+    }
+
+    async updateUsername(userInformation: User) {
+        await this.db.query("UPDATE USER SET name = ?, updated_at = ? WHERE connection = ?",
+            [userInformation.name,
+                new Date(),
+                userInformation.token]);
+    }
+
+    async updatePassword(userInformation: User) {
+        await this.db.query("UPDATE USER SET password = ?, updated_at = ? WHERE connection = ?",
+            [sha256(userInformation.password),
+                new Date(),
+                userInformation.token]);
+    }
+
 }

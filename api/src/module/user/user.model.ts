@@ -11,11 +11,11 @@ export class GetEmailUser {
 export class UserBody {
     @ApiProperty({example: 'test@gmail.com', description: 'email of user'})
     @IsString()
-    email: string;
+    email?: string;
 
     @ApiProperty({example: 'password', description: 'password_of_user'})
     @IsString()
-    password: string;
+    password?: string;
 
     @ApiProperty({example: 'test', description: 'name of user'})
     @IsString()

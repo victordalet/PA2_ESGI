@@ -1,0 +1,43 @@
+.container-home-page {
+
+    width: 100vw;
+    min-height: 100vh;
+    position: absolute;
+    top: 0;
+    left: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: end;
+    flex-direction: column;
+    padding-top: 50px;
+    padding-bottom: 100px;
+
+    h1 {
+        font-size: 3em;
+        align-self: center;
+        font-weight: bold;
+        font-family: 'Inter', serif;
+        transition: .7s;
+        transform: translateY(-500px);
+    }
+
+    h3 {
+        font-size: 1.2em;
+        font-weight: bold;
+        align-self: start;
+        margin-left: 10%;
+        font-family: 'Inter', serif;
+    }
+
+
+    .container-last-location, .container-last-services {
+        width: 90vw;
+        height: 30vh;
+        overflow: hidden;
+        font-family: 'Inter', serif;
+        margin-top: 20px;
+        display: flex;
+        justify-content: start;
+    }
+
+}

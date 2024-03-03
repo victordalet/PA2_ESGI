@@ -22,7 +22,7 @@ export default class Connection extends PureComponent<ViewProps> {
                             } className={"filed"} type="text" placeholder="Username"/>
                             <input onChange={
                                 onInputChange('password')
-                            } className={"filed"} type="text" placeholder="Password"/>
+                            } className={"filed"} type="password" placeholder="Password"/>
                         </form>
 
 

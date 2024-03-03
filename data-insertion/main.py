@@ -6,23 +6,29 @@ import datetime
 
 class Main:
     db: mysql.connector.connection.MySQLConnection
+    prenoms: str
 
     def __init__(self):
+        self.prenoms = prenoms.get_prenom()
         self.db = mysql.connector.connect(
             host=sys.argv[1],
             user=sys.argv[2],
             password=sys.argv[3],
             database=sys.argv[4]
         )
-        self.run()
+        for i in range(int(sys.argv[5])):
+            self.run()
 
     def run(self):
         self.insert_user()
+        self.insert_location()
+        self.insert_service()
+        self.db.commit()
         self.db.close()
 
     def insert_user(self):
         cursor = self.db.cursor()
-        email = prenoms.get_prenom() + '@gmail.com'
+        email = self.prenoms + '@gmail.com'
         date = datetime.datetime.now()
         date = date - datetime.timedelta(days=1)
         date.strftime("%Y-%m-%d %H:%M:%S")
@@ -39,10 +45,39 @@ class Main:
             "updated_at,"
             "address) "
             "VALUES (%s,%s,%s,%s,%s,%s,%s)",
-            (email, password, prenoms.get_prenom(),
+            (email, password, self.prenoms,
              'user', date, date, 'Paris'))
-        self.db.commit()
+
+    def insert_location(self):
+        cursor = self.db.cursor()
+        cursor.execute(
+            "INSERT INTO location "
+            "(created_at,updated_at,"
+            "created_by,name,description,"
+            "price,picture,address,"
+            "latitude,longitude,capacity,type) "
+            "VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
+            (
+                datetime.datetime.now(),
+                datetime.datetime.now(),
+                self.prenoms + '@gmail.com',
+                'test', 'test', 100,
+                'test', 'Paris', 0,
+                0, 2, "MAISON"))
+
+    def insert_service(self):
+        cursor = self.db.cursor()
+        cursor.execute(
+            "INSERT INTO service "
+            "(created_at , updated_at, "
+            "created_by, name,"
+            "description, price, duration) "
+            "VALUES (%s,%s,%s,%s,%s,%s,%s)",
+            (datetime.datetime.now(),
+             datetime.datetime.now(),
+             self.prenoms + '@gmail.com',
+             'test', 'test', 100, 100))
 
 
 if __name__ == "__main__":
-    main = Main()
+    Main()

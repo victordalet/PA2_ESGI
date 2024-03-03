@@ -31,6 +31,12 @@ services:
     environment:
       API_HOST: api
 
+  front-client:
+    build: front-client/
+    ports:
+      - "3003:3000"
+    environment:
+      API_HOST: "3001"
 
   chat-bot:
     build: chat-bot/

@@ -34,7 +34,19 @@ create table location_occupation
     id            int primary key auto_increment,
     from_datetime datetime not null,
     to_datetime   datetime not null,
-    location_id   int      not null references location (id)
+    location_id   int      not null references location (id),
+    user_email    varchar(100) not null references USER (email),
+    deleted_at    datetime,
+    notation      int
+);
+
+create table location_message(
+    id        int primary key auto_increment,
+    created_at datetime     not null,
+    updated_at datetime     not null,
+    deleted_at datetime,
+    location_occupation_id int not null references location_occupation (id),
+    message    varchar(220) not null
 );
 
 create table service_provider

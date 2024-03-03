@@ -15,22 +15,19 @@ export interface Location {
     price: number;
     type: string;
     is_occupy_by?: string;
-}
-
-export interface LocationUser {
-    location_id: number;
-    user_id: number;
-}
-
-export interface LocationNotation {
-    location_id: number;
-    user_id: number;
-    notation: number;
+    location_occupation_id?: number;
 }
 
 export interface LocationAvailability {
     location_id: number;
-    from_datetime: string;
-    to_datetime: string;
+    from_datetime?: string;
+    to_datetime?: string;
+    notation?: number;
+    location_occupation_id?: number;
+}
+
+export interface LocationMessage {
+    location_occupation_id: number;
+    message: string;
 }
 

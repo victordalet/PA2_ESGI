@@ -61,7 +61,16 @@ export class UserController {
     @ApiOperation({summary: 'Check if user is admin'})
     @ApiOkResponse({description: 'user'})
     async isAdmin(@Headers('authorization') token: string) {
+        await this.tokenValidation.validateAdminToken(token);
         return await this.userService.isAdmin(token);
+    }
+
+    @Post('isUser')
+    @ApiOperation({summary: 'Check if user is user'})
+    @ApiOkResponse({description: 'user'})
+    async isUser(@Headers('authorization') token: string) {
+        await this.tokenValidation.validateToken(token);
+        return await this.userService.isUser(token);
     }
 
     @Post()
@@ -95,11 +104,28 @@ export class UserController {
         return await this.userService.deleteConnection(params.email);
     }
 
+    @Patch('email')
+    @ApiOperation({summary: 'Update email'})
+    @ApiOkResponse({description: 'user'})
+    async updateEmail(@Headers('authorization') token: string, @Body() body: UserBody) {
+        await this.tokenValidation.validateToken(token);
+        return await this.userService.updateEmail(body, token);
+    }
+
+    @Patch('username')
+    @ApiOperation({summary: 'Update username'})
+    @ApiOkResponse({description: 'user'})
+    async updateUsername(@Headers('authorization') token: string, @Body() body: UserBody) {
+        await this.tokenValidation.validateToken(token);
+        return await this.userService.updateUsername(body, token);
+    }
+
     @Patch('password')
     @ApiOperation({summary: 'Update password'})
     @ApiOkResponse({description: 'user'})
     async updatePassword(@Headers('authorization') token: string, @Body() body: UserBody) {
-        return await this.userService.UpdatePassword(body);
+        await this.tokenValidation.validateToken(token);
+        return await this.userService.updatePassword(body, token);
     }
 
     @Patch('role')
