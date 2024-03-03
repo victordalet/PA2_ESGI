@@ -37,6 +37,7 @@ services:
       - "3003:3000"
     environment:
       API_HOST: "3001"
+      CHAT_BOT_HOST: "5000"
 
   chat-bot:
     build: chat-bot/

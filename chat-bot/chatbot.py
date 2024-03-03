@@ -47,13 +47,10 @@ class ChatBot:
     def predict_class(self, sentence):
         bow = self.bag_of_words(sentence)
         res = self.model.predict(np.array([bow]))[0]
-        print(res)
         results = [[i, r]
                    for i, r in enumerate(res)
                    if r > self.ERROR_THRESHOLD]
-        print(results)
         results.sort(key=lambda x: x[1], reverse=True)
-        print(results)
         return_list = []
         for r in results:
             return_list.append({'intent': self.classes[r[0]],
@@ -64,9 +61,6 @@ class ChatBot:
         intents_json = self.intents
         tag = intents_list[0]['intent']
         list_of_intents = intents_json['intents']
-        print(list_of_intents)
-        print(tag)
-        print(intents_list)
         for i in list_of_intents:
             if i['tag'] == tag:
                 result = random.choice(i['responses'])

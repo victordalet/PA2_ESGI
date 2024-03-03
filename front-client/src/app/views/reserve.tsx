@@ -2,6 +2,7 @@ import {Navbar} from "../../components/navbar";
 import React from "react";
 import {ViewProps} from "../@types/reserve";
 import {PopupError} from "../../components/popup";
+import {ChatBot} from "../../components/chatBot";
 
 export class ReserveView extends React.Component <ViewProps> {
 
@@ -24,6 +25,7 @@ export class ReserveView extends React.Component <ViewProps> {
         return (
             <div>
                 <Navbar/>
+                <ChatBot/>
                 <PopupError text={"Bad date"}/>
                 <PopupError text={"Note have been saved"}/>
                 <div className={"container-location-reservation"}>

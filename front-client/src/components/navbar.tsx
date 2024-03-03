@@ -1,5 +1,4 @@
 import React from "react";
-import {haveToken} from "../security/token";
 
 
 export interface NavigationItem {
