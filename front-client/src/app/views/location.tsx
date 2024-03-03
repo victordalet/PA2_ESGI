@@ -2,6 +2,8 @@ import {LocationResponse, ViewProps} from "../@types/location";
 import React from "react";
 import {Navbar} from "../../components/navbar";
 import {Card} from "../../components/card";
+import {ChatBot} from "../../components/chatBot";
+import {Language} from "../../components/language";
 
 export default class LocationView extends React.Component <ViewProps> {
     render() {
@@ -19,6 +21,8 @@ export default class LocationView extends React.Component <ViewProps> {
         return (
             <div>
                 <Navbar/>
+                <ChatBot/>
+                <Language/>
                 <div className="container-location">
                     <h2>Locations</h2>
                     <div className="container-filter">

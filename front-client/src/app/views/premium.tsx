@@ -2,6 +2,8 @@ import React from "react";
 import {Navbar} from "../../components/navbar";
 import {PopupError} from "../../components/popup";
 import {ViewProps} from "../@types/premium";
+import {ChatBot} from "../../components/chatBot";
+import {Language} from "../../components/language";
 
 export class PremiumView extends React.Component <ViewProps> {
     render() {
@@ -11,6 +13,8 @@ export class PremiumView extends React.Component <ViewProps> {
         return (
             <div>
                 <Navbar/>
+                <ChatBot/>
+                <Language/>
                 <PopupError text={"Action successful"}/>
                 <div className="container-premium">
                     <h2>PREMIUM OFFER</h2>

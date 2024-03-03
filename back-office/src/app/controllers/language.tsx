@@ -16,19 +16,27 @@ export default class LanguageControllers extends Component<
     }
 
     postFile = async () => {
-        const element = document.querySelector<HTMLInputElement>("#file");
-        const file = element?.files?.[0];
+        const apiPath = process.env.API_HOST || 'http://localhost:3001';
+        const language = document.querySelector<HTMLInputElement>('#language')?.value;
+        const word = document.querySelector<HTMLInputElement>('#word')?.value;
+        const translation = document.querySelector<HTMLInputElement>('#translation')?.value;
 
-        const formData = new FormData();
-        formData.append('file', file as string | Blob);
-        const apiPath: string = process.env.API_HOST || 'http://localhost:3001';
-        const response = await fetch(apiPath + '/language/' + file?.name, {
+        await fetch(apiPath + '/language', {
             method: 'POST',
-            body: formData
+            headers: {
+                'Content-Type': 'application/json',
+                'authorization': localStorage.getItem('token') || ''
+            },
+            body: JSON.stringify({
+                language: language,
+                words: word,
+                translation: translation
+            })
         });
-        const data = await response.json();
-        console.log(data);
-    }
+        document.querySelector<HTMLInputElement>('#language')!.value = '';
+        document.querySelector<HTMLInputElement>('#word')!.value = '';
+        document.querySelector<HTMLInputElement>('#translation')!.value = '';
+    };
 
 
     render() {

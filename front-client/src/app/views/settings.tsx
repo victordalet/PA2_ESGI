@@ -2,6 +2,8 @@ import React from "react";
 import {Navbar} from "../../components/navbar";
 import {PopupError} from "../../components/popup";
 import {ViewProps} from "../@types/settings";
+import {ChatBot} from "../../components/chatBot";
+import {Language} from "../../components/language";
 
 export class SettingsView extends React.Component <ViewProps> {
     render() {
@@ -11,6 +13,8 @@ export class SettingsView extends React.Component <ViewProps> {
         return (
             <div>
                 <Navbar/>
+                <ChatBot/>
+                <Language/>
                 <PopupError text={"Passwords do not match"}/>
                 <PopupError text={"Change Successful"}/>
                 <div className={"container-settings"}>

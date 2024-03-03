@@ -4,6 +4,8 @@ import {ViewProps} from '../@types/Home';
 import {Navbar} from "../../components/navbar";
 import {Card} from "../../components/card";
 import {Coordinate, MapComponents} from "../../components/map";
+import {ChatBot} from "../../components/chatBot";
+import {Language} from "../../components/language";
 
 
 export default class HomeView extends React.Component <ViewProps> {
@@ -19,6 +21,8 @@ export default class HomeView extends React.Component <ViewProps> {
         return (
             <div className="home-page">
                 <Navbar/>
+                <ChatBot/>
+                <Language/>
                 <div className={"container-home-page"}>
                     <h1>Welcome to Paris Caretaker Services</h1>
                     <h3>Last Location : </h3>
