@@ -30,7 +30,7 @@ export class LocationController {
     @ApiCreatedResponse({description: 'Location created'})
     @ApiBadRequestResponse({description: 'Request body is not valid'})
     async createLocation(@Headers('authorization') token: string, @Body() body: LocationModel) {
-        await this.tokenValidation.validateAdminToken(token);
+        await this.tokenValidation.validateToken(token)
         return this.locationService.createLocation(body);
     }
 

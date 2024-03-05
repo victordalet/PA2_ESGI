@@ -27,19 +27,9 @@ export class Navbar extends React.Component {
             icon: "ai-network"
         },
         {
-            name: "Mes reservation",
+            name: "My rentals",
             url: "/resa",
             icon: "ai-cart"
-        },
-        {
-            name: "Premium",
-            url: "/premium",
-            icon: "ai-sparkles"
-        },
-        {
-            name: "Settings",
-            url: "/settings",
-            icon: "ai-gear"
         },
         {
             name: "Theme",
