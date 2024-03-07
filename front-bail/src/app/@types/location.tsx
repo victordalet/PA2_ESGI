@@ -4,6 +4,8 @@ export interface ViewProps {
     resetChoiceConcierge: (numberSelected: number) => void;
     allSelectedRadioContact: () => void;
     storeFormInJSON: () => void;
+    service: Service[];
+    activeStep2: () => void;
 }
 
 export interface ControllerProps {
@@ -11,6 +13,9 @@ export interface ControllerProps {
 }
 
 export interface ControllerState {
+    service: Service[];
+    serviceSelected: LocationService[];
+    price: number;
 }
 
 export interface FormLocation {
@@ -53,6 +58,11 @@ export interface Location {
     type: string;
     is_occupy_by?: string;
     location_occupation_id?: number;
+}
+
+export interface LocationService {
+    name: string;
+    price: number;
 }
 
 

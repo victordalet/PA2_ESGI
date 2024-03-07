@@ -22,7 +22,6 @@ export class ServiceController {
     @ApiOkResponse({description: 'List of services'})
     @ApiBadRequestResponse({description: 'Request param is not valid'})
     async getServices(@Headers('authorization') token: string) {
-        await this.tokenValidation.validateAdminToken(token);
         return this.serviceService.getServices();
     }
 

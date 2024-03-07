@@ -35,6 +35,18 @@ export default class LocationViewModel {
         };
     }
 
+    private calculatePrice = () => {
+        let price = 0;
+        const typeLocation = document.querySelector<HTMLSelectElement>('#rent')?.value;
+        const numberRoom = parseInt(document.querySelector<HTMLSelectElement>('#room')?.value || '0') || 0;
+        if (typeLocation === 'house') {
+            price = 100 * numberRoom;
+        } else if (typeLocation === 'flat') {
+            price = 50 * numberRoom;
+        }
+        return price;
+    };
+
     public resetChoiceConcierge(numberSelected: number) {
         Array.from(Array(4).keys()).map((i) => {
             if (i !== numberSelected) {
@@ -55,5 +67,18 @@ export default class LocationViewModel {
             }
         });
     }
+
+    public activeStep2 = () => {
+        const price = this.calculatePrice();
+        const div = document.querySelector<HTMLElement>(".container-price-and-creation");
+        const inputPrice = document.querySelector<HTMLInputElement>("#price");
+        if (div) {
+            div.style.display = "flex";
+        }
+        if (inputPrice) {
+            inputPrice.value = price.toString();
+        }
+
+    };
 
 }

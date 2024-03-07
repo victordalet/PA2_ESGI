@@ -2,11 +2,18 @@ import React from "react";
 import {Navbar} from "../../components/navbar";
 import {Language} from "../../components/language";
 import {ViewProps} from "../@types/location";
+import {Card} from "../../components/card";
 
 export default class LocationView extends React.Component <ViewProps> {
     render() {
 
-        const {resetChoiceConcierge, allSelectedRadioContact, storeFormInJSON} = this.props;
+        const {
+            resetChoiceConcierge,
+            allSelectedRadioContact,
+            storeFormInJSON,
+            service,
+            activeStep2
+        } = this.props;
 
         return (
             <div className="location-page">
@@ -135,7 +142,7 @@ export default class LocationView extends React.Component <ViewProps> {
                                 </div>
                             </div>
 
-                            <input type={"button"} onClick={allSelectedRadioContact} value={"Tout SÉLECTIONNER"}/>
+                            <button id={"all"} onClick={allSelectedRadioContact}>ALL</button>
                         </div>
                         <div className={"captcha"}></div>
                         <div className={"step"}>
@@ -147,12 +154,33 @@ export default class LocationView extends React.Component <ViewProps> {
                         </div>
 
                         <div className={"step"}>
-                            <button onClick={storeFormInJSON} className={"submit"}>Recevoir mon étude de rentabilité
+                            <button onClick={activeStep2} className={"submit"}>Recevoir mon étude de rentabilité
                             </button>
                         </div>
 
                     </div>
 
+                </div>
+                <div className={"container-price-and-creation"}>
+                    <div className={"container-price"}>
+                        <h2>Estimated price : </h2>
+                        <input type={"number"} id={"price"} name={"price"} defaultValue={"0"}/>
+                    </div>
+                    <h2>Ajouter des services à ma locaition</h2>
+                    <div className={"service"}>
+                        {
+                            service.map((s) => {
+                                return <Card cardInfo={{
+                                    title: s.name,
+                                    description: s.description,
+                                    price: s.price,
+                                    location: s.duration.toString()
+                                }}/>;
+                            })
+
+                        }
+                    </div>
+                    <button onClick={storeFormInJSON} className={"submit"}>Créer ma location</button>
                 </div>
             </div>
         )

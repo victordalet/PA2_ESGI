@@ -21,7 +21,6 @@ export class LocationController {
     @ApiOkResponse({description: 'List of locations'})
     @ApiBadRequestResponse({description: 'Request param is not valid'})
     async getLocations(@Headers('authorization') token: string) {
-        await this.tokenValidation.validateAdminToken(token);
         return this.locationService.getLocations();
     }
 

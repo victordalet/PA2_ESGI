@@ -1,7 +1,7 @@
-import {sha256} from "js-sha256";
 import {Connection} from "mysql2/promise";
 import {DatabaseEntity} from "../../database/mysql.entity";
 import {User} from "../../core/user";
+import {sha512} from "js-sha512";
 
 export class UserRepository {
 
@@ -19,7 +19,7 @@ export class UserRepository {
         await this.db.query("INSERT INTO USER(name, email, password, rules , address, created_at, updated_at) " +
             "VALUES(?,?,?,?,?,?,?)", [userInformation.name,
             userInformation.email,
-            sha256(userInformation.password),
+            sha512(userInformation.password),
             userInformation.role || "user",
             userInformation.address,
             new Date(), new Date()]);
@@ -76,7 +76,7 @@ export class UserRepository {
     async updateUser(userInformation: User) {
         await this.db.query("UPDATE USER SET name = ?, password = ?, rules = ?, address = ?, updated_at = ? WHERE email = ?",
             [userInformation.name,
-                sha256(userInformation.password),
+                sha512(userInformation.password),
                 userInformation.role,
                 userInformation.address,
                 new Date(),
@@ -125,7 +125,7 @@ export class UserRepository {
 
     async updatePassword(userInformation: User) {
         await this.db.query("UPDATE USER SET password = ?, updated_at = ? WHERE connection = ?",
-            [sha256(userInformation.password),
+            [sha512(userInformation.password),
                 new Date(),
                 userInformation.token]);
     }

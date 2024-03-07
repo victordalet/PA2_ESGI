@@ -2,22 +2,40 @@ import React from "react";
 import {ControllerProps, ControllerState, FormLocation} from "../@types/location";
 import LocationView from "../views/location";
 import LocationViewModel from "../view-models/location";
+import {haveToken} from "../../security/token";
 
 export default class Controller extends React.Component<
     ControllerProps,
     ControllerState
 > {
-    state = {
+    state: ControllerState = {
         service: [],
-        location: [],
+        serviceSelected: [],
+        price: 0
     };
 
     private readonly locationViewModel: LocationViewModel;
 
     constructor(props: ControllerProps) {
         super(props);
+        haveToken();
         this.locationViewModel = new LocationViewModel();
+        this.fetchService();
     }
+
+
+    private fetchService = async () => {
+        const apiPath = process.env.API_HOST || 'http://localhost:3001';
+        const response = await fetch(`${apiPath}/service`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'authorization': localStorage.getItem('token') || ''
+            }
+        });
+        const data = await response.json();
+        this.setState({service: data});
+    };
 
 
     public createLocation = async () => {
@@ -48,6 +66,8 @@ export default class Controller extends React.Component<
     render() {
         return (
             <LocationView
+                service={this.state.service}
+                activeStep2={this.locationViewModel.activeStep2}
                 allSelectedRadioContact={this.locationViewModel.allSelectedRadioContact}
                 resetChoiceConcierge={this.locationViewModel.resetChoiceConcierge}
                 storeFormInJSON={this.createLocation}/>
