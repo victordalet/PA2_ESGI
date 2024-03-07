@@ -57,12 +57,20 @@ export class UserController {
         return await this.userService.createConnectionAdmin(body.email, body.password);
     }
 
+    @Post('isBail')
+    @ApiOperation({summary: 'Check if user is bail'})
+    @ApiOkResponse({description: 'user'})
+    async isBail(@Headers('authorization') token: string) {
+        await this.tokenValidation.validateBailToken(token);
+        return await this.userService.isBail();
+    }
+
     @Post('isAdmin')
     @ApiOperation({summary: 'Check if user is admin'})
     @ApiOkResponse({description: 'user'})
     async isAdmin(@Headers('authorization') token: string) {
         await this.tokenValidation.validateAdminToken(token);
-        return await this.userService.isAdmin(token);
+        return await this.userService.isAdmin();
     }
 
     @Post('isUser')
@@ -70,7 +78,7 @@ export class UserController {
     @ApiOkResponse({description: 'user'})
     async isUser(@Headers('authorization') token: string) {
         await this.tokenValidation.validateToken(token);
-        return await this.userService.isUser(token);
+        return await this.userService.isUser();
     }
 
     @Post()
@@ -78,6 +86,13 @@ export class UserController {
     @ApiOkResponse({description: 'user'})
     async createUser(@Body() body: UserBody) {
         return await this.userService.CreateUser(body);
+    }
+
+    @Post('request-bail')
+    @ApiOperation({summary: 'Request bail'})
+    @ApiOkResponse({description: 'user'})
+    async requestBail(@Headers('authorization') token: string) {
+        return await this.userService.requestBail(token);
     }
 
     @Put()

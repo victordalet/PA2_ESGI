@@ -5,7 +5,7 @@ export const haveToken = () => {
         document.location.href = '/login';
     } else {
         const apiPath = process.env.API_HOST || 'http://localhost:3001';
-        fetch(apiPath + '/user/isUser', {
+        fetch(apiPath + '/user/isBail', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

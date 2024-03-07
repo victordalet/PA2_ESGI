@@ -73,7 +73,7 @@ export class UserService {
 
     async UpdateRoleAdmin(userInformation: User) {
         const user = await this.GetUserByEmail(userInformation.email);
-        if (user.role !== "admin") {
+        if (user.rules !== "admin") {
             throw new Error("User is not admin");
         }
         await this.UserRepository.updateRoleAdmin(userInformation);
@@ -88,11 +88,15 @@ export class UserService {
 
     }
 
-    async isAdmin(token: string) {
+    async isAdmin() {
         return {connection: true};
     }
 
-    async isUser(token: string) {
+    async isUser() {
+        return {connection: true};
+    }
+
+    async isBail() {
         return {connection: true};
     }
 
@@ -116,6 +120,13 @@ export class UserService {
         }
 
 
+    }
+
+    async requestBail(token: string) {
+        const user = await this.UserRepository.getUserByToken(token);
+        if (user.rules !== ("user_request_to_bail" || "ADMIN")) {
+            await this.UserRepository.updateRole(user);
+        }
     }
 
 }

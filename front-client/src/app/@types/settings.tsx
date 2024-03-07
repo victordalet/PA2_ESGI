@@ -19,6 +19,6 @@ export interface ControllerState {
 export interface resultData {
     email: string;
     token: string;
-    role: string;
+    rules: string;
     name: string;
 }

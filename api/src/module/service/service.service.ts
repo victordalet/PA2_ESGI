@@ -24,4 +24,8 @@ export class ServiceService {
     async deleteService(id: number) {
         return this.serviceRepository.deleteService(id);
     }
+
+    async getServiceByEmail(token: string) {
+        return this.serviceRepository.getServiceByEmail(token);
+    }
 }

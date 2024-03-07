@@ -24,6 +24,15 @@ export class LocationController {
         return this.locationService.getLocations();
     }
 
+    @Post('location-by-email')
+    @ApiOperation({summary: 'Get location by id'})
+    @ApiCreatedResponse({description: 'Location'})
+    @ApiBadRequestResponse({description: 'Request body is not valid'})
+    async getLocationById(@Headers('authorization') token: string) {
+        await this.tokenValidation.validateToken(token);
+        return this.locationService.getLocationByEmail(token);
+    }
+
     @Post()
     @ApiOperation({summary: 'Create location'})
     @ApiCreatedResponse({description: 'Location created'})

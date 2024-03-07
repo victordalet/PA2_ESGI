@@ -28,7 +28,7 @@ export class Navbar extends React.Component {
         },
         {
             name: "My rentals",
-            url: "/resa",
+            url: "/resources",
             icon: "ai-cart"
         },
         {

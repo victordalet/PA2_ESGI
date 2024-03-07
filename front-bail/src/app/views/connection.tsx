@@ -14,6 +14,7 @@ export default class Connection extends PureComponent<ViewProps> {
         return (
             <div className={"login-page"}>
                 <PopupError text={"Connection failed"}/>
+                <PopupError text={"Your application to become a lessor has been sent"}/>
                 <Language/>
                 <div className={"container-log"}>
                     <div className={"log"}>
@@ -29,7 +30,6 @@ export default class Connection extends PureComponent<ViewProps> {
 
 
                         <button type="submit" onClick={testLogin} className={"submit"}>Log in</button>
-                        <a href={'sign-in'}>Sign in</a>
                     </div>
                 </div>
             </div>

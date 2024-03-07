@@ -26,6 +26,20 @@ export class LocationRepository {
         return locations;
     }
 
+    async getLocationByEmail(token: string): Promise<Location[]> {
+        const [rows3, filed3] = await this.db.query("SELECT email FROM USER WHERE connection = ?", [token]);
+        const [rows, filed] = await this.db.query("SELECT * FROM location WHERE created_by = ?", [rows3[0].email]);
+        const [rows2, filed2] = await this.db.query("SELECT id,user_email FROM location_by_user_client");
+        const locations: any[] = [];
+        if (rows instanceof Array) {
+            rows.forEach((row: any) => {
+                locations.push(row);
+                locations[locations.length - 1].is_occupy_by = (rows2 as any[]).filter((row2: any) => row2.location_id === row.id).map((row2: any) => row2.user_email);
+            });
+        }
+        return locations;
+    }
+
     async createLocation(location: Location) {
         return this.db.query("INSERT INTO location (name, description, address, latitude, longitude, capacity, price, type, created_at, updated_at,created_by,picture) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)",
             [location.name,

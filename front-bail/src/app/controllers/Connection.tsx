@@ -18,7 +18,7 @@ export default class ConnectionController extends Component<ControllerProps, Con
     private connectionViewModel = new ConnectionViewModel();
 
 
-    private testLogin = () => {
+    public testLogin = () => {
         const apiPath = process.env.API_HOST || 'http://localhost:3001';
         fetch(apiPath + '/user/connectionAdmin', {
             method: 'POST',
@@ -52,9 +52,9 @@ export default class ConnectionController extends Component<ControllerProps, Con
         });
     };
 
-
     render() {
         const {viewModel} = this.props;
-        return <View testLogin={this.testLogin} onInputChange={this.onInputChange}/>;
+        return <View testLogin={this.testLogin}
+                     onInputChange={this.onInputChange}/>;
     }
 }

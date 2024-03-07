@@ -25,6 +25,15 @@ export class ServiceController {
         return this.serviceService.getServices();
     }
 
+    @Post('service-by-email')
+    @ApiOperation({summary: 'Get service by id'})
+    @ApiCreatedResponse({description: 'Service'})
+    @ApiBadRequestResponse({description: 'Request body is not valid'})
+    async getServiceById(@Headers('authorization') token: string) {
+        await this.tokenValidation.validateToken(token);
+        return this.serviceService.getServiceByEmail(token);
+    }
+
     @Post()
     @ApiOperation({summary: 'Create service'})
     @ApiOkResponse({description: 'Service created'})
