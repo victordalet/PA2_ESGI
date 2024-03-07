@@ -23,8 +23,10 @@ class Main:
         self.insert_user()
         self.insert_location()
         self.insert_service()
+        self.translation()
         self.db.commit()
         self.db.close()
+        
 
     def insert_user(self):
         cursor = self.db.cursor()
@@ -77,6 +79,15 @@ class Main:
              datetime.datetime.now(),
              self.prenoms + '@gmail.com',
              'test', 'test', 100, 100))
+    
+    def translation(self):
+        fr = ["type de bien",
+              "type de location",
+              ""
+              ]
+        en = []
+
+
 
 
 if __name__ == "__main__":
