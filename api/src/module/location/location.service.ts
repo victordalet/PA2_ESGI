@@ -63,4 +63,8 @@ export class LocationService {
     async getLocationOccupationByUser(token: string) {
         return await this.LocationRepository.getLocationOccupationByUser(token);
     }
+
+    async getLocationByEmail(token: string) {
+        return await this.LocationRepository.getLocationByEmail(token);
+    }
 }

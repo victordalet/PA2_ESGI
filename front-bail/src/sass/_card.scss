@@ -1,0 +1,30 @@
+.card {
+    margin-left: 20px;
+    width: 300px;
+    height: 28vh;
+    background-color: $lightColor;
+    border-radius: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
+    cursor: pointer;
+    transition: .3s;
+    z-index: 2;
+    position: relative;
+
+    &:hover {
+        transform: scale(1.02);
+    }
+
+    span {
+        margin-left: 20px;
+    }
+
+    &.active {
+        background-color: $secondaryColor;
+        transform: scale(1.02);
+    }
+
+
+}

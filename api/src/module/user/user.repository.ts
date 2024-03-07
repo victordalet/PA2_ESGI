@@ -1,7 +1,7 @@
-import {sha256} from "js-sha256";
 import {Connection} from "mysql2/promise";
 import {DatabaseEntity} from "../../database/mysql.entity";
 import {User} from "../../core/user";
+import {sha512} from "js-sha512";
 
 export class UserRepository {
 
@@ -19,8 +19,8 @@ export class UserRepository {
         await this.db.query("INSERT INTO USER(name, email, password, rules , address, created_at, updated_at) " +
             "VALUES(?,?,?,?,?,?,?)", [userInformation.name,
             userInformation.email,
-            sha256(userInformation.password),
-            userInformation.role || "user",
+            sha512(userInformation.password),
+            userInformation.rules || "user",
             userInformation.address,
             new Date(), new Date()]);
     }
@@ -41,7 +41,7 @@ export class UserRepository {
                     email: row.email,
                     name: row.name,
                     password: row.password,
-                    role: row.rules,
+                    rules: row.rules,
                     address: row.address,
                     updated_at: row.updated_at,
                     created_at: row.created_at,
@@ -69,6 +69,11 @@ export class UserRepository {
         return row[0];
     }
 
+    async getUserByToken(token: string): Promise<User> {
+        const [row, field] = await this.db.query("SELECT * FROM USER WHERE connection = ?", [token]);
+        return row[0];
+    }
+
     async deleteUser(email: string) {
         await this.db.query("DELETE FROM USER WHERE email = ?", [email]);
     }
@@ -76,8 +81,8 @@ export class UserRepository {
     async updateUser(userInformation: User) {
         await this.db.query("UPDATE USER SET name = ?, password = ?, rules = ?, address = ?, updated_at = ? WHERE email = ?",
             [userInformation.name,
-                sha256(userInformation.password),
-                userInformation.role,
+                sha512(userInformation.password),
+                userInformation.rules,
                 userInformation.address,
                 new Date(),
                 userInformation.email]);
@@ -85,15 +90,13 @@ export class UserRepository {
 
 
     async updateRole(userInformation: User) {
-        await this.db.query("UPDATE USER SET rules = 'user_request_to_admin', updated_at = ? WHERE email = ?",
-            [userInformation.role,
-                new Date(),
-                userInformation.email]);
+        await this.db.query("UPDATE USER SET rules = 'user_request_to_bail', updated_at = ? WHERE email = ?",
+            [new Date(), userInformation.email]);
     }
 
     async updateRoleAdmin(userInformation: User) {
         await this.db.query("UPDATE USER SET rules = ?, updated_at = ? WHERE email = ?",
-            [userInformation.role,
+            [userInformation.rules,
                 new Date(),
                 userInformation.email]);
     }
@@ -125,9 +128,13 @@ export class UserRepository {
 
     async updatePassword(userInformation: User) {
         await this.db.query("UPDATE USER SET password = ?, updated_at = ? WHERE connection = ?",
-            [sha256(userInformation.password),
+            [sha512(userInformation.password),
                 new Date(),
                 userInformation.token]);
+    }
+
+    async requestBail(email: string) {
+
     }
 
 }

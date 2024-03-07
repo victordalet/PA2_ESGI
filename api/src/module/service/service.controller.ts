@@ -22,8 +22,16 @@ export class ServiceController {
     @ApiOkResponse({description: 'List of services'})
     @ApiBadRequestResponse({description: 'Request param is not valid'})
     async getServices(@Headers('authorization') token: string) {
-        await this.tokenValidation.validateAdminToken(token);
         return this.serviceService.getServices();
+    }
+
+    @Post('service-by-email')
+    @ApiOperation({summary: 'Get service by id'})
+    @ApiCreatedResponse({description: 'Service'})
+    @ApiBadRequestResponse({description: 'Request body is not valid'})
+    async getServiceById(@Headers('authorization') token: string) {
+        await this.tokenValidation.validateToken(token);
+        return this.serviceService.getServiceByEmail(token);
     }
 
     @Post()
@@ -31,7 +39,7 @@ export class ServiceController {
     @ApiOkResponse({description: 'Service created'})
     @ApiBadRequestResponse({description: 'Request body is not valid'})
     async createService(@Headers('authorization') token: string, @Body() body: ServiceModel) {
-        await this.tokenValidation.validateAdminToken(token);
+        await this.tokenValidation.validateToken(token);
         return this.serviceService.createService(body);
     }
 

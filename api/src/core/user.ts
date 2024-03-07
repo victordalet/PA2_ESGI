@@ -2,7 +2,7 @@ export interface User {
     email?: string;
     password?: string;
     name?: string;
-    role?: string;
+    rules?: string;
     created_at?: string;
     updated_at?: string;
     deleted_at?: string;

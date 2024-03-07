@@ -19,4 +19,8 @@ export class ServiceModel {
     @IsNumber()
     duration: number;
 
+    @ApiProperty({example: 'user_email', description: 'Service created by'})
+    @IsString()
+    created_by: string;
+
 }

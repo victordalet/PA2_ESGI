@@ -19,7 +19,7 @@ create table location
     deleted_at  datetime,
     created_by  varchar(100) not null references USER (email),
     name        varchar(100) not null,
-    description varchar(220) not null,
+    description longtext         not null,
     price       int          not null,
     picture     varchar(100) not null,
     address     varchar(100) not null,
@@ -125,7 +125,7 @@ create table service
     deleted_at  datetime,
     created_by  varchar(100) not null references USER (email),
     name        varchar(100) not null,
-    description varchar(220) not null,
+    description longtext not null,
     price       int          not null,
     duration    int          not null
 );

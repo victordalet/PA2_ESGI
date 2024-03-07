@@ -43,3 +43,11 @@ services:
     build: chat-bot/
     ports:
       - "5000:5000"
+
+  front-bail:
+    build: front-bail/
+    ports:
+      - "3004:3000"
+    environment:
+      API_HOST: "3001"
+      FRONT_CLIENT_PORT: "3003"

@@ -23,7 +23,7 @@ export class UserBody {
 
     @ApiProperty({example: 'admin', description: 'role of user'})
     @IsString()
-    role?: string;
+    rules?: string;
 
     @ApiProperty({example: '2021-11-02T15:00:00Z', description: 'created_at'})
     @IsString()

@@ -10,7 +10,7 @@ export interface ControllerProps {
 
 export interface resultData {
     email: string;
-    role: string;
+    rules: string;
     address: string;
     premium: string;
 }

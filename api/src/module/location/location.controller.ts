@@ -21,8 +21,16 @@ export class LocationController {
     @ApiOkResponse({description: 'List of locations'})
     @ApiBadRequestResponse({description: 'Request param is not valid'})
     async getLocations(@Headers('authorization') token: string) {
-        await this.tokenValidation.validateAdminToken(token);
         return this.locationService.getLocations();
+    }
+
+    @Post('location-by-email')
+    @ApiOperation({summary: 'Get location by id'})
+    @ApiCreatedResponse({description: 'Location'})
+    @ApiBadRequestResponse({description: 'Request body is not valid'})
+    async getLocationById(@Headers('authorization') token: string) {
+        await this.tokenValidation.validateToken(token);
+        return this.locationService.getLocationByEmail(token);
     }
 
     @Post()
@@ -30,7 +38,7 @@ export class LocationController {
     @ApiCreatedResponse({description: 'Location created'})
     @ApiBadRequestResponse({description: 'Request body is not valid'})
     async createLocation(@Headers('authorization') token: string, @Body() body: LocationModel) {
-        await this.tokenValidation.validateAdminToken(token);
+        await this.tokenValidation.validateToken(token)
         return this.locationService.createLocation(body);
     }
 
