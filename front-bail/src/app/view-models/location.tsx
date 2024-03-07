@@ -1,4 +1,4 @@
-import {FormLocation} from "../@types/location";
+import {FormLocation, LocationService} from "../@types/location";
 
 export default class LocationViewModel {
 
@@ -19,7 +19,7 @@ export default class LocationViewModel {
         });
 
 
-        return {
+        const data = {
             typeConcierge: typeConcierge,
             address: document.querySelector<HTMLInputElement>('#address')?.value || '',
             country: document.querySelector<HTMLSelectElement>('#country')?.value || '',
@@ -33,6 +33,28 @@ export default class LocationViewModel {
             time: time,
             service: []
         };
+
+        if (data.address === '' || data.country === '' || data.type === '' || data.typeLocation === '' || data.nameFounder === '' || data.email === '' || data.telephone === '') {
+            this.openPopupError();
+            return {
+                typeConcierge: '',
+                address: '',
+                country: '',
+                type: '',
+                typeLocation: '',
+                numberRoom: 0,
+                surface: 0,
+                nameFounder: '',
+                email: '',
+                telephone: '',
+                time: [],
+                service: []
+            };
+        }
+
+        return data;
+
+
     }
 
     private calculatePrice = () => {
@@ -69,6 +91,19 @@ export default class LocationViewModel {
     }
 
     public activeStep2 = () => {
+        if (document.querySelector<HTMLInputElement>('#name')?.value === '' ||
+            document.querySelector<HTMLInputElement>('#email')?.value === '' ||
+            document.querySelector<HTMLInputElement>('#phone')?.value === '' ||
+            document.querySelector<HTMLInputElement>('#address')?.value === '' ||
+            document.querySelector<HTMLSelectElement>('#country')?.value === '' ||
+            document.querySelector<HTMLSelectElement>('#type')?.value === '' ||
+            document.querySelector<HTMLSelectElement>('#rent')?.value === '' ||
+            document.querySelector<HTMLSelectElement>('#room')?.value === '' ||
+            document.querySelector<HTMLInputElement>('#price')?.value === ''
+        ) {
+            this.openPopupError();
+            return;
+        }
         const price = this.calculatePrice();
         const div = document.querySelector<HTMLElement>(".container-price-and-creation");
         const inputPrice = document.querySelector<HTMLInputElement>("#price");
@@ -79,6 +114,29 @@ export default class LocationViewModel {
             inputPrice.value = price.toString();
         }
 
+    };
+
+    public addServiceToForm = (service: LocationService, index: number) => {
+        const allPriceElement = document.querySelectorAll<HTMLInputElement>(".card");
+        const inputPrice = document.querySelector<HTMLInputElement>("#price");
+        const priceElement = allPriceElement[index];
+        if (priceElement && inputPrice) {
+            const price = parseInt(inputPrice.value);
+            if (priceElement.classList.contains("active")) {
+                priceElement.classList.remove("active");
+                inputPrice.value = (price - service.price).toString();
+            } else {
+                priceElement.classList.add("active");
+                inputPrice.value = (price + service.price).toString();
+            }
+        }
+    };
+
+    public openPopupError = () => {
+        const popup = document.querySelector<HTMLElement>(".pop-up");
+        if (popup) {
+            popup.style.transform = "translateX(0)";
+        }
     };
 
 }

@@ -6,6 +6,7 @@ export interface ViewProps {
     storeFormInJSON: () => void;
     service: Service[];
     activeStep2: () => void;
+    addServiceToForm: (service: LocationService, index: number) => void;
 }
 
 export interface ControllerProps {
@@ -30,10 +31,11 @@ export interface FormLocation {
     email: string;
     telephone: string;
     time: number[];
-    service?: Service[];
+    service?: LocationService[];
 }
 
 export interface Service {
+    id?: number;
     name: string;
     price: number;
     description: string;
@@ -61,6 +63,7 @@ export interface Location {
 }
 
 export interface LocationService {
+    id?: number;
     name: string;
     price: number;
 }

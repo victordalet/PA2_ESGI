@@ -2,6 +2,7 @@ import {Navbar} from "../../components/navbar";
 import {Language} from "../../components/language";
 import React from "react";
 import {ViewProps} from "../@types/service";
+import {PopupError} from "../../components/popup";
 
 export default class ServiceView extends React.Component <ViewProps> {
     render() {
@@ -12,6 +13,7 @@ export default class ServiceView extends React.Component <ViewProps> {
             <div>
                 <Navbar/>
                 <Language/>
+                <PopupError text={"All fields are required"}/>
                 <div className={"container-service"}>
                     <div className={"form"}>
                         <h2>Create new Service</h2>

@@ -1,6 +1,7 @@
 import React from "react";
 import ServiceView from "../views/service";
 import {ControllerProps, ControllerState, Service, ServiceForm} from "../@types/service";
+import ServiceViewModel from "../view-models/service";
 import {haveToken} from "../../security/token";
 
 export default class Controller extends React.Component<
@@ -9,9 +10,12 @@ export default class Controller extends React.Component<
 > {
 
 
+    private readonly ServiceViewModel: ServiceViewModel;
+
     constructor(props: ControllerProps) {
         super(props);
         haveToken();
+        this.ServiceViewModel = new ServiceViewModel();
     }
 
     public createService = async () => {
@@ -31,6 +35,11 @@ export default class Controller extends React.Component<
             cat: cat,
             duration: duration
         };
+        if (email === '' || title === '' || description === '' || price === '' || location === '' || cat === '' || duration === '') {
+            this.ServiceViewModel.openPopupError();
+            return;
+        }
+
         const dataToSend: Service = {
             name: title,
             price: parseInt(price),

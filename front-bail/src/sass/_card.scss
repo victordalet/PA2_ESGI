@@ -21,4 +21,10 @@
         margin-left: 20px;
     }
 
+    &.active {
+        background-color: $secondaryColor;
+        transform: scale(1.02);
+    }
+
+
 }

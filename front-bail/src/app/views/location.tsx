@@ -3,6 +3,7 @@ import {Navbar} from "../../components/navbar";
 import {Language} from "../../components/language";
 import {ViewProps} from "../@types/location";
 import {Card} from "../../components/card";
+import {PopupError} from "../../components/popup";
 
 export default class LocationView extends React.Component <ViewProps> {
     render() {
@@ -12,13 +13,15 @@ export default class LocationView extends React.Component <ViewProps> {
             allSelectedRadioContact,
             storeFormInJSON,
             service,
-            activeStep2
+            activeStep2,
+            addServiceToForm
         } = this.props;
 
         return (
             <div className="location-page">
                 <Navbar/>
                 <Language/>
+                <PopupError text={"All fields are required"}/>
                 <div className={"form"}>
                     <h1>Je fais une demande de simulation personnalisée</h1>
                     <div className={"step"}>
@@ -169,13 +172,21 @@ export default class LocationView extends React.Component <ViewProps> {
                     <h2>Ajouter des services à ma locaition</h2>
                     <div className={"service"}>
                         {
-                            service.map((s) => {
-                                return <Card cardInfo={{
-                                    title: s.name,
-                                    description: s.description,
-                                    price: s.price,
-                                    location: s.duration.toString()
-                                }}/>;
+                            service.map((s, i) => {
+                                return <Card
+                                    onclick={() => {
+                                        addServiceToForm({
+                                            name: s.name,
+                                            price: s.price,
+                                            id: s.id,
+                                        }, i);
+                                    }}
+                                    cardInfo={{
+                                        title: s.name,
+                                        description: '',
+                                        price: s.price,
+                                        location: s.duration.toString()
+                                    }}/>;
                             })
 
                         }
