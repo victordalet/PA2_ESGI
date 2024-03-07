@@ -35,7 +35,8 @@ export class ServiceRepository {
     }
 
     async createService(service: ServiceModel) {
-        return this.db.query("INSERT INTO service (name, created_at ,updated_at, description) VALUES (?, ?, ?, ?)", [service.name, new Date(), new Date(), service.description]);
+        return this.db.query("INSERT INTO service (name, created_at ,updated_at, description, price, duration, created_by) VALUES (?, ?, ?, ?, ?, ?, ?)",
+            [service.name, new Date(), new Date(), service.description, service.price, service.duration, service.created_by]);
     }
 
     async updateService(id: number, service: ServiceModel) {

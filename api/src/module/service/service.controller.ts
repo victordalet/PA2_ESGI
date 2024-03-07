@@ -31,7 +31,7 @@ export class ServiceController {
     @ApiOkResponse({description: 'Service created'})
     @ApiBadRequestResponse({description: 'Request body is not valid'})
     async createService(@Headers('authorization') token: string, @Body() body: ServiceModel) {
-        await this.tokenValidation.validateAdminToken(token);
+        await this.tokenValidation.validateToken(token);
         return this.serviceService.createService(body);
     }
 

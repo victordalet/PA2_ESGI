@@ -37,7 +37,7 @@ services:
     networks:
       - web
 
-  front-cliient:
+  front-client:
     build: front-client/
     ports:
       - ${FRONT_CLIENT_PORT}:3000

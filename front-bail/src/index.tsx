@@ -3,7 +3,7 @@ import {Provider} from 'mobx-react';
 import React from 'react';
 import {BrowserRouter, Routes, Route} from "react-router-dom";
 
-import {Connection, Home, Location} from './app/providers';
+import {Connection, Home, Location, Service} from './app/providers';
 import './sass/index.scss';
 import {isBot} from "./security/isBot";
 
@@ -20,6 +20,7 @@ root.render(
                 <Routes>
                     <Route path={"/login"} element={<Connection/>}></Route>
                     <Route path={"/location"} element={<Location/>}></Route>
+                    <Route path={"/service"} element={<Service/>}></Route>
                     <Route path={"*"} element={<Home/>}></Route>
                 </Routes>
             </BrowserRouter>
