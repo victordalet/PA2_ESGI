@@ -146,7 +146,8 @@ create table service_by_user
     created_at datetime     not null,
     updated_at datetime     not null,
     service_id int          not null references service (id),
-    user_email varchar(100) not null references USER (email)
+    user_email varchar(100) not null references USER (email),
+    location_occupation_id int not null references location_occupation (id),
 );
 
 create table service_by_location

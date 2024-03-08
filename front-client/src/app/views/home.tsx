@@ -37,7 +37,7 @@ export default class HomeView extends React.Component <ViewProps> {
                                             }}
                                             cardInfo={{
                                                 title: l.name,
-                                                description: l.description,
+                                                description: '',
                                                 price: l.price,
                                                 location: l.address
                                             }}></Card>
@@ -58,7 +58,7 @@ export default class HomeView extends React.Component <ViewProps> {
                                             }}
                                             cardInfo={{
                                                 title: s.name,
-                                                description: s.description,
+                                                description: '',
                                                 price: s.price
                                             }}></Card>
                                     );

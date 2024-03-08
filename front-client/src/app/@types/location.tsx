@@ -37,3 +37,26 @@ export interface LocationResponse {
     is_occupy_by?: string;
     location_occupation_id?: number;
 }
+
+export interface LocationDescription {
+    typeConcierge: string
+    address: string
+    country: string
+    type: string
+    typeLocation: string
+    numberRoom: number
+    surface: number
+    nameFounder: string
+    email: string
+    telephone: string
+    time: any[]
+    service: ServiceLocationDescription[]
+}
+
+export interface ServiceLocationDescription {
+    name: string
+    price: number
+    id: number
+}
+
+

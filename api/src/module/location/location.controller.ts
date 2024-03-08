@@ -128,7 +128,7 @@ export class LocationController {
     @ApiOkResponse({description: 'Location deleted'})
     @ApiBadRequestResponse({description: 'Request param is not valid'})
     async deleteLocation(@Headers('authorization') token: string, @Param('id') id: number) {
-        await this.tokenValidation.validateAdminToken(token);
+        await this.tokenValidation.validateBailToken(token);
         return this.locationService.deleteLocation(id);
     }
 

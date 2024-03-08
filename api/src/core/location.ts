@@ -31,3 +31,9 @@ export interface LocationMessage {
     message: string;
 }
 
+export interface LocationLiaison {
+    service_id: number;
+    location_id?: number;
+    location_occupation_id?: number;
+}
+

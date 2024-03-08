@@ -29,7 +29,7 @@ export class ResaView extends React.Component <ViewProps> {
                                         }}
                                         cardInfo={{
                                             title: location.name,
-                                            description: location.description,
+                                            description: '',
                                             price: location.price,
                                             location: location.address
                                         }}></Card>

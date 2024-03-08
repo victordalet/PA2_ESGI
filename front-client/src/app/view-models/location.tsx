@@ -16,7 +16,7 @@ export default class LocationViewModel {
 
     filterLocationByNameOrDescription(locations: LocationResponse[], text: string): LocationResponse[] {
         return locations.filter((l) => {
-            return l.name.includes(text) || l.description.includes(text);
+            return l.name.includes(text);
         });
     }
 

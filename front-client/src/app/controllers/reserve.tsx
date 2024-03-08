@@ -1,7 +1,7 @@
 import {ControllerProps, ControllerState} from "../@types/reserve";
 import React from "react";
 import {ReserveView} from "../views/reserve";
-import {LocationResponse} from "../@types/location";
+import {LocationDescription, LocationResponse} from "../@types/location";
 import {Navbar} from "../../components/navbar";
 import {ServiceResponse} from "../@types/service";
 import ReserveViewModel from "../view-models/reserve";
@@ -31,8 +31,12 @@ export default class Controller extends React.Component<
             this.idResa = parseInt(document.location.href.split('&id2=')[1]);
             this.isAlsoReserved();
         }
-        this.getStartNotation();
         this.fetchLocation();
+        this.getStartNotation();
+        this.fetchServiceOfLocation();
+        this.fetchServiceReserved();
+        this.fetchService();
+        this.isBail();
         this.reserveViewModel = new ReserveViewModel();
     }
 
@@ -40,26 +44,93 @@ export default class Controller extends React.Component<
     state: ControllerState = {
         data: {} as LocationResponse,
         services: [],
+        servicesGlobal: [],
         isReserved: false,
         notation: 0,
-        messages: []
+        messages: [],
+        isBail: undefined,
+        description: {} as LocationDescription,
+        servicesSelected: []
     };
 
 
-    private fetchLocation = () => {
+    private fetchService = async () => {
         const apiPath = process.env.API_HOST || 'http://localhost:3001';
-        fetch(apiPath + this.apiSubPath, {
+        const response = await fetch(apiPath + '/service', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
                 'authorization': localStorage.getItem('token') || ''
             }
-        }).then((res) => {
-            res.json().then((data) => {
-                this.setState({data: data.filter((location: ServiceResponse) => location.id === this.id)[0]});
-            });
         });
+        const data = await response.json();
+        this.setState({servicesGlobal: data});
     };
+
+    private fetchServiceOfLocation = async () => {
+        const apiPath = process.env.API_HOST || 'http://localhost:3001';
+        const response = await fetch(apiPath + '/service/get-service-by-location', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'authorization': localStorage.getItem('token') || ''
+            },
+            body: JSON.stringify({
+                location_id: this.id
+            })
+        });
+        const data = await response.json();
+        this.setState({services: data});
+        console.log(JSON.stringify(data));
+    };
+
+
+    public deleteLocation = async () => {
+        const apiPath = process.env.API_HOST || 'http://localhost:3001';
+        await fetch(apiPath + this.apiSubPath + '/' + this.id, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'authorization': localStorage.getItem('token') || ''
+            }
+        });
+        document.location.href = '/location';
+    };
+
+    private isBail = async () => {
+        const apiPath = process.env.API_HOST || 'http://localhost:3001';
+        const response = await fetch(apiPath + '/user/token-to-mail', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'authorization': localStorage.getItem('token') || ''
+            }
+        });
+        const data: { email: string } = await response.json();
+        if (data.email === this.state.data.created_by) {
+            this.setState({isBail: true});
+        } else {
+            this.setState({isBail: false});
+        }
+
+    };
+
+
+    private fetchLocation = async () => {
+        const apiPath = process.env.API_HOST || 'http://localhost:3001';
+        const response = await fetch(apiPath + this.apiSubPath, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'authorization': localStorage.getItem('token') || ''
+            }
+        });
+        const data = await response.json();
+        this.setState({data: data.filter((location: ServiceResponse) => location.id === this.id)[0]});
+        const description: LocationDescription = JSON.parse(data.filter((location: ServiceResponse) => location.id === this.id)[0].description);
+        this.setState({description: description});
+    };
+
 
     public addNotation = async (note: number) => {
         const API_PATH = process.env.API_HOST || 'http://localhost:3001';
@@ -142,7 +213,7 @@ export default class Controller extends React.Component<
                 this.reserveViewModel.openPopupBadDate();
             } else if (!await this.isOccupied(dateStart.value, dateEnd.value)) {
                 const apiPath = process.env.API_HOST || 'http://localhost:3001';
-                await fetch(apiPath + this.apiSubPath + '/occupation', {
+                const response = await fetch(apiPath + this.apiSubPath + '/occupation', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -154,11 +225,15 @@ export default class Controller extends React.Component<
                         to_datetime: dateEnd.value
                     })
                 });
+                const data = await response.json();
+                await this.reservedNewService(data.id);
                 document.location.href = '/resa';
             } else {
                 this.reserveViewModel.openPopupBadDate();
             }
 
+        } else {
+            this.reserveViewModel.openPopupBadDate();
         }
     };
 
@@ -234,13 +309,73 @@ export default class Controller extends React.Component<
         link.click();
     };
 
+    private reservedNewService = async (id_reservation: number) => {
+        const cardElement = document.querySelectorAll<HTMLDivElement>('.services-new .card');
+        console.log(cardElement);
+        if (cardElement.length === 0) {
+            return;
+        }
+        const listIdCard: number[] = [];
+        this.state.servicesGlobal.map((service, index) => {
+            if (!this.state.services.find((s) => s.id === service.id)) {
+                listIdCard.push(service.id);
+            }
+        });
+
+        await cardElement.forEach(async (card, index) => {
+            console.log('for');
+            if (card.classList.contains('active')) {
+                console.log('fetch');
+                const apiPath = process.env.API_HOST || 'http://localhost:3001';
+                await fetch(apiPath + '/service/service-by-user', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'authorization': localStorage.getItem('token') || ''
+                    },
+                    body: JSON.stringify({
+                        location_occupation_id: id_reservation,
+                        service_id: listIdCard[index]
+                    })
+                });
+            }
+        });
+
+    };
+
+    private fetchServiceReserved = async () => {
+        if (this.idResa === 0) {
+            return;
+        }
+        const apiPath = process.env.API_HOST || 'http://localhost:3001';
+        const response = await fetch(apiPath + '/service/get-service-by-user', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'authorization': localStorage.getItem('token') || ''
+            },
+            body: JSON.stringify({
+                location_id: this.id,
+                location_occupation_id: this.idResa
+            })
+        });
+        const data = await response.json();
+        this.setState({servicesSelected: data});
+    };
+
     render() {
 
-        if (this.state.data.name === undefined) {
+        if (this.state.isBail === undefined) {
             return <Navbar/>;
         }
 
         return <ReserveView
+            servicesSelected={this.state.servicesSelected}
+            addService={this.reserveViewModel.addService}
+            servicesGlobal={this.state.servicesGlobal}
+            description={this.state.description}
+            deleteLocation={this.deleteLocation}
+            isBail={this.state.isBail}
             downloadFacture={this.downloadFacture}
             deleteOccupation={this.deleteOccupation}
             messages={this.state.messages}

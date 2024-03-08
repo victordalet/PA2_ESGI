@@ -42,7 +42,7 @@ export default class LocationView extends React.Component <ViewProps> {
                                 return (
                                     <Card cardInfo={{
                                         title: location.name,
-                                        description: location.description,
+                                        description: '',
                                         price: location.price,
                                         location: location.address
                                     }} onclick={() => {

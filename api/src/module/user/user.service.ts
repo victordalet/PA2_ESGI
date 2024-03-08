@@ -2,7 +2,6 @@ import {StatsUser, User} from "../../core/user";
 import {sha512} from 'js-sha512';
 import {uid} from 'uid';
 import {UserRepository} from "./user.repository";
-import {TokenValidation} from "../../validation/token/token.validation";
 
 export class UserService {
 
@@ -119,7 +118,11 @@ export class UserService {
             nb_users_created_this_week: weekStats
         }
 
+    }
 
+    async getEmailByToken(token: string) {
+        const user = await this.UserRepository.getUserByToken(token);
+        return {email: user.email};
     }
 
     async requestBail(token: string) {

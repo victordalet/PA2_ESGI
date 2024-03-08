@@ -95,6 +95,14 @@ export class UserController {
         return await this.userService.requestBail(token);
     }
 
+    @Post('token-to-mail')
+    @ApiOperation({summary: 'Token to mail'})
+    @ApiOkResponse({description: 'user'})
+    async tokenToMail(@Headers('authorization') token: string) {
+        await this.tokenValidation.validateBailToken(token);
+        return await this.userService.getEmailByToken(token);
+    }
+
     @Put()
     @ApiOperation({summary: 'Update user'})
     @ApiOkResponse({description: 'user'})
@@ -156,6 +164,5 @@ export class UserController {
     async updateRoleAdmin(@Headers('authorization') token: string, @Body() body: UserBody) {
         return await this.userService.UpdateRoleAdmin(body);
     }
-
 
 }

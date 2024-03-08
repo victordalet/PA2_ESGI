@@ -30,7 +30,8 @@ export class LocationService {
     }
 
     async addLocationOccupation(body: LocationAvailability, token: string) {
-        return await this.LocationRepository.addLocationOccupation(body.location_id, token, body.from_datetime, body.to_datetime);
+        const response = await this.LocationRepository.addLocationOccupation(body.location_id, token, body.from_datetime, body.to_datetime);
+        return {id: response}
     }
 
     async locationIsOccupiedByUser(locationId: number, token: string) {

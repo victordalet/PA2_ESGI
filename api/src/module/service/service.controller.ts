@@ -3,7 +3,7 @@ import {ApiBadRequestResponse, ApiCreatedResponse, ApiOkResponse, ApiOperation, 
 import {ServiceService} from "./service.service";
 import {ServiceModel} from "./service.model";
 import {TokenValidation} from "../../validation/token/token.validation";
-import {LocationAvailability} from "../../core/location";
+import {LocationAvailability, LocationLiaison} from "../../core/location";
 
 @Controller('service')
 @ApiTags('Service')
@@ -34,6 +34,46 @@ export class ServiceController {
         return this.serviceService.getServiceByEmail(token);
     }
 
+    @Post('service-by-location')
+    @ApiOperation({summary: 'Post service by location'})
+    @ApiCreatedResponse({description: 'Service'})
+    @ApiBadRequestResponse({description: 'Request body is not valid'})
+    async postServiceByLocation(@Headers('authorization') token: string, @Body() body: LocationLiaison) {
+        await this.tokenValidation.validateBailToken(token);
+        return this.serviceService.postServiceByLocation(body);
+    }
+
+
+    @Post('service-by-user')
+    @ApiOperation({summary: 'Post service by user'})
+    @ApiCreatedResponse({description: 'Service'})
+    @ApiBadRequestResponse({description: 'Request body is not valid'})
+    async postServiceByUser(@Headers('authorization') token: string, @Body() body: LocationLiaison) {
+        await this.tokenValidation.validateToken(token);
+        return this.serviceService.postServiceByUser(token, body);
+    }
+
+
+    @Post('get-service-by-location')
+    @ApiOperation({summary: 'Post service by location'})
+    @ApiCreatedResponse({description: 'Service'})
+    @ApiBadRequestResponse({description: 'Request body is not valid'})
+    async getServiceByLocation(@Headers('authorization') token: string, @Body() body: LocationLiaison) {
+        await this.tokenValidation.validateBailToken(token);
+        return this.serviceService.getServiceByLocation(body);
+    }
+
+
+    @Post('get-service-by-user')
+    @ApiOperation({summary: 'Post service by user'})
+    @ApiCreatedResponse({description: 'Service'})
+    @ApiBadRequestResponse({description: 'Request body is not valid'})
+    async getServiceByUser(@Headers('authorization') token: string, @Body() body: LocationLiaison) {
+        await this.tokenValidation.validateToken(token);
+        return this.serviceService.getServiceByUser(body);
+    }
+
+
     @Post()
     @ApiOperation({summary: 'Create service'})
     @ApiOkResponse({description: 'Service created'})
@@ -60,7 +100,6 @@ export class ServiceController {
         await this.tokenValidation.validateAdminToken(token);
         return this.serviceService.deleteService(id);
     }
-
 
 
 }

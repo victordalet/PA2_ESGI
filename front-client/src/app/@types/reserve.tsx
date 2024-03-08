@@ -1,5 +1,6 @@
 import ReserveViewModel from "../view-models/reserve";
-import {LocationResponse} from "./location";
+import {LocationDescription, LocationResponse} from "./location";
+import {ServiceResponse} from "./service";
 
 export interface ViewProps {
     data: LocationResponse;
@@ -12,6 +13,12 @@ export interface ViewProps {
     addMessage: () => void;
     deleteOccupation: () => void;
     downloadFacture: () => void;
+    isBail?: boolean;
+    deleteLocation: () => void;
+    description: LocationDescription;
+    servicesGlobal: ServiceResponse[];
+    addService: (index: number, id: number) => void;
+    servicesSelected: ServiceResponse[];
 }
 
 export interface ControllerProps {
@@ -21,13 +28,13 @@ export interface ControllerProps {
 export interface ControllerState {
     data: LocationResponse;
     services: ServiceResponse[];
+    servicesGlobal: ServiceResponse[];
+    servicesSelected: ServiceResponse[];
     isReserved: boolean;
     notation: number;
     messages: MessageLocation[];
-}
-
-
-export interface ServiceResponse {
+    isBail?: boolean;
+    description: LocationDescription;
 }
 
 

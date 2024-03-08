@@ -90,7 +90,9 @@ export class LocationRepository {
 
     async addLocationOccupation(locationId: number, token: string, fromDatetime: string, toDatetime: string) {
         const [rows, filed] = await this.db.query("SELECT email FROM USER WHERE connection = ?", [token]);
-        return this.db.query("INSERT INTO location_occupation (from_datetime, to_datetime, location_id, user_email) VALUES (?, ?, ?, ?)", [fromDatetime, toDatetime, locationId, rows[0].email]);
+        await this.db.query("INSERT INTO location_occupation (from_datetime, to_datetime, location_id, user_email) VALUES (?, ?, ?, ?)", [fromDatetime, toDatetime, locationId, rows[0].email]);
+        const [rows2, filed2] = await this.db.query("SELECT LAST_INSERT_ID() as id FROM location_occupation");
+        return rows2[0].id;
     }
 
     async deleteLocationOccupation(locationId: number) {
