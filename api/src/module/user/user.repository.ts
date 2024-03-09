@@ -94,6 +94,11 @@ export class UserRepository {
             [new Date(), userInformation.email]);
     }
 
+    async updateRoleBail(email: string) {
+        await this.db.query("UPDATE USER SET rules = 'BAIL', updated_at = ? WHERE email = ?",
+            [new Date(), email]);
+    }
+
     async updateRoleAdmin(userInformation: User) {
         await this.db.query("UPDATE USER SET rules = ?, updated_at = ? WHERE email = ?",
             [userInformation.rules,

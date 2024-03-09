@@ -8,12 +8,14 @@ export default class Connection extends PureComponent<ViewProps> {
 
         const {
             testLogin,
-            onInputChange
+            onInputChange,
+            askBail
         } = this.props;
 
         return (
             <div className={"login-page"}>
                 <PopupError text={"Connection failed"}/>
+                <PopupError text={"All field are required"}/>
                 <PopupError text={"Your application to become a lessor has been sent"}/>
                 <Language/>
                 <div className={"container-log"}>
@@ -22,14 +24,15 @@ export default class Connection extends PureComponent<ViewProps> {
                         <form action="">
                             <input onChange={
                                 onInputChange('email')
-                            } className={"filed"} type="text" placeholder="Email"/>
+                            } className={"filed"} type="text" id={"email"} placeholder="Email"/>
                             <input onChange={
                                 onInputChange('password')
-                            } className={"filed"} type="password" placeholder="Password"/>
+                            } className={"filed"} type="password" id={"password"} placeholder="Password"/>
                         </form>
 
 
                         <button type="submit" onClick={testLogin} className={"submit"}>Log in</button>
+                        <button type={"submit"} onClick={askBail} className={"submit"}>Request access</button>
                     </div>
                 </div>
             </div>

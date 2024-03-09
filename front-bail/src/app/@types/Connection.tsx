@@ -4,6 +4,7 @@ import React from "react";
 export interface ViewProps {
     testLogin: () => void;
     onInputChange: (name: string) => (e: React.ChangeEvent<HTMLInputElement>) => void;
+    askBail: () => void;
 }
 
 export interface ControllerProps {

@@ -132,4 +132,13 @@ export class UserService {
         }
     }
 
+    async getRequestBail() {
+        const user = await this.UserRepository.getUser();
+        return user.filter(user => user.rules === "user_request_to_bail");
+    }
+
+    async acceptRequestBail(email: string) {
+        return await this.UserRepository.updateRoleBail(email);
+    }
+
 }

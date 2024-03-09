@@ -95,6 +95,22 @@ export class UserController {
         return await this.userService.requestBail(token);
     }
 
+    @Post('get-request-bail')
+    @ApiOperation({summary: 'Get request bail'})
+    @ApiOkResponse({description: 'user'})
+    async getRequestBail(@Headers('authorization') token: string) {
+        await this.tokenValidation.validateAdminToken(token);
+        return await this.userService.getRequestBail();
+    }
+
+    @Post('accept-request-bail')
+    @ApiOperation({summary: 'Accept request bail'})
+    @ApiOkResponse({description: 'user'})
+    async acceptRequestBail(@Headers('authorization') token: string, @Body() body: UserBody) {
+        await this.tokenValidation.validateAdminToken(token);
+        return await this.userService.acceptRequestBail(body.email);
+    }
+
     @Post('token-to-mail')
     @ApiOperation({summary: 'Token to mail'})
     @ApiOkResponse({description: 'user'})

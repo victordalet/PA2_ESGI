@@ -47,6 +47,11 @@ export class Navbar extends React.Component {
             icon: "ai-ticket"
         },
         {
+            name: 'New Bail',
+            url: '/accept',
+            icon: 'ai-plus'
+        },
+        {
             name: "Theme",
             url: "#",
             icon: "ai-flashlight"
