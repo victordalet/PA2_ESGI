@@ -21,7 +21,7 @@ export default class Controller extends React.Component<
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                "Authorization": localStorage.getItem('token') || ''
+                "authorization": localStorage.getItem('token') || ''
             },
             body: JSON.stringify({
                 price: price
@@ -36,7 +36,7 @@ export default class Controller extends React.Component<
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
-                "Authorization": localStorage.getItem('token') || ''
+                "authorization": localStorage.getItem('token') || ''
             }
         });
         this.premiumViewModel.openPopup();

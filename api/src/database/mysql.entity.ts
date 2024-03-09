@@ -11,6 +11,7 @@ export class DatabaseEntity {
 
     async getConnection() {
         this.db = await mysql.createConnection({
+            connectionLimit: 100,
             host: process.env.MYSQL_HOST,
             port: parseInt(process.env.MYSQL_PORT),
             user: process.env.MYSQL_USER,

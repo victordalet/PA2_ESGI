@@ -19,6 +19,7 @@ export interface ViewProps {
     servicesGlobal: ServiceResponse[];
     addService: (index: number, id: number) => void;
     servicesSelected: ServiceResponse[];
+    eventCalendar: LocationOccupation[];
 }
 
 export interface ControllerProps {
@@ -35,6 +36,13 @@ export interface ControllerState {
     messages: MessageLocation[];
     isBail?: boolean;
     description: LocationDescription;
+    eventCalendar: LocationOccupation[];
+}
+
+export interface LocationOccupation {
+    from_datetime: string;
+    to_datetime: string;
+    user_email: string;
 }
 
 

@@ -55,9 +55,6 @@ export default class HomeView extends React.Component <ViewProps> {
                                 if (index > service.length - 6) {
                                     return (
                                         <Card
-                                            onclick={() => {
-                                                window.location.href = '/reserve?' + s.id + '&service=true&a=true';
-                                            }}
                                             cardInfo={{
                                                 title: s.name,
                                                 description: '',

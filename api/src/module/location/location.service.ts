@@ -38,6 +38,10 @@ export class LocationService {
         return {is_occupied: await this.LocationRepository.locationIsOccupiedByUser(locationId, token)};
     }
 
+    async getLocationOccupation(locationId: number) {
+        return await this.LocationRepository.getLocationOccupation(locationId);
+    }
+
     async addLocationNotation(locationId: number, notation: number) {
         return await this.LocationRepository.addNotationLocation(locationId, notation);
     }

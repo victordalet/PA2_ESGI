@@ -1,4 +1,4 @@
-import {ControllerProps, ControllerState} from "../@types/reserve";
+import {ControllerProps, ControllerState, LocationOccupation} from "../@types/reserve";
 import React from "react";
 import {ReserveView} from "../views/reserve";
 import {LocationDescription, LocationResponse} from "../@types/location";
@@ -33,10 +33,10 @@ export default class Controller extends React.Component<
         }
         this.fetchLocation();
         this.getStartNotation();
+        this.fetchService();
         this.fetchServiceOfLocation();
         this.fetchServiceReserved();
-        this.fetchService();
-        this.isBail();
+        this.getOccupationEvent();
         this.reserveViewModel = new ReserveViewModel();
     }
 
@@ -50,7 +50,8 @@ export default class Controller extends React.Component<
         messages: [],
         isBail: undefined,
         description: {} as LocationDescription,
-        servicesSelected: []
+        servicesSelected: [],
+        eventCalendar: []
     };
 
 
@@ -107,6 +108,7 @@ export default class Controller extends React.Component<
             }
         });
         const data: { email: string } = await response.json();
+        console.log(data.email, this.state.data.created_by);
         if (data.email === this.state.data.created_by) {
             this.setState({isBail: true});
         } else {
@@ -129,6 +131,7 @@ export default class Controller extends React.Component<
         this.setState({data: data.filter((location: ServiceResponse) => location.id === this.id)[0]});
         const description: LocationDescription = JSON.parse(data.filter((location: ServiceResponse) => location.id === this.id)[0].description);
         this.setState({description: description});
+        this.isBail();
     };
 
 
@@ -184,6 +187,22 @@ export default class Controller extends React.Component<
             })
         });
         return await response.json();
+    };
+
+    private getOccupationEvent = async () => {
+        const apiPath = process.env.API_HOST || 'http://localhost:3001';
+        const response = await fetch(apiPath + this.apiSubPath + '/get-occupation', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'authorization': localStorage.getItem('token') || ''
+            },
+            body: JSON.stringify({
+                location_id: this.id
+            })
+        });
+        const data: LocationOccupation[] = await response.json();
+        this.setState({eventCalendar: data});
     };
 
 
@@ -365,11 +384,12 @@ export default class Controller extends React.Component<
 
     render() {
 
-        if (this.state.isBail === undefined) {
+        if (this.state.isBail === undefined && this.state.services.length === 0) {
             return <Navbar/>;
         }
 
         return <ReserveView
+            eventCalendar={this.state.eventCalendar}
             servicesSelected={this.state.servicesSelected}
             addService={this.reserveViewModel.addService}
             servicesGlobal={this.state.servicesGlobal}

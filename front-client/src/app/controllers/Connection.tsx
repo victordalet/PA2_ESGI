@@ -20,7 +20,7 @@ export default class ConnectionController extends Component<ControllerProps, Con
 
     private testLogin = () => {
         const apiPath = process.env.API_HOST || 'http://localhost:3001';
-        fetch(apiPath + '/user/connectionAdmin', {
+        fetch(apiPath + '/user/connection', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

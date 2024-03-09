@@ -24,13 +24,27 @@
         margin-left: 100px;
     }
 
-
+    .calendar {
+        margin-top: -150px;
+        margin-bottom: 100px;
+        box-shadow: 0 10px 50px 0 rgba(#05043e, .25);
+        padding: 20px;
+        border-radius: 20px;
+        z-index: 3;
+    }
 
     .services {
-        display: inline-flex;
-        width: 100vw;
+        width: calc(100% - 50px);
+        overflow-x: scroll;
+        position: relative;
         height: 30vh;
         margin-left: 250px;
+        white-space: nowrap;
+
+        .card {
+            display: inline-block;
+        }
+
     }
 
     .description {

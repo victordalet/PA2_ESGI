@@ -60,6 +60,15 @@ export class LocationController {
         return this.locationService.locationIsOccupiedByUser(body.location_id, token);
     }
 
+    @Post('get-occupation')
+    @ApiOperation({summary: 'Get location occupation'})
+    @ApiCreatedResponse({description: 'Location occupation'})
+    @ApiBadRequestResponse({description: 'Request body is not valid'})
+    async getLocationOccupation(@Headers('authorization') token: string, @Body() body: LocationAvailability) {
+        await this.tokenValidation.validateToken(token);
+        return this.locationService.getLocationOccupation(body.location_id);
+    }
+
     @Post('add-notation')
     @ApiOperation({summary: 'Add location notation'})
     @ApiCreatedResponse({description: 'Location notation added'})

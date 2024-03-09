@@ -74,7 +74,7 @@ export default class ConnectionController extends Component<ControllerProps, Con
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + localStorage.getItem('token')
+                'authorization': localStorage.getItem('token') || ''
             }
         });
         this.connectionViewModel.openPopup(2);

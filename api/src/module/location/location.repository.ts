@@ -109,6 +109,11 @@ export class LocationRepository {
         }
     }
 
+    async getLocationOccupation(locationId: number) {
+        const [rows, filed] = await this.db.query("SELECT * FROM location_occupation WHERE location_id = ? AND deleted_at IS NULL", [locationId]);
+        return rows;
+    }
+
     async addNotationLocation(locationOccupationId: number, notation: number) {
         return this.db.query("UPDATE location_occupation SET notation = ? WHERE id = ?", [notation, locationOccupationId]);
     }

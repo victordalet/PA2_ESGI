@@ -1,3 +1,4 @@
 ./idea
 .env
 api/node_modules
+api/public

@@ -138,8 +138,5 @@ export class UserRepository {
                 userInformation.token]);
     }
 
-    async requestBail(email: string) {
-
-    }
 
 }

@@ -31,7 +31,7 @@ export default class Controller extends React.Component<
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                "Authorization": localStorage.getItem('token') || ''
+                "authorization": localStorage.getItem('token') || ''
             }
         });
         this.setState({data: await response.json()});
@@ -48,7 +48,7 @@ export default class Controller extends React.Component<
                     method: 'PATCH',
                     headers: {
                         'Content-Type': 'application/json',
-                        "Authorization": localStorage.getItem('token') || ''
+                        "authorization": localStorage.getItem('token') || ''
                     },
                     body: JSON.stringify({
                         password: password.value
@@ -71,7 +71,7 @@ export default class Controller extends React.Component<
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
-                    "Authorization": localStorage.getItem('token') || ''
+                    "authorization": localStorage.getItem('token') || ''
                 },
                 body: JSON.stringify({
                     email: email.value
@@ -89,7 +89,7 @@ export default class Controller extends React.Component<
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
-                    "Authorization": localStorage.getItem('token') || ''
+                    "authorization": localStorage.getItem('token') || ''
                 },
                 body: JSON.stringify({
                     name: username.value

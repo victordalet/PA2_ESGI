@@ -5,6 +5,8 @@ import {PopupError} from "../../components/popup";
 import {ChatBot} from "../../components/chatBot";
 import {Language} from "../../components/language";
 import {Card} from "../../components/card";
+import {Calendar, momentLocalizer} from 'react-big-calendar';
+import moment from 'moment';
 
 export class ReserveView extends React.Component <ViewProps> {
 
@@ -27,10 +29,13 @@ export class ReserveView extends React.Component <ViewProps> {
             description,
             servicesGlobal,
             addService,
-            servicesSelected
+            servicesSelected,
+            eventCalendar
         } = this.props;
 
         let cardToRemoveIndex = 0;
+
+        const now = momentLocalizer(moment);
 
 
         return (
@@ -147,13 +152,14 @@ export class ReserveView extends React.Component <ViewProps> {
                                 :
                                 <h2>Your services add : </h2>
                             :
-                            <h2>Choose additional services : </h2>
+                            isBail ? '' :
+                                <h2>Choose additional services : </h2>
                     }
                     <div className={"services services-new"}
                          style={isReserved && servicesSelected.length === 0 ? {display: 'none'} : {}}>
 
                         {
-                            !isReserved ?
+                            !isReserved && !isBail ?
 
                                 servicesGlobal.map((service, index) => {
                                     if (!services.find((s) => s.id === service.id)) {
@@ -191,9 +197,25 @@ export class ReserveView extends React.Component <ViewProps> {
                         }
                     </div>
 
+                    {
+                        isBail ?
+                            <div className={"calendar"}>
+                                <Calendar
+                                    localizer={now}
+                                    events={eventCalendar.map((event, index) => {
+                                        return {
+                                            start: new Date(event.from_datetime),
+                                            end: new Date(event.to_datetime),
+                                            title: event.user_email
+                                        };
+                                    })}
+                                    startAccessor="start"
+                                    endAccessor="end"
+                                    style={{height: 500}}/>
+                            </div>
+                            : ''
+                    }
 
-                    <div className={"calendar"}>
-                    </div>
                     {
                         isReserved || isBail ?
                             (
