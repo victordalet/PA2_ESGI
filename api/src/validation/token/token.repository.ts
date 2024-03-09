@@ -15,10 +15,8 @@ export class TokenRepository {
 
     async isFoundToken(token: string): Promise<boolean> {
         const [row, field] = await this.db.query("SELECT email FROM USER WHERE connection = ?", [token]);
-        if (Array.isArray(row) && row.length > 0) {
-            return true;
-        }
-        return false;
+        return Array.isArray(row) && row.length > 0;
+
     }
 
     async isAdminToken(token: string): Promise<boolean> {

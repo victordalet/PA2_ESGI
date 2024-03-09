@@ -1,10 +1,11 @@
 export default class ConnectionViewModel {
 
-    openPopup = () => {
-        const root = document.querySelector<HTMLElement>('.pop-up');
+    openPopup = (index: number) => {
+        const root = document.querySelectorAll<HTMLElement>('.pop-up');
         if (root) {
-            root.style.transform = 'translateX(0)';
+            root[index].style.transform = 'translateX(0)';
         }
     };
+
 
 }

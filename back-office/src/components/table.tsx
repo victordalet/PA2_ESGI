@@ -4,7 +4,7 @@ import {ResponseIllegibleMessage} from "../app/@types/message";
 
 export interface TableData {
     head: string[],
-    body: string[][],
+    body: any[][],
 }
 
 export class Table extends React.Component  <TableData> {

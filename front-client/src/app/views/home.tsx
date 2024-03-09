@@ -37,9 +37,11 @@ export default class HomeView extends React.Component <ViewProps> {
                                             }}
                                             cardInfo={{
                                                 title: l.name,
-                                                description: l.description,
+                                                description: '',
                                                 price: l.price,
-                                                location: l.address
+                                                location: l.address,
+                                                id: l.id,
+                                                type: 'location'
                                             }}></Card>
                                     );
                                 }
@@ -53,13 +55,12 @@ export default class HomeView extends React.Component <ViewProps> {
                                 if (index > service.length - 6) {
                                     return (
                                         <Card
-                                            onclick={() => {
-                                                window.location.href = '/reserve?' + s.id + '&service=true&a=true';
-                                            }}
                                             cardInfo={{
                                                 title: s.name,
-                                                description: s.description,
-                                                price: s.price
+                                                description: '',
+                                                price: s.price,
+                                                id: s.id,
+                                                type: 'service'
                                             }}></Card>
                                     );
                                 }

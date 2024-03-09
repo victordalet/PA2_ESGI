@@ -5,6 +5,7 @@ import {BrowserRouter, Routes, Route} from "react-router-dom";
 
 import {Connection, Home, Location, Premium, Resa, Reserve, Service, Settings, Sign} from './app/providers';
 import './sass/index.scss';
+import 'react-big-calendar/lib/css/react-big-calendar.css';
 import {isBot} from "./security/isBot";
 
 const root = ReactDOM.createRoot(

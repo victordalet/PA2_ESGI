@@ -1,6 +1,7 @@
 import {ServiceRepository} from "./service.repository";
 import {Service} from "../../core/service";
 import {ServiceModel} from "./service.model";
+import {LocationLiaison} from "../../core/location";
 
 export class ServiceService {
     private serviceRepository: ServiceRepository;
@@ -28,4 +29,22 @@ export class ServiceService {
     async getServiceByEmail(token: string) {
         return this.serviceRepository.getServiceByEmail(token);
     }
+
+    async postServiceByUser(token: string, body: LocationLiaison) {
+        return this.serviceRepository.postServiceByUser(body);
+    }
+
+    async postServiceByLocation(body: LocationLiaison) {
+        return this.serviceRepository.postServiceByLocation(body);
+    }
+
+    async getServiceByLocation(body: LocationLiaison) {
+        return this.serviceRepository.getServiceByLocation(body);
+    }
+
+    async getServiceByUser(body: LocationLiaison) {
+        return this.serviceRepository.getServiceByUser(body);
+    }
+
+
 }

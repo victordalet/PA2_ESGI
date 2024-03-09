@@ -38,10 +38,10 @@ export default class ServiceView extends React.Component<ViewProps> {
                                 return (
                                     <Card cardInfo={{
                                         title: s.name,
-                                        description: s.description,
-                                        price: s.price
-                                    }} onclick={() => {
-                                        window.location.href = '/reserve?' + s.id?.toString() + '&service=true&a=true';
+                                        description: '',
+                                        price: s.price,
+                                        id: s.id,
+                                        type: 'service'
                                     }}/>
                                 );
                             })

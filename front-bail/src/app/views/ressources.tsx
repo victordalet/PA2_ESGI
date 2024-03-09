@@ -43,6 +43,8 @@ export default class ResourcesView extends React.Component<ViewProps> {
                                         title: l.name,
                                         description: '',
                                         price: l.price,
+                                        type: 'location',
+                                        id: l.id
                                     }}
                                 />
                             ))
@@ -55,6 +57,8 @@ export default class ResourcesView extends React.Component<ViewProps> {
                                         title: s.name,
                                         description: '',
                                         price: s.price,
+                                        type: 'service',
+                                        id: s.id
                                     }}
                                 />
                             ))

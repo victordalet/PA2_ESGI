@@ -20,3 +20,20 @@ export const haveToken = () => {
         });
     }
 };
+
+export const haveTokenBail = async () => {
+    if (localStorage.getItem('token') === null || undefined) {
+        document.location.href = '/login';
+    } else {
+        const apiPath = process.env.API_HOST || 'http://localhost:3001';
+        const response = await fetch(apiPath + '/user/isBail', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'authorization': localStorage.getItem('token') || ''
+            }
+        });
+        const data: dataConnection = await response.json();
+        return !data.connection;
+    }
+};

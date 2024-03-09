@@ -49,7 +49,7 @@ export default class Controller extends React.Component<
         data.service = this.state.serviceSelected;
         console.log(data);
         const apiPath = process.env.API_HOST || 'http://localhost:3001';
-        await fetch(`${apiPath}/location`, {
+        const res = await fetch(`${apiPath}/location`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -67,6 +67,26 @@ export default class Controller extends React.Component<
                 type: data.typeLocation,
             })
         });
+        const id = await res.json();
+        await this.uploadImage(id.id);
+    };
+
+    private uploadImage = async (id: number) => {
+        const file = (document.getElementById("image") as HTMLInputElement).files;
+        if (file) {
+            const formData = new FormData();
+            formData.append('file', file[0]);
+            formData.append('picture', `location-${id.toString()}`);
+            const apiPath = process.env.API_HOST || 'http://localhost:3001';
+            await fetch(`${apiPath}/picture`, {
+                method: "POST",
+                headers: {
+                    'authorization': localStorage.getItem('token') || ''
+                },
+                body: formData
+            });
+            document.location.href = "/home";
+        }
     };
 
 

@@ -41,7 +41,7 @@ export class LocationRepository {
     }
 
     async createLocation(location: Location) {
-        return this.db.query("INSERT INTO location (name, description, address, latitude, longitude, capacity, price, type, created_at, updated_at,created_by,picture) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)",
+        await this.db.query("INSERT INTO location (name, description, address, latitude, longitude, capacity, price, type, created_at, updated_at,created_by,picture) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)",
             [location.name,
                 location.description,
                 location.address,
@@ -52,6 +52,8 @@ export class LocationRepository {
                 location.type,
                 new Date(), new Date(),
                 location.created_by, ' ']);
+        const [rows, filed] = await this.db.query("SELECT LAST_INSERT_ID() as id FROM location");
+        return rows[0];
     }
 
     async updateLocation(id: number, location: any) {
@@ -90,7 +92,9 @@ export class LocationRepository {
 
     async addLocationOccupation(locationId: number, token: string, fromDatetime: string, toDatetime: string) {
         const [rows, filed] = await this.db.query("SELECT email FROM USER WHERE connection = ?", [token]);
-        return this.db.query("INSERT INTO location_occupation (from_datetime, to_datetime, location_id, user_email) VALUES (?, ?, ?, ?)", [fromDatetime, toDatetime, locationId, rows[0].email]);
+        await this.db.query("INSERT INTO location_occupation (from_datetime, to_datetime, location_id, user_email) VALUES (?, ?, ?, ?)", [fromDatetime, toDatetime, locationId, rows[0].email]);
+        const [rows2, filed2] = await this.db.query("SELECT LAST_INSERT_ID() as id FROM location_occupation");
+        return rows2[0].id;
     }
 
     async deleteLocationOccupation(locationId: number) {
@@ -103,6 +107,11 @@ export class LocationRepository {
         if (rows2 instanceof Array) {
             return rows2.length > 0;
         }
+    }
+
+    async getLocationOccupation(locationId: number) {
+        const [rows, filed] = await this.db.query("SELECT * FROM location_occupation WHERE location_id = ? AND deleted_at IS NULL", [locationId]);
+        return rows;
     }
 
     async addNotationLocation(locationOccupationId: number, notation: number) {
@@ -123,6 +132,3 @@ export class LocationRepository {
     }
 
 }
-
-
-

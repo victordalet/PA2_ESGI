@@ -12,6 +12,8 @@
     transition: .3s;
     z-index: 2;
     position: relative;
+    background-size: cover;
+    opacity: 0.9;
 
     &:hover {
         transform: scale(1.02);
@@ -19,6 +21,11 @@
 
     span {
         margin-left: 20px;
+    }
+
+    &.active {
+        background-color: $secondaryColor;
+        transform: scale(1.02);
     }
 
 }

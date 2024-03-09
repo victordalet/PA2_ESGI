@@ -21,9 +21,9 @@ export default class ServiceView extends React.Component <ViewProps> {
                         <input id={"title"} type={"text"} placeholder={"title"}/>
                         <input id={"description"} type={"text"} placeholder={"description"}/>
                         <input id={"price"} type={"number"} placeholder={"price"}/>
-                        <input id={"location"} type={"location"} placeholder={"location"}/>
                         <input id={"cat"} type={"text"} placeholder={"category"}/>
                         <input id={"duration"} type={"text"} placeholder={"Duration"}/>
+                        <input id={"image"} type={"file"} placeholder={"image"}/>
                         <button id={"submit"} onClick={createService}>Submit</button>
                     </div>
                 </div>

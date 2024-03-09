@@ -42,9 +42,11 @@ export default class LocationView extends React.Component <ViewProps> {
                                 return (
                                     <Card cardInfo={{
                                         title: location.name,
-                                        description: location.description,
+                                        description: '',
                                         price: location.price,
-                                        location: location.address
+                                        location: location.address,
+                                        id: location.id,
+                                        type: 'location'
                                     }} onclick={() => {
                                         window.location.href = '/reserve?' + location.id?.toString() + '&a=false';
                                     }}/>

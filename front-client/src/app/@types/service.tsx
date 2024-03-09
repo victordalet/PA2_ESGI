@@ -17,7 +17,7 @@ export interface ControllerState {
 
 
 export interface ServiceResponse {
-    id?: number;
+    id: number;
     created_at?: string;
     updated_at?: string;
     deleted_at?: string;

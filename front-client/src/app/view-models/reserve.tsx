@@ -23,4 +23,15 @@ export default class ReserveViewModel {
         }
     };
 
+    public addService(index: number, id: number) {
+        const service = document.querySelectorAll<HTMLElement>('.services-new .card');
+        if (service) {
+            if (service[index].classList.contains('active')) {
+                service[index].classList.remove('active');
+            } else {
+                service[index].classList.add('active');
+            }
+        }
+    }
+
 }
