@@ -35,7 +35,7 @@ export interface FormLocation {
 }
 
 export interface Service {
-    id?: number;
+    id: number;
     name: string;
     price: number;
     description: string;
@@ -43,7 +43,7 @@ export interface Service {
 }
 
 export interface Location {
-    id?: number;
+    id: number;
     created_at?: string;
     updated_at?: string;
     deleted_at?: string;

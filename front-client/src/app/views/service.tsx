@@ -39,7 +39,9 @@ export default class ServiceView extends React.Component<ViewProps> {
                                     <Card cardInfo={{
                                         title: s.name,
                                         description: '',
-                                        price: s.price
+                                        price: s.price,
+                                        id: s.id,
+                                        type: 'service'
                                     }}/>
                                 );
                             })

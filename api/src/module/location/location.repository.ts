@@ -41,7 +41,7 @@ export class LocationRepository {
     }
 
     async createLocation(location: Location) {
-        return this.db.query("INSERT INTO location (name, description, address, latitude, longitude, capacity, price, type, created_at, updated_at,created_by,picture) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)",
+        await this.db.query("INSERT INTO location (name, description, address, latitude, longitude, capacity, price, type, created_at, updated_at,created_by,picture) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)",
             [location.name,
                 location.description,
                 location.address,
@@ -52,6 +52,8 @@ export class LocationRepository {
                 location.type,
                 new Date(), new Date(),
                 location.created_by, ' ']);
+        const [rows, filed] = await this.db.query("SELECT LAST_INSERT_ID() as id FROM location");
+        return rows[0];
     }
 
     async updateLocation(id: number, location: any) {
@@ -125,6 +127,3 @@ export class LocationRepository {
     }
 
 }
-
-
-

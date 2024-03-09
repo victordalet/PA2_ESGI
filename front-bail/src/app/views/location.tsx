@@ -185,11 +185,17 @@ export default class LocationView extends React.Component <ViewProps> {
                                         title: s.name,
                                         description: '',
                                         price: s.price,
-                                        location: s.duration.toString()
-                                    }}/>;
+                                        location: s.duration.toString(),
+                                        type: 'service',
+                                        id: s.id
+                                    }}></Card>;
                             })
 
                         }
+                    </div>
+                    <div className={"container-picture-file"}>
+                        <h2>Picture of the location</h2>
+                        <input type={"file"} id={"image"} name={"image"} placeholder={"Image"}/>
                     </div>
                     <button onClick={storeFormInJSON} className={"submit"}>Créer ma location</button>
                 </div>

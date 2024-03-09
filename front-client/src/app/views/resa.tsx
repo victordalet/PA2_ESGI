@@ -31,7 +31,9 @@ export class ResaView extends React.Component <ViewProps> {
                                             title: location.name,
                                             description: '',
                                             price: location.price,
-                                            location: location.address
+                                            location: location.address,
+                                            id: location.id,
+                                            type: 'location'
                                         }}></Card>
                                 );
                             })

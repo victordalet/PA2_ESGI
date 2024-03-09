@@ -12,6 +12,7 @@
     transition: .3s;
     z-index: 2;
     position: relative;
+    background-size: cover;
 
     &:hover {
         transform: scale(1.02);

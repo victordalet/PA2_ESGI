@@ -129,7 +129,9 @@ export class ReserveView extends React.Component <ViewProps> {
                                                     <Card cardInfo={{
                                                         title: service.name,
                                                         description: '',
-                                                        price: service.price
+                                                        price: service.price,
+                                                        id: service.id,
+                                                        type: 'service'
                                                     }}/>
                                                 );
                                             })
@@ -164,7 +166,9 @@ export class ReserveView extends React.Component <ViewProps> {
                                                 cardInfo={{
                                                     title: service.name,
                                                     description: '',
-                                                    price: service.price
+                                                    price: service.price,
+                                                    id: service.id,
+                                                    type: 'service'
                                                 }}/>
                                         );
                                     } else {
@@ -178,7 +182,9 @@ export class ReserveView extends React.Component <ViewProps> {
                                             cardInfo={{
                                                 title: service.name,
                                                 description: '',
-                                                price: service.price
+                                                price: service.price,
+                                                id: service.id,
+                                                type: 'service'
                                             }}/>
                                     );
                                 })
