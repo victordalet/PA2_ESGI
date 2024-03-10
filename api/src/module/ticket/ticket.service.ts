@@ -21,23 +21,31 @@ export class TicketService {
         return this.TicketRepository.updateTicket(id, ticket);
     }
 
-    deleteTicket(id: number) {
+    async deleteTicket(id: number) {
         return this.TicketRepository.deleteTicket(id);
     }
 
-    createMessageTicket(id: number, message: any) {
-        return this.TicketRepository.createMessageTicket(id, message);
+    async createMessageTicket(id: number, message: any) {
+        return await this.TicketRepository.createMessageTicket(id, message);
     }
 
     async getMessageTickets(id: number) {
         return await this.TicketRepository.getMessageTickets(id);
     }
 
-    updateMessageTicket(id: number, messageId: number, message: any) {
+    async updateMessageTicket(id: number, messageId: number, message: any) {
         return this.TicketRepository.updateMessageTicket(id, messageId, message);
     }
 
-    deleteMessageTicket(id: number, messageId: number) {
+    async deleteMessageTicket(id: number, messageId: number) {
         return this.TicketRepository.deleteMessageTicket(id, messageId);
+    }
+
+    async updateTicketStatus(id: number, ticket: Ticket) {
+        return await this.TicketRepository.updateTicketStatus(id, ticket);
+    }
+
+    async updateOccupyTicket(id: number, ticket: Ticket) {
+        return await this.TicketRepository.updateOccupyTicket(id, ticket);
     }
 }

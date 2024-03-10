@@ -3,7 +3,7 @@ create table USER
     email      varchar(100) primary key,
     password   varchar(200) not null,
     name       varchar(100) not null,
-    rules       varchar(100) not null,
+    rules      varchar(100) not null,
     created_at datetime     not null,
     updated_at datetime     not null,
     deleted_at datetime,
@@ -19,7 +19,7 @@ create table location
     deleted_at  datetime,
     created_by  varchar(100) not null references USER (email),
     name        varchar(100) not null,
-    description longtext         not null,
+    description longtext     not null,
     price       int          not null,
     picture     varchar(100) not null,
     address     varchar(100) not null,
@@ -32,21 +32,22 @@ create table location
 create table location_occupation
 (
     id            int primary key auto_increment,
-    from_datetime datetime not null,
-    to_datetime   datetime not null,
-    location_id   int      not null references location (id),
+    from_datetime datetime     not null,
+    to_datetime   datetime     not null,
+    location_id   int          not null references location (id),
     user_email    varchar(100) not null references USER (email),
     deleted_at    datetime,
     notation      int
 );
 
-create table location_message(
-    id        int primary key auto_increment,
-    created_at datetime     not null,
-    updated_at datetime     not null,
-    deleted_at datetime,
-    location_occupation_id int not null references location_occupation (id),
-    message    varchar(220) not null
+create table location_message
+(
+    id                     int primary key auto_increment,
+    created_at             datetime     not null,
+    updated_at             datetime     not null,
+    deleted_at             datetime,
+    location_occupation_id int          not null references location_occupation (id),
+    message                varchar(220) not null
 );
 
 create table service_provider
@@ -125,7 +126,7 @@ create table service
     deleted_at  datetime,
     created_by  varchar(100) not null references USER (email),
     name        varchar(100) not null,
-    description longtext not null,
+    description longtext     not null,
     price       int          not null,
     duration    int          not null
 );
@@ -142,12 +143,12 @@ create table service_by_provider
 
 create table service_by_user
 (
-    id         int primary key auto_increment,
-    created_at datetime     not null,
-    updated_at datetime     not null,
-    service_id int          not null references service (id),
-    user_email varchar(100) not null references USER (email),
-    location_occupation_id int not null references location_occupation (id),
+    id                     int primary key auto_increment,
+    created_at             datetime     not null,
+    updated_at             datetime     not null,
+    service_id             int          not null references service (id),
+    user_email             varchar(100) not null references USER (email),
+    location_occupation_id int          not null references location_occupation (id),
 );
 
 create table service_by_location
@@ -217,25 +218,29 @@ create table TICKET_MESSAGE
     updated_at datetime     not null,
     deleted_at datetime,
     created_by varchar(100) not null references USER (email),
-    message    varchar(220) not null
+    message    varchar(220) not null,
+    ticket_id  int references TICKET (id)
 );
 
 
 create table bad_world
 (
-    id         int primary key auto_increment,
-    word       varchar(100) not null
+    id   int primary key auto_increment,
+    word varchar(100) not null
 );
 
 
-create table translation(
-    id         int primary key auto_increment,
-    language   varchar(100) not null,
-    word       varchar(100) not null,
+create table translation
+(
+    id          int primary key auto_increment,
+    language    varchar(100) not null,
+    word        varchar(100) not null,
     translation varchar(100) not null
 );
 
 
 
-
-insert into USER (email, password, name, rules, created_at, updated_at, address) values ("victor.dalet@affluences.com","2af8512a8d99c1e07a2f7968f5cc054cb492bad2523e34f0da4e39e8eda2476ad816f55f6da747e87db83d21bcc55ca6f98415fe44e0bb3d034b3e5ad27e5e66","victor","ADMIN",NOW(),NOW(),"paris");
+insert into USER (email, password, name, rules, created_at, updated_at, address)
+values ("victor.dalet@affluences.com",
+        "2af8512a8d99c1e07a2f7968f5cc054cb492bad2523e34f0da4e39e8eda2476ad816f55f6da747e87db83d21bcc55ca6f98415fe44e0bb3d034b3e5ad27e5e66",
+        "victor", "ADMIN", NOW(), NOW(), "paris");
