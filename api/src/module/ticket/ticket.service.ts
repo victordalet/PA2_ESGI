@@ -13,8 +13,8 @@ export class TicketService {
         return await this.TicketRepository.getTickets();
     }
 
-    createTicket(ticket: Ticket) {
-        return this.TicketRepository.createTicket(ticket);
+    async createTicket(ticket: Ticket, token: string) {
+        return await this.TicketRepository.createTicket(ticket, token);
     }
 
     updateTicket(id: number, ticket: Ticket) {

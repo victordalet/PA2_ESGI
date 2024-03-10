@@ -24,8 +24,10 @@ export class TicketRepository {
         return tickets;
     }
 
-    createTicket(ticket: Ticket) {
-        return this.db.query("INSERT INTO TICKET (title, description,created_at ,updated_at,) VALUES (?, ?, ?, ?)", [ticket.name, ticket.description, new Date(), new Date()]);
+    async createTicket(ticket: Ticket, token: string) {
+        const [rows, filed] = await this.db.query("SELECT * FROM USER WHERE connection = ?", [token]);
+        return this.db.query("INSERT INTO TICKET (name, description,created_at ,updated_at,created_by,status) VALUES (?, ?, ?, ?, ?,'0')",
+            [ticket.name, ticket.description, new Date(), new Date(), rows[0].email]);
     }
 
     updateTicket(id: number, ticket: Ticket) {

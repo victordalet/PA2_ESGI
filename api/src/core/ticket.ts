@@ -3,7 +3,7 @@ export interface Ticket {
     created_at?: string;
     updated_at?: string;
     deleted_at?: string;
-    created_by: string;
+    created_by?: string;
     name: string;
     description: string;
     status: string;

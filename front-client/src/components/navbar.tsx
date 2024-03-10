@@ -37,6 +37,11 @@ export class Navbar extends React.Component {
             icon: "ai-sparkles"
         },
         {
+            name: "Ticket",
+            url: "/ticket",
+            icon: "ai-ticket"
+        },
+        {
             name: "Settings",
             url: "/settings",
             icon: "ai-gear"

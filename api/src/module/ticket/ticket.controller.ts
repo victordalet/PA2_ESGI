@@ -22,7 +22,7 @@ export class TicketController {
     @ApiBadRequestResponse({description: 'Request param is not valid'})
     async getTickets(@Headers('authorization') token: string) {
         await this.tokenValidation.validateAdminToken(token);
-        return this.ticketService.getTickets();
+        return await this.ticketService.getTickets();
     }
 
     @Post()
@@ -30,8 +30,8 @@ export class TicketController {
     @ApiCreatedResponse({description: 'Ticket created'})
     @ApiBadRequestResponse({description: 'Request body is not valid'})
     async createTicket(@Headers('authorization') token: string, @Body() body: BodyTicket) {
-        await this.tokenValidation.validateAdminToken(token);
-        return this.ticketService.createTicket(body);
+        await this.tokenValidation.validateToken(token);
+        return await this.ticketService.createTicket(body, token);
     }
 
     @Put(':id')

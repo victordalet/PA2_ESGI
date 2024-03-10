@@ -207,7 +207,7 @@ create table TICKET
     name        varchar(100) not null,
     description varchar(100) not null,
     status      varchar(100) not null,
-    occupy_by   varchar(100) not null references USER (name)
+    occupy_by   varchar(100) references USER (name)
 );
 
 create table TICKET_MESSAGE
