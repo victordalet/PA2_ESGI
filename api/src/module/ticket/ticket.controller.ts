@@ -22,7 +22,7 @@ export class TicketController {
     @ApiBadRequestResponse({description: 'Request param is not valid'})
     async getTickets(@Headers('authorization') token: string) {
         await this.tokenValidation.validateAdminToken(token);
-        return this.ticketService.getTickets();
+        return await this.ticketService.getTickets();
     }
 
     @Post()
@@ -30,8 +30,8 @@ export class TicketController {
     @ApiCreatedResponse({description: 'Ticket created'})
     @ApiBadRequestResponse({description: 'Request body is not valid'})
     async createTicket(@Headers('authorization') token: string, @Body() body: BodyTicket) {
-        await this.tokenValidation.validateAdminToken(token);
-        return this.ticketService.createTicket(body);
+        await this.tokenValidation.validateToken(token);
+        return await this.ticketService.createTicket(body, token);
     }
 
     @Put(':id')
@@ -52,13 +52,31 @@ export class TicketController {
         return this.ticketService.deleteTicket(id);
     }
 
+    @Put(':id/status')
+    @ApiOperation({summary: 'Update ticket status'})
+    @ApiOkResponse({description: 'Ticket status updated'})
+    @ApiBadRequestResponse({description: 'Request body is not valid'})
+    async updateTicketStatus(@Headers('authorization') token: string, @Param('id') id: number, @Body() body: BodyTicket) {
+        await this.tokenValidation.validateAdminToken(token);
+        return this.ticketService.updateTicketStatus(id, body);
+    }
+
+    @Put(':id/occupy')
+    @ApiOperation({summary: 'Occupy ticket'})
+    @ApiOkResponse({description: 'Ticket occupied'})
+    @ApiBadRequestResponse({description: 'Request body is not valid'})
+    async updateOccupyTicket(@Headers('authorization') token: string, @Param('id') id: number, @Body() body: BodyTicket) {
+        await this.tokenValidation.validateToken(token);
+        return this.ticketService.updateOccupyTicket(id, body);
+    }
+
     @Post(':id/message')
     @ApiOperation({summary: 'Create message ticket'})
     @ApiCreatedResponse({description: 'Message ticket created'})
     @ApiBadRequestResponse({description: 'Request body is not valid'})
     async createMessageTicket(@Headers('authorization') token: string, @Param('id') id: number, @Body() body: BodyTicketMessage) {
         await this.tokenValidation.validateAdminToken(token);
-        return this.ticketService.createMessageTicket(id, body);
+        return await this.ticketService.createMessageTicket(id, body);
     }
 
     @Get(':id/message')
@@ -67,7 +85,7 @@ export class TicketController {
     @ApiBadRequestResponse({description: 'Request param is not valid'})
     async getMessageTickets(@Headers('authorization') token: string, @Param('id') id: number) {
         await this.tokenValidation.validateAdminToken(token);
-        return this.ticketService.getMessageTickets(id);
+        return await this.ticketService.getMessageTickets(id);
     }
 
     @Put(':id/message/:messageId')

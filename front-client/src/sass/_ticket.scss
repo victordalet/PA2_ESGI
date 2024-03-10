@@ -1,0 +1,67 @@
+.container-ticket {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: calc(100vw - 50px);
+    margin-left: 50px;
+
+
+    h2 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 20px;
+        font-family: 'Inter', sans-serif;
+    }
+
+    .ticket-form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin-top: 150px;
+        margin-bottom: 50px;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 10px 50px 0 rgba(#05043e, .25);
+        width: 30%;
+        height: 40vh;
+        transition: 1s;
+
+        &:hover {
+            box-shadow: 0 10px 50px 0 rgba(#05043e, .5);
+            cursor: pointer;
+        }
+
+
+        input, textarea {
+            width: 50%;
+            height: 40px;
+            margin-bottom: 20px;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            outline: none;
+        }
+
+        button {
+            width: 40%;
+            height: 40px;
+            background-color: $secondaryColor;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            outline: none;
+            transition: 1s;
+            margin-top: 50px;
+
+            &:hover {
+                background-color: $primaryColor;
+                box-shadow: 0 10px 50px 0 rgba(#05043e, .2);
+                cursor: pointer;
+            }
+        }
+
+    }
+
+}

@@ -24,20 +24,23 @@ export class TicketRepository {
         return tickets;
     }
 
-    createTicket(ticket: Ticket) {
-        return this.db.query("INSERT INTO TICKET (title, description,created_at ,updated_at,) VALUES (?, ?, ?, ?)", [ticket.name, ticket.description, new Date(), new Date()]);
+    async createTicket(ticket: Ticket, token: string) {
+        const [rows, filed] = await this.db.query("SELECT * FROM USER WHERE connection = ?", [token]);
+        return this.db.query("INSERT INTO TICKET (name, description,created_at ,updated_at,created_by,status) VALUES (?, ?, ?, ?, ?,'TODO')",
+            [ticket.name, ticket.description, new Date(), new Date(), rows[0].email]);
     }
 
     updateTicket(id: number, ticket: Ticket) {
         return this.db.query("UPDATE TICKET SET title = ?, description = ? , updated_at = ? WHERE id = ?", [ticket.name, ticket.description, new Date(), id]);
     }
 
-    deleteTicket(id: number) {
+    async deleteTicket(id: number) {
         return this.db.query("DELETE FROM TICKET WHERE id = ?", [id]);
     }
 
-    createMessageTicket(id: number, message: any) {
-        return this.db.query("INSERT INTO TICKET_MESSAGE (ticket_id, message) VALUES (?, ?)", [id, message.message]);
+    async createMessageTicket(id: number, message: MessageTicket) {
+        return this.db.query("INSERT INTO TICKET_MESSAGE (ticket_id, message,created_at,updated_at,created_by) VALUES (?, ?, ?, ?, ?)",
+            [id, message.message, new Date(), new Date(), message.created_by]);
     }
 
     async getMessageTickets(id: number) {
@@ -57,6 +60,14 @@ export class TicketRepository {
 
     deleteMessageTicket(id: number, messageId: number) {
         return this.db.query("DELETE FROM TICKET_MESSAGE WHERE id = ?", [messageId]);
+    }
+
+    async updateTicketStatus(id: number, ticket: Ticket) {
+        return this.db.query("UPDATE TICKET SET status = ? WHERE id = ?", [ticket.status, id]);
+    }
+
+    async updateOccupyTicket(id: number, ticket: Ticket) {
+        return this.db.query("UPDATE TICKET SET occupy_by = ? WHERE id = ?", [ticket.occupy_by, id]);
     }
 
 

@@ -35,7 +35,7 @@ export class BodyTicket {
 
     @ApiProperty({example: 'created_by', description: 'Created by'})
     @IsString()
-    created_by: string;
+    created_by?: string;
 
 }
 

@@ -2,3 +2,4 @@
 .env
 api/node_modules
 api/public
+desktop-app/src/__pycache__/
