@@ -67,7 +67,8 @@ class API:
             token = file.read()
         requests.post(f'{self.url}/ticket/{id}/message',
                       headers={"authorization": token},
-                      json={"message": message, "created_by": self.get_email()})
+                      json={"message": message,
+                            "created_by": self.get_email()})
         return
 
     def get_message(self, id: int) -> list:

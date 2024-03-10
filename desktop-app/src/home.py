@@ -1,4 +1,4 @@
-from PySide6 import QtCore, QtWidgets
+from PySide6 import QtCore, QtWidgets, QtGui
 import sys
 from api import API
 
@@ -32,10 +32,19 @@ class HomePage(QtWidgets.QWidget):
     def create_components(self):
         self.title = QtWidgets.QLabel("Home Page",
                                       alignment=QtCore.Qt.AlignCenter)
+        self.title.setFont(QtGui.QFont("Arial", 20))
+        self.title.setAlignment(QtCore.Qt.AlignCenter)
         self.button = QtWidgets.QPushButton("Logout")
+        self.button.setFont(QtGui.QFont("Arial", 15))
+        self.button.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.button.setFixedSize(100, 50)
         self.button.clicked.connect(self.logout)
         self.button_your_tickets = QtWidgets.QPushButton("Your Tickets")
         self.button_your_tickets.clicked.connect(self.filter_you_tickets)
+        self.button_your_tickets.setFont(QtGui.QFont("Arial", 15))
+        self.button_your_tickets.setCursor(
+            QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.button_your_tickets.setFixedSize(400, 50)
 
     def filter_you_tickets(self):
         if self.status_you_tickets:
@@ -88,66 +97,82 @@ class HomePage(QtWidgets.QWidget):
         self.layout.addWidget(self.ticket_component)
 
     def add_element_in_ticket_component(self, ticket: dict):
+
         self.ticket_component.layout = QtWidgets.QVBoxLayout(
             self.ticket_component)
-        self.ticket_component.layout.addWidget(
-            QtWidgets.QLabel(ticket["name"]))
-        self.ticket_component.layout.addWidget(
-            QtWidgets.QLabel(ticket["description"]))
-        self.ticket_component.layout.addWidget(
-            QtWidgets.QLabel(ticket["status"]))
-        self.ticket_component.layout.addWidget(
-            QtWidgets.QLabel(ticket["occupy_by"]))
-        self.ticket_component.layout.addWidget(
-            QtWidgets.QLabel(ticket["created_by"]))
-        self.ticket_component.layout.addWidget(
-            QtWidgets.QLabel(ticket["created_at"]))
-        self.ticket_component.layout.addWidget(
-            QtWidgets.QLabel(ticket["updated_at"]))
+        elements = ["name", "description", "status",
+                    "occupy_by", "created_by", "created_at"]
+        title_label = QtWidgets.QLabel("INFO TICKET")
+        title_label.setFont(QtGui.QFont("Arial", 20))
+        title_label.setAlignment(QtCore.Qt.AlignCenter)
+        self.ticket_component.layout.addWidget(title_label)
+        for element in elements:
+            label = QtWidgets.QLabel(f"{element}: {ticket[element]}")
+            label.setFont(QtGui.QFont("Arial", 20))
+            self.ticket_component.layout.addWidget(
+                QtWidgets.QLabel(label))
 
         if ticket["occupy_by"] != self.api.get_email():
             btn = QtWidgets.QPushButton("Occupy")
+            btn.setFixedSize(100, 50)
             btn.clicked.connect(
                 lambda: self.update_occupy_ticket(
                     ticket["id"], self.api.get_email()))
         else:
             btn = QtWidgets.QPushButton("Unattributed")
+            btn.setFixedSize(100, 50)
             btn.clicked.connect(
                 lambda: self.update_occupy_ticket(
                     ticket["id"], ""))
         self.ticket_component.layout.addWidget(btn)
 
+        container = QtWidgets.QWidget()
+        container.layout = QtWidgets.QHBoxLayout(container)
+        container.layout.setAlignment(QtCore.Qt.AlignCenter)
         btn = QtWidgets.QPushButton("TODO")
+        btn.setFixedSize(100, 50)
         btn.clicked.connect(
             lambda: self.update_status_ticket("TODO"))
-        self.ticket_component.layout.addWidget(btn)
+        container.layout.addWidget(btn)
         btn = QtWidgets.QPushButton("DOING")
+        btn.setFixedSize(100, 50)
         btn.clicked.connect(
             lambda: self.update_status_ticket("DOING"))
-        self.ticket_component.layout.addWidget(btn)
+        container.layout.addWidget(btn)
         btn = QtWidgets.QPushButton("DONE")
+        btn.setFixedSize(100, 50)
         btn.clicked.connect(
             lambda: self.update_status_ticket("DONE"))
-        self.ticket_component.layout.addWidget(btn)
+        container.layout.addWidget(btn)
         btn = QtWidgets.QPushButton("CANCEL")
+        btn.setFixedSize(100, 50)
         btn.clicked.connect(
             lambda: self.update_status_ticket("CANCEL"))
-        self.ticket_component.layout.addWidget(btn)
+        container.layout.addWidget(btn)
+        self.ticket_component.layout.addWidget(container)
 
         self.add_message_in_ticket_component(ticket)
 
     def add_message_in_ticket_component(self, ticket: dict):
+        container = QtWidgets.QWidget()
+        container.layout = QtWidgets.QVBoxLayout(container)
+        container.layout.setAlignment(QtCore.Qt.AlignCenter)
         self.messages = self.api.get_message(ticket["id"])
-        print(self.messages)
         for message in self.messages:
-            self.ticket_component.layout.addWidget(
-                QtWidgets.QLabel(message["message"]))
+            label = QtWidgets.QLabel(f"{message['created_by']}:"
+                                     f" {message['message']}")
+            label.setFont(QtGui.QFont("Arial", 10))
+            container.layout.addWidget(label)
         self.input_message = QtWidgets.QLineEdit()
-        self.ticket_component.layout.addWidget(self.input_message)
+        self.input_message.setPlaceholderText("Your message")
+        self.input_message.setFixedSize(400, 50)
+        container.layout.addWidget(self.input_message)
         btn_send = QtWidgets.QPushButton("Send")
+        btn_send.setFixedSize(100, 50)
         btn_send.clicked.connect(
             lambda: self.send_message(ticket["id"]))
-        self.ticket_component.layout.addWidget(btn_send)
+        container.layout.addWidget(btn_send)
+        self.ticket_component.layout.addWidget(container)
 
     def send_message(self, ticket_id: int):
         self.api.post_message(self.input_message.text(), ticket_id)

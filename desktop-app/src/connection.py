@@ -1,6 +1,7 @@
-from PySide6 import QtCore, QtWidgets
+from PySide6 import QtCore, QtWidgets, QtGui
 from api import API
 from home import HomePage
+from constante import WIDTH, HEIGHT
 
 
 class ConnectionPage(QtWidgets.QWidget):
@@ -18,6 +19,7 @@ class ConnectionPage(QtWidgets.QWidget):
     def __init__(self):
         super().__init__()
         self.create_components()
+        self.design()
         self.display_element()
         self.api = API()
 
@@ -35,6 +37,25 @@ class ConnectionPage(QtWidgets.QWidget):
         self.msg_error_field.hide()
         self.msg_error_connection = QtWidgets.QLabel("Connection error")
         self.msg_error_connection.hide()
+
+    def design(self):
+        self.title.setFont(QtGui.QFont("Arial", 20))
+        self.title.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_email.setFont(QtGui.QFont("Arial", 15))
+        self.label_password.setFont(QtGui.QFont("Arial", 15))
+        self.input_email.setFont(QtGui.QFont("Arial", 15))
+        self.input_email.setFixedSize(500, 50)
+        self.input_password.setFont(QtGui.QFont("Arial", 15))
+        self.input_password.setFixedSize(500, 50)
+        self.button.setFont(QtGui.QFont("Arial", 15))
+        self.button.setFixedSize(500, 50)
+        self.button.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.msg_error_field.setFont(QtGui.QFont("Arial", 15))
+        self.msg_error_field.setAlignment(QtCore.Qt.AlignCenter)
+        self.msg_error_field.setStyleSheet("color: red")
+        self.msg_error_connection.setFont(QtGui.QFont("Arial", 15))
+        self.msg_error_connection.setAlignment(QtCore.Qt.AlignCenter)
+        self.msg_error_connection.setStyleSheet("color: red")
 
     def display_element(self):
         self.layout = QtWidgets.QVBoxLayout(self)
@@ -65,6 +86,7 @@ class ConnectionPage(QtWidgets.QWidget):
             self.button.hide()
             self.msg_error_field.hide()
             self.msg_error_connection.hide()
+            self.resize(WIDTH, HEIGHT)
             self.layout.addWidget(home)
 
         else:

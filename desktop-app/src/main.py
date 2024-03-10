@@ -16,16 +16,16 @@ class App:
         self.api = API()
         self.app = QtWidgets.QApplication([])
         self.windowConnection = ConnectionPage()
-        self.windowsHome = HomePage()
         self.verify_token()
         sys.exit(self.app.exec_())
 
     def verify_token(self):
         if not self.api.verify_token():
             self.windowConnection.setWindowTitle(NAME)
-            self.windowConnection.resize(WIDTH, HEIGHT)
+            self.windowConnection.resize(WIDTH / 3, HEIGHT / 2)
             self.windowConnection.show()
         else:
+            self.windowsHome = HomePage()
             self.windowsHome.setWindowTitle(NAME)
             self.windowsHome.resize(WIDTH, HEIGHT)
             self.windowsHome.show()
