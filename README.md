@@ -2,10 +2,7 @@
 
 ---
 
-
 ## TECHNO
-
-
 
 ![Docker](https://img.shields.io/badge/-Docker-0db7ed?style=for-the-badge&logo=docker&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/-TypeScript-007acc?style=for-the-badge&logo=typescript&logoColor=white)
@@ -22,8 +19,29 @@ docker-compose up
 ```
 
 ---
+
 ## Train Chat bot
 
 ```bash
 py train.py (nb_epoch)
+```
+
+--- 
+
+## Launch data-insertion
+
+```bash
+cd data-insertion
+docker compose up
+```
+
+---
+
+## Launch desktop app
+
+```bash
+cd desktop-app
+py -m pip install -r requirements.txt
+cd src
+py main.py
 ```
