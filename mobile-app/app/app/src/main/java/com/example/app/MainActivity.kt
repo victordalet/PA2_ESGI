@@ -1,18 +1,21 @@
 package com.example.app
 
+
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import java.net.HttpURLConnection
-import java.net.URL
+import okhttp3.OkHttpClient
+
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var email: EditText
     private lateinit var password: EditText
     private lateinit var loginButton: Button
+    private val client = OkHttpClient()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,22 +25,60 @@ class MainActivity : AppCompatActivity() {
         this.email = findViewById(R.id.email)
         this.loginButton = findViewById(R.id.loginButton)
         this.loginButton.setOnClickListener(View.OnClickListener {
-            val apiPath = "http://127.0.0.1:3001/api/v1/auth/sign_in"
+            val apiPath = "http://192.168.1.13:3001/user/connection"
             try {
-                val url = URL(apiPath)
-                with(url.openConnection() as HttpURLConnection) {
-                    requestMethod = "POST"
-                    setRequestProperty("Content-Type", "application/json; utf-8")
-                    setRequestProperty("Accept", "application/json")
-                    doOutput = true
-                    val jsonInputString = "{\"email\": \"$email\", \"password\": \"$password\"}"
-                    outputStream.write(jsonInputString.toByteArray(Charsets.UTF_8))
-                    println("Response code: $responseCode")
-                    println("Response message: $responseMessage")
-                }
+
+                val emailValue = this.email.text.toString()
+                val passwordValue = this.password.text.toString()
+                val request = okhttp3.Request.Builder().url(apiPath).post(
+                    okhttp3.RequestBody.create(
+                        okhttp3.MediaType.parse("application/json"),
+                        "{\"email\":\"$emailValue\",\"password\":\"$passwordValue\"}"
+                    )
+                ).build()
+                val response = client.newCall(request)
+                response.enqueue(object : okhttp3.Callback {
+                    override fun onFailure(call: okhttp3.Call, e: java.io.IOException) {
+                        println("Error: $e")
+                    }
+
+                    override fun onResponse(call: okhttp3.Call, response: okhttp3.Response) {
+                        println("Response: $response")
+                        val responseBody: String? = response.body()?.string()
+                        println("Response: $responseBody")
+                        if (responseBody == "{\"connection\":null}") {
+                            runOnUiThread {
+                                createError()
+                            }
+                        } else {
+                            val sharedPref = getSharedPreferences("user", MODE_PRIVATE)
+                            with(sharedPref.edit()) {
+                                if (responseBody != null) {
+                                    putString(
+                                        "token",
+                                        responseBody.split(":")[1].split("}")[0].replace("\"", "")
+                                    )
+                                    putBoolean("isConnected", true)
+                                    apply()
+                                    val intent = android.content.Intent(
+                                        this@MainActivity,
+                                        HomeActivity::class.java
+                                    )
+                                    startActivity(intent)
+                                }
+                            }
+                        }
+                    }
+                })
             } catch (e: Exception) {
-                println(e)
+                println("Error: $e")
+                createError();
             }
         })
     }
+
+    private fun createError() {
+        Toast.makeText(this, "Login Failed!", Toast.LENGTH_SHORT).show()
+    }
 }
+
