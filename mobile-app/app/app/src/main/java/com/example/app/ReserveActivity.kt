@@ -41,13 +41,8 @@ class ReserveActivity : AppCompatActivity() {
         listView.adapter = arrayAdapter
 
 
-        Handler(Looper.getMainLooper()).postDelayed(
-            {
-                fetchServices()
-                fetchMessages()
-            },
-            1000
-        )
+        fetchServices()
+        fetchMessages()
 
 
         val backHome = findViewById<Button>(R.id.backHome)
@@ -62,7 +57,7 @@ class ReserveActivity : AppCompatActivity() {
     private fun fetchMessages() {
         val sharedPref = getSharedPreferences("user", MODE_PRIVATE)
         val token = sharedPref.getString("token", null)
-        val locationID = sharedPref.getString("locationOccupationId ", null)
+        val locationID = sharedPref.getString("locationOccupationId", null)
         if (token != null) {
             val apiPath = "http://10.66.125.162:3001/location/get-messages"
             try {
@@ -79,9 +74,7 @@ class ReserveActivity : AppCompatActivity() {
                     }
 
                     override fun onResponse(call: okhttp3.Call, response: okhttp3.Response) {
-                        println("Response: $response")
                         val responseBody: String? = response.body()?.string()
-                        println("Response: $responseBody")
                         if (responseBody != null) {
                             if (responseBody == "[]") {
                                 return
@@ -93,7 +86,6 @@ class ReserveActivity : AppCompatActivity() {
                             }
                             for (message in messages) {
                                 if (message.split("message").size > 1) {
-                                    println("Message full: $message")
                                     val messageTest =
                                         message.split("message")[1].split(":")[1].replace(
                                             "\"", ""
@@ -149,7 +141,6 @@ class ReserveActivity : AppCompatActivity() {
 
                     override fun onResponse(call: okhttp3.Call, response: okhttp3.Response) {
                         runOnUiThread {
-                            test(response.body()?.string() ?: "Error")
                             messageList.add(Messages("You", message))
                             messageAdapter?.notifyDataSetChanged()
                         }
@@ -162,11 +153,6 @@ class ReserveActivity : AppCompatActivity() {
             redirectLogin()
         }
 
-    }
-
-
-    private fun test(response: String) {
-        Toast.makeText(this, response, Toast.LENGTH_SHORT).show()
     }
 
 
@@ -219,6 +205,9 @@ class ReserveActivity : AppCompatActivity() {
                                         )
                                     }
                                 }
+                                for (card in cardList) {
+                                    fetchImage(card)
+                                }
                                 runOnUiThread {
                                     arrayAdapter?.notifyDataSetChanged()
                                 }
@@ -231,6 +220,34 @@ class ReserveActivity : AppCompatActivity() {
             }
         } else {
             redirectLogin()
+        }
+    }
+
+    private fun fetchImage(card: Card) {
+        val sharedPref = getSharedPreferences("user", AppCompatActivity.MODE_PRIVATE)
+        val token = sharedPref.getString("token", null)
+        if (token != null) {
+            val apiPath = "http://10.66.125.162:3001/picture/service-${card.getId()}"
+            try {
+                val request =
+                    okhttp3.Request.Builder().url(apiPath).get().addHeader("authorization", token)
+                        .build()
+                val response = client.newCall(request)
+                response.enqueue(object : okhttp3.Callback {
+                    override fun onFailure(call: okhttp3.Call, e: java.io.IOException) {
+                        println("Error: $e")
+                    }
+
+                    override fun onResponse(call: okhttp3.Call, response: okhttp3.Response) {
+                        val responseBody: String? = response.body()?.string()
+                        runOnUiThread {
+                            card.setImages(responseBody)
+                        }
+                    }
+                })
+            } catch (e: Exception) {
+                println("Error: $e")
+            }
         }
     }
 

@@ -63,7 +63,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginTop="30dp"
-                android:backgroundTint="#222"
+                android:backgroundTint="#05043e"
                 android:text="Login"
                 android:textSize="18sp"
                 app:cornerRadius="20dp" />

@@ -56,6 +56,34 @@ class HomeActivity : AppCompatActivity() {
         startActivity(Intent(this, MainActivity::class.java))
     }
 
+    private fun fetchImage(card: Card) {
+        val sharedPref = getSharedPreferences("user", AppCompatActivity.MODE_PRIVATE)
+        val token = sharedPref.getString("token", null)
+        if (token != null) {
+            val apiPath = "http://10.66.125.162:3001/picture/location-${card.getId()}"
+            try {
+                val request =
+                    okhttp3.Request.Builder().url(apiPath).get().addHeader("authorization", token)
+                        .build()
+                val response = client.newCall(request)
+                response.enqueue(object : okhttp3.Callback {
+                    override fun onFailure(call: okhttp3.Call, e: java.io.IOException) {
+                        println("Error: $e")
+                    }
+
+                    override fun onResponse(call: okhttp3.Call, response: okhttp3.Response) {
+                        val responseBody: String? = response.body()?.string()
+                        runOnUiThread {
+                            card.setImages(responseBody)
+                        }
+                    }
+                })
+            } catch (e: Exception) {
+                println("Error: $e")
+            }
+        }
+    }
+
     private fun fetchLocation() {
         val sharedPref = getSharedPreferences("user", MODE_PRIVATE)
         val token = sharedPref.getString("token", null)
@@ -74,9 +102,7 @@ class HomeActivity : AppCompatActivity() {
                     }
 
                     override fun onResponse(call: okhttp3.Call, response: okhttp3.Response) {
-                        println("Response: $response")
                         val responseBody: String? = response.body()?.string()
-                        println("Response: $responseBody")
                         if (responseBody != null) {
                             if (responseBody == "[]") {
                                 return
@@ -86,7 +112,6 @@ class HomeActivity : AppCompatActivity() {
                             }
                             locations.dropLast(1)
                             for (location in locations) {
-                                println(location)
                                 val id =
                                     location.split("id")[1].split(":")[1].split(',')[0].replace(
                                         "\"", ""
@@ -121,6 +146,9 @@ class HomeActivity : AppCompatActivity() {
                                 }
                             }
                             runOnUiThread {
+                                for (card in cardList) {
+                                    fetchImage(card)
+                                }
                                 arrayAdapter?.notifyDataSetChanged()
                             }
                         }

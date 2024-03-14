@@ -39,4 +39,12 @@ class Card// constructor
         return locationId
     }
 
+    fun getImages(): String? {
+        return image
+    }
+
+    fun setImages(image: String?) {
+        this.image = image
+    }
+
 }

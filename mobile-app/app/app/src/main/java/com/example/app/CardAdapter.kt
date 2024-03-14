@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 
 class CardAdapter() : BaseAdapter() {
 
@@ -24,6 +25,7 @@ class CardAdapter() : BaseAdapter() {
     private lateinit var context: Any
     private lateinit var title: TextView
     private lateinit var price: TextView
+    private lateinit var image: View
     override fun getCount(): Int {
         return cardList.size
     }
@@ -36,6 +38,7 @@ class CardAdapter() : BaseAdapter() {
         return position.toLong()
     }
 
+
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View? {
         var view: View? = convertView
         if (view == null) {
@@ -44,10 +47,20 @@ class CardAdapter() : BaseAdapter() {
         view = LayoutInflater.from(context as Context?).inflate(R.layout.card, parent, false)
         title = view.findViewById(R.id.title)
         price = view.findViewById(R.id.price)
+        image = view.findViewById(R.id.imageView)
         title.text = cardList[position].getTitle()
         price.text = cardList[position].getPrice()
+        val base64Image = cardList[position].getPrice() as String
+        val imageT = android.util.Base64.decode(base64Image, android.util.Base64.DEFAULT)
+        val bitmap = android.graphics.BitmapFactory.decodeByteArray(imageT, 0, imageT.size)
+        image.background =
+            android.graphics.drawable.BitmapDrawable((context as Context).resources, bitmap)
+
+
+
         return view
     }
 
 
 }
+

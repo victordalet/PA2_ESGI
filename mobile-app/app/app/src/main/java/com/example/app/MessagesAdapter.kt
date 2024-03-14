@@ -36,9 +36,7 @@ class MessagesAdapter() : BaseAdapter() {
         }
         val message = messages[position]
         val messageView = view?.findViewById(R.id.messageUser) as TextView
-        val createdByView = view.findViewById(R.id.nameUser) as TextView
         messageView.text = message.getMessage()
-        createdByView.text = message.getCreatedBy()
         return view
 
     }

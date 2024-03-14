@@ -45,9 +45,7 @@ class MainActivity : AppCompatActivity() {
                     }
 
                     override fun onResponse(call: okhttp3.Call, response: okhttp3.Response) {
-                        println("Response: $response")
                         val responseBody: String? = response.body()?.string()
-                        println("Response: $responseBody")
                         if (responseBody == "{\"connection\":null}") {
                             runOnUiThread {
                                 createError()

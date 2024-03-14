@@ -44,9 +44,11 @@
 
         <ListView
             android:id="@+id/listMessagesView"
-            android:layout_margin="16dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="0dp"
+            android:layout_margin="16dp"
+            android:layout_weight="1"
+            android:transcriptMode="alwaysScroll" />
 
         <EditText
             android:id="@+id/message"
@@ -90,7 +92,10 @@
         <ListView
             android:id="@+id/listServicesView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="0dp"
+            android:layout_margin="16dp"
+            android:layout_weight="1"
+            android:transcriptMode="alwaysScroll" />
 
 
     </LinearLayout>
