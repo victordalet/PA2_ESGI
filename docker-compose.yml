@@ -67,6 +67,19 @@ services:
     networks:
       - web
 
+  scraper:
+    build: scraper/
+    ports:
+      - ${SCRAPER_PORT}:5000
+    environment:
+      MYSQL_HOST: ${MYSQL_HOST}
+      MYSQL_PORT: ${MYSQL_PORT}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    networks:
+      - web
+
 networks:
   web:
     external: true
