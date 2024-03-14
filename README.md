@@ -9,13 +9,15 @@
 ![React](https://img.shields.io/badge/-React-61dafb?style=for-the-badge&logo=react&logoColor=white)
 ![NestJS](https://img.shields.io/badge/-NestJS-ea2845?style=for-the-badge&logo=nestjs&logoColor=white)
 ![Python](https://img.shields.io/badge/-Python-3776ab?style=for-the-badge&logo=python&logoColor=white)
+![Kotlin](https://img.shields.io/badge/-Kotlin-0095d5?style=for-the-badge&logo=kotlin&logoColor=white)
 
 ## Documentation
 
 ---
 
 - Desktop app : https://doc.qt.io/qtforpython-6/examples/example_3d_simple3d.html
-- Sass : https://sass-lang.com/documentation
+- Kotlin Android : https://developer.android.com/codelabs/build-your-first-android-app-kotlin#0
+- Sass : https://sass-lang.com/guide/
 - React : https://fr.reactjs.org/docs/getting-started.html
 - Typescript : https://www.typescriptlang.org/docs/handbook/typescript-in-5-minutes.html
 - NestJS : https://docs.nestjs.com/

@@ -1,0 +1,46 @@
+.container-user {
+  h2 {
+    font-size: 3em;
+    font-weight: bold;
+    font-family: "Inter", serif;
+    margin-top: 50px;
+  }
+}
+
+.container-filter {
+  width: 50vw;
+  height: 10vh;
+  box-shadow: 0 10px 50px 0 rgba(#05043e, 0.25);
+  border-radius: 20px;
+  position: absolute;
+  top: 5vh;
+  left: calc(25vw + 50px);
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  padding: 15px;
+
+  input {
+    width: 30%;
+    height: 40px;
+    border: none;
+    outline: none;
+    padding: 0 20px;
+    font-family: "Inter", sans-serif;
+    border-radius: 10px;
+  }
+
+  select {
+    width: 30%;
+    height: 40px;
+    border: none;
+    outline: none;
+    padding: 0 20px;
+    font-family: "Inter", sans-serif;
+    border-radius: 10px;
+  }
+
+  .premium-checkbox {
+    display: flex;
+  }
+}

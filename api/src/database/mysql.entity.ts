@@ -18,6 +18,8 @@ export class DatabaseEntity {
             password: process.env.MYSQL_PASSWORD,
             database: process.env.MYSQL_DATABASE,
         });
+
+        console.log(process.env.MYSQL_PORT);
     }
 
 }
