@@ -124,6 +124,7 @@ export class LocationRepository {
     }
 
     async getMessagesByLocationOccupationId(locationOccupationId: number) {
+        console.log(locationOccupationId);
         return this.db.query("SELECT * FROM location_message WHERE location_occupation_id = ?", [locationOccupationId]);
     }
 

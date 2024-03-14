@@ -17,6 +17,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var loginButton: Button
     private val client = OkHttpClient()
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -25,11 +26,12 @@ class MainActivity : AppCompatActivity() {
         this.email = findViewById(R.id.email)
         this.loginButton = findViewById(R.id.loginButton)
         this.loginButton.setOnClickListener(View.OnClickListener {
-            val apiPath = "http://192.168.1.13:3001/user/connection"
+            val apiPath = "http://10.66.125.162:3001/user/connection"
             try {
 
                 val emailValue = this.email.text.toString()
                 val passwordValue = this.password.text.toString()
+
                 val request = okhttp3.Request.Builder().url(apiPath).post(
                     okhttp3.RequestBody.create(
                         okhttp3.MediaType.parse("application/json"),

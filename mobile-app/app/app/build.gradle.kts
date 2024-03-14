@@ -38,6 +38,7 @@ android {
 dependencies {
 
     implementation("androidx.core:core-ktx:1.12.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.11.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
@@ -48,4 +49,5 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-gson:2.6.1")
     implementation("com.jakewharton.picasso:picasso2-okhttp3-downloader:1.1.0")
     implementation("com.google.code.gson:gson:2.8.5")
+    implementation("androidx.webkit:webkit:1.8.0")
 }
