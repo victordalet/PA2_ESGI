@@ -2,7 +2,7 @@ import mysql.connector
 import prenoms
 import sys
 import datetime
-
+import csv
 
 class Main:
     db: mysql.connector.connection.MySQLConnection
@@ -80,15 +80,19 @@ class Main:
              self.prenoms + '@gmail.com',
              'test', 'test', 100, 100))
     
-    def translation(self):
-        fr = ["type de bien",
-              "type de location",
-              ""
-              ]
-        en = []
-
-
-
+    def translations(self, filename):
+        cursor = self.db.curscor()
+        with open(filename, newline='', encoding='utf-8') as csvfile:
+            reader = csv.reader(csvfile, delimiter=',')
+            for row in reader:
+                word = row[0]
+                translation = row[1]
+                cursor.execute(
+                    "INSERT INTO translation"
+                    "(language, word, translation) "
+                    "VALUE (%s,%s,%s)",
+                    ('fr', word, translation)
+                )                
 
 if __name__ == "__main__":
     Main()
