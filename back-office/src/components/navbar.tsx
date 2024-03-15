@@ -52,6 +52,11 @@ export class Navbar extends React.Component {
             icon: 'ai-plus'
         },
         {
+            name: "Scrapers",
+            url: "/scraper",
+            icon: "ai-android-fill"
+        },
+        {
             name: "Theme",
             url: "#",
             icon: "ai-flashlight"

@@ -4,15 +4,15 @@ from scraper import Scraper
 from flask_cors import CORS, cross_origin
 from flask import Flask, request, jsonify
 from flasgger import Swagger
-from datetime import datetime
+import datetime
 import json
+import urllib.request
 
 
 class Main:
     url: str
     type: str
     db: mysql.connector.connection.MySQLConnection
-    scraper: Scraper
 
     def __init__(self):
         self.db = mysql.connector.connect(
@@ -22,11 +22,15 @@ class Main:
             password=sys.argv[3],
             database=sys.argv[4]
         )
-        self.scraper = Scraper()
 
     def insert_location(self, name, description, price, picture, address,
                         latitude, longitude, capacity, type):
         cursor = self.db.cursor()
+        cursor.execute(
+            "SELECT id FROM location ORDER BY id DESC LIMIT 1"
+        )
+        last_id = cursor.fetchall()
+        last_id = last_id[0][0] + 1
         cursor.execute(
             "INSERT INTO location "
             "(created_at,updated_at,"
@@ -41,7 +45,7 @@ class Main:
                 name,
                 description,
                 price,
-                picture,
+                ' ',
                 address,
                 latitude,
                 longitude,
@@ -49,26 +53,8 @@ class Main:
                 type
             )
         )
-
-    def insert_service(self, name, description, price, picture, location_id):
-        cursor = self.db.cursor()
-        cursor.execute(
-            "INSERT INTO service "
-            "(created_at,updated_at,"
-            "created_by,name,description,"
-            "price,picture,location_id) "
-            "VALUES (%s,%s,%s,%s,%s,%s,%s,%s)",
-            (
-                datetime.datetime.now(),
-                datetime.datetime.now(),
-                'admin',
-                name,
-                description,
-                price,
-                picture,
-                location_id
-            )
-        )
+        self.db.commit()
+        urllib.request.urlretrieve(picture, f'pictures/location-{last_id}.png')
 
 
 if __name__ == "__main__":
@@ -82,10 +68,18 @@ if __name__ == "__main__":
     swagger = Swagger(app)
 
     @app.route("/type", methods=["GET"])
+    @cross_origin()
     def get_select_type():
-        return jsonify(["airbnb", "seloger"])
+        """
+        Get Select Type
+        ---
+        responses:
+            200:
+                description : ["airbnb", "booking"]
+        """
+        return jsonify(["airbnb", "booking"])
 
-    @app.route("/scrap", methods=["POST"])
+    @app.route("/scrape", methods=["POST"])
     @cross_origin()
     def scrap():
         """
@@ -106,16 +100,28 @@ if __name__ == "__main__":
         responses:
             200:
                 description : {"response":"success"}
-        :return:
         """
         key = request.data
         key = json.loads(key)
-        url = key['url']
-        type = key['type']
-        scraper = Scraper()
-        scraper.set_url(url)
-        scraper.set_type(type)
-        scraper.scrape()
+        type_scrape = key['type']
+        nb_max = key['nb_max']
+        scraper = Scraper(type_scrape)
+        data = scraper.scrape()
+        print(data)
+        for i in range(len(data["names"])):
+            if i == nb_max:
+                break
+            main.insert_location(
+                data["names"][i],
+                "description",
+                data["prices"][i],
+                data["pictures"][i],
+                data["address"][i],
+                0,
+                0,
+                0,
+                type_scrape
+            )
         return jsonify({"response": "success"})
 
     app.run(host="0.0.0.0", port=5000)

@@ -7,4 +7,5 @@ export {default as Service} from './service';
 export {default as Ticket} from './ticket';
 export {default as User} from './user';
 export {default as Accept} from './accept';
+export {default as Scraper} from './scraper';
 
