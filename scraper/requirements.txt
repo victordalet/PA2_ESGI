@@ -1,0 +1,5 @@
+mysql-connector-python
+flask==3.0.0
+flask_cors==4.0.0
+flasgger
+undetected-chromedriver
