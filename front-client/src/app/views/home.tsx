@@ -8,6 +8,7 @@ import {ChatBot} from "../../components/chatBot";
 import {Language} from "../../components/language";
 
 
+
 export default class HomeView extends React.Component <ViewProps> {
 
 

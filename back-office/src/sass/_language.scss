@@ -9,6 +9,10 @@
     justify-content: center;
     align-items: center;
 
+    @media (max-width: 768px) {
+        left: 0;
+    }
+
 
     .form {
         display: flex;
@@ -17,8 +21,13 @@
         justify-content: space-evenly;
         border-radius: 20px;
         box-shadow: 0 10px 50px 0 rgba(#05043e, .25);
-        width: 30vw;
+        width: 400px;
         height: 30vh;
+
+
+        @media (max-width: 768px) {
+            margin-left: 50px;
+        }
 
         input {
             width: 80%;

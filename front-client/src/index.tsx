@@ -8,6 +8,7 @@ import './sass/index.scss';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import {isBot} from "./security/isBot";
 
+
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
 );
