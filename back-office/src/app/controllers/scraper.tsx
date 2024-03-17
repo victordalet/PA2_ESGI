@@ -21,13 +21,13 @@ export default class Controllers extends Component<
         haveToken();
         this.getType();
         this.scraperViewModel = new ScraperViewModel();
+        this.scraperViewModel.openPopup(1);
     }
 
 
     state: ControllerState = {
         types: []
     };
-
 
     private getType = async () => {
         const apiPath = process.env.SCRAPER_HOST || 'http://localhost:3005';
@@ -44,7 +44,7 @@ export default class Controllers extends Component<
         const type = selectInput.value;
         const nbMax = selectInputNbMax.value;
         const apiPath = process.env.SCRAPER_HOST || 'http://localhost:3005';
-        this.scraperViewModel.openPopup();
+        this.scraperViewModel.openPopup(0);
         await fetch(apiPath + '/scrape', {
             method: 'POST',
             headers: {
