@@ -65,6 +65,14 @@ export class UserController {
         return await this.userService.isBail();
     }
 
+    @Post('isPrestataire')
+    @ApiOperation({summary: 'Check if user is prestataire'})
+    @ApiOkResponse({description: 'user'})
+    async isPrestataire(@Headers('authorization') token: string) {
+        await this.tokenValidation.validatePrestataireToken(token);
+        return await this.userService.isPrestataire();
+    }
+
     @Post('isAdmin')
     @ApiOperation({summary: 'Check if user is admin'})
     @ApiOkResponse({description: 'user'})
@@ -91,8 +99,8 @@ export class UserController {
     @Post('request-bail')
     @ApiOperation({summary: 'Request bail'})
     @ApiOkResponse({description: 'user'})
-    async requestBail(@Headers('authorization') token: string) {
-        return await this.userService.requestBail(token);
+    async requestBail(@Headers('authorization') token: string,@Body() body: {rule:string}) {
+        return await this.userService.requestBail(token, body.rule);
     }
 
     @Post('get-request-bail')
@@ -167,12 +175,6 @@ export class UserController {
         return await this.userService.updatePassword(body, token);
     }
 
-    @Patch('role')
-    @ApiOperation({summary: 'Update role'})
-    @ApiOkResponse({description: 'user'})
-    async updateRole(@Headers('authorization') token: string, @Body() body: UserBody) {
-        return await this.userService.UpdateRole(body);
-    }
 
     @Patch('roleadmin')
     @ApiOperation({summary: 'Update role to admin'})

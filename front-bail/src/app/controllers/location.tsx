@@ -1,7 +1,7 @@
 import React from "react";
 import {ControllerProps, ControllerState, LocationService} from "../@types/location";
 import LocationViewModel from "../view-models/location";
-import {haveToken} from "../../security/token";
+import {haveBailToken, haveToken} from "../../security/token";
 import LocationView from "../views/location";
 
 export default class Controller extends React.Component<
@@ -19,6 +19,11 @@ export default class Controller extends React.Component<
     constructor(props: ControllerProps) {
         super(props);
         haveToken();
+        haveBailToken().then(r => {
+            if (!r) {
+                document.location.href = "/home";
+            }
+        });
         this.locationViewModel = new LocationViewModel();
         this.fetchService();
     }

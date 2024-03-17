@@ -89,14 +89,18 @@ export class UserRepository {
     }
 
 
-    async updateRole(userInformation: User) {
-        await this.db.query("UPDATE USER SET rules = 'user_request_to_bail', updated_at = ? WHERE email = ?",
-            [new Date(), userInformation.email]);
+    async updateRole(userInformation: User, rule: string) {
+        await this.db.query("UPDATE USER SET rules = ?, updated_at = ? WHERE email = ?",
+            [`request-${rule}`, new Date(), userInformation.email]);
     }
 
     async updateRoleBail(email: string) {
-        await this.db.query("UPDATE USER SET rules = 'BAIL', updated_at = ? WHERE email = ?",
-            [new Date(), email]);
+        const [row, field] = await this.db.query("SELECT rules FROM USER WHERE email = ?", [email]);
+        if (row[0].rules.includes("request")) {
+            const newRule = row[0].rules.split("-")[1];
+            await this.db.query("UPDATE USER SET rules = ?, updated_at = ? WHERE email = ?",
+                [newRule, new Date(), email]);
+        }
     }
 
     async updateRoleAdmin(userInformation: User) {

@@ -70,12 +70,17 @@ export default class ConnectionController extends Component<ControllerProps, Con
             return;
         }
         const apiPath = process.env.API_HOST || 'http://localhost:3001';
+        const rule = document.querySelector<HTMLSelectElement>('#typeRequest')?.value || '';
+        if (rule === '') {return;}
         await fetch(apiPath + '/user/request-bail', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'authorization': localStorage.getItem('token') || ''
-            }
+            },
+            body: JSON.stringify({
+                rule : rule,
+            })
         });
         this.connectionViewModel.openPopup(2);
     };
