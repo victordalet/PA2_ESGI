@@ -59,7 +59,7 @@ export class ServiceController {
     @ApiCreatedResponse({description: 'Service'})
     @ApiBadRequestResponse({description: 'Request body is not valid'})
     async getServiceByLocation(@Headers('authorization') token: string, @Body() body: LocationLiaison) {
-        await this.tokenValidation.validateBailToken(token);
+        await this.tokenValidation.validateToken(token);
         return this.serviceService.getServiceByLocation(body);
     }
 

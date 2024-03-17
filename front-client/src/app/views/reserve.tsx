@@ -30,7 +30,9 @@ export class ReserveView extends React.Component <ViewProps> {
             servicesGlobal,
             addService,
             servicesSelected,
-            eventCalendar
+            eventCalendar,
+            fetchMessagesForBail,
+            postMessageForBail
         } = this.props;
 
         let cardToRemoveIndex = 0;
@@ -241,7 +243,22 @@ export class ReserveView extends React.Component <ViewProps> {
 
                                     <div className={"container-message"}>
                                         <h3>Messages</h3>
+                                        {
+                                            isBail ?
+                                                <select id={"message-select"} onChange={fetchMessagesForBail}>
+                                                    {eventCalendar.map((event, index) => {
+                                                        return (
+                                                            <option
+                                                                value={event.id}>{event.user_email} -
+                                                                {event.from_datetime.split('T')[0]} /
+                                                                {event.to_datetime.split('T')[0]}</option>
+                                                        );
+                                                    })}
+                                                </select>
+                                                : ''
+                                        }
                                         <div className={"messages"}>
+
                                             {
                                                 messages.map((message, index) => {
                                                     return (
@@ -253,7 +270,12 @@ export class ReserveView extends React.Component <ViewProps> {
                                             }
                                         </div>
                                         <input type={"text"} id={"message-input"}/>
-                                        <i className={"ai-paper-airplane"} onClick={addMessage}></i>
+                                        {
+                                            isBail ?
+                                                <i className={"ai-paper-airplane"} onClick={postMessageForBail}></i>
+                                                :
+                                                <i className={"ai-paper-airplane"} onClick={addMessage}></i>
+                                        }
                                     </div>
                                 </div>
                             )

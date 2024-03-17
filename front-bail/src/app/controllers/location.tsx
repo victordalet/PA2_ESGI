@@ -34,6 +34,10 @@ export default class Controller extends React.Component<
         this.locationViewModel.addServiceToForm(service, index);
     };
 
+    private validationCaptcha = (value: any) => {
+        console.log(value);
+    };
+
 
     private fetchService = async () => {
         const apiPath = process.env.API_HOST || 'http://localhost:3001';
@@ -98,6 +102,7 @@ export default class Controller extends React.Component<
     render() {
         return (
             <LocationView
+                validationCaptcha={this.validationCaptcha}
                 addServiceToForm={this.addServiceSelected}
                 service={this.state.service}
                 activeStep2={this.locationViewModel.activeStep2}

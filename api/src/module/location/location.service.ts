@@ -57,8 +57,8 @@ export class LocationService {
         return await this.LocationRepository.getMessagesByLocationOccupationId(locationOccupationId);
     }
 
-    async addMessageByLocationOccupationId(locationOccupationId: number, message: string) {
-        return await this.LocationRepository.addMessageToLocationOccupation(locationOccupationId, message);
+    async addMessageByLocationOccupationId(locationOccupationId: number, message: string, token: string) {
+        return await this.LocationRepository.addMessageToLocationOccupation(locationOccupationId, message, token);
     }
 
     async deleteLocationOccupation(locationId: number) {

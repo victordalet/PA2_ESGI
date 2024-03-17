@@ -102,7 +102,7 @@ export class LocationController {
     @ApiBadRequestResponse({description: 'Request body is not valid'})
     async addMessageByLocationOccupationId(@Headers('authorization') token: string, @Body() body: LocationMessage) {
         await this.tokenValidation.validateToken(token);
-        return this.locationService.addMessageByLocationOccupationId(body.location_occupation_id, body.message);
+        return this.locationService.addMessageByLocationOccupationId(body.location_occupation_id, body.message, token);
     }
 
     @Post('get-messages')

@@ -7,6 +7,7 @@ export interface ViewProps {
     service: Service[];
     activeStep2: () => void;
     addServiceToForm: (service: LocationService, index: number) => void;
+    validationCaptcha: (value: any) => void;
 }
 
 export interface ControllerProps {

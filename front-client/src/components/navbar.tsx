@@ -73,6 +73,9 @@ export class Navbar extends React.Component {
                                         document.body.style.backgroundColor = "black";
                                     }
                                 }
+                                if (item.url === "/login") {
+                                    localStorage.removeItem('token');
+                                }
                             }}>
                                 <i className={item.icon}></i>
                                 <span>{item.name}</span>

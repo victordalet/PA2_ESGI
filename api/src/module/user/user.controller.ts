@@ -20,7 +20,7 @@ export class UserController {
     @ApiOkResponse({description: 'user'})
     @ApiNotFoundResponse({description: 'No user found'})
     async getUser(@Headers('authorization') token: string) {
-        await this.tokenValidation.validateAdminToken(token);
+        await this.tokenValidation.validateToken(token);
         return await this.userService.GetUser();
     }
 
@@ -123,7 +123,7 @@ export class UserController {
     @ApiOperation({summary: 'Token to mail'})
     @ApiOkResponse({description: 'user'})
     async tokenToMail(@Headers('authorization') token: string) {
-        await this.tokenValidation.validateBailToken(token);
+        await this.tokenValidation.validateToken(token);
         return await this.userService.getEmailByToken(token);
     }
 

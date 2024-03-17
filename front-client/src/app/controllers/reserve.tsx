@@ -12,6 +12,7 @@ import {Navbar} from "../../components/navbar";
 import {ServiceResponse} from "../@types/service";
 import ReserveViewModel from "../view-models/reserve";
 import {PDFDocument, StandardFonts, rgb} from 'pdf-lib';
+import {haveToken} from "../../security/token";
 
 export default class Controller extends React.Component<
     ControllerProps,
@@ -28,6 +29,7 @@ export default class Controller extends React.Component<
 
     constructor(props: ControllerProps) {
         super(props);
+        haveToken();
         this.idResa = 0;
         this.id = parseInt(document.location.href.split('?')[1].split('&')[0]);
         this.type = document.location.href.split('&a=')[1].includes('true');
@@ -340,10 +342,47 @@ export default class Controller extends React.Component<
         });
         const data: SubscriptionUtilisation[] = await response.json();
         if (data.length === 0) {
-            const dateToReturn =  new Date().getTime() - 12 * 30 * 24 * 60 * 60 * 1000;
+            const dateToReturn = new Date().getTime() - 12 * 30 * 24 * 60 * 60 * 1000;
             return new Date(dateToReturn).toISOString().split('T')[0];
         }
         return data.sort((a, b) => new Date(b.last_date_free_service).getTime() - new Date(a.last_date_free_service).getTime())[0].last_date_free_service;
+    };
+
+    public fetchMessagesForBail = async () => {
+        const idLocation = document.querySelector<HTMLInputElement>('#message-select')?.value;
+        const apiPath = process.env.API_HOST || 'http://localhost:3001';
+        const response = await fetch(apiPath + this.apiSubPath + '/get-messages', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'authorization': localStorage.getItem('token') || ''
+            },
+            body: JSON.stringify({
+                location_id: idLocation
+            })
+        });
+        const messages = await response.json();
+        this.setState({messages: messages[0]});
+    };
+
+    public postMessageForBail = async () => {
+        const idLocation = document.querySelector<HTMLInputElement>('#message-select')?.value;
+        const message = document.querySelector<HTMLInputElement>('#message-input');
+        if (message !== null) {
+            const apiPath = process.env.API_HOST || 'http://localhost:3001';
+            await fetch(apiPath + this.apiSubPath + '/add-message', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'authorization': localStorage.getItem('token') || ''
+                },
+                body: JSON.stringify({
+                    location_occupation_id: idLocation,
+                    message: message.value
+                })
+            });
+            await this.fetchMessagesForBail();
+        }
     };
 
 
@@ -587,6 +626,8 @@ export default class Controller extends React.Component<
         }
 
         return <ReserveView
+            fetchMessagesForBail={this.fetchMessagesForBail}
+            postMessageForBail={this.postMessageForBail}
             eventCalendar={this.state.eventCalendar}
             servicesSelected={this.state.servicesSelected}
             addService={this.reserveViewModel.addService}
