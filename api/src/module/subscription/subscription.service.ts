@@ -25,8 +25,8 @@ export class SubscriptionService {
         return await this.SubscriptionRepository.deleteSubscription(id);
     }
 
-    async userIsSubscribed(email: string): Promise<boolean> {
-        return await this.SubscriptionRepository.userIsSubscribed(email);
+    async userIsSubscribed(token: string) {
+        return await this.SubscriptionRepository.userIsSubscribed(token);
     }
 
 
@@ -36,5 +36,10 @@ export class SubscriptionService {
 
     async unsubscribeUserByToken(token: string) {
         return await this.SubscriptionRepository.unsubscribeUserByToken(token);
+    }
+
+    async lastDateFreeService(token: string) {
+        return await this.SubscriptionRepository.lastDateFreeService(token);
+
     }
 }

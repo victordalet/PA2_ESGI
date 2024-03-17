@@ -9,6 +9,11 @@
     top: 0;
     left: 50px;
 
+
+    @media (max-width: 768px) {
+        left: 0;
+    }
+
     h1 {
         font-size: 2.5rem;
         font-family: 'Inter', sans-serif;
@@ -25,21 +30,31 @@
     }
 
     .calendar {
-        margin-top: -150px;
         margin-bottom: 100px;
         box-shadow: 0 10px 50px 0 rgba(#05043e, .25);
         padding: 20px;
         border-radius: 20px;
         z-index: 3;
+
+        @media (max-width: 768px) {
+            margin-left: 50px;
+        }
+
     }
 
     .services {
         width: calc(100% - 50px);
         overflow-x: scroll;
         position: relative;
-        height: 30vh;
+        height: 350px;
         margin-left: 250px;
         white-space: nowrap;
+        scrollbar-width: none;
+
+        @media (max-width: 768px) {
+            margin-left: 50px;
+            position: relative;
+        }
 
         .card {
             display: inline-block;
@@ -54,6 +69,11 @@
         justify-content: space-evenly;
         align-items: center;
 
+        @media (max-width: 768px) {
+            flex-direction: column;
+            height: 100%;
+        }
+
         .description-text {
             width: calc(45% - 40px);
             font-family: 'Inter', sans-serif;
@@ -61,6 +81,12 @@
             height: calc(100% - 40px);
             border-radius: 20px;
             padding: 20px;
+
+            @media (max-width: 768px) {
+                width: 100%;
+                margin-left: 50px;
+                margin-bottom: 50px;
+            }
 
             h3 {
                 font-size: 1em;
@@ -85,6 +111,11 @@
             font-family: 'Inter', sans-serif;
             box-shadow: 0 10px 50px 0 rgba(#05043e, .25);
             border-radius: 20px;
+
+            @media (max-width: 768px) {
+                width: calc(100% + 40px);
+                margin-left: 50px;
+            }
 
 
             ul {
@@ -162,6 +193,11 @@
         font-size: 1.5em;
         margin-top: 50px;
 
+        @media (max-width: 768px) {
+            transform: scale(.8);
+            margin-left: 50px;
+        }
+
         ul {
             display: flex;
             justify-content: center;
@@ -190,8 +226,8 @@
     }
 
     .container-message {
-        width: 30vw;
-        height: 30vh;
+        width: 600px;
+        height: 40vh;
         border-radius: 20px;
         box-shadow: 0 10px 50px 0 rgba(#05043e, .25);
         margin-bottom: 50px;
@@ -200,6 +236,26 @@
         margin-top: 50px;
         text-align: center;
         padding-top: 20px;
+
+        @media (max-width: 768px) {
+            width: 90vw;
+            margin-left: 50px;
+            margin-bottom: 100px;
+        }
+
+
+
+        #message-select {
+            position: relative;
+            margin-bottom: 20px;
+            width: 80%;
+            background-color: $secondaryColor;
+            color: #FFFFFF;
+            border-radius: 20px;
+            padding-left: 10px;
+            height: 40px;
+        }
+
 
         .messages {
             width: 80%;
@@ -236,6 +292,12 @@
             border-radius: 10px;
             margin-bottom: 20px;
             margin-top: 10%;
+
+            @media (max-width: 768px) {
+                margin-left: 10px;
+            }
+
+
         }
 
         i {
@@ -243,6 +305,11 @@
             position: relative;
             left: -7%;
             top: 1%;
+
+            @media (max-width: 768px) {
+                left: -10%;
+            }
+
         }
 
     }

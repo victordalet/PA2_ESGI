@@ -32,6 +32,7 @@ export default class Connection extends PureComponent<ViewProps> {
 
                         <button type="submit" onClick={testLogin} className={"submit"}>Log in</button>
                         <a href={'sign-in'}>Sign in</a>
+                        <a href={'/home'}>Access with no account</a>
                     </div>
                 </div>
             </div>

@@ -1,6 +1,7 @@
 import ViewModel from '../view-models/Home';
 
 export interface ViewProps {
+    typeUser: string;
 }
 
 export interface ControllerProps {
@@ -8,6 +9,9 @@ export interface ControllerProps {
 }
 
 export interface ControllerState {
+    service: any[];
+    location: any[];
+    typeUser: string;
 }
 
 

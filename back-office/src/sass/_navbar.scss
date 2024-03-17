@@ -1,6 +1,26 @@
 .navbar {
 
     width: 75px;
+    position: fixed;
+    top: -24px;
+    left: 0;
+    z-index: 12;
+
+    .burger {
+        display: none;
+
+        @media (max-width: 768px) {
+            display: block;
+            position: absolute;
+            top: 40px;
+            left: 20px;
+            z-index: 12;
+            cursor: pointer;
+            font-size: 1.5rem;
+            transition: .5s;
+        }
+
+    }
 
 
     ul {
@@ -11,7 +31,9 @@
         padding: .75rem;
         border-radius: 10px;
         box-shadow: 0 10px 50px 0 rgba(#05043e, .25);
-        height: 95vh;
+        height: 100vh;
+        z-index: 3;
+        transition: .5s;
 
 
         li + li {
@@ -45,6 +67,7 @@
 
             span {
                 position: absolute;
+                z-index: 3;
                 background-color: $primaryColor;
                 white-space: nowrap;
                 padding: .5rem 1rem;
@@ -66,12 +89,19 @@
                     top: 50%;
                     transform: translatey(-50%) rotate(45deg);
                     border-radius: 3px;
+                    z-index: 3;
                 }
             }
 
 
         }
 
+        @media (max-width: 768px) {
+            transform: translateX(-70px);
+        }
+
 
     }
+
+
 }

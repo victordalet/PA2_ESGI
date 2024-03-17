@@ -127,7 +127,9 @@ export class LocationRepository {
         return this.db.query("SELECT * FROM location_message WHERE location_occupation_id = ?", [locationOccupationId]);
     }
 
-    async addMessageToLocationOccupation(locationOccupationId: number, message: string) {
+    async addMessageToLocationOccupation(locationOccupationId: number, message: string, token: string) {
+        const [rows, filed] = await this.db.query("SELECT email FROM USER WHERE connection = ?", [token]);
+        await this.db.query("INSERT INTO message (message, created_at, updated_at, to_user, created_by) VALUES (?, ?, ?, ?, ?)", [message, new Date(), new Date(), ' ', rows[0].email]);
         return this.db.query("INSERT INTO location_message (created_at, updated_at, location_occupation_id, message) VALUES (?, ?, ?, ?)", [new Date(), new Date(), locationOccupationId, message]);
     }
 

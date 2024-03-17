@@ -1,5 +1,7 @@
 import {Location, LocationAvailability} from "../../core/location";
 import {LocationRepository} from "./location.repository";
+import * as NodeGeocoder from 'node-geocoder';
+import node_geocoder from 'node-geocoder';
 
 export class LocationService {
 
@@ -14,6 +16,13 @@ export class LocationService {
     }
 
     async createLocation(location: Location) {
+        const options: NodeGeocoder.Options = {
+            provider: 'openstreetmap',
+        };
+        const geocoder = node_geocoder(options);
+        const res = await geocoder.geocode(location.address);
+        location.latitude = res[0].latitude;
+        location.longitude = res[0].longitude;
         return await this.LocationRepository.createLocation(location);
     }
 
@@ -57,8 +66,8 @@ export class LocationService {
         return await this.LocationRepository.getMessagesByLocationOccupationId(locationOccupationId);
     }
 
-    async addMessageByLocationOccupationId(locationOccupationId: number, message: string) {
-        return await this.LocationRepository.addMessageToLocationOccupation(locationOccupationId, message);
+    async addMessageByLocationOccupationId(locationOccupationId: number, message: string, token: string) {
+        return await this.LocationRepository.addMessageToLocationOccupation(locationOccupationId, message, token);
     }
 
     async deleteLocationOccupation(locationId: number) {

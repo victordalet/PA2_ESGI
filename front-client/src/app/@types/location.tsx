@@ -29,8 +29,8 @@ export interface LocationResponse {
     description: string;
     accepted?: boolean;
     address: string;
-    latitude: number;
-    longitude: number;
+    latitude?: number;
+    longitude?: number;
     capacity: number;
     price: number;
     type: string;

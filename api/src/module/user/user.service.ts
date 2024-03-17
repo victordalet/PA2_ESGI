@@ -66,9 +66,6 @@ export class UserService {
         return await this.UserRepository.updateUsername(userInformation);
     }
 
-    async UpdateRole(userInformation: User) {
-        return await this.UserRepository.updateRole(userInformation);
-    }
 
     async UpdateRoleAdmin(userInformation: User) {
         const user = await this.GetUserByEmail(userInformation.email);
@@ -99,6 +96,10 @@ export class UserService {
         return {connection: true};
     }
 
+    async isPrestataire() {
+        return {connection: true};
+    }
+
     async getStats(): Promise<StatsUser> {
         const users = await this.GetUser();
         let date = new Date();
@@ -125,16 +126,16 @@ export class UserService {
         return {email: user.email};
     }
 
-    async requestBail(token: string) {
+    async requestBail(token: string, rule: string) {
         const user = await this.UserRepository.getUserByToken(token);
-        if (user.rules !== ("user_request_to_bail" || "ADMIN")) {
-            await this.UserRepository.updateRole(user);
+        if (user.rules !== ("ADMIN")) {
+            await this.UserRepository.updateRole(user, rule);
         }
     }
 
     async getRequestBail() {
         const user = await this.UserRepository.getUser();
-        return user.filter(user => user.rules === "user_request_to_bail");
+        return user.filter(user => user.rules.includes("request"));
     }
 
     async acceptRequestBail(email: string) {

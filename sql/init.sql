@@ -238,6 +238,13 @@ create table translation
     translation varchar(100) not null
 );
 
+create table subscription_utilisation
+(
+    id             int primary key auto_increment,
+    email         varchar(100) not null references USER (email),
+    last_date_free_service datetime not null
+);
+
 
 
 insert into USER (email, password, name, rules, created_at, updated_at, address)

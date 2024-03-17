@@ -5,6 +5,7 @@ import {ControllerProps, ControllerState} from '../@types/Home';
 import View from '../views/home';
 import HomeViewModel from "../view-models/Home";
 import {Navbar} from "../../components/navbar";
+import {LocationResponse} from "../@types/location";
 
 @observer
 export default class HomeController extends Component<
@@ -42,19 +43,18 @@ export default class HomeController extends Component<
         });
     };
 
-    private fetchLocation = () => {
+    private fetchLocation = async () => {
         const apiPath = process.env.API_HOST || 'http://localhost:3001';
-        fetch(apiPath + '/location', {
+        const response = await fetch(apiPath + '/location', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
                 'authorization': localStorage.getItem('token') || ''
             }
-        }).then((res) => {
-            res.json().then((data) => {
-                this.setState({location: data});
-            });
         });
+        const data: LocationResponse[] = await response.json();
+        this.setState({location: data});
+
     };
 
 

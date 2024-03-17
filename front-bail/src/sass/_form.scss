@@ -7,6 +7,10 @@
     margin: 0 auto 50px;
     font-family: 'Inter', sans-serif;
 
+    @media (max-width: 768px) {
+        width: 80vw;
+    }
+
     .step2 {
         display: flex;
         justify-content: space-evenly;

@@ -1,5 +1,6 @@
 import {Connection} from "mysql2/promise";
 import {DatabaseEntity} from "../../database/mysql.entity";
+import {LocationMessage} from "../../core/message";
 
 export class MessageRepository {
     private db: Connection;

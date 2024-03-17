@@ -4,6 +4,7 @@ import {Language} from "../../components/language";
 import {ViewProps} from "../@types/location";
 import {Card} from "../../components/card";
 import {PopupError} from "../../components/popup";
+import ReCAPTCHA from "react-google-recaptcha";
 
 export default class LocationView extends React.Component <ViewProps> {
     render() {
@@ -14,7 +15,8 @@ export default class LocationView extends React.Component <ViewProps> {
             storeFormInJSON,
             service,
             activeStep2,
-            addServiceToForm
+            addServiceToForm,
+            validationCaptcha
         } = this.props;
 
         return (
@@ -156,6 +158,10 @@ export default class LocationView extends React.Component <ViewProps> {
                             <a href={"#"}>Déclaration de confidentialité</a>
                         </div>
 
+                        <ReCAPTCHA
+                            sitekey="6LfIvZspAAAAAFzFfvk2JWywUKLZGf2VJhCnGOmz"
+                            onChange={validationCaptcha}
+                        />,
                         <div className={"step"}>
                             <button onClick={activeStep2} className={"submit"}>Recevoir mon étude de rentabilité
                             </button>

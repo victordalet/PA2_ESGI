@@ -36,12 +36,13 @@ export class SubscriptionRepository {
         return this.db.query("DELETE FROM subscription WHERE id = ?", [id]);
     }
 
-    async userIsSubscribed(email: string): Promise<boolean> {
-        const [rows, filed] = await this.db.query("SELECT * FROM subscription WHERE email = ?", [email]);
+    async userIsSubscribed(token: string) {
+        const [rows, filed] = await this.db.query("SELECT * FROM USER WHERE connection = ?", [token]);
         if (rows instanceof Array) {
-            return Promise.resolve(rows.length > 0);
+            const row: any = rows[0];
+            const [rows2, filed2] =  await this.db.query("SELECT * FROM subscription WHERE user_email = ?", [row.email]);
+            return rows2;
         }
-        return false
     }
 
     async subscribeUserByToken(token: string, price: number) {
@@ -69,6 +70,15 @@ export class SubscriptionRepository {
                     return this.db.query("UPDATE subscription SET deleted_at = ? WHERE user_email = ?", [new Date(), row.email]);
                 }
             }
+        }
+    }
+
+    async lastDateFreeService(token: string) {
+        const [rows, filed] = await this.db.query("SELECT * FROM USER WHERE connection = ?", [token]);
+        if (rows instanceof Array) {
+            const row: any = rows[0];
+            const [rows2, filed2] =  await this.db.query("SELECT * FROM subscription_utilisation WHERE email = ?", [row.email]);
+            return rows2;
         }
     }
 

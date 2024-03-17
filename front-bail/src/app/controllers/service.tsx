@@ -2,7 +2,7 @@ import React from "react";
 import ServiceView from "../views/service";
 import {ControllerProps, ControllerState, Service, ServiceForm} from "../@types/service";
 import ServiceViewModel from "../view-models/service";
-import {haveToken} from "../../security/token";
+import {haveBailToken, havePrestataireToken, haveToken} from "../../security/token";
 
 export default class Controller extends React.Component<
     ControllerProps,
@@ -15,6 +15,11 @@ export default class Controller extends React.Component<
     constructor(props: ControllerProps) {
         super(props);
         haveToken();
+        havePrestataireToken().then(r => {
+            if (!r) {
+                document.location.href = "/home";
+            }
+        });
         this.ServiceViewModel = new ServiceViewModel();
     }
 
