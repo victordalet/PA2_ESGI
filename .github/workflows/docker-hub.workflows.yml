@@ -1,0 +1,54 @@
+name: Publish Docker image
+on: [ release ]
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Build and push back
+        uses: docker/build-push-action@v2
+        with:
+          context: ./api
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/pa2-api:latest
+      - name: Build and push front
+        uses: docker/build-push-action@v2
+        with:
+          context: ./front-client
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/pa2-front-client:latest
+      - name: Build and push back-office
+        uses: docker/build-push-action@v2
+        with:
+          context: ./back-office
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/pa2-back-office:latest
+      - name: Build and push chat-bot
+        uses: docker/build-push-action@v2
+        with:
+          context: ./chat-bot
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/pa2-chat-bot:latest
+      - name: Build and push front-bail
+        uses: docker/build-push-action@v2
+        with:
+          context: ./front-bail
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/pa2-front-bail:latest
+      - name: Build and push scraper
+        uses: docker/build-push-action@v2
+        with:
+          context: ./scraper
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/pa2-scraper:latest
