@@ -36,7 +36,15 @@ docker-compose up
 ---
 
 ```bash
+cd chat-bot
 py train.py (nb_epoch)
+```
+
+### Test chat bot
+
+```bash
+cd chat-bot
+py test.py
 ```
 
 ## Launch data-insertion
