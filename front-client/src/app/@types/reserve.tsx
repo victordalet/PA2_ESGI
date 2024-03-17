@@ -50,3 +50,16 @@ export interface MessageLocation {
     location_occupation_id?: number;
     message?: string;
 }
+
+export interface Subscription {
+    id: number;
+    created_at: string;
+    price: number;
+    user_email: string;
+}
+
+export interface SubscriptionUtilisation {
+    id: number;
+    email: string;
+    last_date_free_service: string;
+}

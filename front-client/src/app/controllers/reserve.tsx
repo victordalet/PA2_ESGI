@@ -1,4 +1,10 @@
-import {ControllerProps, ControllerState, LocationOccupation} from "../@types/reserve";
+import {
+    ControllerProps,
+    ControllerState,
+    LocationOccupation,
+    Subscription,
+    SubscriptionUtilisation
+} from "../@types/reserve";
 import React from "react";
 import {ReserveView} from "../views/reserve";
 import {LocationDescription, LocationResponse} from "../@types/location";
@@ -306,20 +312,212 @@ export default class Controller extends React.Component<
         document.location.href = '/location';
     };
 
+    private fetchIsSubscribed = async () => {
+        const apiPath = process.env.API_HOST || 'http://localhost:3001';
+        const response = await fetch(apiPath + '/subscription/is_subscribe', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'authorization': localStorage.getItem('token') || ''
+            }
+        });
+        const data: Subscription[] = await response.json();
+        if (data.length === 0) {
+            return 0;
+        }
+        console.log(data);
+        return data[0].price;
+    };
+
+    private fetchLastDateFreeService = async () => {
+        const apiPath = process.env.API_HOST || 'http://localhost:3001';
+        const response = await fetch(apiPath + '/subscription/last_date_free_service', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'authorization': localStorage.getItem('token') || ''
+            }
+        });
+        const data: SubscriptionUtilisation[] = await response.json();
+        if (data.length === 0) {
+            const dateToReturn =  new Date().getTime() - 12 * 30 * 24 * 60 * 60 * 1000;
+            return new Date(dateToReturn).toISOString().split('T')[0];
+        }
+        return data.sort((a, b) => new Date(b.last_date_free_service).getTime() - new Date(a.last_date_free_service).getTime())[0].last_date_free_service;
+    };
+
 
     public downloadFacture = async () => {
+        const isSubscribed = await this.fetchIsSubscribed();
+        let lastDateFreeService = '';
+        if (isSubscribed !== 0) {
+            lastDateFreeService = await this.fetchLastDateFreeService();
+        }
         const pdfDoc = await PDFDocument.create();
         const timesRomanFont = await pdfDoc.embedFont(StandardFonts.TimesRoman);
         const page = pdfDoc.addPage();
         const {width, height} = page.getSize();
-        const fontSize = 30;
+        let fontSize = 30;
+
+        page.drawLine({
+            start: {x: 50, y: height - 2 * fontSize},
+            end: {x: width - 50, y: height - 2 * fontSize},
+            thickness: 2,
+            color: rgb(0, 0, 0),
+        });
         page.drawText('Facture', {
-            x: 50,
+            x: width / 2 - 50,
             y: height - 4 * fontSize,
             size: fontSize,
             font: timesRomanFont,
             color: rgb(0, 0, 0),
         });
+        page.drawLine({
+            start: {x: 50, y: height - 5 * fontSize},
+            end: {x: width - 50, y: height - 5 * fontSize},
+            thickness: 2,
+            color: rgb(0, 0, 0),
+        });
+        fontSize = 15;
+        const locationName: string = this.state.data.name;
+        const locationAddress: string = this.state.data.address;
+        const locationCreatedBy: string = this.state.data.created_by || '';
+        const locationDescription: LocationDescription = this.state.description;
+        const locationPrice: number = this.state.data.price;
+        page.drawText('Location : ' + locationName, {
+            x: 50,
+            y: height - 12 * fontSize,
+            size: fontSize,
+            font: timesRomanFont,
+            color: rgb(0, 0, 0),
+        });
+        page.drawText('Adresse : ' + locationAddress, {
+            x: 50,
+            y: height - 14 * fontSize,
+            size: fontSize,
+            font: timesRomanFont,
+            color: rgb(0, 0, 0),
+        });
+        const textDescription: string = 'type Concierge: ' + locationDescription.typeConcierge +
+            ' - type Location: ' + locationDescription.typeLocation +
+            ' - type Propriété: ' + locationDescription.type +
+            ' - Nombre de chambre: ' + locationDescription.numberRoom;
+        page.drawText('Description : ' + textDescription.substring(0, 70), {
+            x: 50,
+            y: height - 16 * fontSize,
+            size: fontSize,
+            font: timesRomanFont,
+            color: rgb(0, 0, 0),
+        });
+        page.drawText(textDescription.substring(70, 180), {
+            x: 50,
+            y: height - 17 * fontSize,
+            size: fontSize,
+            font: timesRomanFont,
+            color: rgb(0, 0, 0),
+        });
+        page.drawText('Prix : ' + locationPrice + '€', {
+            x: 50,
+            y: height - 19 * fontSize,
+            size: fontSize,
+            font: timesRomanFont,
+            color: rgb(0, 0, 0),
+        });
+        page.drawText('Créé par : ' + locationCreatedBy, {
+            x: 50,
+            y: height - 21 * fontSize,
+            size: fontSize,
+            font: timesRomanFont,
+            color: rgb(0, 0, 0),
+        });
+
+        const services: ServiceResponse[] = this.state.servicesSelected;
+        this.state.services.map((service) => {
+            services.push(service);
+        });
+        page.drawLine({
+            start: {x: 50, y: height - 22 * fontSize},
+            end: {x: width - 50, y: height - 22 * fontSize},
+            thickness: 2,
+            color: rgb(0, 0, 0),
+        });
+
+        let y: number = height - 24 * fontSize;
+        page.drawText('Services :', {
+            x: 50,
+            y: y,
+            size: fontSize,
+            font: timesRomanFont,
+            color: rgb(0, 0, 0),
+        });
+        y -= 2 * fontSize;
+        services.map((service) => {
+            page.drawText(service.name + ' : ' + service.price, {
+                x: 50,
+                y: y,
+                size: fontSize,
+                font: timesRomanFont,
+                color: rgb(0, 0, 0),
+            });
+            y -= 2 * fontSize;
+        });
+        page.drawLine({
+            start: {x: 50, y: y},
+            end: {x: width - 50, y: y},
+            thickness: 2,
+            color: rgb(0, 0, 0),
+        });
+        y -= 2 * fontSize;
+        if (isSubscribed == 19 && new Date(lastDateFreeService).getTime() < new Date().getTime() - 3 * 30 * 24 * 60 * 60 * 1000) {
+            page.drawText('1 service gratuit', {
+                x: 50,
+                y: y,
+                size: fontSize,
+                font: timesRomanFont,
+                color: rgb(0, 0, 0),
+            });
+            y -= 2 * fontSize;
+        } else if (isSubscribed == 10 && new Date(lastDateFreeService).getTime() < new Date().getTime() - 12 * 30 * 24 * 60 * 60 * 1000) {
+            page.drawText('1 service gratuit', {
+                x: 50,
+                y: y,
+                size: fontSize,
+                font: timesRomanFont,
+                color: rgb(0, 0, 0),
+            });
+            y -= 2 * fontSize;
+        }
+        if (isSubscribed == 19) {
+            page.drawText('Réduction de 5 % sur les services', {
+                x: 50,
+                y: y,
+                size: fontSize,
+                font: timesRomanFont,
+                color: rgb(0, 0, 0),
+            });
+            y -= 2 * fontSize;
+        }
+        let totalPrice = locationPrice;
+        services.map((service) => {
+            if (isSubscribed == 19) {
+                totalPrice += service.price * 0.95;
+            } else {
+                totalPrice += service.price;
+            }
+        });
+        if (isSubscribed == 19 && new Date(lastDateFreeService).getTime() < new Date().getTime() - 3 * 30 * 24 * 60 * 60 * 1000) {
+            totalPrice -= services[0].price;
+        } else if (isSubscribed == 10 && new Date(lastDateFreeService).getTime() < new Date().getTime() - 12 * 30 * 24 * 60 * 60 * 1000) {
+            totalPrice -= services[0].price;
+        }
+        page.drawText(`Total : ${totalPrice} €`, {
+            x: 50,
+            y: y,
+            size: fontSize,
+            font: timesRomanFont,
+            color: rgb(0, 0, 0),
+        });
+
         const pdfBytes = await pdfDoc.save();
         const blob = new Blob([pdfBytes], {type: 'application/pdf'});
         const link = document.createElement('a');
