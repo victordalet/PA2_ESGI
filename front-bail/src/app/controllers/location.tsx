@@ -3,6 +3,7 @@ import {ControllerProps, ControllerState, LocationService} from "../@types/locat
 import LocationViewModel from "../view-models/location";
 import {haveBailToken, haveToken} from "../../security/token";
 import LocationView from "../views/location";
+import {Service} from "../@types/service";
 
 export default class Controller extends React.Component<
     ControllerProps,
@@ -48,7 +49,10 @@ export default class Controller extends React.Component<
                 'authorization': localStorage.getItem('token') || ''
             }
         });
-        const data = await response.json();
+        const data: Service[] = await response.json();
+        data.filter((service) => {
+            return service.type === 'BAIL';
+        });
         this.setState({service: data});
     };
 

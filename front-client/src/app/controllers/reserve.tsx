@@ -72,7 +72,10 @@ export default class Controller extends React.Component<
                 'authorization': localStorage.getItem('token') || ''
             }
         });
-        const data = await response.json();
+        const data: ServiceResponse[] = await response.json();
+        data.filter((service) => {
+            return service.type === 'USER';
+        });
         this.setState({servicesGlobal: data});
     };
 

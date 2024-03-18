@@ -23,4 +23,8 @@ export class ServiceModel {
     @IsString()
     created_by: string;
 
+    @ApiProperty({example: 'type', description: 'type of service'})
+    @IsString()
+    type: string;
+
 }

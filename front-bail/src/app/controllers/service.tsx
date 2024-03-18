@@ -51,7 +51,8 @@ export default class Controller extends React.Component<
             description: JSON.stringify(data),
             duration: parseInt(duration),
             created_by: email,
-            id: 0
+            id: 0,
+            type: (document.querySelector('#type-service') as HTMLSelectElement).value
         };
         const apiPath = process.env.API_HOST || 'http://localhost:3001';
         const res = await fetch(apiPath + '/service', {

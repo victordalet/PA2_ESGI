@@ -19,6 +19,7 @@ export interface Service {
     duration: number;
     created_by: string;
     id: number;
+    type?: string;
 }
 
 export interface ServiceForm {

@@ -6,6 +6,7 @@ import View from '../views/home';
 import HomeViewModel from "../view-models/Home";
 import {Navbar} from "../../components/navbar";
 import {LocationResponse} from "../@types/location";
+import {ServiceResponse} from "../@types/service";
 
 @observer
 export default class HomeController extends Component<
@@ -28,18 +29,18 @@ export default class HomeController extends Component<
     }
 
 
-    private fetchService = () => {
+    private fetchService = async () => {
         const apiPath = process.env.API_HOST || 'http://localhost:3001';
-        fetch(apiPath + '/service', {
+        const response = await fetch(apiPath + '/service', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
                 'authorization': localStorage.getItem('token') || ''
             }
-        }).then((res) => {
-            res.json().then((data) => {
-                this.setState({service: data});
-            });
+        });
+        const data: ServiceResponse[] = await response.json();
+        data.filter((service) => {
+            return service.type === 'USER';
         });
     };
 

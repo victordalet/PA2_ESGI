@@ -27,4 +27,5 @@ export interface ServiceResponse {
     price: number;
     duration: number;
     nb_use?: number;
+    type?: string;
 }

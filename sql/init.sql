@@ -128,7 +128,8 @@ create table service
     name        varchar(100) not null,
     description longtext     not null,
     price       int          not null,
-    duration    int          not null
+    duration    int          not null,
+    type        varchar(100)
 );
 
 create table service_by_provider
