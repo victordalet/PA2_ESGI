@@ -22,6 +22,7 @@ export interface ViewProps {
     eventCalendar: LocationOccupation[];
     fetchMessagesForBail: () => void;
     postMessageForBail: () => void;
+    isService: boolean;
 }
 
 export interface ControllerProps {

@@ -9,6 +9,7 @@ export interface Service {
     price: number;
     duration: number;
     nb_use?: number;
+    notation?: number;
 }
 
 export interface ServiceOther {

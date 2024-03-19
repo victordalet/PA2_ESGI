@@ -40,6 +40,7 @@ create table location_occupation
     notation      int
 );
 
+
 create table location_message
 (
     id                     int primary key auto_increment,
@@ -50,24 +51,6 @@ create table location_message
     message                varchar(220) not null
 );
 
-create table service_provider
-(
-    id         int primary key auto_increment,
-    created_at datetime     not null,
-    updated_at datetime     not null,
-    deleted_at datetime,
-    type       varchar(100) not null,
-    price      int          not null
-);
-
-
-create table service_provider_occupation
-(
-    id                  int primary key auto_increment,
-    from_datetime       datetime not null,
-    to_datetime         datetime not null,
-    service_provider_id int      not null references service_provider (id)
-);
 
 create table facture
 (
@@ -132,15 +115,6 @@ create table service
     type        varchar(100)
 );
 
-create table service_by_provider
-(
-    id          int primary key auto_increment,
-    created_at  datetime not null,
-    updated_at  datetime not null,
-    service_id  int      not null references service (id),
-    provider_id int      not null references service_provider (id)
-);
-
 
 create table service_by_user
 (
@@ -150,6 +124,7 @@ create table service_by_user
     service_id             int          not null references service (id),
     user_email             varchar(100) not null references USER (email),
     location_occupation_id int          not null references location_occupation (id),
+    notation               int
 );
 
 create table service_by_location
@@ -158,7 +133,8 @@ create table service_by_location
     created_at  datetime not null,
     updated_at  datetime not null,
     service_id  int      not null references service (id),
-    location_id int      not null references location (id)
+    location_id int      not null references location (id),
+    notation    int
 );
 
 create table message

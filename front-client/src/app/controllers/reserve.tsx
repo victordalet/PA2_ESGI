@@ -14,6 +14,8 @@ import ReserveViewModel from "../view-models/reserve";
 import {PDFDocument, StandardFonts, rgb} from 'pdf-lib';
 import {haveToken} from "../../security/token";
 
+
+
 export default class Controller extends React.Component<
     ControllerProps,
     ControllerState
@@ -629,6 +631,7 @@ export default class Controller extends React.Component<
         }
 
         return <ReserveView
+            isService={this.isService}
             fetchMessagesForBail={this.fetchMessagesForBail}
             postMessageForBail={this.postMessageForBail}
             eventCalendar={this.state.eventCalendar}

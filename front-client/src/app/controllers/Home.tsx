@@ -42,6 +42,7 @@ export default class HomeController extends Component<
         data.filter((service) => {
             return service.type === 'USER';
         });
+        this.setState({service: data});
     };
 
     private fetchLocation = async () => {

@@ -83,6 +83,16 @@ export class ServiceController {
         return this.serviceService.createService(body);
     }
 
+
+    @Patch('notation')
+    @ApiOperation({summary: 'Notation service'})
+    @ApiOkResponse({description: 'Service noted'})
+    @ApiBadRequestResponse({description: 'Request body is not valid'})
+    async notationService(@Headers('authorization') token: string, @Body() body: ServiceModel) {
+        await this.tokenValidation.validateToken(token);
+        return this.serviceService.notationService(body);
+    }
+
     @Put(':id')
     @ApiOperation({summary: 'Update service'})
     @ApiOkResponse({description: 'Service updated'})

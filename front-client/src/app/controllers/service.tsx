@@ -37,6 +37,7 @@ export default class Controller extends React.Component<
         data.filter((service) => {
             return service.type === 'USER';
         });
+        this.setState({service: data, serviceNoFilter: data});
     };
 
     filterByPrice = () => {

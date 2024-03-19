@@ -2,7 +2,7 @@ import React from "react";
 
 export interface CardInfo {
     title: string;
-    description: string;
+    description: string | JSX.Element;
     price: number;
     location?: string;
     type: string;

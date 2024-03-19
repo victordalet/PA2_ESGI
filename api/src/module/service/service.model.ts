@@ -3,6 +3,10 @@ import {IsNumber, IsString} from "class-validator";
 
 export class ServiceModel {
 
+    @ApiProperty({example: 1, description: 'Service id'})
+    @IsNumber()
+    service_id?: number;
+
     @ApiProperty({example: 'service_name', description: 'Service name'})
     @IsString()
     name: string;
@@ -26,5 +30,9 @@ export class ServiceModel {
     @ApiProperty({example: 'type', description: 'type of service'})
     @IsString()
     type: string;
+
+    @ApiProperty({example: '2', description: 'Service notation'})
+    @IsNumber()
+    notation?: number;
 
 }

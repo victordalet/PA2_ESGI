@@ -28,4 +28,5 @@ export interface ServiceResponse {
     duration: number;
     nb_use?: number;
     type?: string;
+    notation?: number;
 }

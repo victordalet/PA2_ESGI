@@ -20,6 +20,7 @@ export interface Service {
     created_by: string;
     id: number;
     type?: string;
+    notation?: number;
 }
 
 export interface ServiceForm {

@@ -32,7 +32,8 @@ export class ReserveView extends React.Component <ViewProps> {
             servicesSelected,
             eventCalendar,
             fetchMessagesForBail,
-            postMessageForBail
+            postMessageForBail,
+            isService
         } = this.props;
 
         let cardToRemoveIndex = 0;
@@ -135,7 +136,17 @@ export class ReserveView extends React.Component <ViewProps> {
                                                 return (
                                                     <Card cardInfo={{
                                                         title: service.name,
-                                                        description: '',
+                                                        description: (<div>{
+                                                            Array.from(Array(5).keys()).map((i) => {
+                                                                if (service.notation) {
+                                                                    if (i < service.notation) {
+                                                                        return <i className="ai-star"
+                                                                                  color={"#d3ae1b"}></i>;
+                                                                    }
+                                                                }
+                                                                return <i className="ai-star" color={"#fff"}></i>;
+                                                            })
+                                                        }</div>),
                                                         price: service.price,
                                                         id: service.id,
                                                         type: 'service'
@@ -173,7 +184,17 @@ export class ReserveView extends React.Component <ViewProps> {
                                                 }}
                                                 cardInfo={{
                                                     title: service.name,
-                                                    description: '',
+                                                    description: (<div>{
+                                                        Array.from(Array(5).keys()).map((i) => {
+                                                            if (service.notation) {
+                                                                if (i < service.notation) {
+                                                                    return <i className="ai-star"
+                                                                              color={"#d3ae1b"}></i>;
+                                                                }
+                                                            }
+                                                            return <i className="ai-star" color={"#fff"}></i>;
+                                                        })
+                                                    }</div>),
                                                     price: service.price,
                                                     id: service.id,
                                                     type: 'service'
@@ -189,7 +210,17 @@ export class ReserveView extends React.Component <ViewProps> {
                                         <Card
                                             cardInfo={{
                                                 title: service.name,
-                                                description: '',
+                                                description: (<div>{
+                                                    Array.from(Array(5).keys()).map((i) => {
+                                                        if (service.notation) {
+                                                            if (i < service.notation) {
+                                                                return <i className="ai-star"
+                                                                          color={"#d3ae1b"}></i>;
+                                                            }
+                                                        }
+                                                        return <i className="ai-star" color={"#fff"}></i>;
+                                                    })
+                                                }</div>),
                                                 price: service.price,
                                                 id: service.id,
                                                 type: 'service'

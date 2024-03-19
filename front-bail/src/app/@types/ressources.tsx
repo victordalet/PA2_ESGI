@@ -1,5 +1,6 @@
 import ViewModel from '../view-models/ressources';
-import {Service, Location} from "./location";
+import {Location} from "./location";
+import {Service} from "./service";
 
 export interface ViewProps {
     service: Service[];

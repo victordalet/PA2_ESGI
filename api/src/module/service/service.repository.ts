@@ -113,4 +113,12 @@ export class ServiceRepository {
         }
         return services;
     }
+
+    async notationServiceByUser(body: ServiceModel) {
+        return this.db.query("UPDATE service_by_user SET notation = ? WHERE service_id = ?", [body.notation, body.service_id]);
+    }
+
+    async notationServiceByLocation(body: ServiceModel) {
+        return this.db.query("UPDATE service_by_location SET notation = ? WHERE service_id = ?", [body.notation, body.service_id]);
+    }
 }
