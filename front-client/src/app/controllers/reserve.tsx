@@ -655,7 +655,6 @@ export default class Controller extends React.Component<
         });
 
         await cardElement.forEach(async (card, index) => {
-            console.log('for');
             if (card.classList.contains('active')) {
                 console.log('fetch');
                 const apiPath = process.env.API_HOST || 'http://localhost:3001';

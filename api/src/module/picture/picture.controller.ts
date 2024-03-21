@@ -23,7 +23,6 @@ export class PictureController {
     @ApiOkResponse({description: 'base 63 picture'})
     @ApiBadRequestResponse({description: 'Request param is not valid'})
     async getPicture(@Headers('authorization') token: string,@Param('name') name: string) {
-        await this.tokenValidation.validateToken(token);
         return this.pictureService.getPicture(name);
     }
 
