@@ -44,7 +44,7 @@ export default class ReserveServiceView extends React.Component<ViewProps> {
                         {
                             isCreator ? '' :
                                 <div className={"notation"}>
-                                <h3>Notation</h3>
+                                    <h3>Notation</h3>
                                     <ul className={"stars"}>
                                         {
                                             [1, 2, 3, 4, 5].map((star, index) => {

@@ -33,7 +33,8 @@ export class ReserveView extends React.Component <ViewProps> {
             eventCalendar,
             fetchMessagesForBail,
             postMessageForBail,
-            isService
+            isService,
+            downloadFactureBail
         } = this.props;
 
         let cardToRemoveIndex = 0;
@@ -95,8 +96,9 @@ export class ReserveView extends React.Component <ViewProps> {
                                     (
                                         <div className={"reservation"}>
                                             <button id={"cancel"} onClick={deleteLocation}
-                                                    style={{background: '#c91919'}}>Delete
+                                                    style={{background: '#c91919', marginBottom: '20px'}}>Delete
                                             </button>
+                                            <button id={"facture"} onClick={downloadFactureBail}>My facture</button>
                                         </div>
                                     )
                                     :
