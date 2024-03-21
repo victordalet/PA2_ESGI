@@ -4,6 +4,7 @@ import sys
 import datetime
 import csv
 
+
 class Main:
     db: mysql.connector.connection.MySQLConnection
     prenoms: str
@@ -26,7 +27,6 @@ class Main:
         self.translation()
         self.db.commit()
         self.db.close()
-        
 
     def insert_user(self):
         cursor = self.db.cursor()
@@ -79,7 +79,7 @@ class Main:
              datetime.datetime.now(),
              self.prenoms + '@gmail.com',
              'test', 'test', 100, 100))
-    
+
     def translations(self, filename):
         cursor = self.db.curscor()
         with open(filename, newline='', encoding='utf-8') as csvfile:
@@ -92,7 +92,8 @@ class Main:
                     "(language, word, translation) "
                     "VALUE (%s,%s,%s)",
                     ('fr', word, translation)
-                )                
+                )
+
 
 if __name__ == "__main__":
     Main()
