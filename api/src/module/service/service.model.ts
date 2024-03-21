@@ -35,4 +35,8 @@ export class ServiceModel {
     @IsNumber()
     notation?: number;
 
+    @ApiProperty({example: '2', description: 'Location id'})
+    @IsNumber()
+    location_id?: number;
+
 }
