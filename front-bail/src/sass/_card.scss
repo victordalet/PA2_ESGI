@@ -13,6 +13,7 @@
     z-index: 2;
     position: relative;
     background-size: cover;
+    text-align: center;
 
     &:hover {
         transform: scale(1.02);
@@ -20,6 +21,11 @@
 
     span {
         margin-left: 20px;
+    }
+
+    p {
+        font-size: 20px;
+        letter-spacing: 5px;
     }
 
     &.active {

@@ -1,4 +1,5 @@
 import ViewModel from '../view-models/location';
+import {Service} from "./service";
 
 export interface ViewProps {
     resetChoiceConcierge: (numberSelected: number) => void;
@@ -33,14 +34,6 @@ export interface FormLocation {
     telephone: string;
     time: number[];
     service?: LocationService[];
-}
-
-export interface Service {
-    id: number;
-    name: string;
-    price: number;
-    description: string;
-    duration: number;
 }
 
 export interface Location {

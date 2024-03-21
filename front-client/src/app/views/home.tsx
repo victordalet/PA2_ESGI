@@ -56,9 +56,22 @@ export default class HomeView extends React.Component <ViewProps> {
                                 if (index > service.length - 6) {
                                     return (
                                         <Card
+                                            onclick={() => {
+                                                window.location.href = '/reserve-service?' + s.id + '&a=false';
+                                            }}
                                             cardInfo={{
                                                 title: s.name,
-                                                description: '',
+                                                description: (<div>{
+                                                            Array.from(Array(5).keys()).map((i) => {
+                                                                if (s.notation) {
+                                                                    if (i < s.notation) {
+                                                                        return <i className="ai-star"
+                                                                                  color={"#d3ae1b"}></i>;
+                                                                    }
+                                                                }
+                                                                return <i className="ai-star" color={"#fff"}></i>;
+                                                            })
+                                                        }</div>),
                                                 price: s.price,
                                                 id: s.id,
                                                 type: 'service'

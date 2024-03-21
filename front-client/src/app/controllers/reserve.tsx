@@ -14,6 +14,8 @@ import ReserveViewModel from "../view-models/reserve";
 import {PDFDocument, StandardFonts, rgb} from 'pdf-lib';
 import {haveToken} from "../../security/token";
 
+
+
 export default class Controller extends React.Component<
     ControllerProps,
     ControllerState
@@ -33,7 +35,7 @@ export default class Controller extends React.Component<
         this.idResa = 0;
         this.id = parseInt(document.location.href.split('?')[1].split('&')[0]);
         this.type = document.location.href.split('&a=')[1].includes('true');
-        this.isService = document.location.href.includes('service');
+        this.isService = false;
         this.apiSubPath = this.isService ? '/service' : '/location';
         if (this.type) {
             this.idResa = parseInt(document.location.href.split('&id2=')[1]);
@@ -72,7 +74,10 @@ export default class Controller extends React.Component<
                 'authorization': localStorage.getItem('token') || ''
             }
         });
-        const data = await response.json();
+        const data: ServiceResponse[] = await response.json();
+        data.filter((service) => {
+            return service.type === 'USER';
+        });
         this.setState({servicesGlobal: data});
     };
 
@@ -626,6 +631,7 @@ export default class Controller extends React.Component<
         }
 
         return <ReserveView
+            isService={this.isService}
             fetchMessagesForBail={this.fetchMessagesForBail}
             postMessageForBail={this.postMessageForBail}
             eventCalendar={this.state.eventCalendar}

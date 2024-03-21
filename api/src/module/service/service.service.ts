@@ -46,5 +46,12 @@ export class ServiceService {
         return this.serviceRepository.getServiceByUser(body);
     }
 
+    async notationService(body: ServiceModel) {
+        if (body.type === 'USER') {
+            return this.serviceRepository.notationServiceByUser(body);
+        } else if (body.type === 'BAIL') {
+            return this.serviceRepository.notationServiceByLocation(body);
+        }
+    }
 
 }

@@ -57,8 +57,8 @@ export class ServiceRepository {
     }
 
     async createService(service: ServiceModel) {
-        await this.db.query("INSERT INTO service (name, created_at ,updated_at, description, price, duration, created_by) VALUES (?, ?, ?, ?, ?, ?, ?)",
-            [service.name, new Date(), new Date(), service.description, service.price, service.duration, service.created_by]);
+        await this.db.query("INSERT INTO service (name, created_at ,updated_at, description, price, duration, created_by, type) VALUES (?, ?, ?, ?, ?, ?, ?,?)",
+            [service.name, new Date(), new Date(), service.description, service.price, service.duration, service.created_by, service.type]);
         const [rows, filed] = await this.db.query("SELECT LAST_INSERT_ID() as id  FROM service");
         return rows[0];
 
@@ -112,5 +112,13 @@ export class ServiceRepository {
             });
         }
         return services;
+    }
+
+    async notationServiceByUser(body: ServiceModel) {
+        return this.db.query("UPDATE service_by_user SET notation = ? WHERE service_id = ?", [body.notation, body.service_id]);
+    }
+
+    async notationServiceByLocation(body: ServiceModel) {
+        return this.db.query("UPDATE service_by_location SET notation = ? WHERE service_id = ?", [body.notation, body.service_id]);
     }
 }

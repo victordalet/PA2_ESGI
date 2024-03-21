@@ -24,19 +24,20 @@ export default class Controller extends React.Component<
     };
 
 
-    private fetchService = () => {
+    private fetchService = async () => {
         const apiPath = process.env.API_HOST || 'http://localhost:3001';
-        fetch(apiPath + '/service', {
+        const response = await fetch(apiPath + '/service', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
                 'authorization': localStorage.getItem('token') || ''
             }
-        }).then((res) => {
-            res.json().then((data) => {
-                this.setState({service: data, serviceNoFilter: data});
-            });
         });
+        const data: ServiceResponse[] = await response.json();
+        data.filter((service) => {
+            return service.type === 'USER';
+        });
+        this.setState({service: data, serviceNoFilter: data});
     };
 
     filterByPrice = () => {

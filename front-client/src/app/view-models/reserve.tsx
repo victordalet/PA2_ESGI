@@ -3,7 +3,7 @@ export default class ReserveViewModel {
     public verifyDate = (dateStart: string, dateEnd: string) => {
         const dateStartValue = new Date(dateStart);
         const dateEndValue = new Date(dateEnd);
-        if (dateStartValue < new Date()) {
+        if (dateStartValue > new Date()) {
             return dateStartValue < dateEndValue;
         }
         return false;
