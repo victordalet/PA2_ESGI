@@ -1,4 +1,3 @@
-import {Facture} from "../../core/facture";
 import {FactureModel} from "./facture.model";
 import {FactureRepository} from "./facture.repository";
 

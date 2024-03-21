@@ -3,7 +3,19 @@ import {Provider} from 'mobx-react';
 import React from 'react';
 import {BrowserRouter, Routes, Route} from "react-router-dom";
 
-import {Connection, Home, Location, Premium, Resa, Reserve, Service, Settings, Sign, Ticket} from './app/providers';
+import {
+    Connection,
+    Home,
+    Location,
+    Premium,
+    Resa,
+    Reserve,
+    ReserveService,
+    Service,
+    Settings,
+    Sign,
+    Ticket
+} from './app/providers';
 import './sass/index.scss';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import {isBot} from "./security/isBot";
@@ -29,6 +41,7 @@ root.render(
                     <Route path={"/sign-in"} element={<Sign/>}></Route>
                     <Route path={"/reserve"} element={<Reserve/>}></Route>
                     <Route path={"/ticket"} element={<Ticket/>}></Route>
+                    <Route path={"/reserve-service"} element={<ReserveService/>}></Route>
                     <Route path={"*"} element={<Home/>}></Route>
                 </Routes>
             </BrowserRouter>

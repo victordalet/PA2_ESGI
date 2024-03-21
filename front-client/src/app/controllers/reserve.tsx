@@ -35,7 +35,7 @@ export default class Controller extends React.Component<
         this.idResa = 0;
         this.id = parseInt(document.location.href.split('?')[1].split('&')[0]);
         this.type = document.location.href.split('&a=')[1].includes('true');
-        this.isService = document.location.href.includes('service');
+        this.isService = false;
         this.apiSubPath = this.isService ? '/service' : '/location';
         if (this.type) {
             this.idResa = parseInt(document.location.href.split('&id2=')[1]);
