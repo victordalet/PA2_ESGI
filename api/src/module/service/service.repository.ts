@@ -121,4 +121,30 @@ export class ServiceRepository {
     async notationServiceByLocation(body: ServiceModel) {
         return this.db.query("UPDATE service_by_location SET notation = ? WHERE service_id = ?", [body.notation, body.service_id]);
     }
+
+    async getLocationByServiceIdBail(service_id: number) {
+        const [rows, filed] = await this.db.query("SELECT location_id FROM service_by_location WHERE service_id = ?", [service_id]);
+        if (rows) {
+            const [rows2, filed2] = await this.db.query("SELECT * FROM location WHERE id = ?", [rows[0].location_id]);
+            return rows2;
+        }
+    }
+
+    async getLocationByServiceIdClient(service_id: number) {
+        const [rows, filed] = await this.db.query("SELECT location_id FROM service_by_user WHERE service_id = ?", [service_id]);
+        if (rows) {
+            const [rows2, filed2] = await this.db.query("SELECT * FROM location WHERE id = ?", [rows[0].location_occupation_id]);
+            return rows2;
+        }
+    }
+
+    async removeLocationByServiceIdClient(service_id: number, location_occupation_id: number) {
+        return this.db.query("DELETE FROM service_by_user WHERE service_id = ? AND location_occupation_id = ?",
+            [service_id, location_occupation_id]);
+    }
+
+    async removeLocationByServiceIdBail(service_id: number, location_id: number) {
+        return this.db.query("DELETE FROM service_by_location WHERE service_id = ? AND location_id = ?",
+            [service_id, location_id]);
+    }
 }
