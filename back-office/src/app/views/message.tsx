@@ -14,20 +14,6 @@ export default class MessageView extends React.Component<ViewProps> {
     return (
       <div>
         <Navbar />
-        <div className="container-user">
-          <h2>Message</h2>
-          <div className="container-filter">
-            <input
-              type="text"
-              id={"search"}
-              placeholder="A definir..."
-            />
-            <input type={"text"} id={"role"} placeholder={"A definir..."} />
-            <div className="premium-checkbox">
-              
-            </div>
-          </div>
-        </div>
         <Table
           head={["Created by", "Number of illegible words"]}
           body={data.map((el: any) => [el.created_by, el.nb_illegible_words])}

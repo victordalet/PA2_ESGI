@@ -14,13 +14,29 @@ export default class LocationView extends React.Component<ViewProps> {
           <h2>Location</h2>
           <div className="container-filter">
             <input
-              type="text"
+              type={"text"}
               id={"search"}
-              placeholder="A definir..."
+              placeholder={"Entrée le nom..."}
             />
-            <input type={"text"} id={"definir"} placeholder={"A definir..."} />
-            <div className="">
-              
+            <input type={"text"} id={"search"} placeholder={"A definir..."} />
+            <div className="capacity">
+              <h3>Surface</h3>
+              <input
+                type={"number"}
+                id={"capacity"}
+                placeholder={"Entrée le nom..."}
+              />{" "}
+              <span>m²</span>
+            </div>
+            <div className="price">
+              <h3>Votre Budget ?</h3>
+              <input
+                type={"number"}
+                id={"budget"}
+                autoComplete={"none"}
+                placeholder={"Max"}
+              />{" "}
+              <span>€</span>
             </div>
           </div>
         </div>
