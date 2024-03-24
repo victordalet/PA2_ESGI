@@ -14,12 +14,12 @@ export class SubscriptionService {
         return await this.SubscriptionRepository.getSubscriptions();
     }
 
-    async createSubscription(subscription: BodySubscription) {
-        return await this.SubscriptionRepository.createSubscription(subscription);
+    async createSubscription(token: string) {
+        return await this.SubscriptionRepository.createSubscription(token);
     }
 
-    async updateSubscription(id: number, subscription: BodySubscription) {
-        return await this.SubscriptionRepository.updateSubscription(id, subscription);
+    async updateSubscription(id: number, subscription: BodySubscription, token: string) {
+        return await this.SubscriptionRepository.updateSubscription(id, subscription, token);
     }
 
     async deleteSubscription(id: number) {

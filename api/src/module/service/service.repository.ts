@@ -114,12 +114,16 @@ export class ServiceRepository {
         return services;
     }
 
-    async notationServiceByUser(body: ServiceModel) {
-        return this.db.query("UPDATE service_by_user SET notation = ? WHERE service_id = ?", [body.notation, body.service_id]);
+    async notationServiceByUser(body: ServiceModel, token: string) {
+        const [rows, filed] = await this.db.query("SELECT email FROM USER WHERE connection = ?", [token]);
+        if (rows)
+            return this.db.query("UPDATE service_by_user SET notation = ? WHERE service_id = ? and user_email = ?", [body.notation, body.service_id, rows[0].email]);
     }
 
-    async notationServiceByLocation(body: ServiceModel) {
-        return this.db.query("UPDATE service_by_location SET notation = ? WHERE service_id = ?", [body.notation, body.service_id]);
+    async notationServiceByLocation(body: ServiceModel, token: string) {
+        const [rows, filed] = await this.db.query("SELECT email FROM USER WHERE connection = ?", [token]);
+        if (rows)
+            return this.db.query("UPDATE service_by_location SET notation = ? WHERE service_id = ? and ", [body.notation, body.service_id]);
     }
 
     async getLocationByServiceIdBail(service_id: number) {
@@ -138,12 +142,14 @@ export class ServiceRepository {
         }
     }
 
-    async removeLocationByServiceIdClient(service_id: number, location_occupation_id: number) {
-        return this.db.query("DELETE FROM service_by_user WHERE service_id = ? AND location_occupation_id = ?",
-            [service_id, location_occupation_id]);
+    async removeLocationByServiceIdClient(service_id: number, location_occupation_id: number, token: string) {
+        const [rows, filed] = await this.db.query("SELECT email FROM USER WHERE connection = ?", [token]);
+        if (rows)
+            return this.db.query("DELETE FROM service_by_user WHERE service_id = ? AND location_occupation_id = ? and user_email = ?",
+                [service_id, location_occupation_id, rows[0].email]);
     }
 
-    async removeLocationByServiceIdBail(service_id: number, location_id: number) {
+    async removeLocationByServiceIdBail(service_id: number, location_id: number, token: string) {
         return this.db.query("DELETE FROM service_by_location WHERE service_id = ? AND location_id = ?",
             [service_id, location_id]);
     }

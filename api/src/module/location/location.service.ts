@@ -30,8 +30,8 @@ export class LocationService {
         return await this.LocationRepository.updateLocation(id, location);
     }
 
-    async deleteLocation(id: number) {
-        return await this.LocationRepository.deleteLocation(id);
+    async deleteLocation(id: number, token: string) {
+        return await this.LocationRepository.deleteLocation(id, token);
     }
 
     async locationIsOccupied(body: LocationAvailability) {
@@ -51,8 +51,8 @@ export class LocationService {
         return await this.LocationRepository.getLocationOccupation(locationId);
     }
 
-    async addLocationNotation(locationId: number, notation: number) {
-        return await this.LocationRepository.addNotationLocation(locationId, notation);
+    async addLocationNotation(locationId: number, notation: number, token: string) {
+        return await this.LocationRepository.addNotationLocation(locationId, notation, token);
     }
 
     async getNotationLocation(locationId: number) {
@@ -62,16 +62,16 @@ export class LocationService {
         }
     }
 
-    async getMessagesByLocationOccupationId(locationOccupationId: number) {
-        return await this.LocationRepository.getMessagesByLocationOccupationId(locationOccupationId);
+    async getMessagesByLocationOccupationId(locationOccupationId: number, token: string) {
+        return await this.LocationRepository.getMessagesByLocationOccupationId(locationOccupationId,token);
     }
 
     async addMessageByLocationOccupationId(locationOccupationId: number, message: string, token: string) {
         return await this.LocationRepository.addMessageToLocationOccupation(locationOccupationId, message, token);
     }
 
-    async deleteLocationOccupation(locationId: number) {
-        return await this.LocationRepository.deleteLocationOccupation(locationId);
+    async deleteLocationOccupation(locationId: number, token: string) {
+        return await this.LocationRepository.deleteLocationOccupation(locationId, token);
     }
 
     async getLocationOccupationByUser(token: string) {

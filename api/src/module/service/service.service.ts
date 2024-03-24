@@ -46,11 +46,11 @@ export class ServiceService {
         return this.serviceRepository.getServiceByUser(body);
     }
 
-    async notationService(service: ServiceModel) {
+    async notationService(service: ServiceModel, token: string) {
         if (service.type === 'USER') {
-            return this.serviceRepository.notationServiceByUser(service);
+            return this.serviceRepository.notationServiceByUser(service, token);
         } else if (service.type === 'BAIL') {
-            return this.serviceRepository.notationServiceByLocation(service);
+            return this.serviceRepository.notationServiceByLocation(service, token);
         }
     }
 
@@ -63,12 +63,12 @@ export class ServiceService {
         }
     }
 
-    async removeLocationByServiceId(service: ServiceModel) {
+    async removeLocationByServiceId(service: ServiceModel,token: string) {
         if (service.type === 'USER') {
-            return this.serviceRepository.removeLocationByServiceIdClient(service.service_id, service.location_id);
+            return this.serviceRepository.removeLocationByServiceIdClient(service.service_id, service.location_id,token);
         }
         if (service.type === 'BAIL') {
-            return this.serviceRepository.removeLocationByServiceIdBail(service.service_id, service.location_id);
+            return this.serviceRepository.removeLocationByServiceIdBail(service.service_id, service.location_id,token);
         }
     }
 

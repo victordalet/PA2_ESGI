@@ -24,12 +24,16 @@ export class SubscriptionRepository {
         return subscriptions;
     }
 
-    async createSubscription(subscription: any) {
-        return this.db.query("INSERT INTO subscription (email, created_at ,updated_at) VALUES (?, ?, ?)", [subscription.email, new Date(), new Date()]);
+    async createSubscription(token: string) {
+        const [rows, filed] = await this.db.query("SELECT * FROM USER WHERE connection = ?", [token]);
+        if (rows)
+            return this.db.query("INSERT INTO subscription (email, created_at ,updated_at) VALUES (?, ?, ?)", [rows[0].email, new Date(), new Date()]);
     }
 
-    async updateSubscription(id: number, subscription: any) {
-        return this.db.query("UPDATE subscription SET email = ?, updated_at = ? WHERE id = ?", [subscription.email, new Date(), id]);
+    async updateSubscription(id: number, subscription: any, token: string) {
+        const [rows, filed] = await this.db.query("SELECT * FROM USER WHERE connection = ?", [token]);
+        if (rows)
+            return this.db.query("UPDATE subscription SET email = ?, updated_at = ? WHERE id = ?", [rows[0].email, new Date(), id]);
     }
 
     async deleteSubscription(id: number) {
@@ -40,7 +44,7 @@ export class SubscriptionRepository {
         const [rows, filed] = await this.db.query("SELECT * FROM USER WHERE connection = ?", [token]);
         if (rows instanceof Array) {
             const row: any = rows[0];
-            const [rows2, filed2] =  await this.db.query("SELECT * FROM subscription WHERE user_email = ?", [row.email]);
+            const [rows2, filed2] = await this.db.query("SELECT * FROM subscription WHERE user_email = ?", [row.email]);
             return rows2;
         }
     }
@@ -77,7 +81,7 @@ export class SubscriptionRepository {
         const [rows, filed] = await this.db.query("SELECT * FROM USER WHERE connection = ?", [token]);
         if (rows instanceof Array) {
             const row: any = rows[0];
-            const [rows2, filed2] =  await this.db.query("SELECT * FROM subscription_utilisation WHERE email = ?", [row.email]);
+            const [rows2, filed2] = await this.db.query("SELECT * FROM subscription_utilisation WHERE email = ?", [row.email]);
             return rows2;
         }
     }
