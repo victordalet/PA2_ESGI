@@ -11,8 +11,6 @@ export class PictureService {
     }
 
     public uploadPicture(body: Picture, file: Express.Multer.File) {
-        console.log(file);
-        console.log(body);
         const path = join(__dirname, `../../../public/${body.picture}.png`);
         writeFileSync(path, file.buffer);
     }
