@@ -33,4 +33,13 @@ export class FileController {
         return this.fileService.createFileByName(name, file);
     }
 
+    @Post('get-name-files:file')
+    @ApiOperation({summary: 'Get all files name'})
+    @ApiOkResponse({description: 'Files name'})
+    @ApiBadRequestResponse({description: 'Request param is not valid'})
+    async getFilesName(@Headers('authorization') token: string, @Param('file') file: string) {
+        await this.tokenValidation.validateToken(token);
+        return {data: this.fileService.getFilesName(file)};
+    }
+
 }
