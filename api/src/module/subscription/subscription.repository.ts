@@ -15,6 +15,7 @@ export class SubscriptionRepository {
     }
 
     async getSubscriptions() {
+        await this.db.connect()
         const [rows, filed] = await this.db.query("SELECT * FROM subscription");
         const subscriptions: any[] = [];
         if (rows instanceof Array) {
@@ -26,22 +27,26 @@ export class SubscriptionRepository {
     }
 
     async createSubscription(token: string) {
+        await this.db.connect()
         const [rows, filed] = await this.db.query("SELECT * FROM USER WHERE connection = ?", [token]);
         if (rows)
             return this.db.query("INSERT INTO subscription (email, created_at ,updated_at) VALUES (?, ?, ?)", [rows[0].email, new Date(), new Date()]);
     }
 
     async updateSubscription(id: number, subscription: any, token: string) {
+        await this.db.connect()
         const [rows, filed] = await this.db.query("SELECT * FROM USER WHERE connection = ?", [token]);
         if (rows)
             return this.db.query("UPDATE subscription SET email = ?, updated_at = ? WHERE id = ?", [rows[0].email, new Date(), id]);
     }
 
     async deleteSubscription(id: number) {
+        await this.db.connect()
         return this.db.query("DELETE FROM subscription WHERE id = ?", [id]);
     }
 
     async userIsSubscribed(token: string) {
+        await this.db.connect()
         const [rows, filed] = await this.db.query("SELECT * FROM USER WHERE connection = ?", [token]);
         if (rows instanceof Array) {
             const row: any = rows[0];
@@ -51,6 +56,7 @@ export class SubscriptionRepository {
     }
 
     async subscribeUserByToken(token: string, price: number) {
+        await this.db.connect()
         const [rows, filed] = await this.db.query("SELECT * FROM USER WHERE connection = ?", [token]);
         if (rows instanceof Array) {
             const row: any = rows[0];
@@ -66,6 +72,7 @@ export class SubscriptionRepository {
     }
 
     async unsubscribeUserByToken(token: string) {
+        await this.db.connect()
         const [rows, filed] = await this.db.query("SELECT * FROM USER WHERE connection = ?", [token]);
         if (rows instanceof Array) {
             const row: any = rows[0];

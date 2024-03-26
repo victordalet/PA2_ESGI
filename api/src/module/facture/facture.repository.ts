@@ -14,6 +14,7 @@ export class FactureRepository {
 
 
     async getFactures() {
+        await this.db.connect()
         const [rows, filed] = await this.db.query("SELECT * FROM FACTURE");
         const factures: any[] = [];
         if (rows instanceof Array) {
@@ -25,6 +26,7 @@ export class FactureRepository {
     }
 
     async createFacture(facture: any) {
+        await this.db.connect()
         return this.db.query("INSERT INTO FACTURE (created_by, name, description, price, duration, type, notification, notification_interval, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", [facture.created_by, facture.name, facture.description, facture.price, facture.duration, facture.type, facture.notification, facture.notification_interval, new Date(), new Date()]);
     }
 
@@ -33,6 +35,7 @@ export class FactureRepository {
     }
 
     async deleteFacture(id: number) {
+        await this.db.connect()
         return this.db.query("DELETE FROM FACTURE WHERE id = ?", [id])
     }
 }

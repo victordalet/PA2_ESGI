@@ -24,6 +24,7 @@
   "dependencies": {
     "@nestjs/core": "^10.3.2",
     "@nestjs/platform-express": "^10.3.2",
-    "stripe": "^14.21.0"
+    "stripe": "^14.21.0",
+    "ts-node": "^10.9.2"
   }
 }
