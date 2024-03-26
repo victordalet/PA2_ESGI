@@ -27,6 +27,7 @@ export interface ViewProps {
     nameFiles: string[];
     postFileBail: () => void;
     downloadFileBail: (name: string) => void;
+    deleteOccupationBail: () => void;
 }
 
 export interface ControllerProps {

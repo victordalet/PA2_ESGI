@@ -97,7 +97,7 @@
                 box-shadow: 0 10px 50px 0 rgba(#05043e, .25);
                 padding: 50px 20px 20px;
                 border-radius: 20px;
-                height: 100px;
+                height: 80px;
                 overflow-y: scroll;
 
                 .file-transfer {
@@ -105,6 +105,7 @@
                     justify-content: center;
                     align-content: center;
                     flex-direction: column;
+
                     button {
                         width: 200px;
                         height: 50px;
@@ -294,7 +295,6 @@
         }
 
 
-
         #message-select {
             position: relative;
             margin-bottom: 20px;
@@ -316,6 +316,17 @@
             box-shadow: 0 10px 50px 0 rgba(#05043e, .25);
             margin: auto;
             border-radius: 10px;
+
+            .delete-occupation-bail {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                cursor: pointer;
+                background: #c91919;
+                height: 40px;
+                color: white;
+                border: none;
+            }
 
             .message {
                 height: 50px;

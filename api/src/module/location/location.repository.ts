@@ -101,8 +101,13 @@ export class LocationRepository {
 
     async deleteLocationOccupation(locationId: number, token: string) {
         const [rows, filed] = await this.db.query("SELECT email FROM USER WHERE connection = ?", [token]);
-        if (rows)
-            return this.db.query("UPDATE location_occupation SET deleted_at = ? WHERE location_id = ? and user_email = ? ", [new Date(), locationId, rows[0].email]);
+        const [rows2, filed2] = await this.db.query("SELECT location_id from location_occupation WHERE id = ?", [locationId]);
+        const [rows3, filed3] = await this.db.query("SELECT created_by from location WHERE id = ?", [rows2[0].location_id]);
+        if (rows3[0].created_by == rows[0].email) {
+            return this.db.query("UPDATE location_occupation SET deleted_at = ? WHERE id = ? ", [new Date(), locationId]);
+        } else
+            return this.db.query("UPDATE location_occupation SET deleted_at = ? WHERE id = ? and user_email = ? ", [new Date(), locationId, rows[0].email]);
+
     }
 
     async locationIsOccupiedByUser(locationId: number, token: string) {

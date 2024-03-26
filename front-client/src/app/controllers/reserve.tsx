@@ -367,10 +367,26 @@ export default class Controller extends React.Component<
                 'authorization': localStorage.getItem('token') || ''
             },
             body: JSON.stringify({
-                location_id: this.id
+                location_id: this.idResa
             })
         });
         document.location.href = '/location';
+    };
+
+    public deleteOccupationBail = async () => {
+        const idLocation = document.querySelector<HTMLInputElement>('#message-select')?.value;
+        const apiPath = process.env.API_HOST || 'http://localhost:3001';
+        await fetch(apiPath + this.apiSubPath + '/occupation', {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                'authorization': localStorage.getItem('token') || ''
+            },
+            body: JSON.stringify({
+                location_id: idLocation
+            })
+        });
+        document.location.reload();
     };
 
     private fetchIsSubscribed = async () => {
@@ -780,7 +796,7 @@ export default class Controller extends React.Component<
             nameFiles={this.state.nameFiles}
             downloadFileBail={this.downloadFileBail}
             postFileBail={this.postFileBail}
-        />;
+            deleteOccupationBail={this.deleteOccupationBail}/>;
     }
 
 }

@@ -37,7 +37,8 @@ export class ReserveView extends React.Component <ViewProps> {
             downloadFactureBail,
             nameFiles,
             postFileBail,
-            downloadFileBail
+            downloadFileBail,
+            deleteOccupationBail
         } = this.props;
 
         let cardToRemoveIndex = 0;
@@ -309,13 +310,21 @@ export class ReserveView extends React.Component <ViewProps> {
                                                             <option
                                                                 value={event.id}>{event.user_email} -
                                                                 {event.from_datetime.split('T')[0]} /
-                                                                {event.to_datetime.split('T')[0]}</option>
+                                                                {event.to_datetime.split('T')[0]}
+                                                            </option>
                                                         );
                                                     })}
                                                 </select>
                                                 : ''
                                         }
                                         <div className={"messages"}>
+                                            {
+                                                isBail && messages.length != 0 ?
+                                                    <button className={"delete-occupation-bail"}
+                                                            onClick={() => deleteOccupationBail()}>Cancel this
+                                                        location</button>
+                                                    : ''
+                                            }
 
                                             {
                                                 messages.map((message, index) => {
