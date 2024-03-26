@@ -34,7 +34,10 @@ export class ReserveView extends React.Component <ViewProps> {
             fetchMessagesForBail,
             postMessageForBail,
             isService,
-            downloadFactureBail
+            downloadFactureBail,
+            nameFiles,
+            postFileBail,
+            downloadFileBail
         } = this.props;
 
         let cardToRemoveIndex = 0;
@@ -65,6 +68,28 @@ export class ReserveView extends React.Component <ViewProps> {
                                             <h3><span>Number room :</span>{description.numberRoom}</h3>
                                             <h3><span>Surface :</span>{description.surface}</h3>
                                             <h3><span>Info sup : </span></h3>
+                                            <h3><span>Documents :</span></h3>
+                                            <div className={"resources-files"}>
+                                                {
+                                                    nameFiles.map((name, index) => {
+                                                        return (
+                                                            <div key={index}>
+                                                                <h3>{name}</h3>
+                                                                <i className="ai-download"
+                                                                   onClick={() => downloadFileBail(name)}></i>
+                                                            </div>
+                                                        );
+                                                    })
+                                                }
+                                                {
+                                                    isBail ?
+                                                        <div className={"file-transfer"}>
+                                                            <input type={"file"} id={"file-input"}/>
+                                                            <button onClick={postFileBail}>Send</button>
+                                                        </div> : ''
+                                                }
+
+                                            </div>
                                         </div>
                                     ) : ''
                             }

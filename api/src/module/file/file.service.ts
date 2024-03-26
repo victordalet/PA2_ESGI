@@ -15,8 +15,8 @@ export class FileService {
 
     getFilesName(file: string): string[] {
         const path = join(__dirname, `../../../public/`);
-        const filesName: string[] = []
-        const regex = new RegExp(`^${file}*.pdf$`);
+        const filesName: string[] = [];
+        const regex = new RegExp(`${file}.*.pdf`);
         const directory = readdirSync(path);
         directory.forEach(file => {
             if (regex.test(file)) {
@@ -24,7 +24,6 @@ export class FileService {
             }
         });
         return filesName;
-
     }
 
 }

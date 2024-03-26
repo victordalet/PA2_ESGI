@@ -24,6 +24,9 @@ export interface ViewProps {
     postMessageForBail: () => void;
     isService: boolean;
     downloadFactureBail: () => void;
+    nameFiles: string[];
+    postFileBail: () => void;
+    downloadFileBail: (name: string) => void;
 }
 
 export interface ControllerProps {
@@ -41,6 +44,7 @@ export interface ControllerState {
     isBail?: boolean;
     description: LocationDescription;
     eventCalendar: LocationOccupation[];
+    nameFiles: string[];
 }
 
 export interface LocationOccupation {
