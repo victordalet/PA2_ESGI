@@ -14,14 +14,29 @@ export class SubscriptionService {
     }
 
     async createSubscription(subscription: BodySubscription) {
-        return await this.SubscriptionRepository.createSubscription(subscription);
+        if (!(typeof subscription.email === "string" && subscription.email.length > 4)) {
+            throw new Error('Bad email');
+        }
+        else 
+            return await this.SubscriptionRepository.createSubscription(subscription);
     }
 
     async updateSubscription(id: number, subscription: BodySubscription) {
+        if (!(typeof subscription.email === "string" && subscription.email.length > 4)) {
+            throw new Error('Bad email');
+        }
+        else if(!(typeof id === "number")){
+            throw new Error('Bad id');
+        }
+        else
         return await this.SubscriptionRepository.updateSubscription(id, subscription);
     }
 
     async deleteSubscription(id: number) {
+        if(!(typeof id === "number")){
+            throw new Error('Bad id');
+        }
+        else
         return await this.SubscriptionRepository.deleteSubscription(id);
     }
 
@@ -31,6 +46,10 @@ export class SubscriptionService {
 
 
     async subscribeUserByToken(token: string, subscription: BodySubscription) {
+        if(!(typeof subscription.price === "number")){
+            throw new Error('Bad price');
+        }
+        else
         return await this.SubscriptionRepository.subscribeUserByToken(token, subscription.price);
     }
 

@@ -16,6 +16,35 @@ export class LocationService {
     }
 
     async createLocation(location: Location) {
+        if(!(typeof location.name === 'string')){
+            throw new Error('Bad name'); 
+           } 
+           else if(!(typeof location.description === 'string')){
+            throw new Error('Bad description');
+           } 
+            else if(!(typeof location.address === 'string')){
+            throw new Error('Bad address');
+           } 
+           else if(!(typeof location.latitude === 'number')){
+            throw new Error('Bad latitude');
+           } 
+           else if(!(typeof location.longitude === 'number')){
+            throw new Error('Bad longitude'); 
+           }
+            else if(!(typeof location.capacity === 'number')){
+            throw new Error('Bad capacity'); 
+           }
+            else if(!(typeof location.price === 'number')){
+            throw new Error('Bad price'); 
+           } 
+           else if(!(typeof location.type === 'string')){
+            throw new Error('Bad type'); 
+           }
+            else if(!(typeof location.created_by === 'string')){
+            throw new Error('Error'); 
+           }
+       
+        else{
         const options: NodeGeocoder.Options = {
             provider: 'openstreetmap',
         };
@@ -25,25 +54,72 @@ export class LocationService {
         location.longitude = res[0].longitude;
         return await this.LocationRepository.createLocation(location);
     }
+    }
 
     async updateLocation(id: number, location: Location) {
+        if(!(typeof location.name === 'string')){
+            throw new Error('Bad name'); 
+           }
+            else if(!(typeof location.description === 'string')){
+            throw new Error('Bad description');
+           }  
+           else if(!(typeof location.address === 'string')){
+            throw new Error('Bad address');
+           } 
+           else if(!(typeof location.latitude === 'number')){
+            throw new Error('Bad latitude');
+           } 
+           else if(!(typeof location.longitude === 'number')){
+            throw new Error('Bad longitude'); 
+           } 
+           else if(!(typeof location.capacity === 'number')){
+            throw new Error('Bad capacity'); 
+           } 
+           else if(!(typeof location.price === 'number')){
+            throw new Error('Bad price'); 
+           } 
+           else if(!(typeof location.type === 'string')){
+            throw new Error('Bad type'); 
+           } 
+           else if(!(typeof id === 'number')){
+            throw new Error('Bad id'); 
+           } 
+
+        else
         return await this.LocationRepository.updateLocation(id, location);
     }
 
     async deleteLocation(id: number) {
+         if(!(typeof id === 'number')){
+            throw new Error('Bad id'); 
+           } 
+
+        else
         return await this.LocationRepository.deleteLocation(id);
     }
 
-    async locationIsOccupied(body: LocationAvailability) {
+    async locationIsOccupied(body: LocationAvailability) { 
+        if(!(typeof body.location_id === 'number')){
+            throw new Error('Bad id'); 
+           } 
+        else
         return await this.LocationRepository.locationIsOccupied(body.location_id, body.from_datetime, body.to_datetime);
     }
-
+ 
     async addLocationOccupation(body: LocationAvailability, token: string) {
-        const response = await this.LocationRepository.addLocationOccupation(body.location_id, token, body.from_datetime, body.to_datetime);
-        return {id: response}
+        if(!(typeof body.location_id === 'number')){
+            throw new Error('Bad id'); 
+           } 
+        else 
+       { const response = await this.LocationRepository.addLocationOccupation(body.location_id, token, body.from_datetime, body.to_datetime);
+        return {id: response}}
     }
 
     async locationIsOccupiedByUser(locationId: number, token: string) {
+        if(!(typeof locationId === 'number')){
+            throw new Error('Bad id'); 
+           } 
+        else 
         return {is_occupied: await this.LocationRepository.locationIsOccupiedByUser(locationId, token)};
     }
 
@@ -52,6 +128,13 @@ export class LocationService {
     }
 
     async addLocationNotation(locationId: number, notation: number) {
+        if(!(typeof notation === 'number')){
+            throw new Error('Bad notation'); 
+           } 
+        else if(!(typeof locationId === 'number')){
+            throw new Error('Bad locationId');
+           } 
+        else
         return await this.LocationRepository.addNotationLocation(locationId, notation);
     }
 
@@ -67,10 +150,21 @@ export class LocationService {
     }
 
     async addMessageByLocationOccupationId(locationOccupationId: number, message: string, token: string) {
+        if(!(typeof message === 'string')){
+            throw new Error('Bad message'); 
+           } 
+        else if(!(typeof locationOccupationId === 'number')){
+            throw new Error('Bad locationOccupationId');
+           } 
+        else
         return await this.LocationRepository.addMessageToLocationOccupation(locationOccupationId, message, token);
     }
 
     async deleteLocationOccupation(locationId: number) {
+        if(!(typeof locationId === 'number')){
+            throw new Error('Bad locationId'); 
+           } 
+        else 
         return await this.LocationRepository.deleteLocationOccupation(locationId);
     }
 
