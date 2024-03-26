@@ -30,7 +30,7 @@ export class SubscriptionController {
     @ApiBadRequestResponse({description: 'Request body is not valid'})
     async createSubscription(@Headers('authorization') token: string, @Body() body: BodySubscription) {
         await this.tokenValidation.validateAdminToken(token);
-        return this.subscriptionService.createSubscription(body);
+        return this.subscriptionService.createSubscription(token);
     }
 
     @Post('subscribe')
@@ -66,7 +66,7 @@ export class SubscriptionController {
     @ApiBadRequestResponse({description: 'Request body is not valid'})
     async updateSubscription(@Headers('authorization') token: string, @Param('id') id: number, @Body() body: BodySubscription) {
         await this.tokenValidation.validateAdminToken(token);
-        return this.subscriptionService.updateSubscription(id, body);
+        return this.subscriptionService.updateSubscription(id, body, token);
     }
 
     @Delete('/by_id/:id')

@@ -89,13 +89,14 @@ export class LocationService {
         return await this.LocationRepository.updateLocation(id, location);
     }
 
-    async deleteLocation(id: number) {
-         if(!(typeof id === 'number')){
-            throw new Error('Bad id'); 
-           } 
+    async deleteLocation(id: number, token: string) {
+        if(!(typeof id === 'number')){
+          throw new Error('Bad id'); 
+         } 
 
         else
-        return await this.LocationRepository.deleteLocation(id);
+          return await this.LocationRepository.deleteLocation(id, token);
+
     }
 
     async locationIsOccupied(body: LocationAvailability) { 
@@ -127,15 +128,15 @@ export class LocationService {
         return await this.LocationRepository.getLocationOccupation(locationId);
     }
 
-    async addLocationNotation(locationId: number, notation: number) {
-        if(!(typeof notation === 'number')){
+    async addLocationNotation(locationId: number, notation: number, token: string) {
+          if(!(typeof notation === 'number')){
             throw new Error('Bad notation'); 
            } 
         else if(!(typeof locationId === 'number')){
             throw new Error('Bad locationId');
            } 
         else
-        return await this.LocationRepository.addNotationLocation(locationId, notation);
+        return await this.LocationRepository.addNotationLocation(locationId, notation, token);
     }
 
     async getNotationLocation(locationId: number) {
@@ -145,8 +146,8 @@ export class LocationService {
         }
     }
 
-    async getMessagesByLocationOccupationId(locationOccupationId: number) {
-        return await this.LocationRepository.getMessagesByLocationOccupationId(locationOccupationId);
+    async getMessagesByLocationOccupationId(locationOccupationId: number, token: string) {
+        return await this.LocationRepository.getMessagesByLocationOccupationId(locationOccupationId,token);
     }
 
     async addMessageByLocationOccupationId(locationOccupationId: number, message: string, token: string) {
@@ -160,12 +161,12 @@ export class LocationService {
         return await this.LocationRepository.addMessageToLocationOccupation(locationOccupationId, message, token);
     }
 
-    async deleteLocationOccupation(locationId: number) {
+    async deleteLocationOccupation(locationId: number, token: string) {
         if(!(typeof locationId === 'number')){
-            throw new Error('Bad locationId'); 
-           } 
+          throw new Error('Bad locationId'); 
+         } 
         else 
-        return await this.LocationRepository.deleteLocationOccupation(locationId);
+        return await this.LocationRepository.deleteLocationOccupation(locationId, token);
     }
 
     async getLocationOccupationByUser(token: string) {

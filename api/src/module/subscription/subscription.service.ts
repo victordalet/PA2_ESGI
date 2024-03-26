@@ -14,23 +14,12 @@ export class SubscriptionService {
         return await this.SubscriptionRepository.getSubscriptions();
     }
 
-    async createSubscription(subscription: BodySubscription) {
-        if (!(typeof subscription.email === "string" && subscription.email.length > 4)) {
-            throw new Error('Bad email');
-        }
-        else 
-            return await this.SubscriptionRepository.createSubscription(subscription);
+    async createSubscription(token: string) {
+        return await this.SubscriptionRepository.createSubscription(token);
     }
 
-    async updateSubscription(id: number, subscription: BodySubscription) {
-        if (!(typeof subscription.email === "string" && subscription.email.length > 4)) {
-            throw new Error('Bad email');
-        }
-        else if(!(typeof id === "number")){
-            throw new Error('Bad id');
-        }
-        else
-        return await this.SubscriptionRepository.updateSubscription(id, subscription);
+    async updateSubscription(id: number, subscription: BodySubscription, token: string) {
+        return await this.SubscriptionRepository.updateSubscription(id, subscription, token);
     }
 
     async deleteSubscription(id: number) {

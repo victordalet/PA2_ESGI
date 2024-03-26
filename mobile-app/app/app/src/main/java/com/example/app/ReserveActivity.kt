@@ -224,31 +224,22 @@ class ReserveActivity : AppCompatActivity() {
     }
 
     private fun fetchImage(card: Card) {
-        val sharedPref = getSharedPreferences("user", AppCompatActivity.MODE_PRIVATE)
-        val token = sharedPref.getString("token", null)
-        if (token != null) {
-            val apiPath = "http://10.66.125.162:3001/picture/service-${card.getId()}"
-            try {
-                val request =
-                    okhttp3.Request.Builder().url(apiPath).get().addHeader("authorization", token)
-                        .build()
-                val response = client.newCall(request)
-                response.enqueue(object : okhttp3.Callback {
-                    override fun onFailure(call: okhttp3.Call, e: java.io.IOException) {
-                        println("Error: $e")
-                    }
-
-                    override fun onResponse(call: okhttp3.Call, response: okhttp3.Response) {
-                        val responseBody: String? = response.body()?.string()
-                        runOnUiThread {
-                            card.setImages(responseBody)
-                        }
-                    }
-                })
-            } catch (e: Exception) {
+        val pathPictureBase64 = "http://10.66.125.162:3001/picture/service-${card.getId()}"
+        val request = okhttp3.Request.Builder().url(pathPictureBase64).get().build()
+        val response = client.newCall(request)
+        response.enqueue(object : okhttp3.Callback {
+            override fun onFailure(call: okhttp3.Call, e: java.io.IOException) {
                 println("Error: $e")
             }
-        }
+
+            override fun onResponse(call: okhttp3.Call, response: okhttp3.Response) {
+                val responseBody: String? = response.body()?.string()
+                runOnUiThread {
+                    card.setImages(responseBody)
+                    arrayAdapter?.notifyDataSetChanged()
+                }
+            }
+        })
     }
 
 }

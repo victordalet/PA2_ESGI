@@ -98,7 +98,7 @@ export class ServiceController {
     @ApiBadRequestResponse({description: 'Request body is not valid'})
     async removeLocationByServiceId(@Headers('authorization') token: string, @Body() body: ServiceModel) {
         await this.tokenValidation.validateToken(token);
-        return this.serviceService.removeLocationByServiceId(body);
+        return this.serviceService.removeLocationByServiceId(body,token);
     }
 
     @Patch('notation')
@@ -107,7 +107,7 @@ export class ServiceController {
     @ApiBadRequestResponse({description: 'Request body is not valid'})
     async notationService(@Headers('authorization') token: string, @Body() body: ServiceModel) {
         await this.tokenValidation.validateToken(token);
-        return this.serviceService.notationService(body);
+        return this.serviceService.notationService(body,token);
     }
 
     @Put(':id')

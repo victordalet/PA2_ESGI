@@ -40,6 +40,7 @@ export default class Controller extends React.Component<
             this.idResa = parseInt(document.location.href.split('&id2=')[1]);
             this.isAlsoReserved();
         }
+        this.getNameFileBail();
         this.fetchLocation();
         this.getStartNotation();
         this.fetchService();
@@ -60,7 +61,8 @@ export default class Controller extends React.Component<
         isBail: undefined,
         description: {} as LocationDescription,
         servicesSelected: [],
-        eventCalendar: []
+        eventCalendar: [],
+        nameFiles: [],
     };
 
 
@@ -94,7 +96,6 @@ export default class Controller extends React.Component<
         });
         const data = await response.json();
         this.setState({services: data});
-        console.log(JSON.stringify(data));
     };
 
 
@@ -217,6 +218,60 @@ export default class Controller extends React.Component<
         this.setState({eventCalendar: data});
     };
 
+    public postFileBail = async () => {
+        const apiPath = process.env.API_HOST || 'http://localhost:3001';
+        const file = document.querySelector<HTMLInputElement>('#file-input');
+        if (file && file.files) {
+            const formData = new FormData();
+            formData.append('file', file.files[0]);
+            const name = `location-${this.id}-${file.files[0].name}`;
+            formData.append('name', name);
+            await fetch(`${apiPath}/file`, {
+                method: 'POST',
+                headers: {
+                    'authorization': localStorage.getItem('token') || ''
+                },
+                body: formData
+            });
+            document.location.reload();
+        }
+
+    };
+
+    public getNameFileBail = async () => {
+        const apiPath = process.env.API_HOST || 'http://localhost:3001';
+        const response = await fetch(`${apiPath}/file/get-name-files`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'authorization': localStorage.getItem('token') || ''
+            },
+            body: JSON.stringify({
+                file: `location-${this.id}`
+            })
+        });
+        const data = await response.json();
+        console.log(data);
+        this.setState({nameFiles: data.data});
+    };
+
+    public downloadFileBail = async (name: string) => {
+        const apiPath = process.env.API_HOST || 'http://localhost:3001';
+        const response = await fetch(`${apiPath}/file&name=${name}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'authorization': localStorage.getItem('token') || ''
+            }
+        });
+        const data = await response.blob();
+        const url = window.URL.createObjectURL(data);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = name;
+        a.click();
+    };
+
 
     public getStartNotation = () => {
         const apiPath = process.env.API_HOST || 'http://localhost:3001';
@@ -312,10 +367,26 @@ export default class Controller extends React.Component<
                 'authorization': localStorage.getItem('token') || ''
             },
             body: JSON.stringify({
-                location_id: this.id
+                location_id: this.idResa
             })
         });
         document.location.href = '/location';
+    };
+
+    public deleteOccupationBail = async () => {
+        const idLocation = document.querySelector<HTMLInputElement>('#message-select')?.value;
+        const apiPath = process.env.API_HOST || 'http://localhost:3001';
+        await fetch(apiPath + this.apiSubPath + '/occupation', {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                'authorization': localStorage.getItem('token') || ''
+            },
+            body: JSON.stringify({
+                location_id: idLocation
+            })
+        });
+        document.location.reload();
     };
 
     private fetchIsSubscribed = async () => {
@@ -721,7 +792,11 @@ export default class Controller extends React.Component<
             services={this.state.services}
             fetchReservations={this.fetchReservations}
             isReserved={this.state.isReserved}
-            downloadFactureBail={this.downloadFactureBail}/>;
+            downloadFactureBail={this.downloadFactureBail}
+            nameFiles={this.state.nameFiles}
+            downloadFileBail={this.downloadFileBail}
+            postFileBail={this.postFileBail}
+            deleteOccupationBail={this.deleteOccupationBail}/>;
     }
 
 }

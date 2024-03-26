@@ -92,7 +92,7 @@ export class ServiceService {
         return this.serviceRepository.getServiceByUser(body);
     }
 
-    async notationService(body: ServiceModel) {
+    async notationService(body: ServiceModel,token: string) {
         if(!(typeof body.notation=== 'number')){ 
             throw new Error('Bad notation');}
         
@@ -101,9 +101,9 @@ export class ServiceService {
         
         else
         if (body.type === 'USER') {
-            return this.serviceRepository.notationServiceByUser(body);
+            return this.serviceRepository.notationServiceByUser(body,token);
         } else if (body.type === 'BAIL') {
-            return this.serviceRepository.notationServiceByLocation(body);
+            return this.serviceRepository.notationServiceByLocation(body,token);
         }
     }
 
@@ -116,12 +116,12 @@ export class ServiceService {
         }
     }
 
-    async removeLocationByServiceId(service: ServiceModel) {
+    async removeLocationByServiceId(service: ServiceModel,token: string) {
         if (service.type === 'USER') {
-            return this.serviceRepository.removeLocationByServiceIdClient(service.service_id, service.location_id);
+            return this.serviceRepository.removeLocationByServiceIdClient(service.service_id, service.location_id,token);
         }
         if (service.type === 'BAIL') {
-            return this.serviceRepository.removeLocationByServiceIdBail(service.service_id, service.location_id);
+            return this.serviceRepository.removeLocationByServiceIdBail(service.service_id, service.location_id,token);
         }
     }
 

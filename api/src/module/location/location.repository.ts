@@ -60,8 +60,10 @@ export class LocationRepository {
         return this.db.query("UPDATE location SET name = ?, description = ?, address = ?, latitude = ?, longitude = ?, capacity = ?, price = ?, type = ?, updated_at = ? WHERE id = ?", [location.name, location.description, location.address, location.latitude, location.longitude, location.capacity, location.price, location.type, new Date(), id]);
     }
 
-    async deleteLocation(id: number) {
-        return this.db.query("DELETE FROM location WHERE id = ?", [id]);
+    async deleteLocation(id: number, token: string) {
+        const [rows, filed] = await this.db.query("SELECT email FROM USER WHERE connection = ?", [token]);
+        if (rows)
+            return this.db.query("DELETE FROM location WHERE id = ? and created_by = ?", [id, rows[0].email]);
     }
 
     async locationIsOccupied(locationId: number, fromDatetime: string, toDatetime: string) {
@@ -97,13 +99,21 @@ export class LocationRepository {
         return rows2[0].id;
     }
 
-    async deleteLocationOccupation(locationId: number) {
-        return this.db.query("UPDATE location_occupation SET deleted_at = ? WHERE location_id = ? ", [new Date(), locationId]);
+    async deleteLocationOccupation(locationId: number, token: string) {
+        const [rows, filed] = await this.db.query("SELECT email FROM USER WHERE connection = ?", [token]);
+        const [rows2, filed2] = await this.db.query("SELECT location_id from location_occupation WHERE id = ?", [locationId]);
+        const [rows3, filed3] = await this.db.query("SELECT created_by from location WHERE id = ?", [rows2[0].location_id]);
+        if (rows3[0].created_by == rows[0].email) {
+            return this.db.query("UPDATE location_occupation SET deleted_at = ? WHERE id = ? ", [new Date(), locationId]);
+        } else
+            return this.db.query("UPDATE location_occupation SET deleted_at = ? WHERE id = ? and user_email = ? ", [new Date(), locationId, rows[0].email]);
+
     }
 
     async locationIsOccupiedByUser(locationId: number, token: string) {
         const [rows, filed] = await this.db.query("SELECT email FROM USER WHERE connection = ?", [token]);
-        const [rows2, filed2] = await this.db.query("SELECT * FROM location_occupation WHERE location_id = ? AND user_email = ? AND deleted_at IS NULL", [locationId, rows[0].email]);
+        const [rows2, filed2] = await this.db.query("SELECT * FROM location_occupation WHERE location_id = ? AND user_email = ? AND deleted_at IS NULL",
+            [locationId, rows[0].email]);
         if (rows2 instanceof Array) {
             return rows2.length > 0;
         }
@@ -114,8 +124,11 @@ export class LocationRepository {
         return rows;
     }
 
-    async addNotationLocation(locationOccupationId: number, notation: number) {
-        return this.db.query("UPDATE location_occupation SET notation = ? WHERE id = ?", [notation, locationOccupationId]);
+    async addNotationLocation(locationOccupationId: number, notation: number, token: string) {
+        const [rows, filed] = await this.db.query("SELECT email FROM USER WHERE connection = ?", [token]);
+        if (rows)
+            return this.db.query("UPDATE location_occupation SET notation = ? WHERE id = ? and user_email = ?",
+                [notation, locationOccupationId, rows[0].email]);
     }
 
     async getNotationLocation(locationId: number) {
@@ -123,14 +136,34 @@ export class LocationRepository {
         return rows;
     }
 
-    async getMessagesByLocationOccupationId(locationOccupationId: number) {
-        return this.db.query("SELECT * FROM location_message WHERE location_occupation_id = ?", [locationOccupationId]);
+    async getMessagesByLocationOccupationId(locationOccupationId: number, token: string) {
+        const [rows, filed] = await this.db.query("SELECT email FROM USER WHERE connection = ?", [token]);
+        if (rows) {
+            const [rows2, filed2] = await this.db.query("SELECT * FROM location_occupation WHERE id = ?", [locationOccupationId]);
+            if (rows2) {
+                const [rows3, filed3] = await this.db.query("SELECT * from location WHERE id = ?", [rows2[0].location_id]);
+                if (rows3) {
+                    if (rows3[0].created_by === rows[0].email || rows2[0].user_email === rows[0].email) {
+                        return this.db.query("SELECT * FROM location_message WHERE location_occupation_id = ? ",
+                            [locationOccupationId]);
+                    }
+                }
+            }
+        }
     }
 
     async addMessageToLocationOccupation(locationOccupationId: number, message: string, token: string) {
         const [rows, filed] = await this.db.query("SELECT email FROM USER WHERE connection = ?", [token]);
-        await this.db.query("INSERT INTO message (message, created_at, updated_at, to_user, created_by) VALUES (?, ?, ?, ?, ?)", [message, new Date(), new Date(), ' ', rows[0].email]);
-        return this.db.query("INSERT INTO location_message (created_at, updated_at, location_occupation_id, message) VALUES (?, ?, ?, ?)", [new Date(), new Date(), locationOccupationId, message]);
+        const [rows2, filed2] = await this.db.query("SELECT * FROM location_occupation WHERE id = ?", [locationOccupationId]);
+        const [rows3, filed3] = await this.db.query("SELECT * from location WHERE id = ?", [rows2[0].location_id]);
+        if (rows && rows2 && rows3) {
+            if (rows3[0].created_by === rows[0].email || rows2[0].user_email === rows[0].email) {
+                await this.db.query("INSERT INTO message (message, created_at, updated_at, to_user, created_by) VALUES (?, ?, ?, ?, ?)",
+                    [message, new Date(), new Date(), ' ', rows[0].email]);
+                return this.db.query("INSERT INTO location_message (created_at, updated_at, location_occupation_id, message) VALUES (?, ?, ?, ?)",
+                    [new Date(), new Date(), locationOccupationId, message]);
+            }
+        }
     }
 
 }
