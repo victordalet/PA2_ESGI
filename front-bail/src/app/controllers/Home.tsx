@@ -5,7 +5,7 @@ import {ControllerProps, ControllerState} from '../@types/Home';
 import View from '../views/home';
 import HomeViewModel from "../view-models/Home";
 import {haveAdminToken, haveBailToken, havePrestataireToken, haveToken} from "../../security/token";
-import {Navbar} from "../../components/navbar";
+import {Loading} from "../../components/loading";
 
 @observer
 export default class HomeController extends Component<
@@ -41,7 +41,7 @@ export default class HomeController extends Component<
         const {viewModel} = this.props;
 
         if (this.state.typeUser === '') {
-            <Navbar/>;
+            <Loading/>;
         }
 
         return (

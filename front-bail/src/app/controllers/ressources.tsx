@@ -3,8 +3,8 @@ import ResourcesView from "../views/ressources";
 import React from "react";
 import {Location} from "../@types/location";
 import {Service} from "../@types/service";
-import {Navbar} from "../../components/navbar";
 import {haveToken} from "../../security/token";
+import {Loading} from "../../components/loading";
 
 export default class Controller extends React.Component<ControllerProps, ControllerState> {
 
@@ -82,7 +82,7 @@ export default class Controller extends React.Component<ControllerProps, Control
     render() {
 
         if (this.state.serviceNotFiltered.length === 0 || this.state.locationNotFiltered.length === 0) {
-            return <Navbar/>;
+            return <Loading/>;
         }
 
         return (

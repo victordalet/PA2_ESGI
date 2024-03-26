@@ -2,10 +2,10 @@ import React from "react";
 import {aboutCommission, ControllerProps, ControllerState} from "../@types/reserveService";
 import ReserveServiceView from "../views/reserveService";
 import {ServiceResponse} from "../@types/service";
-import {Navbar} from "../../components/navbar";
 import ReserveServiceViewModel from "../view-models/reserveService";
 import {PDFDocument, rgb, StandardFonts} from "pdf-lib";
 import {LocationOccupation} from "../@types/reserve";
+import {Loading} from "../../components/loading";
 
 export default class Controller extends React.Component<
     ControllerProps,
@@ -238,7 +238,7 @@ export default class Controller extends React.Component<
     render() {
 
         if (this.state.isCreator === undefined) {
-            return <Navbar/>;
+            return <Loading/>;
         }
 
         return <ReserveServiceView

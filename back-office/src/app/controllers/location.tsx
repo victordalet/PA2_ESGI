@@ -3,8 +3,8 @@ import {observer} from 'mobx-react';
 
 import {ControllerProps, ControllerState, DataResponse} from '../@types/location';
 import View from '../views/location';
-import {Navbar} from "../../components/navbar";
 import {haveToken} from "../../security/token";
+import {Loading} from "../../components/loading";
 
 @observer
 export default class LocationController extends Component<
@@ -46,7 +46,7 @@ export default class LocationController extends Component<
 
 
         if (this.state.data.length === 0) {
-            return <div><Navbar/></div>;
+            return <Loading/>;
         }
         return (
 

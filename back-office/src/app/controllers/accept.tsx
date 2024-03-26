@@ -2,7 +2,7 @@ import {ControllerProps, ControllerState} from "../@types/accept";
 import React from "react";
 import AcceptView from "../views/accept";
 import {observer} from "mobx-react";
-import {Navbar} from "../../components/navbar";
+import {Loading} from "../../components/loading";
 
 @observer
 export default class Controller extends React.Component<
@@ -58,7 +58,7 @@ export default class Controller extends React.Component<
     render() {
 
         if (this.state.emails.length === 0) {
-            return <Navbar/>;
+            return <Loading/>;
         }
 
         return <AcceptView

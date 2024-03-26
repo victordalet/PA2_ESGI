@@ -3,8 +3,8 @@ import {observer} from 'mobx-react';
 
 import {ControllerProps, ControllerState, ResponseIllegibleMessage} from '../@types/message';
 import View from '../views/message';
-import {Navbar} from "../../components/navbar";
 import {haveToken} from "../../security/token";
+import {Loading} from "../../components/loading";
 
 @observer
 export default class MessageControllers extends Component<
@@ -67,7 +67,7 @@ export default class MessageControllers extends Component<
 
     render() {
         if (this.state.data.length === 0) {
-            return <div><Navbar/></div>;
+            return <Loading/>;
         }
         return (
 
