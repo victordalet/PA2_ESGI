@@ -54,11 +54,11 @@ export class TicketRepository {
         return messages;
     }
 
-    updateMessageTicket(id: number, messageId: number, message: any) {
+    updateMessageTicket(id: number, messageId: number, message: MessageTicket) {
         return this.db.query("UPDATE TICKET_MESSAGE SET message = ? WHERE id = ?", [message.message, messageId]);
     }
 
-    deleteMessageTicket(id: number, messageId: number) {
+    deleteMessageTicket(messageId: number) {
         return this.db.query("DELETE FROM TICKET_MESSAGE WHERE id = ?", [messageId]);
     }
 

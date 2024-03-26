@@ -30,4 +30,12 @@ export class BodyMessage {
     @IsString()
     deleted_at?: string;
 
+    @ApiProperty({example: 'to_user', description: 'to user'})
+    @IsString()
+    to_user?: string;
+
+    @ApiProperty({example: 'created_by', description: 'created by'})
+    @IsString()
+    created_by?: string;
+
 }

@@ -15,14 +15,29 @@ export class SubscriptionService {
     }
 
     async createSubscription(subscription: BodySubscription) {
-        return await this.SubscriptionRepository.createSubscription(subscription);
+        if (!(typeof subscription.email === "string" && subscription.email.length > 4)) {
+            throw new Error('Bad email');
+        }
+        else 
+            return await this.SubscriptionRepository.createSubscription(subscription);
     }
 
     async updateSubscription(id: number, subscription: BodySubscription) {
+        if (!(typeof subscription.email === "string" && subscription.email.length > 4)) {
+            throw new Error('Bad email');
+        }
+        else if(!(typeof id === "number")){
+            throw new Error('Bad id');
+        }
+        else
         return await this.SubscriptionRepository.updateSubscription(id, subscription);
     }
 
     async deleteSubscription(id: number) {
+        if(!(typeof id === "number")){
+            throw new Error('Bad id');
+        }
+        else
         return await this.SubscriptionRepository.deleteSubscription(id);
     }
 
@@ -32,29 +47,33 @@ export class SubscriptionService {
 
 
     async subscribeUserByToken(token: string, subscription: BodySubscription) {
-        const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
-        const session = await stripe.checkout.sessions.create({
-            payment_method_types: ['card'],
-            line_items: [
-                {
-                    price_data: {
-                        currency: 'usd',
-                        product_data: {
-                            name: 'Premium',
-                        },
-                        unit_amount: subscription.price,
-                    },
-                    quantity: 1,
-                },
-            ],
-            mode: 'payment',
-            success_url: `${process.env.FRONTEND_URL}/premium`,
-            cancel_url: `${process.env.FRONTEND_URL}/home`,
-        });
+        if(!(typeof subscription.price === "number")){
+            throw new Error('Bad price');
+        }
+        else {
+          const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+          const session = await stripe.checkout.sessions.create({
+              payment_method_types: ['card'],
+              line_items: [
+                  {
+                      price_data: {
+                          currency: 'usd',
+                          product_data: {
+                              name: 'Premium',
+                          },
+                          unit_amount: subscription.price,
+                      },
+                      quantity: 1,
+                  },
+              ],
+              mode: 'payment',
+              success_url: `${process.env.FRONTEND_URL}/premium`,
+              cancel_url: `${process.env.FRONTEND_URL}/home`,
+          });
 
-        await this.SubscriptionRepository.subscribeUserByToken(token, subscription.price);
-        return session.url;
-
+          await this.SubscriptionRepository.subscribeUserByToken(token, subscription.price);
+          return session.url;
+        }
     }
 
     async unsubscribeUserByToken(token: string) {

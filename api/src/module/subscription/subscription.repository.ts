@@ -1,6 +1,7 @@
 import {Connection} from "mysql2/promise";
 import {DatabaseEntity} from "../../database/mysql.entity";
 import {User} from "../../core/user";
+import { BodySubscription } from "./subscription.model";
 
 export class SubscriptionRepository {
     private db: Connection;
@@ -24,11 +25,11 @@ export class SubscriptionRepository {
         return subscriptions;
     }
 
-    async createSubscription(subscription: any) {
+    async createSubscription(subscription: BodySubscription) {
         return this.db.query("INSERT INTO subscription (email, created_at ,updated_at) VALUES (?, ?, ?)", [subscription.email, new Date(), new Date()]);
     }
 
-    async updateSubscription(id: number, subscription: any) {
+    async updateSubscription(id: number, subscription: BodySubscription) {
         return this.db.query("UPDATE subscription SET email = ?, updated_at = ? WHERE id = ?", [subscription.email, new Date(), id]);
     }
 

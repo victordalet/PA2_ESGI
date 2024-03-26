@@ -1,6 +1,7 @@
 import {Connection} from "mysql2/promise";
 import {DatabaseEntity} from "../../database/mysql.entity";
 import {LocationMessage} from "../../core/message";
+import { BodyMessage } from "./message.model";
 
 export class MessageRepository {
     private db: Connection;
@@ -24,7 +25,7 @@ export class MessageRepository {
         return messages;
     }
 
-    async createMessage(message: any) {
+    async createMessage(message:BodyMessage ) {
         return this.db.query("INSERT INTO message (message, created_at ,updated_at, to_user, created_by) VALUES (?, ?, ?, ?, ?)", [message.message, new Date(), new Date(), message.to_user, message.created_by]);
     }
 

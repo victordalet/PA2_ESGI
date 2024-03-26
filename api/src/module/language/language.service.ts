@@ -15,6 +15,14 @@ export class LanguageService {
     }
 
     async postWord(languageParam: Language) {
+        if(!(typeof languageParam.words === 'string')){
+            throw new Error('Bad word');
+        }else if(!(typeof languageParam.translation === 'string')){
+            throw new Error('Bad translation');
+        }else if(!(typeof languageParam.language === 'string')){
+            throw new Error('Bad language');
+        }
+        else
         return await this.languageRepository.addWord(languageParam.words, languageParam.translation, languageParam.language);
     }
 
