@@ -1,7 +1,8 @@
 import {ControllerProps, ControllerState} from "../@types/ressources";
 import ResourcesView from "../views/ressources";
 import React from "react";
-import {Service, Location} from "../@types/location";
+import {Location} from "../@types/location";
+import {Service} from "../@types/service";
 import {Navbar} from "../../components/navbar";
 import {haveToken} from "../../security/token";
 

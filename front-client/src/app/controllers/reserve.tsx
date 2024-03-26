@@ -15,7 +15,6 @@ import {PDFDocument, StandardFonts, rgb} from 'pdf-lib';
 import {haveToken} from "../../security/token";
 
 
-
 export default class Controller extends React.Component<
     ControllerProps,
     ControllerState
@@ -390,6 +389,78 @@ export default class Controller extends React.Component<
         }
     };
 
+    public downloadFactureBail = async () => {
+        const pdfDoc = await PDFDocument.create();
+        const timesRomanFont = await pdfDoc.embedFont(StandardFonts.TimesRoman);
+        const page = pdfDoc.addPage();
+        const {width, height} = page.getSize();
+        let fontSize = 30;
+        page.drawLine({
+            start: {x: 50, y: height - 2 * fontSize},
+            end: {x: width - 50, y: height - 2 * fontSize},
+            thickness: 2,
+            color: rgb(0, 0, 0),
+        });
+        page.drawText('Facture', {
+            x: width / 2 - 50,
+            y: height - 4 * fontSize,
+            size: fontSize,
+            font: timesRomanFont,
+            color: rgb(0, 0, 0),
+        });
+        page.drawLine({
+            start: {x: 50, y: height - 5 * fontSize},
+            end: {x: width - 50, y: height - 5 * fontSize},
+            thickness: 2,
+            color: rgb(0, 0, 0),
+        });
+        fontSize = 15;
+        const services = this.state.services;
+        const number_user_locate = this.state.eventCalendar.length;
+        let positionYFinal = 9;
+        services.map((s, i) => {
+            page.drawText('Service ' + (i + 1) + ' : ' + s.name + ' - ' + s.price + '€ ', {
+                x: 50,
+                y: height - (positionYFinal + i) * fontSize,
+                size: fontSize,
+                font: timesRomanFont,
+                color: rgb(0, 0, 0),
+
+            });
+            positionYFinal += 2;
+        });
+        positionYFinal += 3;
+        page.drawText(`Multiplication des services par  : ${number_user_locate} (nb de locations) `, {
+            x: 50,
+            y: height - (positionYFinal) * fontSize,
+            size: fontSize,
+            font: timesRomanFont,
+            color: rgb(0, 0, 0),
+        });
+        positionYFinal += 2;
+        page.drawLine({
+            start: {x: 50, y: height - positionYFinal * fontSize},
+            end: {x: width - 50, y: height - positionYFinal * fontSize},
+            thickness: 2,
+            color: rgb(0, 0, 0),
+        });
+        positionYFinal += 2;
+        const serviceTotalPrice = services.reduce((acc, service) => acc + service.price, 0);
+        const totalPrice = serviceTotalPrice * number_user_locate;
+        page.drawText(`Total : ${totalPrice} €`, {
+            x: 50,
+            y: height - (positionYFinal) * fontSize,
+            size: fontSize,
+            font: timesRomanFont,
+            color: rgb(0, 0, 0),
+        });
+        const pdfBytes = await pdfDoc.save();
+        const blob = new Blob([pdfBytes], {type: 'application/pdf'});
+        const link = document.createElement('a');
+        link.href = window.URL.createObjectURL(blob);
+        link.download = 'facture.pdf';
+        link.click();
+    };
 
     public downloadFacture = async () => {
         const isSubscribed = await this.fetchIsSubscribed();
@@ -584,7 +655,6 @@ export default class Controller extends React.Component<
         });
 
         await cardElement.forEach(async (card, index) => {
-            console.log('for');
             if (card.classList.contains('active')) {
                 console.log('fetch');
                 const apiPath = process.env.API_HOST || 'http://localhost:3001';
@@ -650,7 +720,8 @@ export default class Controller extends React.Component<
             data={this.state.data}
             services={this.state.services}
             fetchReservations={this.fetchReservations}
-            isReserved={this.state.isReserved}/>;
+            isReserved={this.state.isReserved}
+            downloadFactureBail={this.downloadFactureBail}/>;
     }
 
 }

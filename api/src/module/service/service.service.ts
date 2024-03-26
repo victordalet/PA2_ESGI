@@ -107,4 +107,23 @@ export class ServiceService {
         }
     }
 
+    async getLocationByServiceId(service: ServiceModel) {
+        if (service.type === 'USER') {
+            return await this.serviceRepository.getLocationByServiceIdClient(service.service_id);
+        }
+        if (service.type === 'BAIL') {
+            return await this.serviceRepository.getLocationByServiceIdBail(service.service_id);
+        }
+    }
+
+    async removeLocationByServiceId(service: ServiceModel) {
+        if (service.type === 'USER') {
+            return this.serviceRepository.removeLocationByServiceIdClient(service.service_id, service.location_id);
+        }
+        if (service.type === 'BAIL') {
+            return this.serviceRepository.removeLocationByServiceIdBail(service.service_id, service.location_id);
+        }
+    }
+
+
 }

@@ -83,6 +83,23 @@ export class ServiceController {
         return this.serviceService.createService(body);
     }
 
+    @Post('get-location-by-service')
+    @ApiOperation({summary: 'Get location by service'})
+    @ApiCreatedResponse({description: 'Location'})
+    @ApiBadRequestResponse({description: 'Request body is not valid'})
+    async getLocationByServiceId(@Headers('authorization') token: string, @Body() body: ServiceModel) {
+        await this.tokenValidation.validateToken(token);
+        return await this.serviceService.getLocationByServiceId(body);
+    }
+
+    @Patch('remove-location-by-service')
+    @ApiOperation({summary: 'Remove location by service'})
+    @ApiOkResponse({description: 'Location removed'})
+    @ApiBadRequestResponse({description: 'Request body is not valid'})
+    async removeLocationByServiceId(@Headers('authorization') token: string, @Body() body: ServiceModel) {
+        await this.tokenValidation.validateToken(token);
+        return this.serviceService.removeLocationByServiceId(body);
+    }
 
     @Patch('notation')
     @ApiOperation({summary: 'Notation service'})

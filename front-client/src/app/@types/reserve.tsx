@@ -23,6 +23,7 @@ export interface ViewProps {
     fetchMessagesForBail: () => void;
     postMessageForBail: () => void;
     isService: boolean;
+    downloadFactureBail: () => void;
 }
 
 export interface ControllerProps {
