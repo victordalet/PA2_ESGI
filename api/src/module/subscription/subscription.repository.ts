@@ -1,6 +1,7 @@
 import {Connection} from "mysql2/promise";
 import {DatabaseEntity} from "../../database/mysql.entity";
 import {User} from "../../core/user";
+import { BodySubscription } from "./subscription.model";
 
 export class SubscriptionRepository {
     private db: Connection;

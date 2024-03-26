@@ -14,14 +14,32 @@ export class ProviderService {
     }
 
     async createProvider(provider: ProviderModel) {
+        if(!(typeof provider.name === 'string')){
+            throw new Error('Bad name');}
+        else if(!(typeof provider.description === 'string')){
+            throw new Error('Bad description');}
+        
+        else
         return await this.providerRepository.createProvider(provider);
     }
 
     async updateProvider(id: number, provider: ProviderModel) {
+        if(!(typeof provider.name === 'string')){
+            throw new Error('Bad name');}
+        else if(!(typeof provider.description === 'string')){
+            throw new Error('Bad description');}
+         else if(!(typeof id === 'number')){
+                throw new Error('Bad id');}
+
+        else
         return await this.providerRepository.updateProvider(id, provider);
     }
 
     async deleteProvider(id: number) {
+        if(!(typeof id === 'number')){
+            throw new Error('Bad id');}
+
+        else
         return await this.providerRepository.deleteProvider(id);
     }
 
