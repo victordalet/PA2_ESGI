@@ -4,9 +4,9 @@ import {observer} from 'mobx-react';
 import {ControllerProps, ControllerState} from '../@types/Home';
 import View from '../views/home';
 import HomeViewModel from "../view-models/Home";
-import {Navbar} from "../../components/navbar";
 import {LocationResponse} from "../@types/location";
 import {ServiceResponse} from "../@types/service";
+import {Loading} from "../../components/loading";
 
 @observer
 export default class HomeController extends Component<
@@ -64,9 +64,8 @@ export default class HomeController extends Component<
         const {viewModel} = this.props;
 
         if (this.state.service.length === 0 || this.state.location.length === 0) {
-            return <Navbar/>;
+            return <Loading/>;
         }
-
 
         return (
             <View

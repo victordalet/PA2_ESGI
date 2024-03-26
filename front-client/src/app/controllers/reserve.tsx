@@ -8,11 +8,11 @@ import {
 import React from "react";
 import {ReserveView} from "../views/reserve";
 import {LocationDescription, LocationResponse} from "../@types/location";
-import {Navbar} from "../../components/navbar";
 import {ServiceResponse} from "../@types/service";
 import ReserveViewModel from "../view-models/reserve";
 import {PDFDocument, StandardFonts, rgb} from 'pdf-lib';
 import {haveToken} from "../../security/token";
+import {Loading} from "../../components/loading";
 
 
 export default class Controller extends React.Component<
@@ -768,7 +768,7 @@ export default class Controller extends React.Component<
     render() {
 
         if (this.state.isBail === undefined && this.state.services.length === 0) {
-            return <Navbar/>;
+            return <Loading/>;
         }
 
         return <ReserveView

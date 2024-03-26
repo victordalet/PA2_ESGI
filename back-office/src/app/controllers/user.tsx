@@ -3,8 +3,8 @@ import {observer} from 'mobx-react';
 
 import {ControllerProps, ControllerState, resultData} from '../@types/user';
 import View from '../views/user';
-import {Navbar} from "../../components/navbar";
 import {haveToken} from "../../security/token";
+import {Loading} from "../../components/loading";
 
 @observer
 export default class UserControllers extends Component<
@@ -44,7 +44,7 @@ export default class UserControllers extends Component<
     render() {
 
         if (this.state.data.length === 0) {
-            return <div><Navbar/></div>;
+            return <Loading/>;
         }
         return (
             <View data={this.state.data}/>

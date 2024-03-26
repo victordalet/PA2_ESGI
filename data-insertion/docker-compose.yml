@@ -9,6 +9,7 @@ services:
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       NB_EPOCHS: ${NB_EPOCHS}
+      MYSQL_PORT: ${MYSQL_PORT}
 
     networks:
       - web

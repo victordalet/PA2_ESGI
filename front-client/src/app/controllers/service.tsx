@@ -1,8 +1,8 @@
 import React from "react";
 import ServiceView from "../views/service";
 import {ControllerProps, ControllerState, ServiceResponse} from "../@types/service";
-import {Navbar} from "../../components/navbar";
 import ServiceViewModel from "../view-models/service";
+import {Loading} from "../../components/loading";
 
 export default class Controller extends React.Component<
     ControllerProps,
@@ -66,7 +66,7 @@ export default class Controller extends React.Component<
     render() {
 
         if (this.state.serviceNoFilter.length === 0) {
-            return <Navbar/>;
+            return <Loading/>;
         }
 
         return <ServiceView

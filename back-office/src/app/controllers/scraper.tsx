@@ -3,8 +3,8 @@ import {Component} from "react";
 import {ControllerProps, ControllerState} from "../@types/scraper";
 import {haveToken} from "../../security/token";
 import ScraperView from "../views/scraper";
-import {Navbar} from "../../components/navbar";
 import ScraperViewModel from "../view-models/scraper";
+import {Loading} from "../../components/loading";
 
 @observer
 export default class Controllers extends Component<
@@ -57,7 +57,7 @@ export default class Controllers extends Component<
 
     render() {
         if (this.state.types.length === 0) {
-            return <Navbar/>;
+            return <Loading/>;
         }
 
         return <ScraperView

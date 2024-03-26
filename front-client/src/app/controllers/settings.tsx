@@ -3,7 +3,7 @@ import {SettingsView} from "../views/settings";
 import {ControllerProps, ControllerState} from "../@types/settings";
 import {haveToken} from "../../security/token";
 import SettingsViewModels from "../view-models/settings";
-import {Navbar} from "../../components/navbar";
+import {Loading} from "../../components/loading";
 
 export default class Controller extends React.Component<
     ControllerProps,
@@ -103,7 +103,7 @@ export default class Controller extends React.Component<
     render() {
 
         if (this.state.data.length === 0) {
-            return (<Navbar/>);
+            return <Loading/>;
         }
 
         return <SettingsView
