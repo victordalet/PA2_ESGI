@@ -9,6 +9,7 @@ export interface ViewProps {
     activeStep2: () => void;
     addServiceToForm: (service: LocationService, index: number) => void;
     validationCaptcha: (value: any) => void;
+    getPredictYolo: () => void;
 }
 
 export interface ControllerProps {
@@ -62,4 +63,7 @@ export interface LocationService {
     price: number;
 }
 
-
+export interface YoloResponse {
+    price: number;
+    image: string;
+}
