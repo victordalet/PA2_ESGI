@@ -32,72 +32,72 @@ export default class LocationView extends React.Component <ViewProps> {
                 <Language/>
                 <PopupError text={"All fields are required"}/>
                 <div className={"form"}>
-                    <h1>Je fais une demande de simulation personnalisée</h1>
+                    <h1>I request a personalized simulation .</h1>
                     <div className={"step"}>
-                        <h2>Quel type de conciergie souhaitez-vous? <span className={"req"}>(Nécessaire)</span></h2>
+                        <h2>What type of concierge do you want? <span className={"req"}>(Necessary)</span></h2>
                         <div className={"choice"}>
                             <div className={"step"}>
                                 <input type="radio" onChange={() => resetChoiceConcierge(1)} id="conciergerie1"
                                        name="gestion1" value="Gestion de A à Z"/>
-                                <label htmlFor="conciergerie1">Gestion de A à Z</label>
+                                <label htmlFor="conciergerie1">Management from A to Z</label>
                             </div>
                             <div className={"step"}>
                                 <input type="radio" onChange={() => resetChoiceConcierge(2)} id="conciergerie2"
                                        name="gestion2"
                                        value="Yield Management (création, fiffusion et optimisation de vos revenus)"/>
-                                <label htmlFor="conciergerie2">Yield Management (création, fiffusion et optimisation de
-                                    vos
-                                    revenus)</label>
+                                <label htmlFor="conciergerie2">Yield Management (creation, distribution and optimization
+                                    of
+                                    your income)</label>
                             </div>
                             <div className={"step"}>
                                 <input type="radio" onChange={() => resetChoiceConcierge(3)} id="conciergerie3"
                                        name="gestion3" value="Autre"/>
-                                <label htmlFor="conciergerie3">Autre</label>
+                                <label htmlFor="conciergerie3">Other</label>
                             </div>
                         </div>
                     </div>
                     <div className={"bar"}></div>
                     <div className={"step"}>
-                        <h2>Adresse de votre propriété en location courte durée
-                            <span className={"req"}>(Nécessaire)</span>
+                        <h2>Address of your short-term rental property
+                            <span className={"req"}>(Necessary)</span>
                         </h2>
                         <input type={"text"} id={"address"} name={"address"} placeholder={"Adresse"}/>
                     </div>
                     <div className={"bar"}></div>
                     <div className={"step"}>
-                        <h2>Pays de votre propriété en location courte durée
-                            <span className={"req"}>(Nécessaire)</span>
+                        <h2>Country of your short-term rental property
+                            <span className={"req"}>(Necessary)</span>
                         </h2>
                         <select name="country" id="country">
                             <option value="france">France</option>
                             <option value="espagne">Espagne</option>
                             <option value="italie">Italie</option>
                             <option value="portugal">Portugal</option>
-                            <option value="autre">Autre</option>
+                            <option value="autre">Other</option>
                         </select>
                         <div className={"bar"}></div>
                         <div className={"step2"}>
                             <div className={"step"}>
                                 <h2>Type de bien
-                                    <span className={"req"}>(Nécessaire)</span>
+                                    <span className={"req"}>(Necessary)</span>
                                 </h2>
                                 <select name="type" id="type">
-                                    <option value="appartement">Appartement</option>
-                                    <option value="maison">Maison</option>
-                                    <option value="autre">Autre</option>
+                                    <option value="appartement">Apartment</option>
+                                    <option value="maison">House</option>
+                                    <option value="autre">Other</option>
                                 </select>
                             </div>
                             <div className={"step"}>
-                                <h2>Type de location <span className={"req"}>(Nécessaire)</span></h2>
+                                <h2>Type of rental <span className={"req"}>(Necessary)</span></h2>
                                 <select name="rent" id="rent">
-                                    <option value="entier">Logement complet</option>
-                                    <option value="chambre">Chambre</option>
-                                    <option value="autre">Autre</option>
+                                    <option value="entier">Complete accommodation</option>
+                                    <option value="chambre">Room</option>
+                                    <option value="autre">Other</option>
                                 </select>
                             </div>
                         </div>
                         <div className={"step"}>
-                            <h2>Nombre de chambres <span className={"req"}>(Nécessaire)</span></h2>
+                            <h2>Number of rooms <span className={"req"}>(Necessary)</span></h2>
                             <select name="room" id="room">
                                 {
                                     Array.from(Array(10).keys()).map((i) => {
@@ -107,50 +107,50 @@ export default class LocationView extends React.Component <ViewProps> {
                             </select>
                         </div>
                         <div className={"step"}>
-                            <h2>Surface en m2 <span className={"req"}>(Nécessaire)</span></h2>
+                            <h2>Area in m2 <span className={"req"}>(Necessary)</span></h2>
                             <input type={"number"} id={"surface"} name={"surface"} placeholder={"Surface"}/>
                         </div>
                         <div className={"bar"}></div>
                         <div className={"step"}>
-                            <h2>Nom & prénom <span className={"req"}>(Nécessaire)</span></h2>
+                            <h2>Last name First Name <span className={"req"}>(Necessary)</span></h2>
                             <input type={"text"} id={"name"} name={"name"} placeholder={"Nom & prénom"}/>
                         </div>
                         <div className={"bar"}></div>
                         <div className={"step2"}>
                             <div className={"step"}>
-                                <h2>Email <span className={"req"}>(Nécessaire)</span></h2>
+                                <h2>Email <span className={"req"}>(Necessary)</span></h2>
                                 <input type={"email"} id={"email"} name={"email"} placeholder={"Email"}/>
                             </div>
                             <div className={"step"}>
-                                <h2>Téléphone <span className={"req"}>(Nécessaire)</span></h2>
+                                <h2>Tel <span className={"req"}>(Necessary)</span></h2>
                                 <input type={"tel"} id={"phone"} name={"phone"} placeholder={"Téléphone"}/>
                             </div>
                         </div>
                         <div className={"step"}>
-                            <h2>À quelle heure souhaitez-vous être contacté? <span className={"req"}>(Nécessaire)</span>
+                            <h2>What time would you like to be contacted? <span className={"req"}>(Necessary)</span>
                             </h2>
                             <div className={"choice"}>
                                 <div className={"step"}>
                                     <input type={'radio'} id={'contact1'}
                                            name={'contact1'} value={'Avant 12h00'}/>
-                                    <label htmlFor={'contact1'}>Avant 12h00</label>
+                                    <label htmlFor={'contact1'}>Between 12h00</label>
                                 </div>
                                 <div className={"step"}>
                                     <input type={'radio'} id={'contact2'}
                                            name={'contact2'}
                                            value={'Entre 12h00 et 14h00'}/>
-                                    <label htmlFor={'contact2'}>Entre 12h00 et 14h00</label>
+                                    <label htmlFor={'contact2'}>Between 12h00 and 14h00</label>
                                 </div>
                                 <div className={"step"}>
                                     <input type={'radio'} id={'contact3'}
                                            name={'contact3'}
                                            value={'Entre 14h00 et 18h00'}/>
-                                    <label htmlFor={'contact3'}>Entre 14h00 et 18h00</label>
+                                    <label htmlFor={'contact3'}>Between 14h00 and 18h00</label>
                                 </div>
                                 <div className={"step"}>
                                     <input type={'radio'} id={'contact4'}
                                            name={'contact4'} value={'Après 18h00'}/>
-                                    <label htmlFor={'contact4'}>Après 18h00</label>
+                                    <label htmlFor={'contact4'}>After 18h00</label>
                                 </div>
                             </div>
 
@@ -158,11 +158,10 @@ export default class LocationView extends React.Component <ViewProps> {
                         </div>
                         <div className={"captcha"}></div>
                         <div className={"step"}>
-                            <h2>Pour soumettre ce forumlaire, vous devez accepter notre Déclaration de
-                                confidentialité <span
-                                    className={"req"}>(Nécessaire)</span></h2>
+                            <h2>To submit this form you must accept your Privacy Statement<span
+                                className={"req"}>(Necessary)</span></h2>
                             <input type={'checkbox'} id={'privacy'} name={'privacy'} value={'privacy'}/>
-                            <a href={"#"}>Déclaration de confidentialité</a>
+                            <a href={"#"}>Confidentiality declaration</a>
                         </div>
 
                         <ReCAPTCHA
@@ -170,7 +169,7 @@ export default class LocationView extends React.Component <ViewProps> {
                             onChange={validationCaptcha}
                         />,
                         <div className={"step"}>
-                            <button onClick={activeStep2} className={"submit"}>Recevoir mon étude de rentabilité
+                            <button onClick={activeStep2} className={"submit"}>Receive my profitability study
                             </button>
                         </div>
 
@@ -178,21 +177,21 @@ export default class LocationView extends React.Component <ViewProps> {
 
                 </div>
                 <div className={"container-price-and-creation"}>
-                    <h2>Estimation du prix bonus de la location grâce à l'IA : </h2>
+                    <h2>Estimation of the rental bonus price using AI: </h2>
                     <div className={"container-yolo"}>
                         <div className={"container-yolo-image-result"}>
                             <h2 id={"price-estimate-by-yolo"}>Estimation bonus Price ...</h2>
                         </div>
                         <input type={"file"} id={"image-file-to-yolo"} name={"image"} placeholder={"Image"}/>
-                        <button onClick={getPredictYolo} style={{marginTop: '-5vh'}} className={"submit"}>Estimer le
-                            prix Bonus
+                        <button onClick={getPredictYolo} style={{marginTop: '-5vh'}} className={"submit"}>Estimate the
+                            Bonus prize
                         </button>
                     </div>
                     <div className={"container-price"}>
                         <h2>Estimated price : </h2>
                         <input type={"number"} id={"price"} name={"price"} defaultValue={"0"}/>
                     </div>
-                    <h2>Ajouter des services à ma locaition</h2>
+                    <h2>Add rental services : </h2>
                     <div className={"service"}>
                         {
                             service.map((s, i) => {
@@ -220,7 +219,7 @@ export default class LocationView extends React.Component <ViewProps> {
                         <h2>Picture of the location</h2>
                         <input type={"file"} id={"image"} name={"image"} placeholder={"Image"}/>
                     </div>
-                    <button onClick={storeFormInJSON} className={"submit"}>Créer ma location</button>
+                    <button onClick={storeFormInJSON} className={"submit"}>Create my rental</button>
                 </div>
             </div>
         )
