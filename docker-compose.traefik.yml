@@ -125,6 +125,13 @@ services:
     networks:
       - web
 
+  yolo-estimator:
+    build: yolo-estimator/
+    ports:
+      - ${YOLO_ESTIMATOR_PORT}:5000
+    networks:
+      - web
+
 networks:
   web:
     external: true

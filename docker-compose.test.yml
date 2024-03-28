@@ -62,3 +62,8 @@ services:
       MYSQL_DATABASE: test
       MYSQL_USER: test
       MYSQL_PASSWORD: test
+
+  yolo-estimator:
+    build: yolo-estimator/
+    ports:
+      - 3006:5000
