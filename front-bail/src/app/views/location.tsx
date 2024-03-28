@@ -9,6 +9,12 @@ import ReCAPTCHA from "react-google-recaptcha";
 export default class LocationView extends React.Component <ViewProps> {
     render() {
 
+        const videoConstraints = {
+            width: 1280,
+            height: 720,
+            facingMode: "user"
+        };
+
         const {
             resetChoiceConcierge,
             allSelectedRadioContact,
@@ -16,7 +22,8 @@ export default class LocationView extends React.Component <ViewProps> {
             service,
             activeStep2,
             addServiceToForm,
-            validationCaptcha
+            validationCaptcha,
+            getPredictYolo
         } = this.props;
 
         return (
@@ -171,6 +178,16 @@ export default class LocationView extends React.Component <ViewProps> {
 
                 </div>
                 <div className={"container-price-and-creation"}>
+                    <h2>Estimation du prix bonus de la location grâce à l'IA : </h2>
+                    <div className={"container-yolo"}>
+                        <div className={"container-yolo-image-result"}>
+                            <h2 id={"price-estimate-by-yolo"}>Estimation bonus Price ...</h2>
+                        </div>
+                        <input type={"file"} id={"image-file-to-yolo"} name={"image"} placeholder={"Image"}/>
+                        <button onClick={getPredictYolo} style={{marginTop: '-5vh'}} className={"submit"}>Estimer le
+                            prix Bonus
+                        </button>
+                    </div>
                     <div className={"container-price"}>
                         <h2>Estimated price : </h2>
                         <input type={"number"} id={"price"} name={"price"} defaultValue={"0"}/>

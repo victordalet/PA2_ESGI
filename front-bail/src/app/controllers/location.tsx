@@ -1,9 +1,10 @@
 import React from "react";
-import {ControllerProps, ControllerState, LocationService} from "../@types/location";
+import {ControllerProps, ControllerState, LocationService, YoloResponse} from "../@types/location";
 import LocationViewModel from "../view-models/location";
 import {haveBailToken, haveToken} from "../../security/token";
 import LocationView from "../views/location";
 import {Service} from "../@types/service";
+
 
 export default class Controller extends React.Component<
     ControllerProps,
@@ -14,6 +15,7 @@ export default class Controller extends React.Component<
         serviceSelected: [],
         price: 0
     };
+
 
     private readonly locationViewModel: LocationViewModel;
 
@@ -49,8 +51,8 @@ export default class Controller extends React.Component<
                 'authorization': localStorage.getItem('token') || ''
             }
         });
-        const data: Service[] = await response.json();
-        data.filter((service) => {
+        let data: Service[] = await response.json();
+        data = data.filter((service) => {
             return service.type === 'BAIL';
         });
         this.setState({service: data});
@@ -60,7 +62,6 @@ export default class Controller extends React.Component<
     public createLocation = async () => {
         const data = this.locationViewModel.storeFormInJSON();
         data.service = this.state.serviceSelected;
-        console.log(data);
         const apiPath = process.env.API_HOST || 'http://localhost:3001';
         const res = await fetch(`${apiPath}/location`, {
             method: 'POST',
@@ -102,10 +103,31 @@ export default class Controller extends React.Component<
         }
     };
 
+    public getPredictYolo = async () => {
+        const apiPath = process.env.YOLO_ESTIMATOR_PORT || 'http://localhost:5000';
+        const imageElement = (document.getElementById("image-file-to-yolo") as HTMLInputElement).files;
+        const formData = new FormData();
+        if (imageElement) {
+            console.log(imageElement[0]);
+            formData.append('image', imageElement[0]);
+            const response = await fetch(`${apiPath}/predict`, {
+                method: 'POST',
+                body: formData
+            });
+            const data: YoloResponse = await response.json();
+            document.getElementById('price-estimate-by-yolo')!.innerText = `Estimate Price: ${data.price.toString()} €`;
+            const body = document.querySelector<HTMLElement>('.container-yolo-image-result');
+            if (body) {
+                body.style.backgroundImage = `url(data:image/png;base64,${data.image})`;
+            }
+        }
+    };
+
 
     render() {
         return (
             <LocationView
+                getPredictYolo={this.getPredictYolo}
                 validationCaptcha={this.validationCaptcha}
                 addServiceToForm={this.addServiceSelected}
                 service={this.state.service}

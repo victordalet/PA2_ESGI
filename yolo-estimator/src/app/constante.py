@@ -1,10 +1,10 @@
-PRICE = [
-    {"object": "chair", "price": 5},
-    {"object": "table", "price": 20},
-    {"object": "trash", "price": 2},
-    {"object": "couch", "price": 20},
-    {"object": "bed", "price": 20},
-    {"object": "potted plant", "price": 7},
-    {"object": "vase", "price": 5},
-    {"object": "tv", "price": 30},
-]
+PRICE = {
+    "chair": 5,
+    "table": 20,
+    "trash": 2,
+    "couch": 20,
+    "bed": 20,
+    "potted plant": 7,
+    "vase": 5,
+    "tv": 30
+}

@@ -31,10 +31,12 @@ export default class LocationViewModel {
             email: document.querySelector<HTMLInputElement>('#email')?.value || '',
             telephone: document.querySelector<HTMLInputElement>('#phone')?.value || '',
             time: time,
+            privacy: document.querySelector<HTMLInputElement>('#privacy')?.checked || false,
             service: []
         };
 
-        if (data.address === '' || data.country === '' || data.type === '' || data.typeLocation === '' || data.nameFounder === '' || data.email === '' || data.telephone === '') {
+        if (data.address === '' || data.country === '' || data.type === '' || data.typeLocation === '' ||
+            data.nameFounder === '' || data.email === '' || data.telephone === '' || !data.privacy) {
             this.openPopupError();
             return {
                 typeConcierge: '',

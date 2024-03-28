@@ -1,7 +1,7 @@
 from flask_cors import CORS, cross_origin
 from flask import Flask, request, jsonify
 from flasgger import Swagger
-from PIL import Image
+import base64
 
 from detector import Detector
 
@@ -16,38 +16,24 @@ cors = CORS(app)
 swagger = Swagger(app)
 
 
-@app.route("/predict-price", methods=["POST"])
+@app.route("/predict", methods=["POST"])
 @cross_origin()
-def predict_price():
+def predict():
     """
-    Predict the price of the image
+    Predict the price of the image and save the result
     ---
     responses:
         200:
             description : {"price":"2000"}
     :return:
     """
-    file = request.files['image']
-    img = Image.open(file.stream)
-    price = detector.predict(img)
-    return jsonify({"price": price})
-
-
-@app.route("/predict-picture", methods=["POST"])
-@cross_origin()
-def predict_picture():
-    """
-    Predict the element of the image
-    ---
-    responses:
-        200:
-            description : {"price":"2000"}
-    :return:
-    """
-    file = request.files['image']
-    img = Image.open(file.stream)
-    detector.predict_and_save(img, "static/result.png")
-    return app.send_static_file("result.png")
+    img = request.files["image"]
+    img.save("static/image.png")
+    price = detector.predict('static/image.png', "static/result.png")
+    print(price)
+    with open("static/result.png", "rb") as img_file:
+        img_base64 = base64.b64encode(img_file.read())
+    return jsonify({"price": price, "image": img_base64.decode("utf-8")})
 
 
 app.run(host="0.0.0.0", port=5000)

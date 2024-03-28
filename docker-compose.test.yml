@@ -51,6 +51,7 @@ services:
     environment:
       API_HOST: "3001"
       FRONT_CLIENT_PORT: "3003"
+      YOLO_ESTIMATOR_PORT: "3006"
 
   scraper:
     build: scraper/
