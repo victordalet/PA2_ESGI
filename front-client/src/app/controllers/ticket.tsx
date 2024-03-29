@@ -6,11 +6,9 @@ import TicketViewModel from "../view-models/ticket";
 
 export default class Controller extends React.Component<
     ControllerProps,
-    ControllerState> {
-
-
+    ControllerState
+> {
     private ticketViewModel: TicketViewModel;
-
 
     constructor(props: ControllerProps) {
         super(props);
@@ -18,25 +16,25 @@ export default class Controller extends React.Component<
         this.ticketViewModel = new TicketViewModel();
     }
 
-
     public createTicket = async () => {
-        const title = document.querySelector<HTMLInputElement>('.ticket-input');
-        const description = document.querySelector<HTMLTextAreaElement>('.ticket-textarea');
+        const title = document.querySelector<HTMLInputElement>(".ticket-input");
+        const description =
+            document.querySelector<HTMLTextAreaElement>(".ticket-textarea");
         if (title && description) {
             if (title.value === "" || description.value === "") {
                 this.ticketViewModel.openPopup(0);
             } else {
-                const apiPath = process.env.API_HOST || 'http://localhost:3001';
+                const apiPath = process.env.API_HOST || "http://localhost:3001";
                 await fetch(`${apiPath}/ticket`, {
-                    method: 'POST',
+                    method: "POST",
                     headers: {
-                        'Content-Type': 'application/json',
-                        'authorization': localStorage.getItem('token') || ''
+                        "Content-Type": "application/json",
+                        authorization: localStorage.getItem("token") || "",
                     },
                     body: JSON.stringify({
                         name: title.value,
-                        description: description.value
-                    })
+                        description: description.value,
+                    }),
                 });
                 this.ticketViewModel.openPopup(1);
                 title.value = "";
@@ -48,5 +46,4 @@ export default class Controller extends React.Component<
     render() {
         return <TicketView createTicket={this.createTicket}/>;
     }
-
 }

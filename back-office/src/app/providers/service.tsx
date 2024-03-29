@@ -3,7 +3,7 @@ import {Component} from 'react';
 
 
 import Controller from '../controllers/service';
-import ViewModel from '../view-models/Home';
+import ViewModel from '../view-models/service';
 
 @inject()
 export default class Service extends Component {

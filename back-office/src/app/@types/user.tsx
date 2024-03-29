@@ -2,6 +2,9 @@ import ViewModel from '../view-models/user';
 
 export interface ViewProps {
     data: resultData[];
+    searchFilter: () => void;
+    isPremiumFilter: () => void;
+    ruleFilter: () => void;
 }
 
 export interface ControllerProps {
@@ -18,4 +21,5 @@ export interface resultData {
 
 export interface ControllerState {
     data: resultData[];
+    dataNoFilter: resultData[];
 }

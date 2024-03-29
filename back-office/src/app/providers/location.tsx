@@ -3,7 +3,7 @@ import {Component} from 'react';
 
 
 import Controller from '../controllers/location';
-import ViewModel from '../view-models/Home';
+import ViewModel from '../view-models/location';
 
 @inject()
 export default class Location extends Component {

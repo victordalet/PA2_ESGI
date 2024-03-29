@@ -20,14 +20,15 @@
         display: flex;
         width: 100%;
         padding: (12px * 1.5) 0;
-        background: #FFFFFF;
+        background: #ffffff;
 
         &:nth-of-type(odd) {
             background: #eee;
         }
     }
 
-    .table-data, .header__item {
+    .table-data,
+    .header__item {
         flex: 1 1 20%;
         text-align: center;
     }
@@ -45,7 +46,7 @@
         padding-right: 24px;
 
         &::after {
-            content: '';
+            content: "";
             position: absolute;
             right: -(12px * 1.5);
             color: white;
@@ -55,14 +56,11 @@
         }
 
         &.desc::after {
-            content: '(desc)';
+            content: "(desc)";
         }
 
         &.asc::after {
-            content: '(asc)';
+            content: "(asc)";
         }
-
     }
-
-
 }

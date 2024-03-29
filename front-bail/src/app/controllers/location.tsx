@@ -7,15 +7,14 @@ import {Service} from "../@types/service";
 
 
 export default class Controller extends React.Component<
-    ControllerProps,
-    ControllerState
+  ControllerProps,
+  ControllerState
 > {
-    state: ControllerState = {
-        service: [],
-        serviceSelected: [],
-        price: 0
-    };
-
+  state: ControllerState = {
+    service: [],
+    serviceSelected: [],
+    price: 0,
+  };
 
     private readonly locationViewModel: LocationViewModel;
 
@@ -58,6 +57,18 @@ export default class Controller extends React.Component<
         this.setState({service: data});
     };
 
+  private fetchService = async () => {
+    const apiPath = process.env.API_HOST || "http://localhost:3001";
+    const response = await fetch(`${apiPath}/service`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: localStorage.getItem("token") || "",
+      },
+    });
+    const data = await response.json();
+    this.setState({ service: data });
+  };
 
     public createLocation = async () => {
         const data = this.locationViewModel.storeFormInJSON();
@@ -137,4 +148,18 @@ export default class Controller extends React.Component<
                 storeFormInJSON={this.createLocation}/>
         );
     }
+  };
+
+  render() {
+    return (
+      <LocationView
+        addServiceToForm={this.addServiceSelected}
+        service={this.state.service}
+        activeStep2={this.locationViewModel.activeStep2}
+        allSelectedRadioContact={this.locationViewModel.allSelectedRadioContact}
+        resetChoiceConcierge={this.locationViewModel.resetChoiceConcierge}
+        storeFormInJSON={this.createLocation}
+      />
+    );
+  }
 }

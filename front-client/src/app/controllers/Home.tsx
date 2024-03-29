@@ -1,8 +1,8 @@
-import React, {Component} from 'react';
-import {observer} from 'mobx-react';
+import React, {Component} from "react";
+import {observer} from "mobx-react";
 
-import {ControllerProps, ControllerState} from '../@types/Home';
-import View from '../views/home';
+import {ControllerProps, ControllerState} from "../@types/Home";
+import View from "../views/home";
 import HomeViewModel from "../view-models/Home";
 import {LocationResponse} from "../@types/location";
 import {ServiceResponse} from "../@types/service";
@@ -58,7 +58,6 @@ export default class HomeController extends Component<
         this.setState({location: data});
 
     };
-
 
     render() {
         const {viewModel} = this.props;

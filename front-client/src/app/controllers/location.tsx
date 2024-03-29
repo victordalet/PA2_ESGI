@@ -8,8 +8,6 @@ export default class Controller extends React.Component<
     ControllerProps,
     ControllerState
 > {
-
-
     private locationViewModel: LocationViewModel;
 
     constructor(props: ControllerProps) {
@@ -20,18 +18,17 @@ export default class Controller extends React.Component<
 
     state = {
         location: [],
-        locationNoFilter: []
+        locationNoFilter: [],
     };
 
-
     private fetchLocation = () => {
-        const apiPath = process.env.API_HOST || 'http://localhost:3001';
-        fetch(apiPath + '/location', {
-            method: 'GET',
+        const apiPath = process.env.API_HOST || "http://localhost:3001";
+        fetch(apiPath + "/location", {
+            method: "GET",
             headers: {
-                'Content-Type': 'application/json',
-                'authorization': localStorage.getItem('token') || ''
-            }
+                "Content-Type": "application/json",
+                authorization: localStorage.getItem("token") || "",
+            },
         }).then((res) => {
             res.json().then((data) => {
                 this.setState({location: data, locationNoFilter: data});
@@ -40,55 +37,72 @@ export default class Controller extends React.Component<
     };
 
     public filterByPrice = () => {
-        const select = document.querySelector<HTMLSelectElement>('select');
+        const select = document.querySelector<HTMLSelectElement>("select");
         if (select) {
-            if (select.value === '0') {
+            if (select.value === "0") {
                 this.setState({
-                    location: this.locationViewModel.filterByASC(this.state.locationNoFilter)
+                    location: this.locationViewModel.filterByASC(
+                        this.state.locationNoFilter
+                    ),
                 });
             } else {
                 this.setState({
-                    location: this.locationViewModel.filterByDSC(this.state.locationNoFilter)
+                    location: this.locationViewModel.filterByDSC(
+                        this.state.locationNoFilter
+                    ),
                 });
             }
         }
     };
 
     public filterLocationByNameOrDescription = () => {
-        const input = document.querySelector<HTMLInputElement>('#search');
-        const text = input ? input.value : '';
+        const input = document.querySelector<HTMLInputElement>("#search");
+        const text = input ? input.value : "";
         this.setState({
-            location: this.locationViewModel.filterLocationByNameOrDescription(this.state.locationNoFilter, text)
+            location: this.locationViewModel.filterLocationByNameOrDescription(
+                this.state.locationNoFilter,
+                text
+            ),
         });
     };
 
     public filterLocationByCity = () => {
-        const input = document.querySelector<HTMLInputElement>('#city');
-        const text = input ? input.value : '';
+        const input = document.querySelector<HTMLInputElement>("#city");
+        const text = input ? input.value : "";
         this.setState({
-            location: this.locationViewModel.filterLocationByCity(this.state.locationNoFilter, text)
+            location: this.locationViewModel.filterLocationByCity(
+                this.state.locationNoFilter,
+                text
+            ),
         });
     };
 
     public filterLocationByCapacity = () => {
-        const input = document.querySelector<HTMLInputElement>('#capacity');
-        const text = input ? input.value : '';
+        const input = document.querySelector<HTMLInputElement>("#capacity");
+        const text = input ? input.value : "";
         this.setState({
-            location: this.locationViewModel.filterLocationByCapacity(this.state.locationNoFilter, parseInt(text))
+            location: this.locationViewModel.filterLocationByCapacity(
+                this.state.locationNoFilter,
+                parseInt(text)
+            ),
         });
     };
 
     render() {
-
         if (this.state.locationNoFilter.length === 0) {
             return <Loading/>;
         }
 
-        return <LocationView
-            location={this.state.location}
-            filterByPrice={this.filterByPrice}
-            filterLocationByNameOrDescription={this.filterLocationByNameOrDescription}
-            filterLocationByCity={this.filterLocationByCity}
-            filterLocationByCapacity={this.filterLocationByCapacity}/>;
+        return (
+            <LocationView
+                location={this.state.location}
+                filterByPrice={this.filterByPrice}
+                filterLocationByNameOrDescription={
+                    this.filterLocationByNameOrDescription
+                }
+                filterLocationByCity={this.filterLocationByCity}
+                filterLocationByCapacity={this.filterLocationByCapacity}
+            />
+        );
     }
 }

@@ -8,8 +8,6 @@ export default class Controller extends React.Component<
     ControllerProps,
     ControllerState
 > {
-
-
     private serviceViewModel: ServiceViewModel;
 
     constructor(props: ControllerProps) {
@@ -20,7 +18,7 @@ export default class Controller extends React.Component<
 
     state = {
         service: [],
-        serviceNoFilter: []
+        serviceNoFilter: [],
     };
 
 
@@ -41,38 +39,46 @@ export default class Controller extends React.Component<
     };
 
     filterByPrice = () => {
-        const select = document.querySelector<HTMLSelectElement>('select');
+        const select = document.querySelector<HTMLSelectElement>("select");
         if (select) {
-            if (select.value === '0') {
+            if (select.value === "0") {
                 this.setState({
-                    service: this.serviceViewModel.filterByASC(this.state.serviceNoFilter)
+                    service: this.serviceViewModel.filterByASC(
+                        this.state.serviceNoFilter
+                    ),
                 });
             } else {
                 this.setState({
-                    service: this.serviceViewModel.filterByDSC(this.state.serviceNoFilter)
+                    service: this.serviceViewModel.filterByDSC(
+                        this.state.serviceNoFilter
+                    ),
                 });
             }
         }
     };
 
     filterServiceByNameOrDescription = () => {
-        const input = document.querySelector<HTMLInputElement>('input');
-        const text = input ? input.value : '';
+        const input = document.querySelector<HTMLInputElement>("input");
+        const text = input ? input.value : "";
         this.setState({
-            service: this.serviceViewModel.filterServiceByNameOrDescription(this.state.serviceNoFilter, text)
+            service: this.serviceViewModel.filterServiceByNameOrDescription(
+                this.state.serviceNoFilter,
+                text
+            ),
         });
     };
 
     render() {
-
         if (this.state.serviceNoFilter.length === 0) {
             return <Loading/>;
         }
 
-        return <ServiceView
-            service={this.state.service}
-            filterByPrice={this.filterByPrice}
-            filterServiceByNameOrDescription={this.filterServiceByNameOrDescription}
-        />;
+        return (
+            <ServiceView
+                service={this.state.service}
+                filterByPrice={this.filterByPrice}
+                filterServiceByNameOrDescription={this.filterServiceByNameOrDescription}
+            />
+        );
     }
 }

@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import {observer} from 'mobx-react';
+import React, {Component} from "react";
+import {observer} from "mobx-react";
 
 import {ControllerProps, ControllerState} from '../@types/ticket';
 import View from '../views/ticket';
@@ -11,7 +11,6 @@ export default class TicketControllers extends Component<
     ControllerProps,
     ControllerState
 > {
-
     constructor(props: ControllerProps) {
         super(props);
         haveToken();
@@ -19,34 +18,30 @@ export default class TicketControllers extends Component<
     }
 
     state: ControllerState = {
-        data: []
+        data: [],
     };
 
     getData = () => {
-        const apiPath = process.env.API_HOST || 'http://localhost:3001';
-        fetch(apiPath + '/ticket', {
-            method: 'GET',
+        const apiPath = process.env.API_HOST || "http://localhost:3001";
+        fetch(apiPath + "/ticket", {
+            method: "GET",
             headers: {
-                'Content-Type': 'application/json',
-                'authorization': localStorage.getItem('token') || ''
-            }
-        }).then(r => {
-            r.json().then((data: ControllerState['data']) => {
+                "Content-Type": "application/json",
+                authorization: localStorage.getItem("token") || "",
+            },
+        }).then((r) => {
+            r.json().then((data: ControllerState["data"]) => {
                 this.setState({
-                    data: data
+                    data: data,
                 });
             });
         });
     };
 
-
     render() {
-
         if (this.state.data.length === 0) {
             return <Loading/>;
         }
-        return (
-            <View data={this.state.data}/>
-        );
+        return <View data={this.state.data}/>;
     }
 }
