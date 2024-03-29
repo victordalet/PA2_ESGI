@@ -24,15 +24,15 @@ export default class LocationView extends React.Component<ViewProps> {
               <input
                 type={"number"}
                 id={"capacity"}
-                placeholder={"Entrée le nom..."}
+                placeholder={"N°..."}
               />{" "}
               <span>m²</span>
             </div>
-            <div className="price">
+            <div className="priceMax">
               <h3>Votre Budget ?</h3>
               <input
                 type={"number"}
-                id={"budget"}
+                id={"price"}
                 autoComplete={"none"}
                 placeholder={"Max"}
               />{" "}
