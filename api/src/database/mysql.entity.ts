@@ -19,7 +19,6 @@ export class DatabaseEntity {
             database: process.env.MYSQL_DATABASE,
         });
 
-        console.log(process.env.MYSQL_PORT);
     }
 
 }
