@@ -2,6 +2,8 @@ import ViewModel from '../view-models/service';
 
 export interface ViewProps {
     data: resultData[];
+    searchFilter: () => void;
+    priceFilter: () => void;
 }
 
 export interface ControllerProps {
@@ -10,6 +12,7 @@ export interface ControllerProps {
 
 export interface ControllerState {
     data: resultData[];
+    dataNoFilter: resultData[];
 }
 
 export interface resultData {

@@ -2,6 +2,9 @@ import ViewModel from '../view-models/location';
 
 export interface ViewProps {
     data: DataResponse[];
+    searchFilter: () => void;
+    capacityFilter: () => void;
+    priceFilter: () => void;
 }
 
 
@@ -12,6 +15,7 @@ export interface ControllerProps {
 
 export interface ControllerState {
     data: DataResponse[];
+    dataNoFilter: DataResponse[];
 }
 
 export interface DataResponse {

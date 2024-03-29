@@ -9,20 +9,26 @@ import {
 import View from "../views/service";
 import {Navbar} from "../../components/navbar";
 import {haveToken} from "../../security/token";
+import ServiceViewModel from "../view-models/service";
 
 @observer
 export default class ServiceControllers extends Component<
     ControllerProps,
     ControllerState
 > {
+
+    serviceViewModel: ServiceViewModel;
+
     constructor(props: ControllerProps) {
         super(props);
         haveToken();
         this.getData();
+        this.serviceViewModel = new ServiceViewModel();
     }
 
     state: ControllerState = {
         data: [],
+        dataNoFilter: [],
     };
 
     getData = () => {
@@ -37,19 +43,30 @@ export default class ServiceControllers extends Component<
             r.json().then((data: resultData[]) => {
                 this.setState({
                     data: data,
+                    dataNoFilter: data,
                 });
             });
         });
     };
 
+    public priceFilter = () => {
+        this.setState({data: this.serviceViewModel.priceFilter(this.state.dataNoFilter)});
+    };
+
+    public searchFilter = () => {
+        this.setState({data: this.serviceViewModel.searchFilter(this.state.dataNoFilter)});
+    };
+
     render() {
-        if (this.state.data.length === 0) {
+        if (this.state.dataNoFilter.length === 0) {
             return (
                 <div>
                     <Navbar/>
                 </div>
             );
         }
-        return <View data={this.state.data}/>;
+        return <View data={this.state.data}
+                     priceFilter={this.priceFilter}
+                     searchFilter={this.searchFilter}/>;
     }
 }

@@ -3,7 +3,7 @@ import {Component} from 'react';
 
 
 import Controller from '../controllers/user';
-import ViewModel from '../view-models/Home';
+import ViewModel from '../view-models/user';
 
 @inject()
 export default class User extends Component {

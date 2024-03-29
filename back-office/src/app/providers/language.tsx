@@ -3,7 +3,7 @@ import {Component} from 'react';
 
 
 import Controller from '../controllers/language';
-import ViewModel from '../view-models/Home';
+import ViewModel from '../view-models/language';
 
 @inject()
 export default class Language extends Component {

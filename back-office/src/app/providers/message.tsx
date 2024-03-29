@@ -3,7 +3,7 @@ import {Component} from 'react';
 
 
 import Controller from '../controllers/message';
-import ViewModel from '../view-models/Home';
+import ViewModel from '../view-models/message';
 
 @inject()
 export default class Message extends Component {
