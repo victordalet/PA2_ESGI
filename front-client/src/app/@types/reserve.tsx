@@ -20,6 +20,14 @@ export interface ViewProps {
     addService: (index: number, id: number) => void;
     servicesSelected: ServiceResponse[];
     eventCalendar: LocationOccupation[];
+    fetchMessagesForBail: () => void;
+    postMessageForBail: () => void;
+    isService: boolean;
+    downloadFactureBail: () => void;
+    nameFiles: string[];
+    postFileBail: () => void;
+    downloadFileBail: (name: string) => void;
+    deleteOccupationBail: () => void;
 }
 
 export interface ControllerProps {
@@ -37,9 +45,11 @@ export interface ControllerState {
     isBail?: boolean;
     description: LocationDescription;
     eventCalendar: LocationOccupation[];
+    nameFiles: string[];
 }
 
 export interface LocationOccupation {
+    id?: number;
     from_datetime: string;
     to_datetime: string;
     user_email: string;
@@ -49,4 +59,17 @@ export interface LocationOccupation {
 export interface MessageLocation {
     location_occupation_id?: number;
     message?: string;
+}
+
+export interface Subscription {
+    id: number;
+    created_at: string;
+    price: number;
+    user_email: string;
+}
+
+export interface SubscriptionUtilisation {
+    id: number;
+    email: string;
+    last_date_free_service: string;
 }

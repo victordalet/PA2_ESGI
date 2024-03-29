@@ -51,3 +51,20 @@ services:
     environment:
       API_HOST: "3001"
       FRONT_CLIENT_PORT: "3003"
+      YOLO_ESTIMATOR_PORT: "3006"
+
+  scraper:
+    build: scraper/
+    ports:
+      - 3005:5000
+    environment:
+      MYSQL_HOST: mysql-db
+      MYSQL_PORT: 3307
+      MYSQL_DATABASE: test
+      MYSQL_USER: test
+      MYSQL_PASSWORD: test
+
+  yolo-estimator:
+    build: yolo-estimator/
+    ports:
+      - 3006:5000

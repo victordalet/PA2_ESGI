@@ -12,6 +12,11 @@
         font-weight: 700;
         margin-bottom: 20px;
         font-family: 'Inter', sans-serif;
+
+        @media (max-width: 768px) {
+            margin-left: 20px;
+        }
+
     }
 
     .ticket-form {
@@ -24,9 +29,15 @@
         padding: 20px;
         border-radius: 10px;
         box-shadow: 0 10px 50px 0 rgba(#05043e, .25);
-        width: 30%;
+        width: 500px;
         height: 40vh;
         transition: 1s;
+
+
+        @media (max-width: 768px) {
+            margin-left: -15vw;
+            width: 85vw;
+        }
 
         &:hover {
             box-shadow: 0 10px 50px 0 rgba(#05043e, .5);
@@ -45,20 +56,20 @@
         }
 
         button {
-            width: 40%;
-            height: 40px;
-            background-color: $secondaryColor;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            outline: none;
-            transition: 1s;
+            width: 150px;
+            height: 50px;
+            border: 0;
+            border-radius: 10px;
+            background-color: #fff;
+            color: #000;
+            font-weight: bold;
+            cursor: pointer;
+            transition: .2s;
             margin-top: 50px;
 
             &:hover {
                 background-color: $primaryColor;
-                box-shadow: 0 10px 50px 0 rgba(#05043e, .2);
-                cursor: pointer;
+                color: #fff;
             }
         }
 

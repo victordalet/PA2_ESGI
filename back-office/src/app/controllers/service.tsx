@@ -1,15 +1,12 @@
 import React, {Component} from "react";
 import {observer} from "mobx-react";
 
-import {
-    ControllerProps,
-    ControllerState,
-    resultData,
-} from "../@types/service";
-import View from "../views/service";
-import {Navbar} from "../../components/navbar";
-import {haveToken} from "../../security/token";
 import ServiceViewModel from "../view-models/service";
+import {ControllerProps, ControllerState, resultData} from '../@types/service';
+import View from '../views/service';
+import {haveToken} from "../../security/token";
+import {Loading} from "../../components/loading";
+
 
 @observer
 export default class ServiceControllers extends Component<
@@ -58,12 +55,9 @@ export default class ServiceControllers extends Component<
     };
 
     render() {
-        if (this.state.dataNoFilter.length === 0) {
-            return (
-                <div>
-                    <Navbar/>
-                </div>
-            );
+
+        if (this.state.data.length === 0) {
+            return <Loading/>;
         }
         return <View data={this.state.data}
                      priceFilter={this.priceFilter}

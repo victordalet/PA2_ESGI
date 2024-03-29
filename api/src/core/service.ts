@@ -9,9 +9,16 @@ export interface Service {
     price: number;
     duration: number;
     nb_use?: number;
+    notation?: number;
 }
 
 export interface ServiceOther {
     service_id: number;
     other_id: number;
+}
+
+export interface SubscriptionUtilisation {
+    id?: number;
+    email: string;
+    last_date_free_service: string;
 }

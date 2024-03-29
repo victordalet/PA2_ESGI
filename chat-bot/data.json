@@ -406,6 +406,120 @@
       "responses": [
         "I was made in 2020, if that's what you are asking!"
       ]
+    },
+    {
+      "tag": "bonjour",
+      "patterns": [
+        "Bonjour",
+        "Salut",
+        "Bonjour, comment ça va?",
+        "Salut, comment ça va?"
+      ],
+      "responses": [
+        "Bonjour",
+        "Ravi de vous revoir",
+        "Salut, comment puis-je vous aider?"
+      ]
+    },
+    {
+      "tag": "about",
+      "patterns": [
+        "tell me about yourself",
+        "about you",
+        "about",
+        "a propos",
+        "qui es-tu",
+        "qui es-tu?"
+      ],
+      "responses": [
+        "Je suis le chat bot de Paris Caretaker Services"
+      ]
+    },
+    {
+      "tag": "location",
+      "patterns": [
+        "location",
+        "reservation",
+        "book"
+      ],
+      "responses": [
+        "Tu peux trouver des location sur notre site web"
+      ]
+    },
+    {
+      "tag": "services",
+      "patterns": [
+        "services",
+        "what do you do",
+        "what services do you provide",
+        "what can you do",
+        "prestation",
+        "prestataire"
+      ],
+      "responses": [
+        "Des services (prestation) sont displonibles lors d'une reservation, d'autre sont également comprises dans des locations"
+      ]
+    },
+    {
+      "tag": "premium",
+      "patterns": [
+        "premium",
+        "premium services",
+        "premium prestation",
+        "premium prestation",
+        "abonnement",
+        "forfait",
+        "formule",
+        "explorator",
+        "bag packer",
+        "free",
+        "gratuit",
+        "payant"
+      ],
+      "responses": [
+        "Les forfaits premium Bag Packer & Explorator vous permettent de bénéficier de services exclusifs et de réductions sur les locations"
+      ]
+    },
+    {
+      "tag": "baileur",
+      "responses": [
+        "Pour devenir bailleur, vous pouvez faire une requête sur la page de connection du site baileur"
+      ],
+      "patterns": [
+        "baileur",
+        "become a baileur",
+        "become a host",
+        "become a host",
+        "become a landlord",
+        "become a landlord",
+        "devenir baileur",
+        "devenir hôte",
+        "devenir hôte",
+        "devenir propriétaire"
+      ]
+    },
+    {
+      "tag": "contactus",
+      "patterns": [
+        "contact us",
+        "contact",
+        "contactez-nous",
+        "contactez-nous"
+      ],
+      "responses": [
+        "Vous pouvez nous contacter par mail à l'adresse suivante: victor.dalet@affluences.com"
+      ]
+    },
+    {
+      "tag": "directeur",
+      "patterns": [
+        "directeur",
+        "sananes",
+        "ESGI"
+      ],
+      "responses": [
+        "Le directeur de l'ESGI est Mr Sananes (et oui je sais tout :)"
+      ]
     }
   ]
 }

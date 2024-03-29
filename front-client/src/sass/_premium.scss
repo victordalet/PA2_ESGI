@@ -7,12 +7,18 @@
     left: 50px;
     padding-top: 10vh;
 
+    @media (max-width: 768px) {
+        left: 0;
+    }
+
 
     h2 {
         font-size: 2.5rem;
         margin-bottom: 1rem;
         text-align: center;
         font-family: 'Inter', serif;
+        margin-left: 50px;
+        margin-right: 50px;
     }
 
     .container-comp {
@@ -21,13 +27,19 @@
         align-items: center;
         width: 90vw;
         height: 40vh;
-        margin-left: 5vw;
+        margin-left: 50px;
         margin-top: 15vh;
         font-family: 'Inter', serif;
 
+        @media (max-width: 768px) {
+            flex-direction: column;
+            margin-top: 60vh;
+        }
+
 
         .free, .premium {
-            width: 25vw;
+            margin-left: 50px;
+            width: 500px;
             height: 45vh;
             border-radius: 20px;
             transition: .2s;
@@ -37,6 +49,14 @@
             align-items: center;
             box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
             cursor: pointer;
+
+            @media (max-width: 768px) {
+                margin-left: -50px;
+                margin-top: 50px;
+                padding-bottom: 20px;
+                width: 400px;
+                height: 50vh;
+            }
 
             ul {
                 list-style: none;

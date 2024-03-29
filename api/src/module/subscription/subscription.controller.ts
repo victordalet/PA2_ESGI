@@ -30,7 +30,7 @@ export class SubscriptionController {
     @ApiBadRequestResponse({description: 'Request body is not valid'})
     async createSubscription(@Headers('authorization') token: string, @Body() body: BodySubscription) {
         await this.tokenValidation.validateAdminToken(token);
-        return this.subscriptionService.createSubscription(body);
+        return this.subscriptionService.createSubscription(token);
     }
 
     @Post('subscribe')
@@ -39,7 +39,25 @@ export class SubscriptionController {
     @ApiBadRequestResponse({description: 'Request body is not valid'})
     async subscribeUser(@Headers('authorization') token: string, @Body() body: BodySubscription) {
         await this.tokenValidation.validateToken(token);
-        return this.subscriptionService.subscribeUserByToken(token, body);
+        return await this.subscriptionService.subscribeUserByToken(token, body);
+    }
+
+    @Post('is_subscribe')
+    @ApiOperation({summary: 'Check if user is subscribed'})
+    @ApiOkResponse({description: 'User is subscribed'})
+    @ApiBadRequestResponse({description: 'Request param is not valid'})
+    async userIsSubscribed(@Headers('authorization') token: string) {
+        await this.tokenValidation.validateAdminToken(token);
+        return this.subscriptionService.userIsSubscribed(token);
+    }
+
+    @Post('last_date_free_service')
+    @ApiOperation({summary: 'Get last date of free service'})
+    @ApiOkResponse({description: 'Last date of free service'})
+    @ApiBadRequestResponse({description: 'Request body is not valid'})
+    async lastDateFreeService(@Headers('authorization') token: string) {
+        await this.tokenValidation.validateToken(token);
+        return this.subscriptionService.lastDateFreeService(token);
     }
 
     @Put(':id')
@@ -48,7 +66,7 @@ export class SubscriptionController {
     @ApiBadRequestResponse({description: 'Request body is not valid'})
     async updateSubscription(@Headers('authorization') token: string, @Param('id') id: number, @Body() body: BodySubscription) {
         await this.tokenValidation.validateAdminToken(token);
-        return this.subscriptionService.updateSubscription(id, body);
+        return this.subscriptionService.updateSubscription(id, body, token);
     }
 
     @Delete('/by_id/:id')
@@ -69,12 +87,5 @@ export class SubscriptionController {
         return this.subscriptionService.unsubscribeUserByToken(token);
     }
 
-    @Get(':email')
-    @ApiOperation({summary: 'Check if user is subscribed'})
-    @ApiOkResponse({description: 'User is subscribed'})
-    @ApiBadRequestResponse({description: 'Request param is not valid'})
-    async userIsSubscribed(@Headers('authorization') token: string, @Param('email') email: string) {
-        await this.tokenValidation.validateAdminToken(token);
-        return this.subscriptionService.userIsSubscribed(email);
-    }
+
 }

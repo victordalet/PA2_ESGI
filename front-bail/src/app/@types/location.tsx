@@ -1,4 +1,5 @@
 import ViewModel from '../view-models/location';
+import {Service} from "./service";
 
 export interface ViewProps {
     resetChoiceConcierge: (numberSelected: number) => void;
@@ -7,6 +8,8 @@ export interface ViewProps {
     service: Service[];
     activeStep2: () => void;
     addServiceToForm: (service: LocationService, index: number) => void;
+    validationCaptcha: (value: any) => void;
+    getPredictYolo: () => void;
 }
 
 export interface ControllerProps {
@@ -32,14 +35,6 @@ export interface FormLocation {
     telephone: string;
     time: number[];
     service?: LocationService[];
-}
-
-export interface Service {
-    id: number;
-    name: string;
-    price: number;
-    description: string;
-    duration: number;
 }
 
 export interface Location {
@@ -68,4 +63,7 @@ export interface LocationService {
     price: number;
 }
 
-
+export interface YoloResponse {
+    price: number;
+    image: string;
+}

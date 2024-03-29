@@ -14,11 +14,13 @@ export class LanguageRepository {
 
 
     async getLanguage() {
+        await this.db.connect()
         const [rows, filed] = await this.db.query("SELECT * FROM translation");
         return rows;
     }
 
     async addWord(word: string, translation: string, language: string) {
+        await this.db.connect()
         return this.db.query("INSERT INTO translation (word, translation,language) VALUES (?, ?, ?)", [word, translation, language]);
     }
 

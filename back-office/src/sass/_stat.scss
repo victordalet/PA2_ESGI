@@ -20,6 +20,11 @@
         align-items: center;
         color: #FFFFFF;
 
+        @media (max-width: 768px) {
+            width: 25%;
+            justify-content: center;
+        }
+
 
         .round {
             width: 50px;

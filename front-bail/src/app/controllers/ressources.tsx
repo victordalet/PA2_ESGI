@@ -1,9 +1,10 @@
 import { ControllerProps, ControllerState } from "../@types/ressources";
 import ResourcesView from "../views/ressources";
 import React from "react";
-import { Service, Location } from "../@types/location";
-import { Navbar } from "../../components/navbar";
-import { haveToken } from "../../security/token";
+import {Location} from "../@types/location";
+import {Service} from "../@types/service";
+import {haveToken} from "../../security/token";
+import {Loading} from "../../components/loading";
 
 export default class Controller extends React.Component<
   ControllerProps,
@@ -106,10 +107,8 @@ export default class Controller extends React.Component<
       return <Navbar />;
     }
 
-    return (
-      <ResourcesView
-        filterResourcesByNameOrDescription={
-          this.filterResourcesByNameOrDescription
+        if (this.state.serviceNotFiltered.length === 0 || this.state.locationNotFiltered.length === 0) {
+            return <Loading/>;
         }
         filterResourcesByPrice={this.filterResourcesByPrice}
         filterResourcesByType={this.filterResourcesByType}

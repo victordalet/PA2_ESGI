@@ -1,8 +1,8 @@
 import React from "react";
 import LocationView from "../views/location";
 import {ControllerProps, ControllerState} from "../@types/location";
-import {Navbar} from "../../components/navbar";
 import LocationViewModel from "../view-models/location";
+import {Loading} from "../../components/loading";
 
 export default class Controller extends React.Component<
     ControllerProps,
@@ -90,7 +90,7 @@ export default class Controller extends React.Component<
 
     render() {
         if (this.state.locationNoFilter.length === 0) {
-            return <Navbar/>;
+            return <Loading/>;
         }
 
         return (

@@ -1,10 +1,10 @@
 import React, {Component} from "react";
 import {observer} from "mobx-react";
 
-import {ControllerProps, ControllerState} from "../@types/ticket";
-import View from "../views/ticket";
-import {Navbar} from "../../components/navbar";
+import {ControllerProps, ControllerState} from '../@types/ticket';
+import View from '../views/ticket';
 import {haveToken} from "../../security/token";
+import {Loading} from "../../components/loading";
 
 @observer
 export default class TicketControllers extends Component<
@@ -40,11 +40,7 @@ export default class TicketControllers extends Component<
 
     render() {
         if (this.state.data.length === 0) {
-            return (
-                <div>
-                    <Navbar/>
-                </div>
-            );
+            return <Loading/>;
         }
         return <View data={this.state.data}/>;
     }

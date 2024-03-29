@@ -75,7 +75,7 @@ export class LocationController {
     @ApiBadRequestResponse({description: 'Request body is not valid'})
     async addLocationNotation(@Headers('authorization') token: string, @Body() body: LocationAvailability) {
         await this.tokenValidation.validateToken(token);
-        return this.locationService.addLocationNotation(body.location_id, body.notation);
+        return this.locationService.addLocationNotation(body.location_id, body.notation, token);
     }
 
     @Post('get-notation')
@@ -102,7 +102,7 @@ export class LocationController {
     @ApiBadRequestResponse({description: 'Request body is not valid'})
     async addMessageByLocationOccupationId(@Headers('authorization') token: string, @Body() body: LocationMessage) {
         await this.tokenValidation.validateToken(token);
-        return this.locationService.addMessageByLocationOccupationId(body.location_occupation_id, body.message);
+        return this.locationService.addMessageByLocationOccupationId(body.location_occupation_id, body.message, token);
     }
 
     @Post('get-messages')
@@ -111,7 +111,7 @@ export class LocationController {
     @ApiBadRequestResponse({description: 'Request body is not valid'})
     async getMessagesByLocationOccupationId(@Headers('authorization') token: string, @Body() body: LocationAvailability) {
         await this.tokenValidation.validateToken(token);
-        return this.locationService.getMessagesByLocationOccupationId(body.location_id);
+        return this.locationService.getMessagesByLocationOccupationId(body.location_id,token);
     }
 
     @Post('get-location-occupation')
@@ -138,7 +138,7 @@ export class LocationController {
     @ApiBadRequestResponse({description: 'Request param is not valid'})
     async deleteLocation(@Headers('authorization') token: string, @Param('id') id: number) {
         await this.tokenValidation.validateBailToken(token);
-        return this.locationService.deleteLocation(id);
+        return this.locationService.deleteLocation(id,token);
     }
 
     @Patch('occupation')
@@ -147,7 +147,7 @@ export class LocationController {
     @ApiBadRequestResponse({description: 'Request body is not valid'})
     async deleteLocationOccupation(@Headers('authorization') token: string, @Body() body: LocationAvailability) {
         await this.tokenValidation.validateToken(token);
-        return this.locationService.deleteLocationOccupation(body.location_id);
+        return this.locationService.deleteLocationOccupation(body.location_id,token);
     }
 
 }

@@ -55,13 +55,35 @@ export default class ConnectionController extends Component<
       });
     };
 
-  private verifyFiled = () => {
-    const emailInput = document.querySelector<HTMLInputElement>("#email");
-    const passwordInput = document.querySelector<HTMLInputElement>("#password");
-    if (emailInput && passwordInput) {
-      return emailInput.value.length > 0 && passwordInput.value.length > 0;
-    }
-  };
+
+    private verifyFiled = () => {
+        const emailInput = document.querySelector<HTMLInputElement>('#email');
+        const passwordInput = document.querySelector<HTMLInputElement>('#password');
+        if (emailInput && passwordInput) {
+            return emailInput.value.length > 0 && passwordInput.value.length > 0;
+        }
+    };
+
+    public askBail = async () => {
+        if (!this.verifyFiled()) {
+            this.connectionViewModel.openPopup(1);
+            return;
+        }
+        const apiPath = process.env.API_HOST || 'http://localhost:3001';
+        const rule = document.querySelector<HTMLSelectElement>('#typeRequest')?.value || '';
+        if (rule === '') {return;}
+        await fetch(apiPath + '/user/request-bail', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'authorization': localStorage.getItem('token') || ''
+            },
+            body: JSON.stringify({
+                rule : rule,
+            })
+        });
+        this.connectionViewModel.openPopup(2);
+    };
 
   public askBail = async () => {
     if (!this.verifyFiled()) {

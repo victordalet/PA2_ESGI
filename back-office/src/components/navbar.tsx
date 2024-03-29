@@ -52,6 +52,11 @@ export class Navbar extends React.Component {
             icon: 'ai-plus'
         },
         {
+            name: "Scrapers",
+            url: "/scraper",
+            icon: "ai-android-fill"
+        },
+        {
             name: "Theme",
             url: "#",
             icon: "ai-flashlight"
@@ -67,6 +72,23 @@ export class Navbar extends React.Component {
     render() {
         return (
             <div className="navbar">
+                <div className="burger" onClick={() => {
+                    const burger = document.querySelector<HTMLElement>('.burger');
+                    if (!burger) return;
+                    const ul = document.querySelector<HTMLElement>('ul');
+                    if (ul) {
+                        if (ul.style.transform === "translateX(-70px)") {
+                            burger.style.transform = "translateX(60px)";
+                            ul.style.transform = "translateX(0)";
+                        } else {
+                            burger.style.transform = "translateX(0)";
+                            ul.style.transform = "translateX(-70px)";
+                        }
+                    }
+
+                }}>
+                    <i className="ai-three-line-horizontal"></i>
+                </div>
                 <ul>
                     {this.navItems.map((item, index) => (
                         <li key={index}>

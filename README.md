@@ -36,7 +36,15 @@ docker-compose up
 ---
 
 ```bash
+cd chat-bot
 py train.py (nb_epoch)
+```
+
+### Test chat bot
+
+```bash
+cd chat-bot
+py test.py
 ```
 
 ## Launch data-insertion
@@ -73,4 +81,34 @@ pyinstaller --onefile main.py
 ```bash
 pip install auto-py-to-exe
 auto-py-to-exe
+```
+
+## Yolo estimator
+
+---
+
+#### Is script to estimate price of one piece with picture
+
+### Launch
+
+```bash
+docker compose up yolo-estimator
+```
+
+### Train
+
+```bash
+cd yolo-estimator
+cd src/tools
+py train.py api-key project-workspace project-name project-version nb-epoch nb-run
+```
+
+### Test
+
+```bash
+cd yolo-estimator
+cd src/tools
+py test.py model_path image_path
+
+example: py test.py ../app/weight.pt ../../dataset/8.png
 ```

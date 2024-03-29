@@ -1,14 +1,10 @@
 import React, {Component} from "react";
 import {observer} from "mobx-react";
 
-import {
-    ControllerProps,
-    ControllerState,
-    DataResponse,
-} from "../@types/location";
-import View from "../views/location";
-import {Navbar} from "../../components/navbar";
+import {ControllerProps, ControllerState, DataResponse} from '../@types/location';
+import View from '../views/location';
 import {haveToken} from "../../security/token";
+import {Loading} from "../../components/loading";
 import LocationViewModel from "../view-models/location";
 
 @observer
@@ -62,13 +58,8 @@ export default class LocationController extends Component<
         this.setState({data: this.locationViewModel.capacityFilter(this.state.dataNoFilter)});
     };
 
-    render() {
         if (this.state.dataNoFilter.length === 0) {
-            return (
-                <div>
-                    <Navbar/>
-                </div>
-            );
+            return <Loading/>;
         }
         return <View
             data={this.state.data}

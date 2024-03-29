@@ -1,6 +1,7 @@
 import {Connection} from "mysql2/promise";
 import {DatabaseEntity} from "../../database/mysql.entity";
 import {User} from "../../core/user";
+import { BodySubscription } from "./subscription.model";
 
 export class SubscriptionRepository {
     private db: Connection;
@@ -14,6 +15,7 @@ export class SubscriptionRepository {
     }
 
     async getSubscriptions() {
+        await this.db.connect()
         const [rows, filed] = await this.db.query("SELECT * FROM subscription");
         const subscriptions: any[] = [];
         if (rows instanceof Array) {
@@ -24,27 +26,37 @@ export class SubscriptionRepository {
         return subscriptions;
     }
 
-    async createSubscription(subscription: any) {
-        return this.db.query("INSERT INTO subscription (email, created_at ,updated_at) VALUES (?, ?, ?)", [subscription.email, new Date(), new Date()]);
+    async createSubscription(token: string) {
+        await this.db.connect()
+        const [rows, filed] = await this.db.query("SELECT * FROM USER WHERE connection = ?", [token]);
+        if (rows)
+            return this.db.query("INSERT INTO subscription (email, created_at ,updated_at) VALUES (?, ?, ?)", [rows[0].email, new Date(), new Date()]);
     }
 
-    async updateSubscription(id: number, subscription: any) {
-        return this.db.query("UPDATE subscription SET email = ?, updated_at = ? WHERE id = ?", [subscription.email, new Date(), id]);
+    async updateSubscription(id: number, subscription: any, token: string) {
+        await this.db.connect()
+        const [rows, filed] = await this.db.query("SELECT * FROM USER WHERE connection = ?", [token]);
+        if (rows)
+            return this.db.query("UPDATE subscription SET email = ?, updated_at = ? WHERE id = ?", [rows[0].email, new Date(), id]);
     }
 
     async deleteSubscription(id: number) {
+        await this.db.connect()
         return this.db.query("DELETE FROM subscription WHERE id = ?", [id]);
     }
 
-    async userIsSubscribed(email: string): Promise<boolean> {
-        const [rows, filed] = await this.db.query("SELECT * FROM subscription WHERE email = ?", [email]);
+    async userIsSubscribed(token: string) {
+        await this.db.connect()
+        const [rows, filed] = await this.db.query("SELECT * FROM USER WHERE connection = ?", [token]);
         if (rows instanceof Array) {
-            return Promise.resolve(rows.length > 0);
+            const row: any = rows[0];
+            const [rows2, filed2] = await this.db.query("SELECT * FROM subscription WHERE user_email = ?", [row.email]);
+            return rows2;
         }
-        return false
     }
 
     async subscribeUserByToken(token: string, price: number) {
+        await this.db.connect()
         const [rows, filed] = await this.db.query("SELECT * FROM USER WHERE connection = ?", [token]);
         if (rows instanceof Array) {
             const row: any = rows[0];
@@ -60,6 +72,7 @@ export class SubscriptionRepository {
     }
 
     async unsubscribeUserByToken(token: string) {
+        await this.db.connect()
         const [rows, filed] = await this.db.query("SELECT * FROM USER WHERE connection = ?", [token]);
         if (rows instanceof Array) {
             const row: any = rows[0];
@@ -69,6 +82,15 @@ export class SubscriptionRepository {
                     return this.db.query("UPDATE subscription SET deleted_at = ? WHERE user_email = ?", [new Date(), row.email]);
                 }
             }
+        }
+    }
+
+    async lastDateFreeService(token: string) {
+        const [rows, filed] = await this.db.query("SELECT * FROM USER WHERE connection = ?", [token]);
+        if (rows instanceof Array) {
+            const row: any = rows[0];
+            const [rows2, filed2] = await this.db.query("SELECT * FROM subscription_utilisation WHERE email = ?", [row.email]);
+            return rows2;
         }
     }
 

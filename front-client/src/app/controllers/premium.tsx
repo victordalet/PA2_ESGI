@@ -2,6 +2,7 @@ import React from "react";
 import {PremiumView} from "../views/premium";
 import {ControllerProps, ControllerState} from "../@types/premium";
 import PremiumViewModel from "../view-models/premium";
+import {haveToken} from "../../security/token";
 
 export default class Controller extends React.Component<
     ControllerProps,
@@ -12,6 +13,7 @@ export default class Controller extends React.Component<
 
     constructor(props: ControllerProps) {
         super(props);
+        haveToken();
         this.premiumViewModel = new PremiumViewModel();
     }
 

@@ -1,12 +1,8 @@
 import React from "react";
 import ServiceView from "../views/service";
-import {
-    ControllerProps,
-    ControllerState,
-    ServiceResponse,
-} from "../@types/service";
-import {Navbar} from "../../components/navbar";
+import {ControllerProps, ControllerState, ServiceResponse} from "../@types/service";
 import ServiceViewModel from "../view-models/service";
+import {Loading} from "../../components/loading";
 
 export default class Controller extends React.Component<
     ControllerProps,
@@ -25,19 +21,21 @@ export default class Controller extends React.Component<
         serviceNoFilter: [],
     };
 
-    private fetchService = () => {
-        const apiPath = process.env.API_HOST || "http://localhost:3001";
-        fetch(apiPath + "/service", {
-            method: "GET",
+
+    private fetchService = async () => {
+        const apiPath = process.env.API_HOST || 'http://localhost:3001';
+        const response = await fetch(apiPath + '/service', {
+            method: 'GET',
             headers: {
-                "Content-Type": "application/json",
-                authorization: localStorage.getItem("token") || "",
-            },
-        }).then((res) => {
-            res.json().then((data) => {
-                this.setState({service: data, serviceNoFilter: data});
-            });
+                'Content-Type': 'application/json',
+                'authorization': localStorage.getItem('token') || ''
+            }
         });
+        const data: ServiceResponse[] = await response.json();
+        data.filter((service) => {
+            return service.type === 'USER';
+        });
+        this.setState({service: data, serviceNoFilter: data});
     };
 
     filterByPrice = () => {
@@ -72,7 +70,7 @@ export default class Controller extends React.Component<
 
     render() {
         if (this.state.serviceNoFilter.length === 0) {
-            return <Navbar/>;
+            return <Loading/>;
         }
 
         return (

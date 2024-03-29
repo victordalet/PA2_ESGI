@@ -2,7 +2,7 @@ import React from "react";
 
 export interface CardInfo {
     title: string;
-    description: string;
+    description: string | JSX.Element;
     price: number;
     location?: string;
     type: string;
@@ -37,6 +37,7 @@ export class Card extends React.Component<CardProps> {
                     const data = await response.json();
                     const imgBase64 = `data:image/png;base64,${data.base64}`;
                     card.style.backgroundImage = `url(${imgBase64})`;
+                    card.style.opacity = '0.8';
                 }
             }
         });

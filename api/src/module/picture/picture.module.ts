@@ -4,5 +4,5 @@ import {PictureController} from "./picture.controller";
 @Module({
     controllers: [PictureController]
 })
-export class pictureModule {
+export class PictureModule {
 }

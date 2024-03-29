@@ -23,14 +23,31 @@ export class MessageService {
     }
 
     async createMessage(message: BodyMessage) {
+         if(!(typeof message.message === 'string')){
+            throw new Error('Bad message');}
+         else if(!(typeof message.to_user === 'string')){
+            throw new Error('Bad translation');
+        }else if(!(typeof message.created_by === 'string')){
+            throw new Error('Bad language');
+        }
+        else
         return await this.MessageRepository.createMessage(message);
     }
 
     async updateMessage(id: number, message: BodyMessage) {
+        if(!(typeof id === 'number')){
+            throw new Error('Bad id');}
+        else if(!(typeof message === 'string')){
+            throw new Error('Bad message');}
+        
+        else
         return await this.MessageRepository.updateMessage(id, message);
     }
 
     async deleteMessage(id: number) {
+        if(!(typeof id === 'number')){
+            throw new Error('Bad id');}
+        else
         return await this.MessageRepository.deleteMessage(id);
     }
 
@@ -54,6 +71,10 @@ export class MessageService {
     }
 
     async addIllegibleWord(word: string) {
+         if(!(typeof word === 'string')){
+            throw new Error('Bad word');}
+        
+        else
         return await this.MessageRepository.addIllegibleWord(word);
     }
 }

@@ -5,7 +5,7 @@ import {ControllerProps, ControllerState, StatsUser} from "../@types/Home";
 import View from "../views/home";
 import HomeViewModel from "../view-models/Home";
 import {haveToken} from "../../security/token";
-import {Navbar} from "../../components/navbar";
+import {Loading} from "../../components/loading";
 
 @observer
 export default class HomeController extends Component<
@@ -54,7 +54,10 @@ export default class HomeController extends Component<
         const {addInput} = this.state;
 
         if (this.state.stats.nb_users === 0) {
-            return <Navbar/>;
+
+            return (
+                <Loading/>
+            );
         }
 
         return <View stats={this.state.stats}/>;

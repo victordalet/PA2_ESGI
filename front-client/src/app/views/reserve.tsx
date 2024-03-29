@@ -30,7 +30,15 @@ export class ReserveView extends React.Component <ViewProps> {
             servicesGlobal,
             addService,
             servicesSelected,
-            eventCalendar
+            eventCalendar,
+            fetchMessagesForBail,
+            postMessageForBail,
+            isService,
+            downloadFactureBail,
+            nameFiles,
+            postFileBail,
+            downloadFileBail,
+            deleteOccupationBail
         } = this.props;
 
         let cardToRemoveIndex = 0;
@@ -61,6 +69,28 @@ export class ReserveView extends React.Component <ViewProps> {
                                             <h3><span>Number room :</span>{description.numberRoom}</h3>
                                             <h3><span>Surface :</span>{description.surface}</h3>
                                             <h3><span>Info sup : </span></h3>
+                                            <h3><span>Documents :</span></h3>
+                                            <div className={"resources-files"}>
+                                                {
+                                                    nameFiles.map((name, index) => {
+                                                        return (
+                                                            <div key={index}>
+                                                                <h3>{name}</h3>
+                                                                <i className="ai-download"
+                                                                   onClick={() => downloadFileBail(name)}></i>
+                                                            </div>
+                                                        );
+                                                    })
+                                                }
+                                                {
+                                                    isBail ?
+                                                        <div className={"file-transfer"}>
+                                                            <input type={"file"} id={"file-input"}/>
+                                                            <button onClick={postFileBail}>Send</button>
+                                                        </div> : ''
+                                                }
+
+                                            </div>
                                         </div>
                                     ) : ''
                             }
@@ -92,8 +122,9 @@ export class ReserveView extends React.Component <ViewProps> {
                                     (
                                         <div className={"reservation"}>
                                             <button id={"cancel"} onClick={deleteLocation}
-                                                    style={{background: '#c91919'}}>Delete
+                                                    style={{background: '#c91919', marginBottom: '20px'}}>Delete
                                             </button>
+                                            <button id={"facture"} onClick={downloadFactureBail}>My facture</button>
                                         </div>
                                     )
                                     :
@@ -133,7 +164,17 @@ export class ReserveView extends React.Component <ViewProps> {
                                                 return (
                                                     <Card cardInfo={{
                                                         title: service.name,
-                                                        description: '',
+                                                        description: (<div>{
+                                                            Array.from(Array(5).keys()).map((i) => {
+                                                                if (service.notation) {
+                                                                    if (i < service.notation) {
+                                                                        return <i className="ai-star"
+                                                                                  color={"#d3ae1b"}></i>;
+                                                                    }
+                                                                }
+                                                                return <i className="ai-star" color={"#fff"}></i>;
+                                                            })
+                                                        }</div>),
                                                         price: service.price,
                                                         id: service.id,
                                                         type: 'service'
@@ -171,7 +212,17 @@ export class ReserveView extends React.Component <ViewProps> {
                                                 }}
                                                 cardInfo={{
                                                     title: service.name,
-                                                    description: '',
+                                                    description: (<div>{
+                                                        Array.from(Array(5).keys()).map((i) => {
+                                                            if (service.notation) {
+                                                                if (i < service.notation) {
+                                                                    return <i className="ai-star"
+                                                                              color={"#d3ae1b"}></i>;
+                                                                }
+                                                            }
+                                                            return <i className="ai-star" color={"#fff"}></i>;
+                                                        })
+                                                    }</div>),
                                                     price: service.price,
                                                     id: service.id,
                                                     type: 'service'
@@ -187,7 +238,17 @@ export class ReserveView extends React.Component <ViewProps> {
                                         <Card
                                             cardInfo={{
                                                 title: service.name,
-                                                description: '',
+                                                description: (<div>{
+                                                    Array.from(Array(5).keys()).map((i) => {
+                                                        if (service.notation) {
+                                                            if (i < service.notation) {
+                                                                return <i className="ai-star"
+                                                                          color={"#d3ae1b"}></i>;
+                                                            }
+                                                        }
+                                                        return <i className="ai-star" color={"#fff"}></i>;
+                                                    })
+                                                }</div>),
                                                 price: service.price,
                                                 id: service.id,
                                                 type: 'service'
@@ -241,7 +302,30 @@ export class ReserveView extends React.Component <ViewProps> {
 
                                     <div className={"container-message"}>
                                         <h3>Messages</h3>
+                                        {
+                                            isBail ?
+                                                <select id={"message-select"} onChange={fetchMessagesForBail}>
+                                                    {eventCalendar.map((event, index) => {
+                                                        return (
+                                                            <option
+                                                                value={event.id}>{event.user_email} -
+                                                                {event.from_datetime.split('T')[0]} /
+                                                                {event.to_datetime.split('T')[0]}
+                                                            </option>
+                                                        );
+                                                    })}
+                                                </select>
+                                                : ''
+                                        }
                                         <div className={"messages"}>
+                                            {
+                                                isBail && messages.length != 0 ?
+                                                    <button className={"delete-occupation-bail"}
+                                                            onClick={() => deleteOccupationBail()}>Cancel this
+                                                        location</button>
+                                                    : ''
+                                            }
+
                                             {
                                                 messages.map((message, index) => {
                                                     return (
@@ -253,7 +337,12 @@ export class ReserveView extends React.Component <ViewProps> {
                                             }
                                         </div>
                                         <input type={"text"} id={"message-input"}/>
-                                        <i className={"ai-paper-airplane"} onClick={addMessage}></i>
+                                        {
+                                            isBail ?
+                                                <i className={"ai-paper-airplane"} onClick={postMessageForBail}></i>
+                                                :
+                                                <i className={"ai-paper-airplane"} onClick={addMessage}></i>
+                                        }
                                     </div>
                                 </div>
                             )

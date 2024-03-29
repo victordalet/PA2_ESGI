@@ -1,0 +1,138 @@
+version: "3.8"
+
+services:
+
+  reverse-proxy:
+    image: traefik:v2.4
+    container_name: traefik
+    ports:
+      - "80:80"
+      - "8080:8080"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - traefik.toml:/etc/traefik/traefik.toml
+      - acme.json:/acme.json
+    labels:
+      - "traefik.http.middlewares.strip-www.redirectregex.regex=^https?://(www\\.)(.+)"
+      - "traefik.http.middlewares.strip-www.redirectregex.replacement=https://$${2}"
+      - "traefik.http.middlewares.strip-www.redirectregex.permanent=true"
+    restart: always
+    networks:
+      - web
+
+
+  mysql-db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - ${MYSQL_PORT}:3306
+    volumes:
+      - ./sql/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - web
+
+  api:
+    build: api/
+    ports:
+      - ${API_PORT}:3000
+    environment:
+      MYSQL_HOST: ${MYSQL_HOST}
+      MYSQL_PORT: ${MYSQL_PORT}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.apipaesig.rule=Host(`apipaesig.c2smr.fr`)"
+      - "traefik.http.routers.apipaesig.entrypoints=websecure"
+    volumes:
+      - ./api/public:/app/public
+    networks:
+      - web
+
+  back-office:
+    build:
+      context: back-office/
+      dockerfile: Dockerfile.prod
+    ports:
+      - ${BACK_OFFICE_PORT}:3000
+    environment:
+      API_HOST: ${API_HOST}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.backofficepaesgi.rule=Host(`backofficepaesgi.c2smr.fr`)"
+      - "traefik.http.routers.backofficepaesgi.entrypoints=websecure"
+    networks:
+      - web
+
+  front-client:
+    build:
+      context: front-client/
+      dockerfile: Dockerfile.prod
+    ports:
+      - ${FRONT_CLIENT_PORT}:3000
+    environment:
+      API_HOST: ${API_HOST}
+      CHAT_BOT_HOST: ${CHAT_BOT_HOST}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.frontclientpaesig.rule=Host(`frontclientpaesig.c2smr.fr`)"
+      - "traefik.http.routers.frontclientpaesig.entrypoints=websecure"
+    networks:
+      - web
+
+
+  chat-bot:
+    build: chat-bot/
+    ports:
+      - ${CHAT_BOT_PORT}:5000
+    networks:
+      - web
+
+  front-bail:
+    build:
+      context: front-bail/
+      dockerfile: Dockerfile.prod
+    ports:
+      - ${FRONT_BAIL_PORT}:3000
+    environment:
+      API_HOST: ${API_HOST}
+      FRONT_CLIENT_PORT: ${FRONT_CLIENT_PORT}
+      YOLO_ESTIMATOR_PORT: ${YOLO_ESTIMATOR_PORT}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.fontbailpaesgi.rule=Host(`fontbailpaesgi.c2smr.fr`)"
+      - "traefik.http.routers.fontbailpaesgi.entrypoints=websecure"
+    networks:
+      - web
+
+  scraper:
+    build: scraper/
+    ports:
+      - ${SCRAPER_PORT}:5000
+    environment:
+      MYSQL_HOST: ${MYSQL_HOST}
+      MYSQL_PORT: ${MYSQL_PORT}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - ./api/public:/pictures
+    networks:
+      - web
+
+  yolo-estimator:
+    build: yolo-estimator/
+    ports:
+      - ${YOLO_ESTIMATOR_PORT}:5000
+    networks:
+      - web
+
+networks:
+  web:
+    external: true

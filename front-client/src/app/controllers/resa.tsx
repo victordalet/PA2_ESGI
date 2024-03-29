@@ -2,7 +2,7 @@ import React from "react";
 import {ResaView} from "../views/resa";
 import {ControllerProps, ControllerState} from "../@types/resa";
 import {haveToken} from "../../security/token";
-import {Navbar} from "../../components/navbar";
+import {Loading} from "../../components/loading";
 
 export default class Controller extends React.Component<
     ControllerProps,
@@ -39,7 +39,7 @@ export default class Controller extends React.Component<
 
     render() {
         if (this.state.data.length === 0) {
-            return <Navbar/>;
+            return <Loading/>;
         }
 
         return <ResaView data={this.state.data}/>;

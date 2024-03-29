@@ -12,6 +12,11 @@
     padding-top: 50px;
     padding-bottom: 100px;
 
+    @media (max-width: 768px) {
+        left: 0;
+    }
+
+
     h1 {
         font-size: 3em;
         align-self: center;
@@ -19,6 +24,15 @@
         font-family: 'Inter', serif;
         transition: .7s;
         transform: translateY(-500px);
+        margin-left: 50px;
+        padding-left: 20px;
+
+
+
+        @media (max-width: 768px) {
+            margin-left: 20px;
+        }
+
     }
 
     h3 {
@@ -32,12 +46,20 @@
 
     .container-last-location, .container-last-services {
         width: 90vw;
-        height: 30vh;
+        height: 350px;
         overflow: hidden;
         font-family: 'Inter', serif;
         margin-top: 20px;
-        display: flex;
+        overflow-x: scroll;
         justify-content: start;
+        position: relative;
+        margin-left: 200px;
+        white-space: nowrap;
+        scrollbar-width: none;
+
+        .card {
+            display: inline-block;
+        }
     }
 
 }
