@@ -58,6 +58,7 @@ export default class LocationController extends Component<
         this.setState({data: this.locationViewModel.capacityFilter(this.state.dataNoFilter)});
     };
 
+    render() {
         if (this.state.dataNoFilter.length === 0) {
             return <Loading/>;
         }
