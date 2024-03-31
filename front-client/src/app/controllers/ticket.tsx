@@ -20,27 +20,25 @@ export default class Controller extends React.Component<
         const title = document.querySelector<HTMLInputElement>(".ticket-input");
         const description =
             document.querySelector<HTMLTextAreaElement>(".ticket-textarea");
-        if (title && description) {
-            if (title.value === "" || description.value === "") {
-                this.ticketViewModel.openPopup(0);
-            } else {
-                const apiPath = process.env.API_HOST || "http://localhost:3001";
-                await fetch(`${apiPath}/ticket`, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        authorization: localStorage.getItem("token") || "",
-                    },
-                    body: JSON.stringify({
-                        name: title.value,
-                        description: description.value,
-                    }),
-                });
-                this.ticketViewModel.openPopup(1);
-                title.value = "";
-                description.value = "";
-            }
+        if (title?.value === "" || description?.value === "") {
+            this.ticketViewModel.openPopup(0);
+        } else {
+            const apiPath = process.env.API_HOST || "http://localhost:3001";
+            await fetch(`${apiPath}/ticket`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    'authorization': localStorage.getItem('token') || '',
+                },
+                body: JSON.stringify({
+                    name: title?.value,
+                    description: description?.value,
+                }),
+            });
+            this.ticketViewModel.openPopup(1);
+            document.location.reload();
         }
+
     };
 
     render() {

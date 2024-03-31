@@ -16,13 +16,7 @@ export class TicketRepository {
     async getTickets() {
         await this.db.connect()
         const [rows, filed] = await this.db.query("SELECT * FROM TICKET");
-        const tickets: Ticket[] = [];
-        if (rows instanceof Array) {
-            rows.forEach((row: any) => {
-                tickets.push(row);
-            });
-        }
-        return tickets;
+        return rows;
     }
 
     async createTicket(ticket: Ticket, token: string) {

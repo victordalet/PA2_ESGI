@@ -358,7 +358,8 @@ export default class Controller extends React.Component<
                     message: message.value,
                 }),
             });
-            document.location.reload();
+            await this.getMessages();
+            message.value = "";
         }
     };
 

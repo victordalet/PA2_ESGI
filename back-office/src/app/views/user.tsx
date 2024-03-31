@@ -30,7 +30,7 @@ export default class UserView extends React.Component<ViewProps> {
                                id={"role"}
                                placeholder={"role..."}/>
                         <div className="premium-checkbox">
-                            <label htmlFor="premium" >Premium</label>
+                            <label htmlFor="premium">Premium</label>
                             <input
                                 onChange={isPremiumFilter}
                                 type="checkbox"
@@ -41,7 +41,6 @@ export default class UserView extends React.Component<ViewProps> {
                         </div>
                     </div>
                 </div>
-
                 <div className="table">
                     <div className={"table-header"}>
                         {
