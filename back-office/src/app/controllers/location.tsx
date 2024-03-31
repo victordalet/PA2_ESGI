@@ -58,11 +58,24 @@ export default class LocationController extends Component<
         this.setState({data: this.locationViewModel.capacityFilter(this.state.dataNoFilter)});
     };
 
+    public deleteLocation = async (id: string) => {
+        const apiPath = process.env.API_HOST || "http://localhost:3001";
+        await fetch(apiPath + "/location/admin/" + id, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+                authorization: localStorage.getItem("token") || "",
+            },
+        });
+        document.location.reload();
+    };
+
     render() {
         if (this.state.dataNoFilter.length === 0) {
             return <Loading/>;
         }
         return <View
+            deleteLocation={this.deleteLocation}
             data={this.state.data}
             capacityFilter={this.capacityFilter}
             priceFilter={this.priceFilter}

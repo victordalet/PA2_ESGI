@@ -181,4 +181,10 @@ export class LocationRepository {
         }
     }
 
+    async deleteLocationByAdmin(locationId: number) {
+        await this.db.connect()
+        return this.db.query("DELETE FROM location WHERE id = ?", [locationId]);
+    }
+
+
 }

@@ -183,12 +183,20 @@ export class UserService {
         return user.filter(user => user.rules.includes("request"));
     }
 
-    async acceptRequestBail(email: string){
+    async acceptRequestBail(email: string) {
         const reg = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
         if (!(reg.test(email))) {
             throw new Error('Bad email');
         } else
             return await this.UserRepository.updateRoleBail(email);
+    }
+
+    async deleteUserByAdmin(email: string) {
+        const reg = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
+        if (!(reg.test(email))) {
+            throw new Error('Bad email');
+        } else
+            return await this.UserRepository.deleteUser(email);
     }
 
 }

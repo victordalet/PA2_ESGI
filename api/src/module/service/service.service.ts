@@ -125,5 +125,9 @@ export class ServiceService {
         }
     }
 
+    async deleteServiceByAdmin(id: number) {
+        return this.serviceRepository.deleteServiceByAdmin(id);
+    }
+
 
 }

@@ -168,4 +168,9 @@ export class ServiceRepository {
         return this.db.query("DELETE FROM service_by_location WHERE service_id = ? AND location_id = ?",
             [service_id, location_id]);
     }
+
+    async deleteServiceByAdmin(id: number) {
+        await this.db.connect()
+        return this.db.query("DELETE FROM service WHERE id = ?", [id]);
+    }
 }

@@ -59,13 +59,27 @@ export default class UserControllers extends Component<
         this.setState({data: this.userViewModel.ruleFilter(this.state.dataNoFilter)});
     };
 
+    public deleteUser = async (email: string) => {
+        const apiPath = process.env.API_HOST || "http://localhost:3001";
+        await fetch(apiPath + "/user/admin/" + email, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+                authorization: localStorage.getItem("token") || "",
+            },
+        });
+        document.location.reload();
+    };
+
     render() {
         if (this.state.dataNoFilter.length === 0) {
             return <Loading/>;
         }
-        return <View data={this.state.data}
-                     isPremiumFilter={this.isPremiumFilter}
-                     searchFilter={this.searchFilter}
-                     ruleFilter={this.ruleFilter}/>;
+        return <View
+            deleteUser={this.deleteUser}
+            data={this.state.data}
+            isPremiumFilter={this.isPremiumFilter}
+            searchFilter={this.searchFilter}
+            ruleFilter={this.ruleFilter}/>;
     }
 }

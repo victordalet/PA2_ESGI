@@ -5,6 +5,7 @@ export interface ViewProps {
     searchFilter: () => void;
     capacityFilter: () => void;
     priceFilter: () => void;
+    deleteLocation: (id: string) => void;
 }
 
 
@@ -26,4 +27,5 @@ export interface DataResponse {
     address : string;
     capacity : number;
     type : string;
+    id: number
 }

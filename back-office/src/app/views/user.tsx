@@ -9,7 +9,8 @@ export default class UserView extends React.Component<ViewProps> {
             data,
             isPremiumFilter,
             searchFilter,
-            ruleFilter
+            ruleFilter,
+            deleteUser
         } = this.props;
 
 
@@ -44,7 +45,7 @@ export default class UserView extends React.Component<ViewProps> {
                 <div className="table">
                     <div className={"table-header"}>
                         {
-                            ["mail", "role", "address", "premium"].map((data) => (
+                            ["mail", "role", "address", "premium", "remove"].map((data) => (
                                 <div className="header__item"><a className="filter__link" href="#"> {data}</a></div>
                             ))
                         }
@@ -56,7 +57,14 @@ export default class UserView extends React.Component<ViewProps> {
                                     {[dataLine.email,
                                         dataLine.rules,
                                         dataLine.address,
-                                        dataLine.premium.toString()].map(dataColumn => (
+                                        dataLine.premium.toString(),
+                                        (<i
+                                            style={{color: '#c90b1a', cursor: 'pointer', fontSize: '2em'}}
+                                            onClick={() => {
+                                                deleteUser(dataLine.email);
+                                            }}
+                                            className="ai-circle-minus-fill"></i>)
+                                    ].map(dataColumn => (
                                         <div className="table-data">{dataColumn}</div>
                                     ))}
                                 </div>

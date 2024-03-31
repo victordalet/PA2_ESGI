@@ -99,7 +99,7 @@ export class UserController {
     @Post('request-bail')
     @ApiOperation({summary: 'Request bail'})
     @ApiOkResponse({description: 'user'})
-    async requestBail(@Headers('authorization') token: string,@Body() body: {rule:string}) {
+    async requestBail(@Headers('authorization') token: string, @Body() body: { rule: string }) {
         return await this.userService.requestBail(token, body.rule);
     }
 
@@ -181,6 +181,15 @@ export class UserController {
     @ApiOkResponse({description: 'user'})
     async updateRoleAdmin(@Headers('authorization') token: string, @Body() body: UserBody) {
         return await this.userService.UpdateRoleAdmin(body);
+    }
+
+
+    @Delete('admin/:email')
+    @ApiOperation({summary: 'Delete user by admin'})
+    @ApiOkResponse({description: 'user'})
+    async deleteUserByAdmin(@Headers('authorization') token: string, @Param() params: GetEmailUser) {
+        await this.tokenValidation.validateAdminToken(token);
+        return await this.userService.deleteUserByAdmin(params.email);
     }
 
 }

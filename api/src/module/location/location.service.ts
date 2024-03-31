@@ -176,4 +176,8 @@ export class LocationService {
     async getLocationByEmail(token: string) {
         return await this.LocationRepository.getLocationByEmail(token);
     }
+
+    async deleteLocationByAdmin(locationId: number) {
+        return await this.LocationRepository.deleteLocationByAdmin(locationId);
+    }
 }
