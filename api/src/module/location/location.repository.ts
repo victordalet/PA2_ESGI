@@ -67,8 +67,13 @@ export class LocationRepository {
     async deleteLocation(id: number, token: string) {
         await this.db.connect()
         const [rows, filed] = await this.db.query("SELECT email FROM USER WHERE connection = ?", [token]);
-        if (rows)
-            return this.db.query("DELETE FROM location WHERE id = ? and created_by = ?", [id, rows[0].email]);
+        if (rows) {
+            await this.db.query("DELETE FROM location WHERE id = ? and created_by = ?", [id, rows[0].email]);
+            await this.db.query("DELETE FROM location_occupation WHERE location_id = ?", [id]);
+            await this.db.query("DELETE FROM service_by_location WHERE location_id = ?", [id]);
+            return;
+        }
+
     }
 
     async locationIsOccupied(locationId: number, fromDatetime: string, toDatetime: string) {
@@ -183,7 +188,10 @@ export class LocationRepository {
 
     async deleteLocationByAdmin(locationId: number) {
         await this.db.connect()
-        return this.db.query("DELETE FROM location WHERE id = ?", [locationId]);
+        this.db.query("DELETE FROM location WHERE id = ?", [locationId]);
+        await this.db.query("DELETE FROM location_occupation WHERE location_id = ?", [locationId]);
+        await this.db.query("DELETE FROM service_by_location WHERE location_id = ?", [locationId]);
+        return
     }
 
 

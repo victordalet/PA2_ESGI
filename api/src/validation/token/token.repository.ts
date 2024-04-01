@@ -1,4 +1,4 @@
-import {DatabaseEntity} from "../../database/mysql.entity";
+    import {DatabaseEntity} from "../../database/mysql.entity";
 import {Connection} from "mysql2/promise";
 
 export class TokenRepository {

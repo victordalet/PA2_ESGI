@@ -19,7 +19,7 @@ export default class Controller extends React.Component<
 
     public subscribe = async (price: number) => {
         const apiPath: string = process.env.API_HOST || 'http://localhost:3001';
-        await fetch(`${apiPath}/subscription/subscribe`, {
+        const res = await fetch(`${apiPath}/subscription/subscribe`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -29,6 +29,8 @@ export default class Controller extends React.Component<
                 price: price
             })
         });
+        const data = await res.json();
+        window.open(data.url, '_blank');
         this.premiumViewModel.openPopup();
     };
 
