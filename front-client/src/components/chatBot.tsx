@@ -43,6 +43,10 @@ export class ChatBot extends React.Component {
         const data = await response.json();
         const chatBox = document.querySelector<HTMLElement>(".chat-box");
         if (chatBox) {
+            const youMessage = document.createElement("div");
+            youMessage.className = "chat-message";
+            youMessage.innerHTML = `<p>${input?.value}</p>`;
+            chatBox.appendChild(youMessage);
             const chatMessage = document.createElement("div");
             chatMessage.className = "chat-message";
             chatMessage.innerHTML = `<p>${data.response}</p>`;
