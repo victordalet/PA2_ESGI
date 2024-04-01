@@ -21,21 +21,17 @@ export default class TicketControllers extends Component<
         data: [],
     };
 
-    getData = () => {
+    getData = async () => {
         const apiPath = process.env.API_HOST || "http://localhost:3001";
-        fetch(apiPath + "/ticket", {
+        const res = await fetch(apiPath + "/ticket", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
                 authorization: localStorage.getItem("token") || "",
             },
-        }).then((r) => {
-            r.json().then((data: ControllerState["data"]) => {
-                this.setState({
-                    data: data,
-                });
-            });
         });
+        const data = await res.json();
+        this.setState({data: data});
     };
 
     render() {

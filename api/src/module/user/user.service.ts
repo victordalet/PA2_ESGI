@@ -13,23 +13,22 @@ export class UserService {
 
     async CreateUser(userInformation: User) {
         const reg = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
-       if(!(reg.test(userInformation.email))){
-          throw new Error('Bad email'); 
-       } else if(!(typeof userInformation.name === 'string')){
-        throw new Error('Bad name'); 
-       } else if(!(typeof userInformation.password === 'string' && userInformation.password.length > 8)){
-        throw new Error('Bad password'); 
-       } else if(!(typeof userInformation.address === 'string')){
-        throw new Error('Bad address'); 
-       }
-   
-       else{
-        const user = await this.GetUserByEmail(userInformation.email);
-        if (user) {
-            throw new Error("User already exists");
+        if (!(reg.test(userInformation.email))) {
+            throw new Error('Bad email');
+        } else if (!(typeof userInformation.name === 'string')) {
+            throw new Error('Bad name');
+        } else if (!(typeof userInformation.password === 'string' && userInformation.password.length > 8)) {
+            throw new Error('Bad password');
+        } else if (!(typeof userInformation.address === 'string')) {
+            throw new Error('Bad address');
         } else {
-            await this.UserRepository.createUser(userInformation);
-        }}
+            const user = await this.GetUserByEmail(userInformation.email);
+            if (user) {
+                throw new Error("User already exists");
+            } else {
+                await this.UserRepository.createUser(userInformation);
+            }
+        }
     }
 
     async GetUser(): Promise<User[]> {
@@ -38,20 +37,19 @@ export class UserService {
 
     async createConnection(email: string, password: string) {
         const reg = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
-       if(!(reg.test(email))){
-          throw new Error('Bad email'); 
-       } else if(!(typeof password === 'string' && password.length > 8)){
-        throw new Error('Bad password'); 
-       }
- 
-       else{
-        if (await this.UserRepository.isGoodPassword(email, sha512(password))) {
-            const connection = uid(32);
-            await this.UserRepository.createConnection(connection, email);
-            return {connection: connection};
+        if (!(reg.test(email))) {
+            throw new Error('Bad email');
+        } else if (!(typeof password === 'string' && password.length > 8)) {
+            throw new Error('Bad password');
         } else {
-            return {connection: null};
-        }}
+            if (await this.UserRepository.isGoodPassword(email, sha512(password))) {
+                const connection = uid(32);
+                await this.UserRepository.createConnection(connection, email);
+                return {connection: connection};
+            } else {
+                return {connection: null};
+            }
+        }
     }
 
     async deleteConnection(email: string) {
@@ -68,65 +66,57 @@ export class UserService {
 
     async UpdateUser(userInformation: User) {
         const reg = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
-        if(!(reg.test(userInformation.email))){
-           throw new Error('Bad email'); 
-        } else if(!(typeof userInformation.name === 'string')){
-         throw new Error('Bad name'); 
-        } else if(!(typeof userInformation.password === 'string' && userInformation.password.length > 8)){
-         throw new Error('Bad password'); 
-        } else if(!(typeof userInformation.address === 'string')){
-         throw new Error('Bad address'); 
-        }
-    
-        else
-        return await this.UserRepository.updateUser(userInformation);
+        if (!(reg.test(userInformation.email))) {
+            throw new Error('Bad email');
+        } else if (!(typeof userInformation.name === 'string')) {
+            throw new Error('Bad name');
+        } else if (!(typeof userInformation.password === 'string' && userInformation.password.length > 8)) {
+            throw new Error('Bad password');
+        } else if (!(typeof userInformation.address === 'string')) {
+            throw new Error('Bad address');
+        } else
+            return await this.UserRepository.updateUser(userInformation);
     }
 
     async updatePassword(userInformation: User, token: string) {
-        if(!(typeof userInformation.password === 'string' && userInformation.password.length > 8)){
-            throw new Error('Bad password'); 
-           }
-       
-        else
-        userInformation.password = sha512(userInformation.password);
+        if (!(typeof userInformation.password === 'string' && userInformation.password.length > 8)) {
+            throw new Error('Bad password');
+        } else
+            userInformation.password = sha512(userInformation.password);
         userInformation.token = token;
         await this.UserRepository.updatePassword(userInformation);
     }
 
     async updateEmail(userInformation: User, token: string) {
         const reg = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
-       if(!(reg.test(userInformation.email))){
-          throw new Error('Bad email'); 
-       }
-       else
-       { userInformation.token = token;
-        return await this.UserRepository.updateEmail(userInformation);
-       }
+        if (!(reg.test(userInformation.email))) {
+            throw new Error('Bad email');
+        } else {
+            userInformation.token = token;
+            return await this.UserRepository.updateEmail(userInformation);
+        }
     }
 
     async updateUsername(userInformation: User, token: string) {
-        if(!(typeof userInformation.name === 'string')){
-            throw new Error('Bad name'); 
-           }
-       
-        else
-        {userInformation.token = token;
-        return await this.UserRepository.updateUsername(userInformation);
+        if (!(typeof userInformation.name === 'string')) {
+            throw new Error('Bad name');
+        } else {
+            userInformation.token = token;
+            return await this.UserRepository.updateUsername(userInformation);
         }
     }
 
 
     async UpdateRoleAdmin(userInformation: User) {
         const reg = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
-       if(!(reg.test(userInformation.email))){
-          throw new Error('Bad email'); 
-       } 
-       else
-       { const user = await this.GetUserByEmail(userInformation.email);
-        if (user.rules !== "admin") {
-            throw new Error("User is not admin");
-        }
-        await this.UserRepository.updateRoleAdmin(userInformation);
+        if (!(reg.test(userInformation.email))) {
+            throw new Error('Bad email');
+        } else {
+            const user = await this.GetUserByEmail(userInformation.email);
+            if (user.rules !== "admin") {
+                throw new Error("User is not admin");
+            }
+            await this.UserRepository.updateRoleAdmin(userInformation);
         }
     }
 
@@ -195,11 +185,18 @@ export class UserService {
 
     async acceptRequestBail(email: string) {
         const reg = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
-       if(!(reg.test(email))){
-          throw new Error('Bad email'); 
-       }
-       else
-        return await this.UserRepository.updateRoleBail(email);
+        if (!(reg.test(email))) {
+            throw new Error('Bad email');
+        } else
+            return await this.UserRepository.updateRoleBail(email);
     }
-    
+
+    async deleteUserByAdmin(email: string) {
+        const reg = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
+        if (!(reg.test(email))) {
+            throw new Error('Bad email');
+        } else
+            return await this.UserRepository.deleteUser(email);
+    }
+
 }

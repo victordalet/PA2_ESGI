@@ -7,7 +7,7 @@ export default class HomeViewModel {
                     title.style.transform = 'translateY(0)';
                 }
             }
-            , 100);
+            , 500);
     };
 
 }

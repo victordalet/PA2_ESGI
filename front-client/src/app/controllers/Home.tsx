@@ -22,10 +22,10 @@ export default class HomeController extends Component<
 
     constructor(props: any, context: any) {
         super(props, context);
-
+        this.homeViewModel.animationStart();
         this.fetchService();
         this.fetchLocation();
-        this.homeViewModel.animationStart();
+
     }
 
 

@@ -4,11 +4,16 @@ import {observer} from "mobx-react";
 import {ControllerProps} from "../@types/language";
 import View from "../views/language";
 import {haveToken} from "../../security/token";
+import LanguageViewModel from "../view-models/language";
 
 @observer
 export default class LanguageControllers extends Component<ControllerProps> {
+
+    languageViewModel: LanguageViewModel;
+
     constructor(props: any, context: any) {
         super(props, context);
+        this.languageViewModel = new LanguageViewModel();
         haveToken();
     }
 
@@ -38,6 +43,8 @@ export default class LanguageControllers extends Component<ControllerProps> {
     };
 
     render() {
-        return <View postFile={this.postFile}/>;
+        return <View
+            postFile={this.postFile}
+            downloadCSVFIle={this.languageViewModel.downloadCSVFIle}/>;
     }
 }

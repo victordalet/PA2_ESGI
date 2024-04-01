@@ -30,7 +30,7 @@ export default class Controller extends React.Component<
         const data = await response.json();
         console.log(data);
         this.setState({
-            emails: data.map((el: any) => el.email),
+            emails: data.map((el: any) => el.email + " | " + el.rules.split('-')[1])
         });
     };
 

@@ -46,6 +46,8 @@ services:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY}
+      FRONTEND_URL: ${FRONTEND_URL}
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.apipaesig.rule=Host(`apipaesig.c2smr.fr`)"

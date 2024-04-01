@@ -18,13 +18,13 @@ export default class ConnectionController extends Component<
 
     private connectionViewModel = new ConnectionViewModel();
 
-    public testLogin = () => {
+    public testLogin = async (type = 1) => {
         if (!this.verifyFiled()) {
             this.connectionViewModel.openPopup(1);
             return;
         }
         const apiPath = process.env.API_HOST || "http://localhost:3001";
-        fetch(apiPath + "/user/connectionAdmin", {
+        const res = await fetch(apiPath + "/user/connectionAdmin", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -33,19 +33,19 @@ export default class ConnectionController extends Component<
                 email: this.state.email,
                 password: this.state.password,
             }),
-        }).then((res) => {
-            if (res.type === "cors") {
-                this.connectionViewModel.openPopup(0);
-            }
-            res.json().then((data: dataConnection) => {
-                if (data.connection != null) {
-                    localStorage.setItem("token", data.connection);
-                    window.location.href = "/home";
-                } else {
-                    this.connectionViewModel.openPopup(0);
-                }
-            });
         });
+        if (res.type === "cors") {
+            this.connectionViewModel.openPopup(0);
+        }
+        const data = await res.json();
+        if (data.connection != null) {
+            localStorage.setItem("token", data.connection);
+            if (type === 1)
+                window.location.href = "/home";
+        } else {
+            this.connectionViewModel.openPopup(0);
+        }
+
     };
 
     private onInputChange =
@@ -69,6 +69,7 @@ export default class ConnectionController extends Component<
             this.connectionViewModel.openPopup(1);
             return;
         }
+        await this.testLogin(2);
         const apiPath = process.env.API_HOST || 'http://localhost:3001';
         const rule = document.querySelector<HTMLSelectElement>('#typeRequest')?.value || '';
         if (rule === '') {
@@ -86,7 +87,7 @@ export default class ConnectionController extends Component<
         });
         this.connectionViewModel.openPopup(2);
     };
-    
+
     render() {
         const {viewModel} = this.props;
         return (

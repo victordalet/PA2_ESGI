@@ -24,6 +24,7 @@ export interface LocationAvailability {
     to_datetime?: string;
     notation?: number;
     location_occupation_id?: number;
+    price: number;
 }
 
 export interface LocationMessage {

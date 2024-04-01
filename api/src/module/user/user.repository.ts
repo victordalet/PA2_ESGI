@@ -82,7 +82,7 @@ export class UserRepository {
 
     async deleteUser(email: string) {
         await this.db.connect()
-        await this.db.query("DELETE FROM USER WHERE email = ?", [email]);
+        await this.db.query("DELETE FROM USER WHERE email = ? and rules != ?", [email, 'ADMIN']);
     }
 
     async updateUser(userInformation: User) {

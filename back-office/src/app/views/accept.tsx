@@ -17,25 +17,17 @@ export default class AcceptView extends React.PureComponent<ViewProps> {
         return (
             <div>
                 <Navbar/>
+                <div className="container-user">
+                    <h2>Accept new lessor or service provider</h2>
+                </div>
                 <div className={"container-accept"}>
-                    <h1>Accept New yawn</h1>
-                    <Table head={['email', 'accept']}
+                    <Table head={['email | rules', 'accept']}
                            body={emails.map(e => [e, (<i
                                style={{color: '#0fad4e', cursor: 'pointer', fontSize: '2em'}}
                                onClick={() => {
                                    acceptEmail(e);
                                }}
                                className="ai-circle-plus-fill"></i>)])}/>
-                    {emails.map((el: string) => {
-                        return (
-                            <div className={"row"}>
-                                <div className={"cell"}>{el}</div>
-                                <div className={"cell"}>
-                                    <button onClick={() => acceptEmail(el)}>Accept</button>
-                                </div>
-                            </div>
-                        );
-                    })}
                 </div>
             </div>
         );

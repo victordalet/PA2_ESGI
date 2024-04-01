@@ -8,7 +8,8 @@ export default class ServiceView extends React.Component<ViewProps> {
         const {
             data,
             priceFilter,
-            searchFilter
+            searchFilter,
+            deleteService
         } = this.props;
 
         return (
@@ -36,7 +37,7 @@ export default class ServiceView extends React.Component<ViewProps> {
                 <div className="table">
                     <div className={"table-header"}>
                         {
-                            ["by", "name", "price", "duration", "nb utilisation"].map((data) => (
+                            ["by", "name", "price", "duration", "nb utilisation", "remove"].map((data) => (
                                 <div className="header__item"><a className="filter__link" href="#"> {data}</a></div>
                             ))
                         }
@@ -49,7 +50,13 @@ export default class ServiceView extends React.Component<ViewProps> {
                                         dataLine.name,
                                         dataLine.price.toString(),
                                         dataLine.duration.toString(),
-                                        dataLine.nb_use.toString()
+                                        dataLine.nb_use.toString(),
+                                        (<i
+                                            style={{color: '#c90b1a', cursor: 'pointer', fontSize: '2em'}}
+                                            onClick={() => {
+                                                deleteService(dataLine.id.toString());
+                                            }}
+                                            className="ai-circle-minus-fill"></i>)
                                     ].map(dataColumn => (
                                         <div className="table-data">{dataColumn}</div>
                                     ))}

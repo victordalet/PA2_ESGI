@@ -128,5 +128,13 @@ export class ServiceController {
         return this.serviceService.deleteService(id);
     }
 
+    @Delete('admin/:id')
+    @ApiOperation({summary: 'Delete service by admin'})
+    @ApiOkResponse({description: 'Service deleted'})
+    @ApiBadRequestResponse({description: 'Request param is not valid'})
+    async deleteServiceByAdmin(@Headers('authorization') token: string, @Param('id') id: number) {
+        await this.tokenValidation.validateAdminToken(token);
+        return this.serviceService.deleteServiceByAdmin(id);
+    }
 
 }

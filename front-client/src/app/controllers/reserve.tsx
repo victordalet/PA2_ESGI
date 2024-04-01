@@ -313,11 +313,13 @@ export default class Controller extends React.Component<
                             location_id: this.id,
                             from_datetime: dateStart.value,
                             to_datetime: dateEnd.value,
+                            price: this.state.data.price,
                         }),
                     }
                 );
                 const data = await response.json();
                 await this.reservedNewService(data.id);
+                window.open(data.url, "_blank");
                 document.location.href = "/resa";
             } else {
                 this.reserveViewModel.openPopupBadDate();
@@ -358,7 +360,8 @@ export default class Controller extends React.Component<
                     message: message.value,
                 }),
             });
-            document.location.reload();
+            await this.getMessages();
+            message.value = "";
         }
     };
 

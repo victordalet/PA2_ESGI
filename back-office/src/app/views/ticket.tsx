@@ -12,6 +12,9 @@ export default class TicketView extends React.Component <ViewProps> {
         return (
             <div>
                 <Navbar/>
+                <div className="container-user">
+                    <h2>Tickets</h2>
+                </div>
                 <Table
                     body={data.map((el: DataResponse) => [el.created_by, el.created_at, el.name, el.status, el.occupy_by])}
                     head={["creator", "create at", "name", "status", "occupy by"]}/>

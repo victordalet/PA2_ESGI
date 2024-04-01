@@ -9,7 +9,8 @@ export default class LocationView extends React.Component<ViewProps> {
             data,
             capacityFilter,
             priceFilter,
-            searchFilter
+            searchFilter,
+            deleteLocation
         } = this.props;
 
         return (
@@ -47,7 +48,7 @@ export default class LocationView extends React.Component<ViewProps> {
                 <div className="table">
                     <div className={"table-header"}>
                         {
-                            ["by", "name", "price", "is_occupy_by", "nb address", "capacity", "type"].map((data) => (
+                            ["by", "name", "price", "is_occupy_by", "nb address", "capacity", "type", "delete"].map((data) => (
                                 <div className="header__item"><a className="filter__link" href="#"> {data}</a></div>
                             ))
                         }
@@ -62,7 +63,13 @@ export default class LocationView extends React.Component<ViewProps> {
                                         dataLine.is_occupy_by,
                                         dataLine.address,
                                         dataLine.capacity,
-                                        dataLine.type
+                                        dataLine.type,
+                                        (<i
+                                            style={{color: '#c90b1a', cursor: 'pointer', fontSize: '2em'}}
+                                            onClick={() => {
+                                                deleteLocation(dataLine.id.toString());
+                                            }}
+                                            className="ai-circle-minus-fill"></i>)
                                     ].map(dataColumn => (
                                         <div className="table-data">{dataColumn}</div>
                                     ))}

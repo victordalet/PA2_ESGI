@@ -54,13 +54,28 @@ export default class ServiceControllers extends Component<
         this.setState({data: this.serviceViewModel.searchFilter(this.state.dataNoFilter)});
     };
 
+    public deleteService = async (id: string) => {
+        const apiPath = process.env.API_HOST || "http://localhost:3001";
+        await fetch(apiPath + "/service/admin/" + id, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+                authorization: localStorage.getItem("token") || "",
+            },
+        });
+        document.location.reload();
+    };
+
+
     render() {
 
         if (this.state.data.length === 0) {
             return <Loading/>;
         }
-        return <View data={this.state.data}
-                     priceFilter={this.priceFilter}
-                     searchFilter={this.searchFilter}/>;
+        return <View
+            deleteService={this.deleteService}
+            data={this.state.data}
+            priceFilter={this.priceFilter}
+            searchFilter={this.searchFilter}/>;
     }
 }

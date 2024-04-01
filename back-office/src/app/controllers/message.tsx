@@ -46,7 +46,7 @@ export default class MessageControllers extends Component<
                 word: this.state.addInput,
             }),
         }).then((r) => {
-            console.log(r);
+            document.location.reload();
         });
     };
 

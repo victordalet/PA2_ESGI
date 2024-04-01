@@ -141,6 +141,16 @@ export class LocationController {
         return this.locationService.deleteLocation(id,token);
     }
 
+
+    @Delete('admin/:id')
+    @ApiOperation({summary: 'Delete location by admin'})
+    @ApiOkResponse({description: 'Location deleted'})
+    @ApiBadRequestResponse({description: 'Request param is not valid'})
+    async deleteLocationByAdmin(@Headers('authorization') token: string, @Param('id') id: number) {
+        await this.tokenValidation.validateAdminToken(token);
+        return this.locationService.deleteLocationByAdmin(id);
+    }
+
     @Patch('occupation')
     @ApiOperation({summary: 'Delete location occupation'})
     @ApiOkResponse({description: 'Location occupation deleted'})

@@ -1,12 +1,17 @@
+
 .table {
-    width: 70%;
+    width: calc(80vw - 50px);
     border: 1px solid #eee;
     position: absolute;
     overflow: auto;
     scrollbar-width: none;
-    top: 20px;
-    left: 20%;
+    top: 40vh;
+    left: calc(10vw + 50px);
     display: table;
+
+    @media (max-width: 768px) {
+        left: 10vw;
+    }
 
 
     .table-header {
@@ -64,3 +69,4 @@
         }
     }
 }
+

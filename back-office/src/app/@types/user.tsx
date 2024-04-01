@@ -5,6 +5,7 @@ export interface ViewProps {
     searchFilter: () => void;
     isPremiumFilter: () => void;
     ruleFilter: () => void;
+    deleteUser: (email: string) => void;
 }
 
 export interface ControllerProps {
