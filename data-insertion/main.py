@@ -15,7 +15,8 @@ class Main:
             host=sys.argv[1],
             user=sys.argv[2],
             password=sys.argv[3],
-            database=sys.argv[4]
+            database=sys.argv[4],
+            port=sys.argv[6]
         )
         for i in range(int(sys.argv[5])):
             self.run()
@@ -24,7 +25,7 @@ class Main:
         self.insert_user()
         self.insert_location()
         self.insert_service()
-        self.translation()
+        self.translations('files_translation/en-fr.csv')
         self.db.commit()
         self.db.close()
 
@@ -81,7 +82,7 @@ class Main:
              'test', 'test', 100, 100))
 
     def translations(self, filename):
-        cursor = self.db.curscor()
+        cursor = self.db.cursor()
         with open(filename, newline='', encoding='utf-8') as csvfile:
             reader = csv.reader(csvfile, delimiter=',')
             for row in reader:
