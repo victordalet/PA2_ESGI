@@ -1,0 +1,7 @@
+./idea
+.env
+api/node_modules
+api/public
+desktop-app/src/__pycache__/
+desktop-app/src/main
+yolo-estimator/dataset/

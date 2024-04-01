@@ -1,0 +1,20 @@
+version: "3.8"
+
+services:
+  data-insertion:
+    build: .
+    environment:
+      MYSQL_HOST: ${MYSQL_HOST}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      NB_EPOCHS: ${NB_EPOCHS}
+      MYSQL_PORT: ${MYSQL_PORT}
+
+    networks:
+      - web
+
+
+networks:
+  web:
+    external: true

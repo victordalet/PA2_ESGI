@@ -1,0 +1,68 @@
+.chat-round {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 100px;
+    height: 100px;
+    background-color: $secondaryColor;
+    color: white;
+    font-family: 'Inter', sans-serif;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    z-index: 99999;
+}
+
+.container-chat {
+    position: fixed;
+    bottom: 150px;
+    right: 20px;
+    width: 300px;
+    height: 400px;
+    background-color: $secondaryColor;
+    color: white;
+    font-family: 'Inter', sans-serif;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    z-index: 9;
+    transition: .1s;
+    transform: scale(0);
+
+    .chat-box {
+        width: 90%;
+        overflow-y: scroll;
+    }
+
+    .chat-input {
+        width: 100%;
+        height: 80%;
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+        position: absolute;
+        bottom: -140px;
+
+        input {
+            width: 90%;
+            height: 30px;
+            border: none;
+            outline: none;
+            font-family: 'Inter', sans-serif;
+        }
+
+        i {
+            position: absolute;
+            right: 20px;
+            cursor: pointer;
+            color: $primaryColor;
+        }
+    }
+
+
+}

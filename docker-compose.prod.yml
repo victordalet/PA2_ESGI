@@ -1,0 +1,103 @@
+version: "3.8"
+
+services:
+  mysql-db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      FRONTEND_URL: ${FRONTEND_URL}
+    ports:
+      - ${MYSQL_PORT}:3306
+    volumes:
+      - ./sql/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - web
+
+  api:
+    build: api/
+    ports:
+      - ${API_PORT}:3000
+    environment:
+      MYSQL_HOST: ${MYSQL_HOST}
+      MYSQL_PORT: ${MYSQL_PORT}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY}
+    volumes:
+      - ./api/public:/app/public
+    networks:
+      - web
+
+  back-office:
+    build:
+      context: back-office/
+      dockerfile: Dockerfile.prod
+    ports:
+      - ${BACK_OFFICE_PORT}:3000
+    environment:
+      API_HOST: ${API_HOST}
+    networks:
+      - web
+
+  front-client:
+    build:
+      context: front-client/
+      dockerfile: Dockerfile.prod
+    ports:
+      - ${FRONT_CLIENT_PORT}:3000
+    environment:
+      API_HOST: ${API_HOST}
+      CHAT_BOT_HOST: ${CHAT_BOT_HOST}
+    networks:
+      - web
+
+
+  chat-bot:
+    build: chat-bot/
+    ports:
+      - ${CHAT_BOT_PORT}:5000
+    networks:
+      - web
+
+  front-bail:
+    build:
+      context: front-bail/
+      dockerfile: Dockerfile.prod
+    ports:
+      - ${FRONT_BAIL_PORT}:3000
+    environment:
+      API_HOST: ${API_HOST}
+      FRONT_CLIENT_PORT: ${FRONT_CLIENT_PORT}
+      YOLO_ESTIMATOR_PORT: ${YOLO_ESTIMATOR_PORT}
+    networks:
+      - web
+
+  scraper:
+    build: scraper/
+    ports:
+      - ${SCRAPER_PORT}:5000
+    environment:
+      MYSQL_HOST: ${MYSQL_HOST}
+      MYSQL_PORT: ${MYSQL_PORT}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - ./api/public:/pictures
+    networks:
+      - web
+
+  yolo-estimator:
+    build: yolo-estimator/
+    ports:
+      - ${YOLO_ESTIMATOR_PORT}:5000
+    networks:
+      - web
+
+networks:
+  web:
+    external: true

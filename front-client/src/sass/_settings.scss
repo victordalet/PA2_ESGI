@@ -1,0 +1,29 @@
+$primaryColor: #05043e;
+$secondaryColor: #363664;
+$lightColor: #a7a7d2;
+$colorTheme: #fff;
+$colorBody: #e1e1ff;
+
+body {
+    overflow: hidden;
+    overflow-y: scroll;
+    background: $colorBody;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    display: none;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #000;
+    border-radius: 20px;
+}
+
+.leaflet-container {
+    width: 100%;
+    height: 100vh;
+}

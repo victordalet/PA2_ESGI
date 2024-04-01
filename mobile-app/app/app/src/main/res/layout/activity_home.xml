@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:andrdoid="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".HomeActivity">
+
+
+    <LinearLayout
+        andrdoid:layout_width="match_parent"
+        andrdoid:layout_height="match_parent"
+        andrdoid:background="@color/purple"
+        andrdoid:orientation="vertical"
+        andrdoid:padding="8dp">
+
+
+        <TextView
+            andrdoid:id="@+id/title"
+            andrdoid:layout_width="wrap_content"
+            andrdoid:layout_height="wrap_content"
+            andrdoid:layout_marginTop="16dp"
+            andrdoid:gravity="center_horizontal"
+            andrdoid:text="Your Location"
+            andrdoid:textAlignment="center"
+            andrdoid:textColor="#111"
+            andrdoid:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            andrdoid:layout_width="match_parent"
+            andrdoid:layout_height="wrap_content">
+
+            <Button
+                andrdoid:id="@+id/logout"
+                andrdoid:layout_width="wrap_content"
+                andrdoid:layout_height="wrap_content"
+                andrdoid:layout_margin="16dp"
+                andrdoid:backgroundTint="@color/purple"
+                andrdoid:drawableLeft="@android:drawable/ic_menu_revert"
+                andrdoid:padding="8dp"
+                andrdoid:textColor="@color/black"
+                andrdoid:textSize="16sp"
+                andrdoid:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                andrdoid:id="@+id/reserve"
+                andrdoid:layout_width="120dp"
+                andrdoid:layout_height="60dp"
+                andrdoid:layout_marginTop="20dp"
+                andrdoid:backgroundTint="#222"
+                andrdoid:text="Reserve"
+                andrdoid:textSize="18sp"
+                app:cornerRadius="20dp" />
+
+        </LinearLayout>
+
+
+        <ListView
+            andrdoid:id="@+id/listView"
+            andrdoid:layout_width="match_parent"
+            andrdoid:layout_height="wrap_content" />
+
+
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
