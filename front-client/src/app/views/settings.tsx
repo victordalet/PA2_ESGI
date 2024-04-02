@@ -6,6 +6,30 @@ import {ChatBot} from "../../components/chatBot";
 import {Language} from "../../components/language";
 
 export class SettingsView extends React.Component <ViewProps> {
+    
+    deleteUser = async () => {
+        const apiPath: string = process.env.API_HOST || 'http://localhost:3001';
+        try {
+            const response = await fetch(`${apiPath}/user`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    "authorization": localStorage.getItem('token') || ''
+                }
+            });
+            if (response.ok) {
+                console.log("L'utilisateur a été supprimé avec succès !");
+                
+            } else {
+                console.error("La suppression de l'utilisateur a échoué.");
+            
+            }
+        } catch (error) {
+            console.error("Une erreur s'est produite lors de la suppression de l'utilisateur :", error);
+        }
+    };
+    
+    
     render() {
 
         const {changeEmail, changePassword, changeUsername, data} = this.props;
@@ -36,6 +60,10 @@ export class SettingsView extends React.Component <ViewProps> {
                             <input type="text" id={"username"} placeholder={"New username..."}
                                    defaultValue={data.name}/>
                             <button onClick={changeUsername}>Change username</button>
+                            <div className={"box"}>
+                            <h3>Delete User</h3>
+                            <button onClick={this.deleteUser}>Delete User</button>
+                        </div>
                         </div>
                     </div>
                 </div>
