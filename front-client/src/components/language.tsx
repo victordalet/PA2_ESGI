@@ -12,6 +12,9 @@ export class Language extends React.Component {
     constructor(props: any) {
         super(props);
         this.fetchLanguage();
+        if (document.cookie.includes('Language=fr')) {
+          this.translation();     
+        }
     }
 
     private async fetchLanguage() {
@@ -62,6 +65,11 @@ export class Language extends React.Component {
                 }
             });
         });
+
+    const date = new Date();
+    date.setTime(date.getTime() + 7 * 24 * 60 * 60 * 1000);
+    const expired = "expires= " + date.toUTCString();
+    document.cookie = "Language=" + option + " : " + expired + ";path=/";
     }
 
 

@@ -78,7 +78,7 @@ export class Navbar extends React.Component {
 
     const date = new Date();
     date.setTime(date.getTime() + 7 * 24 * 60 * 60 * 1000);
-    const expired = "It expires in =" + date.toUTCString();
+    const expired = "expires= " + date.toUTCString();
     document.cookie = "Theme=" + assignColor + " : " + expired + ";path=/";
   };
 
