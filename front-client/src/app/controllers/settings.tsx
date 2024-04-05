@@ -38,6 +38,28 @@ export default class Controller extends React.Component<
 
     };
 
+    public deleteUser = async () => {
+        const apiPath: string = process.env.API_HOST || 'http://localhost:3001';
+        try {
+            const response = await fetch(`${apiPath}/user`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    "authorization": localStorage.getItem('token') || ''
+                }
+            });
+            if (response.ok) {
+                console.log("L'utilisateur a été supprimé avec succès !");
+
+            } else {
+                console.error("La suppression de l'utilisateur a échoué.");
+
+            }
+        } catch (error) {
+            console.error("Une erreur s'est produite lors de la suppression de l'utilisateur :", error);
+        }
+    };
+
     public changePassword = async () => {
         const password = document.querySelector<HTMLInputElement>('#password');
         const confirmPassword = document.querySelector<HTMLInputElement>('#confirmPassword');
@@ -107,6 +129,7 @@ export default class Controller extends React.Component<
         }
 
         return <SettingsView
+            deleteUser={this.deleteUser}
             changeEmail={this.changeEmail}
             changePassword={this.changePassword}
             changeUsername={this.changeUsername}

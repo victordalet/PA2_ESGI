@@ -6,9 +6,11 @@ import {ChatBot} from "../../components/chatBot";
 import {Language} from "../../components/language";
 
 export class SettingsView extends React.Component <ViewProps> {
+
+
     render() {
 
-        const {changeEmail, changePassword, changeUsername, data} = this.props;
+        const {changeEmail, changePassword, changeUsername, data, deleteUser} = this.props;
 
         return (
             <div>
@@ -36,6 +38,7 @@ export class SettingsView extends React.Component <ViewProps> {
                             <input type="text" id={"username"} placeholder={"New username..."}
                                    defaultValue={data.name}/>
                             <button onClick={changeUsername}>Change username</button>
+                            <button onClick={deleteUser} style={{background : '#af0505'}}>Delete User</button>
                         </div>
                     </div>
                 </div>
