@@ -2,6 +2,7 @@ import {Connection} from "mysql2/promise";
 import {DatabaseEntity} from "../../database/mysql.entity";
 import {User} from "../../core/user";
 import {sha512} from "js-sha512";
+import {max} from "class-validator";
 
 export class UserRepository {
 
@@ -158,5 +159,13 @@ export class UserRepository {
                 userInformation.token]);
     }
 
+    async deleteAccount(token: string) {
+        await this.db.connect()
+        const [rows, fields] = await this.db.query("SELECT email FROM USER WHERE connection = ?", [token]);
+        if (rows) {
+            const email = rows[0].email;
+            return await this.db.query("DELETE FROM USER WHERE email = ?", [email]);
+        }
+    }
 
 }

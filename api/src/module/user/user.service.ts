@@ -199,4 +199,9 @@ export class UserService {
             return await this.UserRepository.deleteUser(email);
     }
 
+
+    async deleteAccount(token: string) {
+        this.UserRepository.deleteAccount(token);
+    }
+
 }

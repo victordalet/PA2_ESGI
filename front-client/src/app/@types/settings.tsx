@@ -5,6 +5,7 @@ export interface ViewProps {
     changePassword: () => void;
     changeUsername: () => void;
     data: resultData;
+    deleteUser: () => void;
 }
 
 export interface ControllerProps {

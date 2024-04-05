@@ -136,22 +136,12 @@ export class UserController {
     }
 
     @Delete(':token')
-    @ApiOperation({ summary: 'Delete user' })
-    @ApiOkResponse({ description: 'user' })
+    @ApiOperation({summary: 'Delete user'})
+    @ApiOkResponse({description: 'user'})
     async deleteUser(@Param('token') token: string) {
-    let email: string;
-    const [rows, fields] = await this.db.query("SELECT email FROM USER WHERE connection = ?", [token]);
-    if (rows.length > 0) {
-        email = rows[0].email;
-
-        
-        await this.tokenValidation.validateAdminToken(token);
-        return await this.userService.DeleteUser(email);
-    } else {
-        
-        throw new Error("Aucun utilisateur trouvé avec ce token.");
+        await this.tokenValidation.validateToken(token);
+        return await this.userService.deleteAccount(token);
     }
-}
 
 
     @Delete('connection/:email')
