@@ -32,6 +32,11 @@ docker network create web
 docker-compose up
 ```
 
+### Launch project in dev mode
+```
+docker compose -f docker-compose.dev.yml up
+```
+
 ## Train Chat bot
 
 ---
