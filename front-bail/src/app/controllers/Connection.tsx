@@ -24,7 +24,7 @@ export default class ConnectionController extends Component<
             return;
         }
         const apiPath = process.env.API_HOST || "http://localhost:3001";
-        const res = await fetch(apiPath + "/user/connectionAdmin", {
+        const res = await fetch(apiPath + "/user/connection", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

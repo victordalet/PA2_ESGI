@@ -43,6 +43,34 @@ export class Navbar extends React.Component {
         }
     ];
 
+    
+  constructor(pos: any) {
+    super(pos);
+    console.log(document.cookie);
+    if (document.cookie.includes("Theme=black")) {
+      this.setLightModeCookie("white");
+    }
+  }
+
+  setLightModeCookie = (currentColor = document.body.style.backgroundColor) => {
+    let assignColor;
+
+    if (currentColor === "black") {
+      assignColor = "#e1e1ff";
+      document.body.style.color = 'black';
+
+    } else {
+      assignColor = "black";
+      document.body.style.color = '#e1e1ff';
+    }
+    document.body.style.backgroundColor = assignColor;
+
+    const date = new Date();
+    date.setTime(date.getTime() + 7 * 24 * 60 * 60 * 1000);
+    const expired = "It expires in =" + date.toUTCString();
+    document.cookie = "Theme=" + assignColor + " : " + expired + ";path=/";
+  };
+
 
     render() {
         return (
@@ -69,11 +97,7 @@ export class Navbar extends React.Component {
                         <li key={index}>
                             <a href={item.url} onClick={() => {
                                 if (item.name === "Theme") {
-                                    if (document.body.style.backgroundColor === "black") {
-                                        document.body.style.backgroundColor = "#e1e1ff";
-                                    } else {
-                                        document.body.style.backgroundColor = "black";
-                                    }
+                                    this.setLightModeCookie();
                                 }
                             }}>
                                 <i className={item.icon}></i>

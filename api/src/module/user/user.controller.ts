@@ -135,13 +135,14 @@ export class UserController {
         return await this.userService.UpdateUser(body);
     }
 
-    @Delete(':email')
+    @Delete(':token')
     @ApiOperation({summary: 'Delete user'})
     @ApiOkResponse({description: 'user'})
-    async deleteUser(@Headers('authorization') token: string, @Param() params: GetEmailUser) {
-        await this.tokenValidation.validateAdminToken(token);
-        return await this.userService.DeleteUser(params.email);
+    async deleteUser(@Param('token') token: string) {
+        await this.tokenValidation.validateToken(token);
+        return await this.userService.deleteAccount(token);
     }
+
 
     @Delete('connection/:email')
     @ApiOperation({summary: 'Delete connection'})

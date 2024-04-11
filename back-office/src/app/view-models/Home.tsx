@@ -9,7 +9,7 @@ export default class HomeViewModel {
                     }, index * 100);
                 });
             }
-            , 100);
+            , 1000);
     };
 
 }
