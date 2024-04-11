@@ -31,7 +31,7 @@ export default class Connection extends PureComponent<ViewProps> {
                         </form>
 
 
-                        <button type="submit" onClick={testLogin} className={"submit"}>Log in</button>
+                        <button type="submit" onClick={() => testLogin()} className={"submit"}>Log in</button>
                         <select name="type" id="typeRequest">
                             <option value="BAIL">I want to become a lessor</option>
                             <option value="PRESTATAIRE">I want to become a lend</option>
