@@ -10,7 +10,8 @@ export default class UserView extends React.Component<ViewProps> {
             isPremiumFilter,
             searchFilter,
             ruleFilter,
-            deleteUser
+            deleteUser,
+            addAdmin
         } = this.props;
 
 
@@ -45,7 +46,7 @@ export default class UserView extends React.Component<ViewProps> {
                 <div className="table">
                     <div className={"table-header"}>
                         {
-                            ["mail", "role", "address", "premium", "remove"].map((data) => (
+                            ["mail", "role", "address", "premium", "remove", "admin"].map((data) => (
                                 <div className="header__item"><a className="filter__link" href="#"> {data}</a></div>
                             ))
                         }
@@ -63,7 +64,20 @@ export default class UserView extends React.Component<ViewProps> {
                                             onClick={() => {
                                                 deleteUser(dataLine.email);
                                             }}
-                                            className="ai-circle-minus-fill"></i>)
+                                            className="ai-circle-minus-fill"></i>),
+                                        (
+                                            <i
+                                                style={dataLine.rules === 'ADMIN' ?
+                                                    {color: '#c90b1a', cursor: 'pointer', fontSize: '2em'} :
+                                                    {color: '#0f7e03', cursor: 'pointer', fontSize: '2em'}}
+                                                onClick={() => {
+                                                    addAdmin(dataLine.email);
+                                                }}
+                                                className={dataLine.rules == 'ADMIN' ?
+                                                    "ai-circle-minus-fill" :
+                                                    "ai-circle-plus-fill"}></i>
+                                        )
+
                                     ].map(dataColumn => (
                                         <div className="table-data">{dataColumn}</div>
                                     ))}

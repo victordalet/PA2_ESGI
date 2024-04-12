@@ -106,6 +106,21 @@ export class UserService {
         }
     }
 
+    async addAdmin(email: string) {
+        const reg = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
+        if (!(reg.test(email))) {
+            throw new Error('Bad email');
+        } else {
+            const user = await this.GetUserByEmail(email);
+            if (user.rules === "ADMIN") {
+                user.rules = "USER";
+            } else {
+                user.rules = "ADMIN";
+            }
+            return await this.UserRepository.updateRoleAdmin(user);
+        }
+    }
+
 
     async UpdateRoleAdmin(userInformation: User) {
         const reg = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;

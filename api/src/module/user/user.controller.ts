@@ -127,6 +127,14 @@ export class UserController {
         return await this.userService.getEmailByToken(token);
     }
 
+    @Post('add-admin')
+    @ApiOperation({summary: 'Add admin'})
+    @ApiOkResponse({description: 'user'})
+    async addAdmin(@Headers('authorization') token: string, @Body() body: UserBody) {
+        await this.tokenValidation.validateAdminToken(token);
+        return await this.userService.addAdmin(body.email);
+    }
+
     @Put()
     @ApiOperation({summary: 'Update user'})
     @ApiOkResponse({description: 'user'})
