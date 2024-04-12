@@ -71,11 +71,25 @@ export default class UserControllers extends Component<
         document.location.reload();
     };
 
+    public addAdmin = async (email: string) => {
+        const apiPath = process.env.API_HOST || "http://localhost:3001";
+        await fetch(apiPath + "/user/add-admin", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                authorization: localStorage.getItem("token") || "",
+            },
+            body: JSON.stringify({email: email}),
+        });
+        document.location.reload();
+    };
+
     render() {
         if (this.state.dataNoFilter.length === 0) {
             return <Loading/>;
         }
         return <View
+            addAdmin={this.addAdmin}
             deleteUser={this.deleteUser}
             data={this.state.data}
             isPremiumFilter={this.isPremiumFilter}
