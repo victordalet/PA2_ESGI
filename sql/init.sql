@@ -217,9 +217,15 @@ create table translation
 
 create table subscription_utilisation
 (
-    id             int primary key auto_increment,
-    email         varchar(100) not null references USER (email),
-    last_date_free_service datetime not null
+    id                     int primary key auto_increment,
+    email                  varchar(100) not null references USER (email),
+    last_date_free_service datetime     not null
+);
+
+create table job
+(
+    id   int primary key auto_increment,
+    name varchar(100) not null
 );
 
 

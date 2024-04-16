@@ -31,7 +31,7 @@ export default class HomeController extends Component<
 
     private fetchService = async () => {
         const apiPath = process.env.API_HOST || 'http://localhost:3001';
-        const response = await fetch(apiPath + '/service', {
+        const response = await fetch(apiPath + '/job', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -39,9 +39,6 @@ export default class HomeController extends Component<
             }
         });
         const data: ServiceResponse[] = await response.json();
-        data.filter((service) => {
-            return service.type === 'USER';
-        });
         this.setState({service: data});
     };
 

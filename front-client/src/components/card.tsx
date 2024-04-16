@@ -51,7 +51,7 @@ export class Card extends React.Component<CardProps> {
                 <h3>{cardInfo.title}</h3>
                 <p>{cardInfo.description}</p>
                 <h4>
-                    Price : {cardInfo.price}
+                    {cardInfo.price === 0 ? "" : "price:" + cardInfo.price}
                     {cardInfo.location !== undefined ? (
                         <span>Location : {cardInfo.location}</span>
                     ) : (

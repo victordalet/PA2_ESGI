@@ -5,3 +5,4 @@ api/public
 desktop-app/src/__pycache__/
 desktop-app/src/main
 yolo-estimator/dataset/
+desktop-app/src/token.txt
