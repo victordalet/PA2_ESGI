@@ -13,20 +13,23 @@ create table USER
 
 create table location
 (
-    id          int primary key auto_increment,
-    created_at  datetime     not null,
-    updated_at  datetime     not null,
-    deleted_at  datetime,
-    created_by  varchar(100) not null references USER (email),
-    name        varchar(100) not null,
-    description longtext     not null,
-    price       int          not null,
-    picture     varchar(100) not null,
-    address     varchar(100) not null,
-    capacity    int          not null,
-    type        varchar(100) not null,
-    latitude    float        not null,
-    longitude   float        not null
+    id               int primary key auto_increment,
+    created_at       datetime     not null,
+    updated_at       datetime     not null,
+    deleted_at       datetime,
+    created_by       varchar(100) not null references USER (email),
+    name             varchar(100) not null,
+    description      longtext     not null,
+    description_json longtext,
+    icons            longtext,
+    is_valid         int,
+    price            int          not null,
+    picture          varchar(100) not null,
+    address          varchar(100) not null,
+    capacity         int          not null,
+    type             varchar(100) not null,
+    latitude         float        not null,
+    longitude        float        not null
 );
 
 create table location_occupation
@@ -40,6 +43,19 @@ create table location_occupation
     notation      int
 );
 
+
+create table icon_location
+(
+    id   int primary key auto_increment,
+    name varchar(100) not null
+);
+
+create table location_icon_location
+(
+    id               int primary key auto_increment,
+    location_id      int not null references location (id),
+    icon_location_id int not null references icon_location (id)
+);
 
 create table location_message
 (

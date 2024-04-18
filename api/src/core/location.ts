@@ -16,6 +16,9 @@ export interface Location {
     type: string;
     is_occupy_by?: string;
     location_occupation_id?: number;
+    description_json?: string;
+    icons?: string;
+    is_valid?: number;
 }
 
 export interface LocationAvailability {

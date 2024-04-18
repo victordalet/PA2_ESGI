@@ -118,11 +118,14 @@
 }
 
 .container-price-and-creation {
-    display: none;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    margin-top: 100px;
+    margin: 100px auto;
+    width: 80%;
+    box-shadow: 0 10px 50px 0 rgba(#05043e, .25);
+    border-radius: 20px;
+    padding: 20px;
 
     h2 {
         font-family: 'Inter', sans-serif;
@@ -178,34 +181,18 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        box-shadow: 0 10px 50px 0 rgba(#05043e, .25);
-        transition: .5s;
-        border-radius: 20px;
-        padding: 20px;
 
-
-        &:hover {
-            transition: .5s;
-            box-shadow: 0 10px 50px 0 rgba(#05043e, .5);
-        }
-
-        h2 {
-            font-family: 'Inter', sans-serif;
-            margin-top: 20px;
-        }
 
         input {
             width: 100px;
-            height: 50px;
+            height: 30px;
             border: 0;
             border-radius: 10px;
-            padding: 0 10px;
             margin: 20px;
             text-align: center;
-            font-size: 1.5em;
+            background: $secondaryColor;
+            color: #FFFFFF;
             font-weight: bold;
-            color: $primaryColor;
-            background-color: $lightColor;
             font-family: 'Inter', sans-serif;
         }
     }
@@ -229,13 +216,6 @@
 
     input[type='file'] {
         margin-top: 20px;
-    }
-
-    .container-picture-file {
-        box-shadow: 0 10px 50px 0 rgba(#05043e, .25);
-        border-radius: 20px;
-        padding: 20px;
-        margin-top: 50px;
     }
 
 
