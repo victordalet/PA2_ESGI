@@ -3,6 +3,7 @@ import ServiceView from "../views/service";
 import {ControllerProps, ControllerState, Service, ServiceForm} from "../@types/service";
 import ServiceViewModel from "../view-models/service";
 import {haveBailToken, havePrestataireToken, haveToken} from "../../security/token";
+import {Loading} from "../../components/loading";
 
 export default class Controller extends React.Component<
     ControllerProps,
@@ -15,6 +16,7 @@ export default class Controller extends React.Component<
     constructor(props: ControllerProps) {
         super(props);
         haveToken();
+        this.getJobs();
         havePrestataireToken().then(r => {
             if (!r) {
                 document.location.href = "/home";
@@ -23,12 +25,31 @@ export default class Controller extends React.Component<
         this.ServiceViewModel = new ServiceViewModel();
     }
 
+    state: ControllerState = {
+        jobs: []
+    };
+
+    public getPictureBackground = async () => {
+        const job = (document.getElementById("job") as HTMLSelectElement).value;
+        const apiPath = process.env.API_HOST || 'http://localhost:3001';
+        const res = await fetch(`${apiPath}/picture/${job}-1`, {
+            headers: {
+                'authorization': localStorage.getItem('token') || ''
+            }
+        });
+        const data = await res.json();
+        const imgBase64 = `data:image/png;base64,${data.base64}`;
+        const background = document.querySelector('.container-service') as HTMLElement;
+        background.style.backgroundImage = `url(${imgBase64})`;
+    };
+
     public createService = async () => {
         const email = (document.getElementById("email") as HTMLInputElement).value;
         const title = (document.getElementById("title") as HTMLInputElement).value;
         const description = (document.getElementById("description") as HTMLInputElement).value;
         const price = (document.getElementById("price") as HTMLInputElement).value;
-        const cat = (document.getElementById("cat") as HTMLInputElement).value;
+        const job = (document.getElementById("job") as HTMLSelectElement).value;
+        const siret = (document.getElementById("siret") as HTMLInputElement).value;
         const duration = (document.getElementById("duration") as HTMLInputElement).value;
         const file = (document.getElementById("image") as HTMLInputElement).files;
         const data: ServiceForm = {
@@ -37,10 +58,12 @@ export default class Controller extends React.Component<
             description: description,
             location: '',
             price: parseInt(price),
-            cat: cat,
-            duration: duration
+            cat: job,
+            duration: duration,
+            siret: siret
         };
-        if (email === '' || title === '' || description === '' || price === '' || cat === '' || duration === '' || !file) {
+        if (email === '' || title === '' || description === '' || price === ''
+            || job === '' || duration === '' || !file || siret === '') {
             this.ServiceViewModel.openPopupError();
             return;
         }
@@ -85,10 +108,28 @@ export default class Controller extends React.Component<
         }
     };
 
+    private async getJobs() {
+        const apiPath = process.env.API_HOST || 'http://localhost:3001';
+        const res = await fetch(apiPath + '/job', {
+            headers: {
+                'authorization': localStorage.getItem('token') || ''
+            }
+        });
+        const jobs = await res.json();
+        this.setState({jobs: jobs});
+    }
+
 
     render() {
+
+        if (this.state.jobs.length === 0) {
+            return <Loading/>;
+        }
+
         return <ServiceView
-            createService={this.createService}/>;
+            createService={this.createService}
+            getPictureBackground={this.getPictureBackground}
+            jobs={this.state.jobs}/>;
     }
 
 }

@@ -60,8 +60,8 @@ export class ServiceRepository {
 
     async createService(service: ServiceModel) {
         await this.db.connect()
-        await this.db.query("INSERT INTO service (name, created_at ,updated_at, description, price, duration, created_by, type) VALUES (?, ?, ?, ?, ?, ?, ?,?)",
-            [service.name, new Date(), new Date(), service.description, service.price, service.duration, service.created_by, service.type]);
+        await this.db.query("INSERT INTO service (name, created_at ,updated_at, description, price, duration, created_by, type, siret) VALUES (?, ?, ?, ?, ?, ?, ?,?,?)",
+            [service.name, new Date(), new Date(), service.description, service.price, service.duration, service.created_by, service.type, service.siret]);
         const [rows, filed] = await this.db.query("SELECT LAST_INSERT_ID() as id  FROM service");
         return rows[0];
 

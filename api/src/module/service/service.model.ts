@@ -39,4 +39,8 @@ export class ServiceModel {
     @IsNumber()
     location_id?: number;
 
+    @ApiProperty({example: '...', description: 'siret'})
+    @IsString()
+    siret?: string;
+
 }

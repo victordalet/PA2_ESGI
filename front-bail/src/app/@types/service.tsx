@@ -9,6 +9,13 @@ export interface ControllerProps {
 }
 
 export interface ControllerState {
+    jobs: jobResponse[];
+}
+
+export interface ViewProps {
+    jobs: jobResponse[];
+    createService: () => void;
+    getPictureBackground: () => void;
 }
 
 
@@ -31,6 +38,11 @@ export interface ServiceForm {
     location: string;
     cat: string;
     duration: string;
+    siret?: string;
 }
 
+export interface jobResponse {
+    id: number;
+    name: string;
+}
 

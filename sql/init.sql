@@ -112,7 +112,8 @@ create table service
     description longtext     not null,
     price       int          not null,
     duration    int          not null,
-    type        varchar(100)
+    type        varchar(100),
+    siret       varchar(100),
 );
 
 
