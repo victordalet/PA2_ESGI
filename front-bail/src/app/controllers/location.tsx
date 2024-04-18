@@ -128,7 +128,7 @@ export default class Controller extends React.Component<
                 },
                 body: formData
             });
-            document.location.href = "/home";
+            document.location.href = "/resources";
         }
     };
 

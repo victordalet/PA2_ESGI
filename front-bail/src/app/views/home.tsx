@@ -18,6 +18,7 @@ export default class HomeView extends React.Component <ViewProps> {
             <div className="home-page">
                 <Navbar/>
                 <Language/>
+                <h1 style={{textAlign: 'center', marginTop: '50px'}}>Pro of Paris Caretaker Services</h1>
                 <div className={"container-choice-creation"}>
                     {
                         typeUser === 'bail' || typeUser === 'admin' ?
@@ -30,7 +31,7 @@ export default class HomeView extends React.Component <ViewProps> {
                     {
                         typeUser === 'prestataire' || typeUser === 'admin' ?
                             <div className={"box"} onClick={() => document.location.href = '/service'}>
-                                <h2>Create a service</h2>
+                                <h2>Become a service provider</h2>
                                 <button onClick={() => document.location.href = '/service'} className={"btn"}>Start
                                 </button>
                             </div> : ''

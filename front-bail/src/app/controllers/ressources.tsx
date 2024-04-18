@@ -44,7 +44,7 @@ export default class Controller extends React.Component<ControllerProps, Control
         const dataLocation: Location[] = await responseLocation.json();
         this.setState({locationNotFiltered: dataLocation});
         this.setState({location: dataLocation});
-        console.log(data, dataLocation);
+        console.log(dataLocation);
     };
 
     public filterResourcesByNameOrDescription = () => {
@@ -80,10 +80,6 @@ export default class Controller extends React.Component<ControllerProps, Control
     };
 
     render() {
-
-        if (this.state.serviceNotFiltered.length === 0 || this.state.locationNotFiltered.length === 0) {
-            return <Loading/>;
-        }
 
         return (
             <ResourcesView

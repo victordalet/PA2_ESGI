@@ -57,6 +57,7 @@ export interface Location {
     type: string;
     is_occupy_by?: string;
     location_occupation_id?: number;
+    is_valid: number;
 }
 
 

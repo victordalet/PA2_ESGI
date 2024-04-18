@@ -28,6 +28,7 @@ export interface Service {
     id: number;
     type?: string;
     notation?: number;
+    is_valid: number;
 }
 
 export interface ServiceForm {

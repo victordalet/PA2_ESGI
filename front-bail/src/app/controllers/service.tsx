@@ -75,6 +75,7 @@ export default class Controller extends React.Component<
             duration: parseInt(duration),
             created_by: email,
             id: 0,
+            is_valid: 0,
             type: (document.querySelector('#type-service') as HTMLSelectElement).value
         };
         const apiPath = process.env.API_HOST || 'http://localhost:3001';

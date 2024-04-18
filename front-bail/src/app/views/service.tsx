@@ -38,8 +38,8 @@ export default class ServiceView extends React.Component <ViewProps> {
                         <input id={"price"} type={"number"} placeholder={"price"}/>
                         <input id={"duration"} type={"text"} placeholder={"Duration"}/>
                         <select id={"type-service"}>
-                            <option value="CLIENT">Client</option>
-                            <option value="BAIL">Bail</option>
+                            <option value="NORMAL">NORMAL</option>
+                            <option value="VIP">VIP</option>
                         </select>
                         <input id={"image"} type={"file"} placeholder={"image"}/>
                         <button id={"submit"} onClick={createService}>Submit</button>
