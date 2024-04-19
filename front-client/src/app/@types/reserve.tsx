@@ -29,6 +29,7 @@ export interface ViewProps {
     downloadFileBail: (name: string) => void;
     deleteOccupationBail: (type: number) => void;
     bailIsOccupied: () => void;
+    isAdmin: boolean;
 }
 
 export interface ControllerProps {
@@ -47,6 +48,7 @@ export interface ControllerState {
     description: LocationDescription;
     eventCalendar: LocationOccupation[];
     nameFiles: string[];
+    isAdmin: boolean;
 }
 
 export interface LocationOccupation {

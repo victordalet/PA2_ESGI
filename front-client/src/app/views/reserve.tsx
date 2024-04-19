@@ -39,7 +39,8 @@ export class ReserveView extends React.Component <ViewProps> {
             postFileBail,
             downloadFileBail,
             deleteOccupationBail,
-            bailIsOccupied
+            bailIsOccupied,
+            isAdmin
         } = this.props;
 
         let cardToRemoveIndex = 0;
@@ -320,7 +321,7 @@ export class ReserveView extends React.Component <ViewProps> {
                     }
 
                     {
-                        isReserved || isBail ?
+                        isReserved || isAdmin ?
                             (
                                 <div className={"if-is-buy"}>
                                     {
@@ -345,23 +346,25 @@ export class ReserveView extends React.Component <ViewProps> {
                                     <div className={"container-message"}>
                                         <h3>Messages</h3>
                                         {
-                                            isBail ?
+                                            isAdmin ?
                                                 <select id={"message-select"} onChange={fetchMessagesForBail}>
                                                     {eventCalendar.map((event, index) => {
-                                                        return (
-                                                            <option
-                                                                value={event.id}>{event.user_email} -
-                                                                {event.from_datetime.split('T')[0]} /
-                                                                {event.to_datetime.split('T')[0]}
-                                                            </option>
-                                                        );
+                                                        if (data.created_by !== event.user_email) {
+                                                            return (
+                                                                <option
+                                                                    value={event.id}>{event.user_email} -
+                                                                    {event.from_datetime.split('T')[0]} /
+                                                                    {event.to_datetime.split('T')[0]}
+                                                                </option>
+                                                            );
+                                                        }
                                                     })}
                                                 </select>
                                                 : ''
                                         }
                                         <div className={"messages"}>
                                             {
-                                                isBail && messages.length != 0 ?
+                                                isAdmin && messages.length != 0 ?
                                                     <button className={"delete-occupation-bail"}
                                                             onClick={() => deleteOccupationBail(1)}>Cancel this
                                                         location</button>
@@ -380,7 +383,7 @@ export class ReserveView extends React.Component <ViewProps> {
                                         </div>
                                         <input type={"text"} id={"message-input"}/>
                                         {
-                                            isBail ?
+                                            isAdmin ?
                                                 <i className={"ai-paper-airplane"} onClick={postMessageForBail}></i>
                                                 :
                                                 <i className={"ai-paper-airplane"} onClick={addMessage}></i>

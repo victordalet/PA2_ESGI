@@ -38,6 +38,7 @@ export default class Controller extends React.Component<
             this.idResa = parseInt(document.location.href.split("&id2=")[1]);
             this.isAlsoReserved();
         }
+        this.verifIsAdmin();
         this.getNameFileBail();
         this.fetchLocation();
         this.getStartNotation();
@@ -56,6 +57,7 @@ export default class Controller extends React.Component<
         notation: 0,
         messages: [],
         isBail: undefined,
+        isAdmin: false,
         description: {} as LocationDescription,
         servicesSelected: [],
         eventCalendar: [],
@@ -857,11 +859,27 @@ export default class Controller extends React.Component<
         this.setState({servicesSelected: data});
     };
 
+    private verifIsAdmin = async () => {
+        const apiPath = process.env.API_HOST || "http://localhost:3001";
+        const response = await fetch(apiPath + "/user/isAdmin", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                authorization: localStorage.getItem("token") || "",
+            },
+        });
+        const data = await response.json();
+        if (data.connection) {
+            this.setState({isAdmin: true});
+        }
+    };
+
     render() {
         if (this.state.isBail === undefined && this.state.services.length === 0) {
             return <Loading/>;
         }
         return <ReserveView
+            isAdmin={this.state.isAdmin}
             bailIsOccupied={this.bailIsOccupied}
             isService={this.isService}
             fetchMessagesForBail={this.fetchMessagesForBail}
