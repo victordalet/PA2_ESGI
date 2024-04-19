@@ -42,6 +42,11 @@ export class Navbar extends React.Component {
             icon: "ai-clock"
         },
         {
+            name: "Add elements",
+            url: 'elements',
+            icon: 'ai-planet'
+        },
+        {
             name: "Langues",
             url: "/language",
             icon: "ai-language"

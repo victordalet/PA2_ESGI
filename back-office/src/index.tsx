@@ -6,6 +6,7 @@ import {BrowserRouter, Routes, Route} from "react-router-dom";
 import {Connection, Home, Language, Location, Message, Service, Ticket, User, Accept, Scraper} from './app/providers';
 import './sass/index.scss';
 import Occupation from "./app/providers/occupation";
+import Element from "./app/providers/element";
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
@@ -26,6 +27,7 @@ root.render(
                     <Route path={"/accept"} element={<Accept/>}></Route>
                     <Route path={'scraper'} element={<Scraper/>}></Route>
                     <Route path={"/location-occupation"} element={<Occupation/>}></Route>
+                    <Route path={"/elements"} element={<Element/>}></Route>
                     <Route path={"*"} element={<Home/>}></Route>
                 </Routes>
             </BrowserRouter>
