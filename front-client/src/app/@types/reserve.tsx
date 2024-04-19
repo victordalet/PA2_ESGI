@@ -27,7 +27,8 @@ export interface ViewProps {
     nameFiles: string[];
     postFileBail: () => void;
     downloadFileBail: (name: string) => void;
-    deleteOccupationBail: () => void;
+    deleteOccupationBail: (type: number) => void;
+    bailIsOccupied: () => void;
 }
 
 export interface ControllerProps {
@@ -53,6 +54,7 @@ export interface LocationOccupation {
     from_datetime: string;
     to_datetime: string;
     user_email: string;
+    repeat: string;
 }
 
 

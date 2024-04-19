@@ -38,7 +38,8 @@ export class ReserveView extends React.Component <ViewProps> {
             nameFiles,
             postFileBail,
             downloadFileBail,
-            deleteOccupationBail
+            deleteOccupationBail,
+            bailIsOccupied
         } = this.props;
 
         let cardToRemoveIndex = 0;
@@ -61,6 +62,7 @@ export class ReserveView extends React.Component <ViewProps> {
                                 description ?
                                     (
                                         <div>
+                                            <h3><span>Description:</span>{data.description}</h3>
                                             <h3><span>Concierge :</span>{description.typeConcierge}</h3>
                                             <h3><span>Address :</span>{description.address}</h3>
                                             <h3><span>Country :</span>{description.country}</h3>
@@ -150,7 +152,7 @@ export class ReserveView extends React.Component <ViewProps> {
                     </div>
 
 
-                    {
+                    {/*
                         services.length === 0 ? '' :
 
                             <div style={{marginLeft: '250px'}}>
@@ -184,9 +186,9 @@ export class ReserveView extends React.Component <ViewProps> {
                                         }
                                     </ul>
                                 </div>
-                            </div>
+                            </div>*/
                     }
-                    {
+                    {/*
                         isReserved ?
                             servicesSelected.length === 0 ?
                                 <h2>No additional services</h2>
@@ -194,7 +196,7 @@ export class ReserveView extends React.Component <ViewProps> {
                                 <h2>Your services add : </h2>
                             :
                             isBail ? '' :
-                                <h2>Choose additional services : </h2>
+                                <h2>Choose additional services : </h2>*/
                     }
                     <div className={"services services-new"}
                          style={isReserved && servicesSelected.length === 0 ? {display: 'none'} : {}}>
@@ -257,22 +259,62 @@ export class ReserveView extends React.Component <ViewProps> {
                                 })
                         }
                     </div>
-
+                    <h1 style={{marginTop: '-10%'}}>Calendar</h1>
+                    <div className={"calendar"}>
+                        <Calendar
+                            localizer={now}
+                            events={eventCalendar.map((event, index) => {
+                                return {
+                                    start: new Date(event.from_datetime),
+                                    end: new Date(event.to_datetime),
+                                    title: isBail ? event.user_email : 'Occupied'
+                                };
+                            })}
+                            startAccessor="start"
+                            endAccessor="end"
+                            style={{height: 500}}/>
+                    </div>
                     {
                         isBail ?
-                            <div className={"calendar"}>
-                                <Calendar
-                                    localizer={now}
-                                    events={eventCalendar.map((event, index) => {
-                                        return {
-                                            start: new Date(event.from_datetime),
-                                            end: new Date(event.to_datetime),
-                                            title: event.user_email
-                                        };
-                                    })}
-                                    startAccessor="start"
-                                    endAccessor="end"
-                                    style={{height: 500}}/>
+                            <div className={"calendar-form-complete"}>
+                                <h2>Rental unavailable</h2>
+                                <div className={"date-wrapper"}>
+                                    <input type={"date"} id={"date-start"}/>
+                                    <input type={"date"} id={"date-end"}/>
+                                </div>
+                                <label htmlFor={"auto-calendar-unavailable"}>Repeat</label>
+                                <select id={"repeat-calendar-unavailable"}>
+                                    <option value={"none"}>Never</option>
+                                    <option value={"daily"}>Daily</option>
+                                    <option value={"weekly"}>Weekly</option>
+                                    <option value={"monthly"}>Monthly</option>
+                                </select>
+                                <button onClick={bailIsOccupied}>Apply</button>
+                            </div>
+                            : ''
+                    }
+                    {
+                        isBail ?
+                            <div className={"calendar-form-complete"}>
+                                <h2>Delete occupation</h2>
+                                {
+                                    eventCalendar.length === 0 ?
+                                        <h3>No location to delete</h3>
+                                        :
+                                        <div>
+                                            <select id={"delete-location"}>
+                                                {eventCalendar.map((event, index) => {
+                                                    return (
+                                                        <option
+                                                            value={event.id}>{event.user_email} - {event.from_datetime.split('T')[0]} / {event.to_datetime.split('T')[0]}</option>
+                                                    );
+                                                })}
+                                            </select>
+                                            <button style={{background: '#c91919'}}
+                                                    onClick={() => deleteOccupationBail(2)}>Delete
+                                            </button>
+                                        </div>
+                                }
                             </div>
                             : ''
                     }
@@ -321,7 +363,7 @@ export class ReserveView extends React.Component <ViewProps> {
                                             {
                                                 isBail && messages.length != 0 ?
                                                     <button className={"delete-occupation-bail"}
-                                                            onClick={() => deleteOccupationBail()}>Cancel this
+                                                            onClick={() => deleteOccupationBail(1)}>Cancel this
                                                         location</button>
                                                     : ''
                                             }

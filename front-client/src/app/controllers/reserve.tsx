@@ -106,6 +106,35 @@ export default class Controller extends React.Component<
         document.location.href = "/location";
     };
 
+    public bailIsOccupied = async () => {
+        const dateStart = document.querySelector<HTMLInputElement>("#date-start");
+        const dateEnd = document.querySelector<HTMLInputElement>("#date-end");
+        const repeat = document.querySelector<HTMLSelectElement>("#repeat-calendar-unavailable");
+        if (dateStart !== null && dateEnd !== null && repeat !== null) {
+            if (!this.reserveViewModel.verifyDate(dateStart.value, dateEnd.value)) {
+                this.reserveViewModel.openPopupBadDate();
+            } else {
+                const apiPath = process.env.API_HOST || "http://localhost:3001";
+                await fetch(apiPath + this.apiSubPath + "/occupation-bail", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        authorization: localStorage.getItem("token") || "",
+                    },
+                    body: JSON.stringify({
+                        location_id: this.id,
+                        from_datetime: dateStart.value,
+                        to_datetime: dateEnd.value,
+                        repeat: repeat.value,
+                    }),
+                });
+                document.location.reload();
+            }
+        } else {
+            this.reserveViewModel.openPopupBadDate();
+        }
+    };
+
     private isBail = async () => {
         const apiPath = process.env.API_HOST || "http://localhost:3001";
         const response = await fetch(apiPath + "/user/token-to-mail", {
@@ -141,7 +170,7 @@ export default class Controller extends React.Component<
         });
         const description: LocationDescription = JSON.parse(
             data.filter((location: ServiceResponse) => location.id === this.id)[0]
-                .description
+                .description_json
         );
         this.setState({description: description});
         this.isBail();
@@ -217,6 +246,52 @@ export default class Controller extends React.Component<
             }
         );
         const data: LocationOccupation[] = await response.json();
+        const maxToRepeat = 10;
+        const dataArrayToAppend: LocationOccupation[] = [];
+        console.log(data);
+        data.map((occupation) => {
+            if (occupation.repeat === "weekly") {
+                Array.from({length: maxToRepeat}, (_, i) => {
+                    const date = new Date(occupation.from_datetime);
+                    date.setDate(date.getDate() + 7 * (i+1));
+                    const dateEnd = new Date(occupation.to_datetime);
+                    dateEnd.setDate(dateEnd.getDate() + 7 * (i+1));
+                    dataArrayToAppend.push({
+                        from_datetime: date.toISOString().split("T")[0],
+                        to_datetime: dateEnd.toISOString().split("T")[0],
+                        user_email: occupation.user_email,
+                        repeat: occupation.repeat,
+                    });
+                });
+            } else if (occupation.repeat === "monthly") {
+                Array.from({length: maxToRepeat}, (_, i) => {
+                    const date = new Date(occupation.from_datetime);
+                    date.setMonth(date.getMonth() + (i+1));
+                    const dateEnd = new Date(occupation.to_datetime);
+                    dateEnd.setMonth(dateEnd.getMonth() + (i+1));
+                    dataArrayToAppend.push({
+                        from_datetime: date.toISOString().split("T")[0],
+                        to_datetime: dateEnd.toISOString().split("T")[0],
+                        user_email: occupation.user_email,
+                        repeat: occupation.repeat,
+                    });
+                });
+            } else if (occupation.repeat === 'daily') {
+                Array.from({length: maxToRepeat}, (_, i) => {
+                    const date = new Date(occupation.from_datetime);
+                    date.setDate(date.getDate() + (i+1));
+                    const dateEnd = new Date(occupation.to_datetime);
+                    dateEnd.setDate(dateEnd.getDate() + (i+1));
+                    dataArrayToAppend.push({
+                        from_datetime: date.toISOString().split("T")[0],
+                        to_datetime: dateEnd.toISOString().split("T")[0],
+                        user_email: occupation.user_email,
+                        repeat: occupation.repeat,
+                    });
+                });
+            }
+        });
+        data.push(...dataArrayToAppend);
         this.setState({eventCalendar: data});
     };
 
@@ -381,8 +456,13 @@ export default class Controller extends React.Component<
     };
 
 
-    public deleteOccupationBail = async () => {
-        const idLocation = document.querySelector<HTMLInputElement>('#message-select')?.value;
+    public deleteOccupationBail = async (type: number) => {
+        let idLocation = '';
+        if (type == 1) {
+            idLocation = document.querySelector<HTMLInputElement>('#message-select')?.value || '';
+        } else if (type == 2) {
+            idLocation = document.querySelector<HTMLInputElement>('#delete-location')?.value || '';
+        }
         const apiPath = process.env.API_HOST || 'http://localhost:3001';
         await fetch(apiPath + this.apiSubPath + '/occupation', {
             method: 'PATCH',
@@ -779,6 +859,7 @@ export default class Controller extends React.Component<
             return <Loading/>;
         }
         return <ReserveView
+            bailIsOccupied={this.bailIsOccupied}
             isService={this.isService}
             fetchMessagesForBail={this.fetchMessagesForBail}
             postMessageForBail={this.postMessageForBail}

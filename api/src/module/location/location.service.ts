@@ -81,8 +81,55 @@ export class LocationService {
     async locationIsOccupied(body: LocationAvailability) {
         if (!(typeof body.location_id === 'number')) {
             throw new Error('Bad id');
-        } else
-            return await this.locationRepository.locationIsOccupied(body.location_id, body.from_datetime, body.to_datetime);
+        } else {
+            const rows = await this.locationRepository.locationIsOccupied(body.location_id);
+            if (rows instanceof Array) {
+                for (let i = 0; i < rows.length; i++) {
+                    const row: any = rows[i];
+                    if (row.repeat === 'none') {
+                        if (row.from_datetime <= body.from_datetime && row.to_datetime >= body.to_datetime) {
+                            return true;
+                        }
+                    } else if (row.repeat === 'daily') {
+                        const from = new Date(body.from_datetime);
+                        const to = new Date(body.from_datetime);
+                        const from2 = new Date(row.from_datetime);
+                        const to2 = new Date(row.to_datetime);
+                        while (from <= to) {
+                            if (from2 <= from && to2 >= from) {
+                                return true;
+                            }
+                            from.setDate(from.getDate() + 1);
+                        }
+                    } else if (row.repeat === 'weakly') {
+                        const from = new Date(body.from_datetime);
+                        const to = new Date(body.from_datetime);
+                        const from2 = new Date(row.from_datetime);
+                        const to2 = new Date(row.to_datetime);
+                        while (from <= to) {
+                            if (from2 <= from && to2 >= from) {
+                                return true;
+                            }
+                            from.setDate(from.getDate() + 7);
+                        }
+                    } else if (row.repeat === 'monthly') {
+                        const from = new Date(body.from_datetime);
+                        const to = new Date(body.from_datetime);
+                        const from2 = new Date(row.from_datetime);
+                        const to2 = new Date(row.to_datetime);
+                        while (from <= to) {
+                            if (from2 <= from && to2 >= from) {
+                                return true;
+                            }
+                            from.setMonth(from.getMonth() + 1);
+                        }
+
+                    }
+
+                }
+                return false;
+            }
+        }
     }
 
     async addLocationOccupation(body: LocationAvailability, token: string) {
@@ -133,6 +180,15 @@ export class LocationService {
             return await this.locationRepository.addNotationLocation(locationId, notation, token);
     }
 
+    async addLocationOccupationByBail(body: LocationAvailability, token: string) {
+        if (!(typeof body.location_id === 'number')) {
+            throw new Error('Bad id');
+        } else {
+            const repeat = body.repeat;
+            return await this.locationRepository.addLocationOccupationByBail(body.location_id, token, body.from_datetime, body.to_datetime, repeat.toString());
+        }
+    }
+
     async getNotationLocation(locationId: number) {
         const rows = await this.locationRepository.getNotationLocation(locationId);
         if (rows instanceof Array) {
@@ -154,10 +210,7 @@ export class LocationService {
     }
 
     async deleteLocationOccupation(locationId: number, token: string) {
-        if (!(typeof locationId === 'number')) {
-            throw new Error('Bad locationId');
-        } else
-            return await this.locationRepository.deleteLocationOccupation(locationId, token);
+        return await this.locationRepository.deleteLocationOccupation(locationId, token);
     }
 
     async getLocationOccupationByUser(token: string) {

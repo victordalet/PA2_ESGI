@@ -28,6 +28,7 @@ export interface LocationAvailability {
     notation?: number;
     location_occupation_id?: number;
     price: number;
+    repeat?: string;
 }
 
 export interface LocationMessage {

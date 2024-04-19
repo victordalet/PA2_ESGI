@@ -40,7 +40,8 @@ create table location_occupation
     location_id   int          not null references location (id),
     user_email    varchar(100) not null references USER (email),
     deleted_at    datetime,
-    notation      int
+    notation      int,
+    repeat        varchar(100),
 );
 
 

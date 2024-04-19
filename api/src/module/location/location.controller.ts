@@ -51,6 +51,15 @@ export class LocationController {
         return this.locationService.addLocationOccupation(body, token);
     }
 
+    @Post('occupation-bail')
+    @ApiOperation({summary: 'Add location occupation by bail'})
+    @ApiCreatedResponse({description: 'Location occupation added'})
+    @ApiBadRequestResponse({description: 'Request body is not valid'})
+    async addLocationOccupationByBail(@Headers('authorization') token: string, @Body() body: LocationAvailability) {
+        await this.tokenValidation.validateBailToken(token);
+        return this.locationService.addLocationOccupationByBail(body, token);
+    }
+
     @Post('is-occupied-by-user')
     @ApiOperation({summary: 'Check if location is occupied by user'})
     @ApiOkResponse({description: 'Location is occupied by user'})

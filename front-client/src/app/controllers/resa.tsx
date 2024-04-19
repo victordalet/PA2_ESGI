@@ -18,23 +18,21 @@ export default class Controller extends React.Component<
         data: [],
     };
 
-    private getLocation = () => {
+    private getLocation = async () => {
         const apiPath = process.env.API_HOST || "http://localhost:3001";
-        fetch(apiPath + "/location/get-location-occupation", {
+        const response = await fetch(apiPath + "/location/get-location-occupation", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
                 authorization: localStorage.getItem("token") || "",
             },
-        }).then((res) => {
-            res.json().then((data) => {
-                this.setState({data: data});
-                console.log(data);
-                if (data.length === 0) {
-                    document.location.href = "/location";
-                }
-            });
         });
+        const data = await response.json();
+        console.log(data);
+        this.setState({data: data.filter((location: any) => location.created_by !== localStorage.getItem("email"))});
+        if (data.length === 0) {
+            document.location.href = "/location";
+        }
     };
 
     render() {
