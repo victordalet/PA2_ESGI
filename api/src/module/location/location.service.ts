@@ -200,6 +200,10 @@ export class LocationService {
         return await this.locationRepository.getMessagesByLocationOccupationId(locationOccupationId, token);
     }
 
+    async getLocationOccupationInfoByAdmin() {
+        return await this.locationRepository.getLocationOccupationInfoByAdmin();
+    }
+
     async addMessageByLocationOccupationId(locationOccupationId: number, message: string, token: string) {
         if (!(typeof message === 'string')) {
             throw new Error('Bad message');
@@ -211,6 +215,10 @@ export class LocationService {
 
     async deleteLocationOccupation(locationId: number, token: string) {
         return await this.locationRepository.deleteLocationOccupation(locationId, token);
+    }
+
+    async adminAcceptLocationOccupation(locationOccupationId: number) {
+        return await this.locationRepository.adminAcceptLocationOccupation(locationOccupationId);
     }
 
     async getLocationOccupationByUser(token: string) {

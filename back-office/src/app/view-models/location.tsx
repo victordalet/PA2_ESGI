@@ -20,4 +20,10 @@ export default class LocationViewModel {
         const valueMax = Number(value);
         return data.filter((d: DataResponse) => d.price > valueMax);
     };
+
+    public isValidateFilter = (data: DataResponse[]) => {
+        const input = document.querySelector<HTMLInputElement>("#is_valid");
+        const value = input?.checked || false;
+        return data.filter((d: DataResponse) => d.is_occupy_by === value.toString());
+    };
 }

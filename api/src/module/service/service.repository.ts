@@ -173,4 +173,9 @@ export class ServiceRepository {
         await this.db.connect()
         return this.db.query("DELETE FROM service WHERE id = ?", [id]);
     }
+
+    async adminAcceptService(service_id: number) {
+        await this.db.connect()
+        return this.db.query("UPDATE service SET is_valid = 1 WHERE id = ?", [service_id]);
+    }
 }

@@ -54,7 +54,11 @@ export default class ServiceControllers extends Component<
         this.setState({data: this.serviceViewModel.searchFilter(this.state.dataNoFilter)});
     };
 
-    public deleteService = async (id: string) => {
+    public isValidateFilter = () => {
+        this.setState({data: this.serviceViewModel.isValidateFilter(this.state.dataNoFilter)});
+    };
+
+    public deleteService = async (id: number) => {
         const apiPath = process.env.API_HOST || "http://localhost:3001";
         await fetch(apiPath + "/service/admin/" + id, {
             method: "DELETE",
@@ -66,13 +70,26 @@ export default class ServiceControllers extends Component<
         document.location.reload();
     };
 
+    public acceptService = async (id: number) => {
+        const apiPath = process.env.API_HOST || "http://localhost:3001";
+        await fetch(apiPath + "/service/admin-accept", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                authorization: localStorage.getItem("token") || "",
+            },
+            body: JSON.stringify({
+                service_id: id,
+            }),
+        });
+        document.location.reload();
+    };
 
     render() {
 
-        if (this.state.data.length === 0) {
-            return <Loading/>;
-        }
         return <View
+            acceptService={this.acceptService}
+            isValidateFilter={this.isValidateFilter}
             deleteService={this.deleteService}
             data={this.state.data}
             priceFilter={this.priceFilter}

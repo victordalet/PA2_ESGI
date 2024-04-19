@@ -58,7 +58,11 @@ export default class LocationController extends Component<
         this.setState({data: this.locationViewModel.capacityFilter(this.state.dataNoFilter)});
     };
 
-    public deleteLocation = async (id: string) => {
+    public isValidateFilter = () => {
+        this.setState({data: this.locationViewModel.isValidateFilter(this.state.dataNoFilter)});
+    };
+
+    public deleteLocation = async (id: number) => {
         const apiPath = process.env.API_HOST || "http://localhost:3001";
         await fetch(apiPath + "/location/admin/" + id, {
             method: "DELETE",
@@ -70,11 +74,27 @@ export default class LocationController extends Component<
         document.location.reload();
     };
 
+    public acceptLocation = async (id: number) => {
+        const apiPath = process.env.API_HOST || "http://localhost:3001";
+        await fetch(apiPath + "/location/admin-accept", {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+                authorization: localStorage.getItem("token") || "",
+            },
+            body: JSON.stringify({location_id: id}),
+        });
+        document.location.reload();
+    };
+
+
     render() {
         if (this.state.dataNoFilter.length === 0) {
             return <Loading/>;
         }
         return <View
+            acceptLocation={this.acceptLocation}
+            isValidateFilter={this.isValidateFilter}
             deleteLocation={this.deleteLocation}
             data={this.state.data}
             capacityFilter={this.capacityFilter}

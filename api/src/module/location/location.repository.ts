@@ -1,6 +1,6 @@
 import {Connection} from "mysql2/promise";
 import {DatabaseEntity} from "../../database/mysql.entity";
-import {Location} from "../../core/location";
+import {Location, LocationAvailability} from "../../core/location";
 
 export class LocationRepository {
     private db: Connection;
@@ -125,6 +125,11 @@ export class LocationRepository {
 
     }
 
+    async adminAcceptLocationOccupation(locationId: number) {
+        await this.db.connect()
+        return this.db.query("UPDATE location SET is_valid = 1 WHERE id = ?", [locationId]);
+    }
+
     async locationIsOccupiedByUser(locationId: number, token: string) {
         await this.db.connect()
         const [rows, filed] = await this.db.query("SELECT email FROM USER WHERE connection = ?", [token]);
@@ -170,6 +175,14 @@ export class LocationRepository {
                 }
             }
         }
+    }
+
+    async getLocationOccupationInfoByAdmin() {
+        await this.db.connect();
+        const sqlRequest: string = "select location_id,from_datetime,to_datetime,notation,user_email, (select name from location where id = location_id) as location_name,(select created_by from location where id = location_id)  as created_by , (select count(*) as message from location_message where location_occupation_id = id) as nb_message from location_occupation where deleted_at is null";
+        const [rows, filed] = await this.db.query(sqlRequest);
+        return rows;
+
     }
 
     async addLocationOccupationByBail(locationId: number, token: string, fromDatetime: string, toDatetime: string, repeat: string) {
