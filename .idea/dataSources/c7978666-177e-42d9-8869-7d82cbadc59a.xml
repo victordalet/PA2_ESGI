@@ -1092,7 +1092,7 @@ sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
       <CollationName>utf8mb4_0900_ai_ci</CollationName>
     </schema>
     <schema id="292" parent="1" name="psn">
-      <LastIntrospectionLocalTimestamp>2024-04-18.16:55:49</LastIntrospectionLocalTimestamp>
+      <LastIntrospectionLocalTimestamp>2024-04-19.09:46:36</LastIntrospectionLocalTimestamp>
       <CollationName>utf8mb4_0900_ai_ci</CollationName>
     </schema>
     <user id="293" parent="1" name="root">
@@ -1592,7 +1592,7 @@ sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
     <column id="398" parent="309" name="id">
-      <AutoIncrement>11</AutoIncrement>
+      <AutoIncrement>12</AutoIncrement>
       <DasType>int|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
@@ -1822,7 +1822,7 @@ sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
     <column id="444" parent="314" name="id">
-      <AutoIncrement>4</AutoIncrement>
+      <AutoIncrement>6</AutoIncrement>
       <DasType>int|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
@@ -2007,189 +2007,193 @@ sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
       <DasType>int|0s</DasType>
       <Position>12</Position>
     </column>
-    <index id="482" parent="317" name="PRIMARY">
+    <column id="482" parent="317" name="schedule">
+      <DasType>longtext|0s</DasType>
+      <Position>13</Position>
+    </column>
+    <index id="483" parent="317" name="PRIMARY">
       <ColNames>id</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="483" parent="317" name="PRIMARY">
+    <key id="484" parent="317" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="484" parent="318" name="id">
+    <column id="485" parent="318" name="id">
       <AutoIncrement>1</AutoIncrement>
       <DasType>int|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="485" parent="318" name="created_at">
+    <column id="486" parent="318" name="created_at">
       <DasType>datetime|0s</DasType>
       <NotNull>1</NotNull>
       <Position>2</Position>
     </column>
-    <column id="486" parent="318" name="updated_at">
+    <column id="487" parent="318" name="updated_at">
       <DasType>datetime|0s</DasType>
       <NotNull>1</NotNull>
       <Position>3</Position>
     </column>
-    <column id="487" parent="318" name="service_id">
+    <column id="488" parent="318" name="service_id">
       <DasType>int|0s</DasType>
       <NotNull>1</NotNull>
       <Position>4</Position>
     </column>
-    <column id="488" parent="318" name="location_id">
+    <column id="489" parent="318" name="location_id">
       <DasType>int|0s</DasType>
       <NotNull>1</NotNull>
       <Position>5</Position>
     </column>
-    <column id="489" parent="318" name="notation">
+    <column id="490" parent="318" name="notation">
       <DasType>int|0s</DasType>
       <Position>6</Position>
     </column>
-    <index id="490" parent="318" name="PRIMARY">
+    <index id="491" parent="318" name="PRIMARY">
       <ColNames>id</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="491" parent="318" name="PRIMARY">
+    <key id="492" parent="318" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="492" parent="319" name="id">
+    <column id="493" parent="319" name="id">
       <AutoIncrement>1</AutoIncrement>
       <DasType>int|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="493" parent="319" name="created_at">
+    <column id="494" parent="319" name="created_at">
       <DasType>datetime|0s</DasType>
       <NotNull>1</NotNull>
       <Position>2</Position>
     </column>
-    <column id="494" parent="319" name="updated_at">
+    <column id="495" parent="319" name="updated_at">
       <DasType>datetime|0s</DasType>
       <NotNull>1</NotNull>
       <Position>3</Position>
     </column>
-    <column id="495" parent="319" name="service_id">
+    <column id="496" parent="319" name="service_id">
       <DasType>int|0s</DasType>
       <NotNull>1</NotNull>
       <Position>4</Position>
     </column>
-    <column id="496" parent="319" name="user_email">
+    <column id="497" parent="319" name="user_email">
       <DasType>varchar(100)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>5</Position>
     </column>
-    <column id="497" parent="319" name="location_occupation_id">
+    <column id="498" parent="319" name="location_occupation_id">
       <DasType>int|0s</DasType>
       <NotNull>1</NotNull>
       <Position>6</Position>
     </column>
-    <column id="498" parent="319" name="notation">
+    <column id="499" parent="319" name="notation">
       <DasType>int|0s</DasType>
       <Position>7</Position>
     </column>
-    <index id="499" parent="319" name="PRIMARY">
+    <index id="500" parent="319" name="PRIMARY">
       <ColNames>id</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="500" parent="319" name="PRIMARY">
+    <key id="501" parent="319" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="501" parent="320" name="id">
-      <AutoIncrement>5</AutoIncrement>
+    <column id="502" parent="320" name="id">
+      <AutoIncrement>6</AutoIncrement>
       <DasType>int|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="502" parent="320" name="created_at">
+    <column id="503" parent="320" name="created_at">
       <DasType>datetime|0s</DasType>
       <NotNull>1</NotNull>
       <Position>2</Position>
     </column>
-    <column id="503" parent="320" name="deleted_at">
+    <column id="504" parent="320" name="deleted_at">
       <DasType>datetime|0s</DasType>
       <Position>3</Position>
     </column>
-    <column id="504" parent="320" name="price">
+    <column id="505" parent="320" name="price">
       <DasType>int|0s</DasType>
       <NotNull>1</NotNull>
       <Position>4</Position>
     </column>
-    <column id="505" parent="320" name="user_email">
+    <column id="506" parent="320" name="user_email">
       <DasType>varchar(100)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>5</Position>
     </column>
-    <index id="506" parent="320" name="PRIMARY">
+    <index id="507" parent="320" name="PRIMARY">
       <ColNames>id</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="507" parent="320" name="PRIMARY">
+    <key id="508" parent="320" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="508" parent="321" name="id">
+    <column id="509" parent="321" name="id">
       <AutoIncrement>1</AutoIncrement>
       <DasType>int|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="509" parent="321" name="email">
+    <column id="510" parent="321" name="email">
       <DasType>varchar(100)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>2</Position>
     </column>
-    <column id="510" parent="321" name="last_date_free_service">
+    <column id="511" parent="321" name="last_date_free_service">
       <DasType>datetime|0s</DasType>
       <NotNull>1</NotNull>
       <Position>3</Position>
     </column>
-    <index id="511" parent="321" name="PRIMARY">
+    <index id="512" parent="321" name="PRIMARY">
       <ColNames>id</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="512" parent="321" name="PRIMARY">
+    <key id="513" parent="321" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="513" parent="322" name="id">
+    <column id="514" parent="322" name="id">
       <AutoIncrement>180</AutoIncrement>
       <DasType>int|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="514" parent="322" name="language">
+    <column id="515" parent="322" name="language">
       <DasType>varchar(100)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>2</Position>
     </column>
-    <column id="515" parent="322" name="word">
+    <column id="516" parent="322" name="word">
       <DasType>varchar(100)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>3</Position>
     </column>
-    <column id="516" parent="322" name="translation">
+    <column id="517" parent="322" name="translation">
       <DasType>varchar(100)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>4</Position>
     </column>
-    <index id="517" parent="322" name="PRIMARY">
+    <index id="518" parent="322" name="PRIMARY">
       <ColNames>id</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="518" parent="322" name="PRIMARY">
+    <key id="519" parent="322" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>

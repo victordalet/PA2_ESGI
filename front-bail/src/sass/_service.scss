@@ -3,7 +3,6 @@
     position: absolute;
     top: 0;
     left: 50px;
-    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -40,6 +39,11 @@
             width: 60%;
             justify-content: space-evenly;
             align-items: center;
+        }
+
+        .calendar {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
         }
 
 

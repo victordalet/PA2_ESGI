@@ -29,6 +29,7 @@ export interface Service {
     type?: string;
     notation?: number;
     is_valid: number;
+    schedule?: string;
 }
 
 export interface ServiceForm {
@@ -46,4 +47,3 @@ export interface jobResponse {
     id: number;
     name: string;
 }
-

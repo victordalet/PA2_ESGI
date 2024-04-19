@@ -253,10 +253,11 @@ export default class Controller extends React.Component<
             if (occupation.repeat === "weekly") {
                 Array.from({length: maxToRepeat}, (_, i) => {
                     const date = new Date(occupation.from_datetime);
-                    date.setDate(date.getDate() + 7 * (i+1));
+                    date.setDate(date.getDate() + 7 * (i + 1));
                     const dateEnd = new Date(occupation.to_datetime);
-                    dateEnd.setDate(dateEnd.getDate() + 7 * (i+1));
+                    dateEnd.setDate(dateEnd.getDate() + 7 * (i + 1));
                     dataArrayToAppend.push({
+                        id: occupation.id,
                         from_datetime: date.toISOString().split("T")[0],
                         to_datetime: dateEnd.toISOString().split("T")[0],
                         user_email: occupation.user_email,
@@ -266,10 +267,11 @@ export default class Controller extends React.Component<
             } else if (occupation.repeat === "monthly") {
                 Array.from({length: maxToRepeat}, (_, i) => {
                     const date = new Date(occupation.from_datetime);
-                    date.setMonth(date.getMonth() + (i+1));
+                    date.setMonth(date.getMonth() + (i + 1));
                     const dateEnd = new Date(occupation.to_datetime);
-                    dateEnd.setMonth(dateEnd.getMonth() + (i+1));
+                    dateEnd.setMonth(dateEnd.getMonth() + (i + 1));
                     dataArrayToAppend.push({
+                        id: occupation.id,
                         from_datetime: date.toISOString().split("T")[0],
                         to_datetime: dateEnd.toISOString().split("T")[0],
                         user_email: occupation.user_email,
@@ -279,10 +281,11 @@ export default class Controller extends React.Component<
             } else if (occupation.repeat === 'daily') {
                 Array.from({length: maxToRepeat}, (_, i) => {
                     const date = new Date(occupation.from_datetime);
-                    date.setDate(date.getDate() + (i+1));
+                    date.setDate(date.getDate() + (i + 1));
                     const dateEnd = new Date(occupation.to_datetime);
-                    dateEnd.setDate(dateEnd.getDate() + (i+1));
+                    dateEnd.setDate(dateEnd.getDate() + (i + 1));
                     dataArrayToAppend.push({
+                        id: occupation.id,
                         from_datetime: date.toISOString().split("T")[0],
                         to_datetime: dateEnd.toISOString().split("T")[0],
                         user_email: occupation.user_email,

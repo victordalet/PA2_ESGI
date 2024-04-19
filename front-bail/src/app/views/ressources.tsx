@@ -57,8 +57,8 @@ export default class ResourcesView extends React.Component<ViewProps> {
                                         title: s.name,
                                         description: s.is_valid === 1 ? 'Valid' : 'currently being validated',
                                         price: s.price,
-                                        type: 'service',
-                                        id: s.id
+                                        type: s.name,
+                                        id: 1
                                     }}
                                 />
                             ))

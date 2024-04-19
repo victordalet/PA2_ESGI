@@ -56,7 +56,7 @@ export default class Controller extends React.Component<
             },
             body: JSON.stringify({
                 created_by: data.email,
-                name: data.nameFounder,
+                name: document.querySelector<HTMLInputElement>('#title-location')?.value || '',
                 description_json: JSON.stringify(data),
                 description: data.description,
                 address: data.address,

@@ -48,4 +48,8 @@ export class ServiceModel {
     @IsNumber()
     is_valid?: number
 
+    @ApiProperty({example: '...', description: 'schedule'})
+    @IsString()
+    schedule: string;
+
 }

@@ -13,6 +13,8 @@ export default class ServiceView extends React.Component <ViewProps> {
             getPictureBackground
         } = this.props;
 
+        const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+
         return (
             <div>
                 <Navbar/>
@@ -41,7 +43,20 @@ export default class ServiceView extends React.Component <ViewProps> {
                             <option value="NORMAL">NORMAL</option>
                             <option value="VIP">VIP</option>
                         </select>
-                        <input id={"image"} type={"file"} placeholder={"image"}/>
+                        <h3>Your schedule : </h3>
+                        <div className={"calendar"}>
+                            {
+                                days.map((day) => {
+                                    return (
+                                        <div className={"day-wrapper"}>
+                                            <h3>{day}</h3>
+                                            <input type={"time"} id={"start-" + day}/>
+                                            <input type={"time"} id={"end-" + day}/>
+                                        </div>
+                                    );
+                                })
+                            }
+                        </div>
                         <button id={"submit"} onClick={createService}>Submit</button>
                     </div>
                 </div>

@@ -131,7 +131,8 @@ create table service
     duration    int          not null,
     type        varchar(100),
     siret       varchar(100),
-    is_valid    int
+    is_valid    int,
+    schedule    longtext
 );
 
 

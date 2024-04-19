@@ -50,7 +50,7 @@ export interface ControllerState {
 }
 
 export interface LocationOccupation {
-    id?: number;
+    id: number;
     from_datetime: string;
     to_datetime: string;
     user_email: string;
