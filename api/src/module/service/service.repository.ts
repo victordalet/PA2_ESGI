@@ -2,7 +2,7 @@ import {Connection} from "mysql2/promise";
 import {DatabaseEntity} from "../../database/mysql.entity";
 import {Service} from "../../core/service";
 import {ServiceModel} from "./service.model";
-import {LocationLiaison} from "../../core/location";
+import {LocationAvailability, LocationLiaison} from "../../core/location";
 
 export class ServiceRepository {
     private db: Connection;
@@ -89,6 +89,22 @@ export class ServiceRepository {
         return this.db.query("INSERT INTO service_by_location (location_id, service_id) VALUES (?, ?)", [body.location_id, body.service_id]);
     }
 
+    async isYourServices(token: string, body: LocationAvailability) {
+        await this.db.connect()
+        const [rows, filed] = await this.db.query("SELECT email FROM USER WHERE connection = ?", [token]);
+        const [rows_2, filed_2] = await this.db.query("SELECT * FROM service WHERE created_by = ?", [rows[0].email]);
+        if (rows_2 instanceof Array) {
+            for (const row of rows_2) {
+                // @ts-ignore
+                if (row.id == body.id) {
+                    return true;
+                }
+            }
+        }
+        return false;
+
+    }
+
     async getServiceByLocation(body: LocationLiaison) {
         await this.db.connect()
         const [rows, filed] = await this.db.query("SELECT * FROM service_by_location WHERE location_id = ?", [body.location_id]);
@@ -108,19 +124,9 @@ export class ServiceRepository {
 
     async getServiceByUser(body: LocationLiaison) {
         await this.db.connect()
-        const [rows, filed] = await this.db.query("SELECT service_id FROM service_by_user WHERE location_occupation_id = ?", [body.location_occupation_id]);
-        const [rows2, filed2] = await this.db.query("SELECT * FROM service");
-        const services = [];
-        if (rows instanceof Array && rows2 instanceof Array) {
-            rows.forEach(async (row) => {
-                rows2.forEach(async (row2) => {
-                    if (row2.id === row.service_id) {
-                        services.push(row2);
-                    }
-                });
-            });
-        }
-        return services;
+        const [rows, filed] = await this.db.query("SELECT service_id,user_email,location_occupation_id,notation,status,from_datetime,to_datetime,(select address from location where id = (select location_id from location_occupation where id = location_occupation_id )) as title FROM service_by_user WHERE service_id = ?",
+            [body.service_id]);
+        return rows;
     }
 
     async notationServiceByUser(body: ServiceModel, token: string) {

@@ -1,7 +1,7 @@
 import {ServiceRepository} from "./service.repository";
 import {Service} from "../../core/service";
 import {ServiceModel} from "./service.model";
-import {LocationLiaison} from "../../core/location";
+import {LocationAvailability, LocationLiaison} from "../../core/location";
 
 export class ServiceService {
     private serviceRepository: ServiceRepository;
@@ -60,6 +60,12 @@ export class ServiceService {
             throw new Error('Bad  service_id');
         } else
             return this.serviceRepository.postServiceByUser(body);
+    }
+
+    async isYourServices(token: string, body: LocationAvailability) {
+        const r = await this.serviceRepository.isYourServices(token, body);
+        console.log(r);
+        return {accept: r}
     }
 
     async postServiceByLocation(body: LocationLiaison) {

@@ -53,6 +53,9 @@ export default class ResourcesView extends React.Component<ViewProps> {
                             service.map((s, index) => (
                                 <Card
                                     key={index}
+                                    onclick={() => {
+                                        document.location = '/provider?id=' + s.id;
+                                    }}
                                     cardInfo={{
                                         title: s.name,
                                         description: s.is_valid === 1 ? 'Valid' : 'currently being validated',

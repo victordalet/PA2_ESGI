@@ -53,6 +53,15 @@ export class ServiceController {
         return this.serviceService.postServiceByUser(token, body);
     }
 
+    @Post('your')
+    @ApiOperation({summary: 'Verif is your your services'})
+    @ApiCreatedResponse({description: 'Service'})
+    @ApiBadRequestResponse({description: 'Request body is not valid'})
+    async getYourServices(@Headers('authorization') token: string, @Body() body: LocationAvailability) {
+        await this.tokenValidation.validateToken(token);
+        return await this.serviceService.isYourServices(token, body);
+    }
+
 
     @Post('get-service-by-location')
     @ApiOperation({summary: 'Post service by location'})

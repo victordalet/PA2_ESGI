@@ -30,6 +30,7 @@ export interface LocationAvailability {
     price: number;
     repeat?: string;
     nb_message?: number;
+    id?: number;
 }
 
 
