@@ -66,6 +66,7 @@ export default class Controller extends React.Component<
         const job = (document.getElementById("job") as HTMLSelectElement).value;
         const siret = (document.getElementById("siret") as HTMLInputElement).value;
         const duration = (document.getElementById("duration") as HTMLInputElement).value;
+        const city = (document.getElementById("city") as HTMLInputElement).value;
         const data: ServiceForm = {
             email: email,
             title: title,
@@ -74,10 +75,11 @@ export default class Controller extends React.Component<
             price: parseInt(price),
             cat: job,
             duration: duration,
-            siret: siret
+            siret: siret,
+            city: city
         };
         if (email === '' || title === '' || description === '' || price === ''
-            || job === '' || duration === ''  || siret === '') {
+            || job === '' || duration === '' || siret === '') {
             this.ServiceViewModel.openPopupError();
             return;
         }
@@ -91,7 +93,9 @@ export default class Controller extends React.Component<
             id: 0,
             is_valid: 0,
             type: (document.querySelector('#type-service') as HTMLSelectElement).value,
-            schedule: JSON.stringify(this.formatSchedule())
+            schedule: JSON.stringify(this.formatSchedule()),
+            city: city,
+            siret: siret
         };
         const apiPath = process.env.API_HOST || 'http://localhost:3001';
         await fetch(apiPath + '/service', {

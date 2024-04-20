@@ -27,5 +27,6 @@ export interface LocationAvailability {
     nb_message?: number;
     location_name?: string;
     user_email: string;
-    created_by: string
+    created_by: string;
+    city: string;
 }

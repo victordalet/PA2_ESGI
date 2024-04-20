@@ -60,8 +60,8 @@ export class ServiceRepository {
 
     async createService(service: ServiceModel) {
         await this.db.connect()
-        await this.db.query("INSERT INTO service (name, created_at ,updated_at, description, price, duration, created_by, type, siret, is_valid,schedule) VALUES (?, ?, ?, ?, ?, ?, ?,?,?,?,?)",
-            [service.name, new Date(), new Date(), service.description, service.price, service.duration, service.created_by, service.type, service.siret, 0, service.schedule]);
+        await this.db.query("INSERT INTO service (name, created_at ,updated_at, description, price, duration, created_by, type, siret, is_valid,schedule,city) VALUES (?, ?, ?, ?, ?, ?, ?,?,?,?,?,?)",
+            [service.name, new Date(), new Date(), service.description, service.price, service.duration, service.created_by, service.type, service.siret, 0, service.schedule, service.city]);
         const [rows, filed] = await this.db.query("SELECT LAST_INSERT_ID() as id  FROM service");
         return rows[0];
 
@@ -80,8 +80,8 @@ export class ServiceRepository {
 
     async postServiceByUser(body: LocationLiaison) {
         await this.db.connect()
-        return this.db.query("INSERT INTO service_by_user (created_at,updated_at,location_occupation_id, service_id) VALUES (?, ?, ?, ?)",
-            [new Date(), new Date(), body.location_occupation_id, body.service_id]);
+        return this.db.query("INSERT INTO service_by_user (created_at,updated_at,location_occupation_id, service_id,status,from_datetime,to_datetime) VALUES (?, ?, ?, ?, ? ,? ,?)",
+            [new Date(), new Date(), body.location_occupation_id, body.service_id, 'pending', body.from_datetime, body.to_datetime]);
     }
 
     async postServiceByLocation(body: LocationLiaison) {

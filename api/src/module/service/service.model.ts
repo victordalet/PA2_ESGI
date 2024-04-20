@@ -52,4 +52,7 @@ export class ServiceModel {
     @IsString()
     schedule: string;
 
+    @ApiProperty({example: 'PARIS', description: 'city'})
+    @IsString()
+    city: string;
 }

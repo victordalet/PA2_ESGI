@@ -4,7 +4,6 @@ import {ViewProps} from "../@types/reserve";
 import {PopupError} from "../../components/popup";
 import {ChatBot} from "../../components/chatBot";
 import {Language} from "../../components/language";
-import {Card} from "../../components/card";
 import {Calendar, momentLocalizer} from 'react-big-calendar';
 import moment from 'moment';
 
@@ -15,7 +14,6 @@ export class ReserveView extends React.Component <ViewProps> {
 
         const {
             data,
-            services,
             isReserved,
             fetchReservations,
             addNotation,
@@ -27,13 +25,9 @@ export class ReserveView extends React.Component <ViewProps> {
             isBail,
             deleteLocation,
             description,
-            servicesGlobal,
-            addService,
-            servicesSelected,
             eventCalendar,
             fetchMessagesForBail,
             postMessageForBail,
-            isService,
             downloadFactureBail,
             nameFiles,
             postFileBail,
@@ -43,7 +37,6 @@ export class ReserveView extends React.Component <ViewProps> {
             isAdmin
         } = this.props;
 
-        let cardToRemoveIndex = 0;
 
         const now = momentLocalizer(moment);
 
@@ -153,113 +146,6 @@ export class ReserveView extends React.Component <ViewProps> {
                     </div>
 
 
-                    {/*
-                        services.length === 0 ? '' :
-
-                            <div style={{marginLeft: '250px'}}>
-
-                                <h2 style={{marginLeft: '0px'}}>Services included in the rental:</h2>
-                                <div style={{marginLeft: '0'}} className={"services"}>
-
-                                    <ul>
-                                        {
-                                            services.map((service, index) => {
-                                                return (
-                                                    <Card cardInfo={{
-                                                        title: service.name,
-                                                        description: (<div>{
-                                                            Array.from(Array(5).keys()).map((i) => {
-                                                                if (service.notation) {
-                                                                    if (i < service.notation) {
-                                                                        return <i className="ai-star"
-                                                                                  color={"#d3ae1b"}></i>;
-                                                                    }
-                                                                }
-                                                                return <i className="ai-star" color={"#fff"}></i>;
-                                                            })
-                                                        }</div>),
-                                                        price: service.price,
-                                                        id: service.id,
-                                                        type: 'service'
-                                                    }}/>
-                                                );
-                                            })
-                                        }
-                                    </ul>
-                                </div>
-                            </div>*/
-                    }
-                    {/*
-                        isReserved ?
-                            servicesSelected.length === 0 ?
-                                <h2>No additional services</h2>
-                                :
-                                <h2>Your services add : </h2>
-                            :
-                            isBail ? '' :
-                                <h2>Choose additional services : </h2>*/
-                    }
-                    <div className={"services services-new"}
-                         style={isReserved && servicesSelected.length === 0 ? {display: 'none'} : {}}>
-
-                        {
-                            !isReserved && !isBail ?
-
-                                servicesGlobal.map((service, index) => {
-                                    if (!services.find((s) => s.id === service.id)) {
-                                        return (
-                                            <Card
-                                                onclick={() => {
-                                                    addService(index + cardToRemoveIndex, service.id);
-
-                                                }}
-                                                cardInfo={{
-                                                    title: service.name,
-                                                    description: (<div>{
-                                                        Array.from(Array(5).keys()).map((i) => {
-                                                            if (service.notation) {
-                                                                if (i < service.notation) {
-                                                                    return <i className="ai-star"
-                                                                              color={"#d3ae1b"}></i>;
-                                                                }
-                                                            }
-                                                            return <i className="ai-star" color={"#fff"}></i>;
-                                                        })
-                                                    }</div>),
-                                                    price: service.price,
-                                                    id: service.id,
-                                                    type: 'service'
-                                                }}/>
-                                        );
-                                    } else {
-                                        cardToRemoveIndex -= 1;
-                                    }
-                                }) :
-                                servicesSelected.map((service, index) => {
-                                    return (
-
-                                        <Card
-                                            cardInfo={{
-                                                title: service.name,
-                                                description: (<div>{
-                                                    Array.from(Array(5).keys()).map((i) => {
-                                                        if (service.notation) {
-                                                            if (i < service.notation) {
-                                                                return <i className="ai-star"
-                                                                          color={"#d3ae1b"}></i>;
-                                                            }
-                                                        }
-                                                        return <i className="ai-star" color={"#fff"}></i>;
-                                                    })
-                                                }</div>),
-                                                price: service.price,
-                                                id: service.id,
-                                                type: 'service'
-                                            }}/>
-                                    );
-                                })
-                        }
-                    </div>
                     <h1 style={{marginTop: '-10%'}}>Calendar</h1>
                     <div className={"calendar"}>
                         <Calendar

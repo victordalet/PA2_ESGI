@@ -32,6 +32,7 @@ export interface LocationAvailability {
     nb_message?: number;
 }
 
+
 export interface LocationMessage {
     location_occupation_id: number;
     message: string;
@@ -41,5 +42,7 @@ export interface LocationLiaison {
     service_id: number;
     location_id?: number;
     location_occupation_id?: number;
+    from_datetime?: string;
+    to_datetime?: string;
 }
 

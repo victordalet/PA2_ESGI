@@ -41,7 +41,7 @@ create table location_occupation
     user_email    varchar(100) not null references USER (email),
     deleted_at    datetime,
     notation      int,
-    repeat        varchar(100),
+    `repeat`      varchar(100)
 );
 
 
@@ -132,7 +132,8 @@ create table service
     type        varchar(100),
     siret       varchar(100),
     is_valid    int,
-    schedule    longtext
+    schedule    longtext,
+    city        varchar(100)
 );
 
 
@@ -144,7 +145,10 @@ create table service_by_user
     service_id             int          not null references service (id),
     user_email             varchar(100) not null references USER (email),
     location_occupation_id int          not null references location_occupation (id),
-    notation               int
+    notation               int,
+    status                 varchar(100),
+    from_datetime          datetime,
+    to_datetime            datetime
 );
 
 create table service_by_location
@@ -166,6 +170,19 @@ create table message
     created_by varchar(100) not null references USER (email),
     to_user    varchar(100) not null references USER (email),
     message    varchar(220) not null
+);
+
+create table occupation_request_service
+(
+    id                     int primary key auto_increment,
+    created_at             datetime     not null,
+    deleted_at             datetime,
+    location_occupation_id int          not null references location_occupation (id),
+    service_name           varchar(100) not null,
+    user_email             varchar(100) not null references USER (email),
+    description            longtext     not null,
+    status                 varchar(100) not null,
+    city                   varchar(100) not null
 );
 
 create table note_user_to_location

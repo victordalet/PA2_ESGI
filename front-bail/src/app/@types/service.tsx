@@ -30,6 +30,8 @@ export interface Service {
     notation?: number;
     is_valid: number;
     schedule?: string;
+    city: string;
+    siret: string;
 }
 
 export interface ServiceForm {
@@ -41,6 +43,7 @@ export interface ServiceForm {
     cat: string;
     duration: string;
     siret?: string;
+    city?: string
 }
 
 export interface jobResponse {

@@ -1,0 +1,114 @@
+.container-services-global {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+
+    .container-services {
+        width: 100%;
+        margin: 0 auto;
+        text-align: center;
+        padding: 0 15px;
+
+
+        select {
+            width: 200px;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+
+        @media (max-width: 768px) {
+            padding: 0 10px;
+        }
+
+    }
+
+    .step2-table {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 40vh;
+
+        .table {
+            top: 0;
+            position: relative;
+            width: 40%;
+            margin: 0 10px;
+            left: 50px;
+            overflow: scroll;
+        }
+
+        @media (max-width: 768px) {
+            flex-direction: column;
+            left: 0;
+        }
+    }
+
+    .form-reservation {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        width: 40%;
+        height: 40vh;
+        box-shadow: 0 10px 50px 0 rgba(#05043e, .25);
+        border-radius: 20px;
+
+        select {
+            width: 30%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        input {
+            width: 30%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            width: 30%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            color: #FFFFFF;
+            background-color: $primaryColor;
+            cursor: pointer;
+
+            &:hover {
+                background-color: $secondaryColor;
+            }
+
+        }
+
+
+        @media (max-width: 768px) {
+            flex-direction: column;
+            left: 0;
+        }
+    }
+    
+    .calendar {
+        margin-bottom: 100px;
+        box-shadow: 0 10px 50px 0 rgba(#05043e, .25);
+        padding: 20px;
+        border-radius: 20px;
+        z-index: 3;
+
+        @media (max-width: 768px) {
+            margin-left: 50px;
+        }
+
+    }
+
+}

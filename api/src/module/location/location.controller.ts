@@ -1,7 +1,7 @@
 import {Body, Controller, Delete, Get, Headers, Param, Patch, Post, Put} from "@nestjs/common";
 import {ApiBadRequestResponse, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiTags} from "@nestjs/swagger";
 import {LocationService} from "./location.service";
-import {LocationModel} from "./location.model";
+import {LocationModel, RequestLocationServiceModel} from "./location.model";
 import {TokenValidation} from "../../validation/token/token.validation";
 import {LocationAvailability, LocationMessage} from "../../core/location";
 
@@ -129,6 +129,24 @@ export class LocationController {
     @ApiBadRequestResponse({description: 'Request body is not valid'})
     async getLocationOccupationInfoByAdmin(@Headers('authorization') token: string) {
         return this.locationService.getLocationOccupationInfoByAdmin();
+    }
+
+    @Post('occupation-service')
+    @ApiOperation({summary: 'Get location occupation by service'})
+    @ApiCreatedResponse({description: 'Location occupation'})
+    @ApiBadRequestResponse({description: 'Request body is not valid'})
+    async getLocationOccupationByService(@Headers('authorization') token: string) {
+        await this.tokenValidation.validateToken(token);
+        return this.locationService.getLocationOccupationByServiceRequest();
+    }
+
+    @Post('add-occupation-service')
+    @ApiOperation({summary: 'Add location occupation by service'})
+    @ApiCreatedResponse({description: 'Location occupation'})
+    @ApiBadRequestResponse({description: 'Request body is not valid'})
+    async addLocationOccupationByService(@Headers('authorization') token: string, @Body() body: RequestLocationServiceModel) {
+        await this.tokenValidation.validateToken(token);
+        return this.locationService.addLocationOccupationByService(body);
     }
 
     @Post('get-location-occupation')

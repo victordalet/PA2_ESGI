@@ -3,6 +3,7 @@ import {LocationRepository} from "./location.repository";
 import * as NodeGeocoder from 'node-geocoder';
 import node_geocoder from 'node-geocoder';
 import {Stripe} from "stripe";
+import {RequestLocationServiceModel} from "./location.model";
 
 export class LocationService {
 
@@ -223,6 +224,14 @@ export class LocationService {
 
     async getLocationOccupationByUser(token: string) {
         return await this.locationRepository.getLocationOccupationByUser(token);
+    }
+
+    async addLocationOccupationByService(body: RequestLocationServiceModel) {
+        return await this.locationRepository.addLocationOccupationByService(body);
+    }
+
+    async getLocationOccupationByServiceRequest() {
+        return await this.locationRepository.getLocationOccupationByService();
     }
 
     async getLocationByEmail(token: string) {

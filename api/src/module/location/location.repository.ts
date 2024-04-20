@@ -1,6 +1,7 @@
 import {Connection} from "mysql2/promise";
 import {DatabaseEntity} from "../../database/mysql.entity";
 import {Location, LocationAvailability} from "../../core/location";
+import {RequestLocationServiceModel} from "./location.model";
 
 export class LocationRepository {
     private db: Connection;
@@ -41,6 +42,18 @@ export class LocationRepository {
             });
         }
         return locations;
+    }
+
+    async getLocationOccupationByService() {
+        await this.db.connect()
+        const [rows, filed] = await this.db.query("SELECT * FROM occupation_request_service");
+        return rows;
+    }
+
+    async addLocationOccupationByService(body: RequestLocationServiceModel) {
+        await this.db.connect()
+        return this.db.query("INSERT INTO occupation_request_service (location_occupation_id, service_name, user_email,description,status,city) VALUES (?, ?, ?,?,?;?)",
+            [body.location_occupation_id, body.service_name, body.user_email, body.description, 'pending', body.city]);
     }
 
     async createLocation(location: Location) {
@@ -179,7 +192,7 @@ export class LocationRepository {
 
     async getLocationOccupationInfoByAdmin() {
         await this.db.connect();
-        const sqlRequest: string = "select location_id,from_datetime,to_datetime,notation,user_email, (select name from location where id = location_id) as location_name,(select created_by from location where id = location_id)  as created_by , (select count(*) as message from location_message where location_occupation_id = id) as nb_message from location_occupation where deleted_at is null";
+        const sqlRequest: string = "select location_id,from_datetime,to_datetime,notation,user_email, (select name from location where id = location_id) as location_name,(select address from location where id = location_id) as city,(select created_by from location where id = location_id)  as created_by , (select count(*) as message from location_message where location_occupation_id = id) as nb_message from location_occupation where deleted_at is null";
         const [rows, filed] = await this.db.query(sqlRequest);
         return rows;
 
