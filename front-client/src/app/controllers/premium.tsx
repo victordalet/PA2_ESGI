@@ -3,6 +3,7 @@ import {PremiumView} from "../views/premium";
 import {ControllerProps, ControllerState} from "../@types/premium";
 import PremiumViewModel from "../view-models/premium";
 import {haveToken} from "../../security/token";
+import {PremiumModel} from "../model/premium";
 
 export default class Controller extends React.Component<
     ControllerProps,
@@ -10,39 +11,22 @@ export default class Controller extends React.Component<
 > {
 
     private premiumViewModel: PremiumViewModel;
+    private premiumModel: PremiumModel;
 
     constructor(props: ControllerProps) {
         super(props);
         haveToken();
+        this.premiumModel = new PremiumModel();
         this.premiumViewModel = new PremiumViewModel();
     }
 
     public subscribe = async (price: number) => {
-        const apiPath: string = process.env.API_HOST || 'http://localhost:3001';
-        const res = await fetch(`${apiPath}/subscription/subscribe`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                "authorization": localStorage.getItem('token') || ''
-            },
-            body: JSON.stringify({
-                price: price
-            })
-        });
-        const data = await res.json();
-        window.open(data.url, '_blank');
+        await this.premiumModel.subscribe(price);
         this.premiumViewModel.openPopup();
     };
 
     public deleteSubscription = async () => {
-        const apiPath: string = process.env.API_HOST || 'http://localhost:3001';
-        await fetch(`${apiPath}/subscription/unsubscribe`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-                "authorization": localStorage.getItem('token') || ''
-            }
-        });
+        await this.premiumModel.deleteSubscription();
         this.premiumViewModel.openPopup();
     };
 

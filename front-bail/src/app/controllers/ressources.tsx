@@ -2,15 +2,17 @@ import {ControllerProps, ControllerState} from "../@types/ressources";
 import ResourcesView from "../views/ressources";
 import React from "react";
 import {Location} from "../@types/location";
-import {Service} from "../@types/service";
 import {haveToken} from "../../security/token";
-import {Loading} from "../../components/loading";
+import {ResourcesModel} from "../model/ressources";
 
 export default class Controller extends React.Component<ControllerProps, ControllerState> {
+
+    resourcesModel: ResourcesModel;
 
     constructor(props: ControllerProps) {
         super(props);
         haveToken();
+        this.resourcesModel = new ResourcesModel();
         this.fetchResources();
     }
 
@@ -23,28 +25,9 @@ export default class Controller extends React.Component<ControllerProps, Control
 
 
     private fetchResources = async () => {
-        const apiPath = process.env.API_HOST || 'http://localhost:3001';
-        const response = await fetch(`${apiPath}/service/service-by-email`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'authorization': localStorage.getItem('token') || ''
-            }
-        });
-        const data: Service[] = await response.json();
-        this.setState({serviceNotFiltered: data});
-        this.setState({services: data});
-        const responseLocation = await fetch(`${apiPath}/location/location-by-email`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'authorization': localStorage.getItem('token') || ''
-            }
-        });
-        const dataLocation: Location[] = await responseLocation.json();
+        const dataLocation: Location[] = await this.resourcesModel.fetchLocation();
         this.setState({locationNotFiltered: dataLocation});
         this.setState({location: dataLocation});
-        console.log(dataLocation);
     };
 
     public filterResourcesByNameOrDescription = () => {

@@ -1,9 +1,8 @@
 import ViewModel from '../view-models/ressources';
 import {Location} from "./location";
-import {Service} from "./service";
 
 export interface ViewProps {
-    service: Service[];
+    service: any[];
     location: Location[];
     filterResourcesByNameOrDescription: () => void;
     filterResourcesByPrice: () => void;
@@ -16,8 +15,8 @@ export interface ControllerProps {
 
 export interface ControllerState {
     location: Location[];
-    services: Service[];
-    serviceNotFiltered: Service[];
+    services: any[];
+    serviceNotFiltered: any[];
     locationNotFiltered: Location[];
 }
 

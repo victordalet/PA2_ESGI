@@ -6,6 +6,7 @@ import View from '../views/user';
 import {haveToken} from "../../security/token";
 import {Loading} from "../../components/loading";
 import UserViewModel from "../view-models/user";
+import {UserModel} from "../model/user";
 
 @observer
 export default class UserControllers extends Component<
@@ -14,12 +15,14 @@ export default class UserControllers extends Component<
 > {
 
     userViewModel: UserViewModel;
+    userModel: UserModel;
 
     constructor(props: ControllerProps) {
         super(props);
         haveToken();
-        this.getData();
+        this.userModel = new UserModel();
         this.userViewModel = new UserViewModel();
+        this.getData();
     }
 
     state: ControllerState = {
@@ -28,22 +31,11 @@ export default class UserControllers extends Component<
     };
 
 
-    getData = () => {
-        const apiPath = process.env.API_HOST || "http://localhost:3001";
-        fetch(apiPath + "/user", {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                authorization: localStorage.getItem("token") || "",
-            },
-        }).then((r) => {
-            r.json().then((data: resultData[]) => {
-                console.log(data);
-                this.setState({
-                    data: data,
-                    dataNoFilter: data,
-                });
-            });
+    public getData = async () => {
+        const data = await this.userModel.getData();
+        this.setState({
+            data: data,
+            dataNoFilter: data,
         });
     };
 
@@ -59,38 +51,14 @@ export default class UserControllers extends Component<
         this.setState({data: this.userViewModel.ruleFilter(this.state.dataNoFilter)});
     };
 
-    public deleteUser = async (email: string) => {
-        const apiPath = process.env.API_HOST || "http://localhost:3001";
-        await fetch(apiPath + "/user/admin/" + email, {
-            method: "DELETE",
-            headers: {
-                "Content-Type": "application/json",
-                authorization: localStorage.getItem("token") || "",
-            },
-        });
-        document.location.reload();
-    };
-
-    public addAdmin = async (email: string) => {
-        const apiPath = process.env.API_HOST || "http://localhost:3001";
-        await fetch(apiPath + "/user/add-admin", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                authorization: localStorage.getItem("token") || "",
-            },
-            body: JSON.stringify({email: email}),
-        });
-        document.location.reload();
-    };
 
     render() {
         if (this.state.dataNoFilter.length === 0) {
             return <Loading/>;
         }
         return <View
-            addAdmin={this.addAdmin}
-            deleteUser={this.deleteUser}
+            addAdmin={this.userModel.addAdmin}
+            deleteUser={this.userModel.deleteUser}
             data={this.state.data}
             isPremiumFilter={this.isPremiumFilter}
             searchFilter={this.searchFilter}

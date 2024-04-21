@@ -4,19 +4,22 @@ import {ControllerProps, ControllerState} from "../@types/settings";
 import {haveToken} from "../../security/token";
 import SettingsViewModels from "../view-models/settings";
 import {Loading} from "../../components/loading";
+import {SettingsModel} from "../model/settings";
 
 export default class Controller extends React.Component<
     ControllerProps,
     ControllerState
 > {
 
-    private SettingsViewModel: SettingsViewModels;
+    private settingsViewModel: SettingsViewModels;
+    private settingsModel: SettingsModel;
 
     constructor(props: ControllerProps) {
         super(props);
         haveToken();
+        this.settingsModel = new SettingsModel();
+        this.settingsViewModel = new SettingsViewModels();
         this.fetchUser();
-        this.SettingsViewModel = new SettingsViewModels();
     }
 
 
@@ -26,45 +29,16 @@ export default class Controller extends React.Component<
 
 
     public fetchUser = async () => {
-        const apiPath: string = process.env.API_HOST || 'http://localhost:3001';
-        const response = await fetch(`${apiPath}/user`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                "authorization": localStorage.getItem('token') || ''
-            }
-        });
+        const response = await this.settingsModel.fetchUser();
         this.setState({data: await response.json()});
 
-    };
-
-    public deleteUser = async () => {
-        const apiPath: string = process.env.API_HOST || 'http://localhost:3001';
-        try {
-            const response = await fetch(`${apiPath}/user`, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                    "authorization": localStorage.getItem('token') || ''
-                }
-            });
-            if (response.ok) {
-                console.log("L'utilisateur a été supprimé avec succès !");
-
-            } else {
-                console.error("La suppression de l'utilisateur a échoué.");
-
-            }
-        } catch (error) {
-            console.error("Une erreur s'est produite lors de la suppression de l'utilisateur :", error);
-        }
     };
 
     public changePassword = async () => {
         const password = document.querySelector<HTMLInputElement>('#password');
         const confirmPassword = document.querySelector<HTMLInputElement>('#confirmPassword');
         if (password && confirmPassword) {
-            if (this.SettingsViewModel.isGoodPassword(password.value, confirmPassword.value)) {
+            if (this.settingsViewModel.isGoodPassword(password.value, confirmPassword.value)) {
                 const apiPath: string = process.env.API_HOST || 'http://localhost:3001';
                 await fetch(`${apiPath}/user/password`, {
                     method: 'PATCH',
@@ -76,12 +50,12 @@ export default class Controller extends React.Component<
                         password: password.value
                     })
                 });
-                this.SettingsViewModel.openPopupSuccess();
+                this.settingsViewModel.openPopupSuccess();
             } else {
-                this.SettingsViewModel.openPopup();
+                this.settingsViewModel.openPopup();
             }
         } else {
-            this.SettingsViewModel.openPopup();
+            this.settingsViewModel.openPopup();
         }
     };
 
@@ -99,7 +73,7 @@ export default class Controller extends React.Component<
                     email: email.value
                 })
             });
-            this.SettingsViewModel.openPopupSuccess();
+            this.settingsViewModel.openPopupSuccess();
         }
     };
 
@@ -117,7 +91,7 @@ export default class Controller extends React.Component<
                     name: username.value
                 })
             });
-            this.SettingsViewModel.openPopupSuccess();
+            this.settingsViewModel.openPopupSuccess();
         }
     };
 
@@ -129,7 +103,7 @@ export default class Controller extends React.Component<
         }
 
         return <SettingsView
-            deleteUser={this.deleteUser}
+            deleteUser={this.settingsModel.deleteUser}
             changeEmail={this.changeEmail}
             changePassword={this.changePassword}
             changeUsername={this.changeUsername}

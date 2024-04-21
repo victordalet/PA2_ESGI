@@ -3,6 +3,7 @@ import {Component} from "react";
 import {observer} from "mobx-react";
 import {OccupationView} from "../views/occupation";
 import {haveToken} from "../../security/token";
+import {OccupationModel} from "../model/occupation";
 
 @observer
 export default class OccupationController extends Component<
@@ -10,9 +11,12 @@ export default class OccupationController extends Component<
     ControllerState
 > {
 
+    occupationModel: OccupationModel;
+
     constructor(props: ControllerProps) {
         super(props);
         haveToken();
+        this.occupationModel = new OccupationModel();
         this.getLocationsOccupationAdminInfo();
     }
 
@@ -32,26 +36,11 @@ export default class OccupationController extends Component<
     };
 
     public getLocationsOccupationAdminInfo = async () => {
-        const apiPath = process.env.API_PATH || 'http://localhost:3001';
-        const response = await fetch(`${apiPath}/location/occupation-info-admin`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                authorization: `Bearer ${localStorage.getItem('token')}`
-            }
+        const data = await this.occupationModel.getLocationsOccupationAdminInfo();
+        this.setState({
+            data: data,
+            dataNotFiltered: data
         });
-        let data = await response.json();
-        data = data.filter((item: LocationAvailability) => item.created_by !== item.user_email);
-        data = data.filter((item: LocationAvailability) => {
-            if (item.to_datetime) {
-                const to_datetime = new Date(item.to_datetime);
-                const now = new Date();
-                return to_datetime > now;
-            }
-            return true;
-        });
-        this.setState({dataNotFiltered: data});
-        this.setState({data: data});
     };
 
     render() {

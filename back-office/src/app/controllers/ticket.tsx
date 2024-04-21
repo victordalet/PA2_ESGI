@@ -5,15 +5,20 @@ import {ControllerProps, ControllerState} from '../@types/ticket';
 import View from '../views/ticket';
 import {haveToken} from "../../security/token";
 import {Loading} from "../../components/loading";
+import {TicketModel} from "../model/ticket";
 
 @observer
 export default class TicketControllers extends Component<
     ControllerProps,
     ControllerState
 > {
+
+    ticketModel: TicketModel;
+
     constructor(props: ControllerProps) {
         super(props);
         haveToken();
+        this.ticketModel = new TicketModel();
         this.getData();
     }
 
@@ -22,15 +27,7 @@ export default class TicketControllers extends Component<
     };
 
     getData = async () => {
-        const apiPath = process.env.API_HOST || "http://localhost:3001";
-        const res = await fetch(apiPath + "/ticket", {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                authorization: localStorage.getItem("token") || "",
-            },
-        });
-        const data = await res.json();
+        const data = await this.ticketModel.getData();
         this.setState({data: data});
     };
 

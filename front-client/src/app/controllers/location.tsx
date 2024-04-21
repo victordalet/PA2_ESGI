@@ -3,17 +3,20 @@ import LocationView from "../views/location";
 import {ControllerProps, ControllerState} from "../@types/location";
 import LocationViewModel from "../view-models/location";
 import {Loading} from "../../components/loading";
+import {LocationModel} from "../model/location";
 
 export default class Controller extends React.Component<
     ControllerProps,
     ControllerState
 > {
     private locationViewModel: LocationViewModel;
+    private locationModel: LocationModel;
 
     constructor(props: ControllerProps) {
         super(props);
-        this.fetchLocation();
+        this.locationModel = new LocationModel();
         this.locationViewModel = new LocationViewModel();
+        this.fetchLocation();
     }
 
     state = {
@@ -21,19 +24,10 @@ export default class Controller extends React.Component<
         locationNoFilter: [],
     };
 
-    private fetchLocation = () => {
-        const apiPath = process.env.API_HOST || "http://localhost:3001";
-        fetch(apiPath + "/location", {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                authorization: localStorage.getItem("token") || "",
-            },
-        }).then((res) => {
-            res.json().then((data) => {
-                this.setState({location: data, locationNoFilter: data});
-            });
-        });
+    private fetchLocation = async () => {
+        const data = await this.locationModel.fetchLocation();
+        this.setState({location: data});
+        this.setState({locationNoFilter: data});
     };
 
     public filterByPrice = () => {
