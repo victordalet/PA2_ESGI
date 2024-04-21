@@ -15,6 +15,7 @@ export default class HomeView extends React.Component <ViewProps> {
         return (
             <div className="home-page">
                 <Navbar/>
+                <h1 style={{textAlign: 'center'}}>Portal of Paris Caretaker Services </h1>
                 <div className="home-stats">
                     <div className={"number-stat"}>
                         <div className={"round"}><i className={"ai-people-group"}></i></div>

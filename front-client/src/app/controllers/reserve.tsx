@@ -42,8 +42,7 @@ export default class Controller extends React.Component<
         this.getNameFileBail();
         this.fetchLocation();
         this.getStartNotation();
-        this.fetchService();
-        this.fetchServiceOfLocation();
+        this.fetchJob();
         this.fetchServiceReserved();
         this.getOccupationEvent();
         this.reserveViewModel = new ReserveViewModel();
@@ -64,37 +63,26 @@ export default class Controller extends React.Component<
         nameFiles: [],
     };
 
-    private fetchService = async () => {
-        const apiPath = process.env.API_HOST || "http://localhost:3001";
-        const response = await fetch(apiPath + "/service", {
-            method: "GET",
+    public sendRequestService = async () => {
+        const apiPath = process.env.API_HOST || 'http://localhost:3001';
+        const desc = document.querySelector<HTMLInputElement>('#service-description');
+        await fetch(apiPath + '/location/add-occupation-service', {
+            method: 'POST',
             headers: {
-                "Content-Type": "application/json",
-                authorization: localStorage.getItem("token") || "",
-            },
-        });
-        const data: ServiceResponse[] = await response.json();
-        data.filter((service) => {
-            return service.type === 'USER';
-        });
-        this.setState({servicesGlobal: data});
-    };
-
-    private fetchServiceOfLocation = async () => {
-        const apiPath = process.env.API_HOST || "http://localhost:3001";
-        const response = await fetch(apiPath + "/service/get-service-by-location", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                authorization: localStorage.getItem("token") || "",
+                'Content-Type': 'application/json',
+                'authorization': localStorage.getItem('token') || ''
             },
             body: JSON.stringify({
-                location_id: this.id,
+                location_occupation_id: this.idResa,
+                service_name: document.querySelector<HTMLInputElement>('#service-name')?.value,
+                user_email: localStorage.getItem('email'),
+                description: document.querySelector<HTMLSelectElement>('#service-time')?.value + ' ' + desc?.value,
+                city: document.querySelector<HTMLElement>('#location-city')?.innerHTML,
             }),
         });
-        const data = await response.json();
-        this.setState({services: data});
+        document.location.reload();
     };
+
 
     public deleteLocation = async () => {
         const apiPath = process.env.API_HOST || "http://localhost:3001";
@@ -859,6 +847,20 @@ export default class Controller extends React.Component<
         this.setState({servicesSelected: data});
     };
 
+    private fetchJob = async () => {
+        const apiPath = process.env.API_HOST || 'http://localhost:3001';
+        const response = await fetch(apiPath + '/job', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                authorization: localStorage.getItem('token') || ''
+            }
+        });
+        const data = await response.json();
+        console.log(data);
+        this.setState({services: data});
+    };
+
     private verifIsAdmin = async () => {
         const apiPath = process.env.API_HOST || "http://localhost:3001";
         const response = await fetch(apiPath + "/user/isAdmin", {
@@ -879,6 +881,7 @@ export default class Controller extends React.Component<
             return <Loading/>;
         }
         return <ReserveView
+            sendRequestService={this.sendRequestService}
             isAdmin={this.state.isAdmin}
             bailIsOccupied={this.bailIsOccupied}
             isService={this.isService}

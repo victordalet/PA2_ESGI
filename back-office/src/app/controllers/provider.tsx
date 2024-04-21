@@ -66,6 +66,7 @@ export default class ProviderController extends Component<
         let provider = this.state.providerNoFilter;
         user = user.filter((user) => user.service_name === service);
         provider = provider.filter((d) => d.description.includes(service));
+        provider = provider.filter((d) => d.is_valid === 1);
         this.setState({user: user, provider: provider});
     };
 

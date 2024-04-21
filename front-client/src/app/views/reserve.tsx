@@ -6,6 +6,7 @@ import {ChatBot} from "../../components/chatBot";
 import {Language} from "../../components/language";
 import {Calendar, momentLocalizer} from 'react-big-calendar';
 import moment from 'moment';
+import {title} from "process";
 
 export class ReserveView extends React.Component <ViewProps> {
 
@@ -34,7 +35,9 @@ export class ReserveView extends React.Component <ViewProps> {
             downloadFileBail,
             deleteOccupationBail,
             bailIsOccupied,
-            isAdmin
+            isAdmin,
+            services,
+            sendRequestService
         } = this.props;
 
 
@@ -93,7 +96,8 @@ export class ReserveView extends React.Component <ViewProps> {
                         </div>
                         <div className={"info"}>
                             <h3 id={"price"}><i className="ai-coin"></i>{data.price}</h3>
-                            <h3 id={"location"}><i className="ai-map"></i>{data.address}</h3>
+                            <h3 id={"location"}><i className="ai-map"></i><span
+                                id={"location-city"}>{data.address}</span></h3>
                             <h3 id={"contact"}><i className="ai-paper-airplane"></i>{data.created_by}</h3>
                             {
                                 !isReserved
@@ -144,9 +148,31 @@ export class ReserveView extends React.Component <ViewProps> {
                             }
                         </div>
                     </div>
+                    {
+                        isReserved ?
+                            <div className={"calendar-form-complete"}
+                                 style={{marginTop: '100px', width: '40%', padding: '20px'}}>
+                                <h2>Take Services</h2>
+                                <select id={"service-name"}>
+                                    {
+                                        services.map((service, index) => {
+                                            return (
+                                                <option key={service.name} value={service.name}>{service.name}</option>
+                                            );
+                                        })
+                                    }
+                                </select>
+                                <select id={"service-time"}>
+                                    <option value={"before"}>Before resea</option>
+                                    <option value={"during"}>During resa</option>
+                                    <option value={"after"}>After resa</option>
+                                </select>
+                                <textarea id={"service-description"}></textarea>
+                                <button onClick={sendRequestService}>Request service</button>
+                            </div> : ''
+                    }
 
-
-                    <h1 style={{marginTop: '-10%'}}>Calendar</h1>
+                    <h1>Calendar</h1>
                     <div className={"calendar"}>
                         <Calendar
                             localizer={now}
@@ -154,7 +180,7 @@ export class ReserveView extends React.Component <ViewProps> {
                                 return {
                                     start: new Date(event.from_datetime),
                                     end: new Date(event.to_datetime),
-                                    title: isBail ? event.user_email : 'Occupied'
+                                    title: isBail ? (data.created_by == event.user_email ? 'Baileur' : event.user_email) : 'Occupied'
                                 };
                             })}
                             startAccessor="start"

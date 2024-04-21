@@ -12,10 +12,26 @@ export default class Controller extends React.Component<
         super(props);
         haveToken();
         this.getLocation();
+        this.getLocationsOccupationNotifInfo();
     }
 
     state: ControllerState = {
         data: [],
+        locationOccupationServiceRequest: [],
+    };
+
+    public getLocationsOccupationNotifInfo = async () => {
+        const apiPath = process.env.API_PATH || 'http://localhost:3001';
+        const response = await fetch(`${apiPath}/location/occupation-service`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                authorization: localStorage.getItem('token') || ''
+            }
+        });
+        let data: any[] = await response.json();
+        data = data.filter((user) => user.status === 'good' && user.user_email === localStorage.getItem('email'));
+        this.setState({locationOccupationServiceRequest: data});
     };
 
     private getLocation = async () => {
@@ -40,6 +56,8 @@ export default class Controller extends React.Component<
             return <Loading/>;
         }
 
-        return <ResaView data={this.state.data}/>;
+        return <ResaView
+            locationOccupationServiceRequest={this.state.locationOccupationServiceRequest}
+            data={this.state.data}/>;
     }
 }

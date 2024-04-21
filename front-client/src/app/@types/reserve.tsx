@@ -30,6 +30,7 @@ export interface ViewProps {
     deleteOccupationBail: (type: number) => void;
     bailIsOccupied: () => void;
     isAdmin: boolean;
+    sendRequestService: () => void;
 }
 
 export interface ControllerProps {

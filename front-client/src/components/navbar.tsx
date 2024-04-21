@@ -6,6 +6,10 @@ export interface NavigationItem {
     icon: string;
 }
 
+export interface NavbarState {
+    notification: number;
+}
+
 export class Navbar extends React.Component {
     navItems: NavigationItem[] = [
         {
@@ -17,11 +21,6 @@ export class Navbar extends React.Component {
             name: "Location",
             url: "/location",
             icon: "ai-location",
-        },
-        {
-            name: "Service",
-            url: "/service",
-            icon: "ai-network",
         },
         {
             name: "Mes reservation",
@@ -57,11 +56,30 @@ export class Navbar extends React.Component {
 
     constructor(pos: any) {
         super(pos);
-        console.log(document.cookie);
+        this.getLocationsOccupationNotifInfo();
         if (document.cookie.includes("Theme=black")) {
             this.setLightModeCookie("white");
         }
     }
+
+    state: NavbarState = {
+        notification: 0,
+    };
+
+    public getLocationsOccupationNotifInfo = async () => {
+        const apiPath = process.env.API_PATH || 'http://localhost:3001';
+        const response = await fetch(`${apiPath}/location/occupation-service`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                authorization: localStorage.getItem('token') || ''
+            }
+        });
+        let data: any[] = await response.json();
+        data = data.filter((user) => user.status === 'good' && user.user_email === localStorage.getItem('email'));
+        this.setState({notification: data.length});
+    };
+
 
     setLightModeCookie = (currentColor = document.body.style.backgroundColor) => {
         let assignColor;
@@ -118,6 +136,11 @@ export class Navbar extends React.Component {
                                     }
                                 }}
                             >
+                                {
+                                    this.state.notification > 0 && item.url === "resa" ? (
+                                        <span className="notification">{this.state.notification}</span>
+                                    ) : null
+                                }
                                 <i className={item.icon}></i>
                                 <span>{item.name}</span>
                             </a>

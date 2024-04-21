@@ -9,7 +9,10 @@ export class ResaView extends React.Component <ViewProps> {
 
     render() {
 
-        const {data} = this.props;
+        const {
+            data,
+            locationOccupationServiceRequest
+        } = this.props;
 
 
         return (
@@ -29,7 +32,7 @@ export class ResaView extends React.Component <ViewProps> {
                                         }}
                                         cardInfo={{
                                             title: location.name,
-                                            description: '',
+                                            description: locationOccupationServiceRequest.filter((d) => d.location_occupation_id === location.location_occupation_id && d.status === 'good').length !== 0 ? 'Notified' : 'Not Notified',
                                             price: location.price,
                                             location: location.address,
                                             id: location.id,

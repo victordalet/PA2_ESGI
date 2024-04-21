@@ -80,6 +80,7 @@ export class ServiceRepository {
 
     async postServiceByUser(body: LocationLiaison) {
         await this.db.connect()
+        await this.db.query("UPDATE occupation_request_service SET status = 'good' WHERE location_occupation_id = ?", [body.location_occupation_id]);
         return this.db.query("INSERT INTO service_by_user (created_at,updated_at,location_occupation_id, service_id,status,from_datetime,to_datetime) VALUES (?, ?, ?, ?, ? ,? ,?)",
             [new Date(), new Date(), body.location_occupation_id, body.service_id, 'pending', body.from_datetime, body.to_datetime]);
     }
