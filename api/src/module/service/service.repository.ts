@@ -80,7 +80,8 @@ export class ServiceRepository {
 
     async postServiceByUser(body: LocationLiaison) {
         await this.db.connect()
-        await this.db.query("UPDATE occupation_request_service SET status = 'good' WHERE location_occupation_id = ?", [body.location_occupation_id]);
+        const [rows, filed] = await this.db.query("SELECT * FROM service WHERE id = ?", [body.service_id]);
+        await this.db.query("UPDATE occupation_request_service SET status = 'good',price=? WHERE location_occupation_id = ?", [rows[0].price, body.location_occupation_id]);
         return this.db.query("INSERT INTO service_by_user (created_at,updated_at,location_occupation_id, service_id,status,from_datetime,to_datetime) VALUES (?, ?, ?, ?, ? ,? ,?)",
             [new Date(), new Date(), body.location_occupation_id, body.service_id, 'pending', body.from_datetime, body.to_datetime]);
     }
@@ -125,7 +126,7 @@ export class ServiceRepository {
 
     async getServiceByUser(body: LocationLiaison) {
         await this.db.connect()
-        const [rows, filed] = await this.db.query("SELECT service_id,user_email,location_occupation_id,notation,status,from_datetime,to_datetime,(select address from location where id = (select location_id from location_occupation where id = location_occupation_id )) as title FROM service_by_user WHERE service_id = ?",
+        const [rows, filed] = await this.db.query("SELECT service_id, (select price from service where id = service_id) as price,user_email,location_occupation_id,notation,status,from_datetime,to_datetime,(select address from location where id = (select location_id from location_occupation where id = location_occupation_id )) as title FROM service_by_user WHERE service_id = ?",
             [body.service_id]);
         return rows;
     }

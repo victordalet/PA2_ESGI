@@ -3,7 +3,7 @@ import {
     ControllerState,
     LocationOccupation,
     Subscription,
-    SubscriptionUtilisation
+    SubscriptionUtilisation, UserRequest
 } from "../@types/reserve";
 import React from "react";
 import {ReserveView} from "../views/reserve";
@@ -45,6 +45,7 @@ export default class Controller extends React.Component<
         this.fetchJob();
         this.fetchServiceReserved();
         this.getOccupationEvent();
+        this.getLocationsOccupationRequestInfor();
         this.reserveViewModel = new ReserveViewModel();
     }
 
@@ -61,6 +62,22 @@ export default class Controller extends React.Component<
         servicesSelected: [],
         eventCalendar: [],
         nameFiles: [],
+        userRequestService: []
+    };
+
+
+    private getLocationsOccupationRequestInfor = async () => {
+        const apiPath = process.env.API_PATH || 'http://localhost:3001';
+        const response = await fetch(`${apiPath}/location/occupation-service`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                authorization: localStorage.getItem('token') || ''
+            }
+        });
+        let data: UserRequest[] = await response.json();
+        data = data.filter((user) => user.status === 'done' && user.location_occupation_id === this.idResa);
+        this.setState({userRequestService: data});
     };
 
     public sendRequestService = async () => {
@@ -567,39 +584,27 @@ export default class Controller extends React.Component<
             color: rgb(0, 0, 0),
         });
         fontSize = 15;
-        const services = this.state.services;
-        const number_user_locate = this.state.eventCalendar.length;
         let positionYFinal = 9;
-        services.map((s, i) => {
-            page.drawText('Service ' + (i + 1) + ' : ' + s.name + ' - ' + s.price + '€ ', {
-                x: 50,
-                y: height - (positionYFinal + i) * fontSize,
-                size: fontSize,
-                font: timesRomanFont,
-                color: rgb(0, 0, 0),
-
-            });
-            positionYFinal += 2;
+        let totalPriceFinal = 0;
+        this.state.eventCalendar.map((event) => {
+            const date = new Date(event.from_datetime);
+            const dateEnd = new Date(event.to_datetime);
+            if (date.getMonth() === new Date().getMonth() && date.getFullYear() === new Date().getFullYear() && event.user_email !== this.state.data.created_by) {
+                const diff = dateEnd.getTime() - date.getTime();
+                const diffDays = diff / (1000 * 60 * 60 * 24);
+                const totalPrice = diffDays * this.state.data.price;
+                totalPriceFinal += totalPrice;
+                page.drawText(`Total : ${totalPrice} €`, {
+                    x: 50,
+                    y: height - (positionYFinal) * fontSize,
+                    size: fontSize,
+                    font: timesRomanFont,
+                    color: rgb(0, 0, 0),
+                });
+                positionYFinal += 2;
+            }
         });
-        positionYFinal += 3;
-        page.drawText(`Multiplication des services par  : ${number_user_locate} (nb de locations) `, {
-            x: 50,
-            y: height - (positionYFinal) * fontSize,
-            size: fontSize,
-            font: timesRomanFont,
-            color: rgb(0, 0, 0),
-        });
-        positionYFinal += 2;
-        page.drawLine({
-            start: {x: 50, y: height - positionYFinal * fontSize},
-            end: {x: width - 50, y: height - positionYFinal * fontSize},
-            thickness: 2,
-            color: rgb(0, 0, 0),
-        });
-        positionYFinal += 2;
-        const serviceTotalPrice = services.reduce((acc, service) => acc + service.price, 0);
-        const totalPrice = serviceTotalPrice * number_user_locate;
-        page.drawText(`Total : ${totalPrice} €`, {
+        page.drawText(`Total : ${totalPriceFinal} €`, {
             x: 50,
             y: height - (positionYFinal) * fontSize,
             size: fontSize,
@@ -718,8 +723,8 @@ export default class Controller extends React.Component<
             color: rgb(0, 0, 0),
         });
         y -= 2 * fontSize;
-        services.map((service) => {
-            page.drawText(service.name + ' : ' + service.price, {
+        this.state.userRequestService.map((service) => {
+            page.drawText(service.service_name + ' : ' + service.price, {
                 x: 50,
                 y: y,
                 size: fontSize,
@@ -881,6 +886,7 @@ export default class Controller extends React.Component<
             return <Loading/>;
         }
         return <ReserveView
+            userRequestService={this.state.userRequestService}
             sendRequestService={this.sendRequestService}
             isAdmin={this.state.isAdmin}
             bailIsOccupied={this.bailIsOccupied}

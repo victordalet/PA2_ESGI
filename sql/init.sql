@@ -182,7 +182,8 @@ create table occupation_request_service
     user_email             varchar(100) not null references USER (email),
     description            longtext     not null,
     status                 varchar(100) not null,
-    city                   varchar(100) not null
+    city                   varchar(100) not null,
+    price                  int
 );
 
 create table note_user_to_location

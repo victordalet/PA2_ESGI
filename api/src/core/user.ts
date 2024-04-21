@@ -26,4 +26,8 @@ export interface StatsUser {
     nb_remove_user: number;
     nb_premium: number;
     nb_users_created_this_week: number[];
+    nb_services: number;
+    nb_location: number;
+    number_job: number;
+    number_location_type: number;
 }

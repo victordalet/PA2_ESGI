@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {observer} from "mobx-react";
 
-import {ControllerProps, ControllerState, StatsUser} from "../@types/Home";
+import {ControllerProps, ControllerState, StatsData, StatsUser} from "../@types/Home";
 import View from "../views/home";
 import HomeViewModel from "../view-models/Home";
 import {haveToken} from "../../security/token";
@@ -12,14 +12,26 @@ export default class HomeController extends Component<
     ControllerProps,
     ControllerState
 > {
-    state = {
+    state: ControllerState = {
         addInput: "",
         stats: {
             nb_users: 0,
             nb_remove_user: 0,
             nb_premium: 0,
             nb_users_created_this_week: [],
+            nb_services: 0,
+            nb_location: 0,
+            number_job: 0,
+            number_location_type: 0,
         },
+        data: [
+            {name: "Number User", number: 0},
+            {name: "Number Premium", number: 0},
+            {name: "Number Services", number: 0},
+            {name: "Number Location", number: 0},
+            {name: "Number Job", number: 0},
+            {name: "Number Location Type", number: 0},
+        ],
     };
 
     homeViewModel = new HomeViewModel();
@@ -41,17 +53,24 @@ export default class HomeController extends Component<
             },
         }).then((res) => {
             res.json().then((data: StatsUser) => {
-                console.log(data);
                 this.setState({
                     stats: data,
+                });
+                this.setState({
+                    data: [
+                        {name: "Number User", number: data.nb_users},
+                        {name: "Number Premium", number: data.nb_premium},
+                        {name: "Number Services", number: data.nb_services},
+                        {name: "Number Location", number: data.nb_location},
+                        {name: "Number Job", number: data.number_job},
+                        {name: "Number Location Type", number: data.number_location_type},
+                    ],
                 });
             });
         });
     };
 
     render() {
-        const {viewModel} = this.props;
-        const {addInput} = this.state;
 
         if (this.state.stats.nb_users === 0) {
 
@@ -60,6 +79,8 @@ export default class HomeController extends Component<
             );
         }
 
-        return <View stats={this.state.stats}/>;
+        return <View
+            data={this.state.data}
+            stats={this.state.stats}/>;
     }
 }

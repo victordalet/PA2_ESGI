@@ -31,6 +31,18 @@ export interface ViewProps {
     bailIsOccupied: () => void;
     isAdmin: boolean;
     sendRequestService: () => void;
+    userRequestService: UserRequest[];
+}
+
+export interface UserRequest {
+    id: number;
+    location_occupation_id: number;
+    service_name: string;
+    user_email: string;
+    description: string;
+    status: string;
+    city: string;
+    price: number;
 }
 
 export interface ControllerProps {
@@ -50,6 +62,7 @@ export interface ControllerState {
     eventCalendar: LocationOccupation[];
     nameFiles: string[];
     isAdmin: boolean;
+    userRequestService: UserRequest[];
 }
 
 export interface LocationOccupation {

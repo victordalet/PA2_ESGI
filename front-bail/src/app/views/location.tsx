@@ -26,6 +26,8 @@ export default class LocationView extends React.Component <ViewProps> {
             locationTypes
         } = this.props;
 
+        resetChoiceConcierge(1);
+
         return (
             <div className="location-page">
                 <Navbar/>
@@ -40,30 +42,6 @@ export default class LocationView extends React.Component <ViewProps> {
                     <div className={"close-or-open"}>
                         <div className={"form"}>
                             <h1>I request a personalized simulation .</h1>
-                            <div className={"step"}>
-                                <h2>What type of concierge do you want? <span className={"req"}>(Necessary)</span></h2>
-                                <div className={"choice"}>
-                                    <div className={"step"}>
-                                        <input type="radio" onChange={() => resetChoiceConcierge(1)} id="conciergerie1"
-                                               name="gestion1" value="Gestion de A à Z"/>
-                                        <label htmlFor="conciergerie1">Management from A to Z</label>
-                                    </div>
-                                    <div className={"step"}>
-                                        <input type="radio" onChange={() => resetChoiceConcierge(2)} id="conciergerie2"
-                                               name="gestion2"
-                                               value="Yield Management (création, fiffusion et optimisation de vos revenus)"/>
-                                        <label htmlFor="conciergerie2">Yield Management (creation, distribution and
-                                            optimization
-                                            of
-                                            your income)</label>
-                                    </div>
-                                    <div className={"step"}>
-                                        <input type="radio" onChange={() => resetChoiceConcierge(3)} id="conciergerie3"
-                                               name="gestion3" value="Autre"/>
-                                        <label htmlFor="conciergerie3">Other</label>
-                                    </div>
-                                </div>
-                            </div>
                             <div className={"bar"}></div>
                             <div className={"step"}>
                                 <h2>Address of your short-term rental property

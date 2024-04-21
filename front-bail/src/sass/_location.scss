@@ -54,6 +54,22 @@
 
     .close-or-open {
 
+
+        textarea {
+            width: 80%;
+            height: 100px;
+            border: 0;
+            border-radius: 10px;
+            padding: 10px;
+            margin: 20px;
+            resize: none;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: border-color 0.3s;
+        }
+
+
         display: none;
         padding: 10px 20px;
         background-color: $lightColor;
@@ -89,6 +105,7 @@
         cursor: pointer;
         flex-direction: column;
 
+
         img {
             width: 30px;
             height: 30px;
@@ -103,3 +120,15 @@
     }
 
 }
+
+.container-picture-file {
+    input {
+        padding: 10px 20px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        font-size: 1rem;
+        font-weight: 500;
+        transition: border-color 0.3s;
+    }
+}
+
