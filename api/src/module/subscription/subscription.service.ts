@@ -56,13 +56,16 @@ export class SubscriptionService {
                     },
                 ],
                 mode: 'subscription',
-                success_url: `${process.env.FRONTEND_URL}/premium`,
+                success_url: `http://localhost:3001/subscription/subscribe-validation?token=${token}&price=${subscription.price}&session_id={CHECKOUT_SESSION_ID}`,
                 cancel_url: `${process.env.FRONTEND_URL}/home`,
             });
-
-            await this.SubscriptionRepository.subscribeUserByToken(token, subscription.price);
             return {url: session.url};
         }
+    }
+
+    async subscribeUserValidation(token: string, subscription: BodySubscription) {
+        await this.SubscriptionRepository.subscribeUserByToken(token, subscription.price);
+        return "<script>window.close();</script>";
     }
 
     async unsubscribeUserByToken(token: string) {

@@ -161,6 +161,7 @@ export class LocationService {
         }
     }
 
+
     async locationIsOccupiedByUser(locationId: number, token: string) {
         if (!(typeof locationId === 'number')) {
             throw new Error('Bad id');
