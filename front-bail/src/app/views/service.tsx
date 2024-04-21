@@ -45,7 +45,7 @@ export default class ServiceView extends React.Component <ViewProps> {
                             <option value="VIP">VIP</option>
                         </select>
                         <h3>Your schedule : </h3>
-                        <div className={"calendar"}>
+                        <div className={"calendar-schedule"}>
                             {
                                 days.map((day) => {
                                     return (

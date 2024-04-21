@@ -9,7 +9,10 @@ export class ProviderView extends React.Component<ViewProps> {
 
     public render() {
 
-        const {eventCalendar} = this.props;
+        const {
+            eventCalendar,
+            downloadFacture
+        } = this.props;
 
         const now = momentLocalizer(moment);
 
@@ -33,6 +36,11 @@ export class ProviderView extends React.Component<ViewProps> {
                         endAccessor="end"
                         style={{height: 500}}/>
                 </div>
+
+                <button
+                    onClick={downloadFacture}
+                    className={"button-facture-provider"}>Facture
+                </button>
 
 
             </div>
