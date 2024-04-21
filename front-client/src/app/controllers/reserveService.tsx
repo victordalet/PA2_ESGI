@@ -6,6 +6,7 @@ import ReserveServiceViewModel from "../view-models/reserveService";
 import {PDFDocument, rgb, StandardFonts} from "pdf-lib";
 import {LocationOccupation} from "../@types/reserve";
 import {Loading} from "../../components/loading";
+import {ReserveServiceModel} from "../model/reserveService";
 
 export default class Controller extends React.Component<
     ControllerProps,
@@ -13,11 +14,13 @@ export default class Controller extends React.Component<
 > {
 
     private readonly id: number;
+    private readonly reserveServiceModel: ReserveServiceModel;
     public reserveServiceViewModel: ReserveServiceViewModel;
     private commissionStats: aboutCommission[];
 
     constructor(props: ControllerProps) {
         super(props);
+        this.reserveServiceModel = new ReserveServiceModel();
         this.id = parseInt(document.location.href.split('?')[1].split('&')[0]);
         this.commissionStats = [
             {price_min: 1, price_max: 5, commission: 20},
@@ -39,15 +42,7 @@ export default class Controller extends React.Component<
     };
 
     private fetchService = async () => {
-        const apiPath = process.env.API_HOST || 'http://localhost:3001';
-        const response = await fetch(apiPath + '/service', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'authorization': localStorage.getItem('token') || ''
-            }
-        });
-        const data: ServiceResponse[] = await response.json();
+        const data: ServiceResponse[] = await this.reserveServiceModel.fetchService();
         const service = data.find((s) => s.id === this.id);
         if (service) {
             this.setState({service: service});
@@ -56,15 +51,7 @@ export default class Controller extends React.Component<
     };
 
     private isCreator = async () => {
-        const apiPath = process.env.API_HOST || 'http://localhost:3001';
-        const response = await fetch(apiPath + '/user/token-to-mail', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'authorization': localStorage.getItem('token') || ''
-            }
-        });
-        const data: { email: string } = await response.json();
+        const data = await this.reserveServiceModel.isCreator();
         if (data.email === this.state.service.created_by) {
             this.setState({isCreator: true});
         } else {
