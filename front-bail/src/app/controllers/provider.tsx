@@ -3,15 +3,20 @@ import {ControllerProps, ControllerState, EventCalendar} from "../@types/provide
 import {haveToken} from "../../security/token";
 import {ProviderView} from "../views/provider";
 import {PDFDocument, StandardFonts, rgb} from 'pdf-lib';
+import {ProviderModel} from "../model/provider";
 
 export default class ProviderController extends React.Component<
     ControllerProps,
     ControllerState> {
 
+
+    providerModel: ProviderModel;
+
     constructor(props: ControllerProps) {
         super(props);
         haveToken();
-        this.isYourService();
+        this.providerModel = new ProviderModel();
+        this.providerModel.isYourService();
         this.fetchService();
     }
 
@@ -21,18 +26,7 @@ export default class ProviderController extends React.Component<
     };
 
     private fetchService = async () => {
-        const apiPath = process.env.API_HOST || 'http://localhost:3001';
-        const response = await fetch(apiPath + '/service/get-service-by-user', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                authorization: localStorage.getItem('token') || ''
-            },
-            body: JSON.stringify({
-                service_id: document.location.href.split('id=')[1]
-            })
-        });
-        const data: any[] = await response.json();
+        const data: any[] = await this.providerModel.fetchService();
         const eventCalendarTemp: EventCalendar[] = [];
         data.forEach((service) => {
             eventCalendarTemp.push({
@@ -44,23 +38,6 @@ export default class ProviderController extends React.Component<
         this.setState({eventCalendar: eventCalendarTemp});
     };
 
-    private isYourService = async () => {
-        const apiPath = process.env.API_HOST || 'http://localhost:3001';
-        const res = await fetch(`${apiPath}/service/your`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                authorization: localStorage.getItem('token') || ''
-            },
-            body: JSON.stringify({
-                id: document.location.href.split('id=')[1]
-            })
-        });
-        const data: { accept: boolean } = await res.json();
-        if (!data.accept) {
-            document.location.href = "/resources";
-        }
-    };
 
     public downloadFacture = async () => {
         const pdfDoc = await PDFDocument.create();
