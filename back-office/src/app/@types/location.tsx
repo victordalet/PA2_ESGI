@@ -5,7 +5,9 @@ export interface ViewProps {
     searchFilter: () => void;
     capacityFilter: () => void;
     priceFilter: () => void;
-    deleteLocation: (id: string) => void;
+    deleteLocation: (id: number) => void;
+    isValidateFilter: () => void;
+    acceptLocation: (id: number) => void;
 }
 
 
@@ -28,4 +30,5 @@ export interface DataResponse {
     capacity : number;
     type : string;
     id: number
+    is_valid: number;
 }

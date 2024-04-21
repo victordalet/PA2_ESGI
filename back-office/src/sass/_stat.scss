@@ -46,12 +46,15 @@
 
 }
 
+
+
 .chart-stats {
     width: 80vw;
     height: 50vh;
     background-color: $secondaryColor;
-    position: absolute;
-    top: 30%;
+    position: relative;
+    margin-top: 20vh;
+    top: 50%;
     left: 12%;
     border-radius: 20px;
     cursor: pointer;

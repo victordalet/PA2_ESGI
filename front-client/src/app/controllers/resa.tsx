@@ -12,29 +12,43 @@ export default class Controller extends React.Component<
         super(props);
         haveToken();
         this.getLocation();
+        this.getLocationsOccupationNotifInfo();
     }
 
     state: ControllerState = {
         data: [],
+        locationOccupationServiceRequest: [],
     };
 
-    private getLocation = () => {
+    public getLocationsOccupationNotifInfo = async () => {
+        const apiPath = process.env.API_PATH || 'http://localhost:3001';
+        const response = await fetch(`${apiPath}/location/occupation-service`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                authorization: localStorage.getItem('token') || ''
+            }
+        });
+        let data: any[] = await response.json();
+        data = data.filter((user) => user.status === 'good' && user.user_email === localStorage.getItem('email'));
+        this.setState({locationOccupationServiceRequest: data});
+    };
+
+    private getLocation = async () => {
         const apiPath = process.env.API_HOST || "http://localhost:3001";
-        fetch(apiPath + "/location/get-location-occupation", {
+        const response = await fetch(apiPath + "/location/get-location-occupation", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
                 authorization: localStorage.getItem("token") || "",
             },
-        }).then((res) => {
-            res.json().then((data) => {
-                this.setState({data: data});
-                console.log(data);
-                if (data.length === 0) {
-                    document.location.href = "/location";
-                }
-            });
         });
+        const data = await response.json();
+        console.log(data);
+        this.setState({data: data.filter((location: any) => location.created_by !== localStorage.getItem("email"))});
+        if (data.length === 0) {
+            document.location.href = "/location";
+        }
     };
 
     render() {
@@ -42,6 +56,8 @@ export default class Controller extends React.Component<
             return <Loading/>;
         }
 
-        return <ResaView data={this.state.data}/>;
+        return <ResaView
+            locationOccupationServiceRequest={this.state.locationOccupationServiceRequest}
+            data={this.state.data}/>;
     }
 }

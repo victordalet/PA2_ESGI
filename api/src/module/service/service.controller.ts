@@ -53,6 +53,15 @@ export class ServiceController {
         return this.serviceService.postServiceByUser(token, body);
     }
 
+    @Post('your')
+    @ApiOperation({summary: 'Verif is your your services'})
+    @ApiCreatedResponse({description: 'Service'})
+    @ApiBadRequestResponse({description: 'Request body is not valid'})
+    async getYourServices(@Headers('authorization') token: string, @Body() body: LocationAvailability) {
+        await this.tokenValidation.validateToken(token);
+        return await this.serviceService.isYourServices(token, body);
+    }
+
 
     @Post('get-service-by-location')
     @ApiOperation({summary: 'Post service by location'})
@@ -92,13 +101,23 @@ export class ServiceController {
         return await this.serviceService.getLocationByServiceId(body);
     }
 
+
+    @Post('admin-accept')
+    @ApiOperation({summary: 'Admin accept service'})
+    @ApiCreatedResponse({description: 'Service'})
+    @ApiBadRequestResponse({description: 'Request body is not valid'})
+    async adminAcceptService(@Headers('authorization') token: string, @Body() body: ServiceModel) {
+        await this.tokenValidation.validateAdminToken(token);
+        return this.serviceService.adminAcceptService(body);
+    }
+
     @Patch('remove-location-by-service')
     @ApiOperation({summary: 'Remove location by service'})
     @ApiOkResponse({description: 'Location removed'})
     @ApiBadRequestResponse({description: 'Request body is not valid'})
     async removeLocationByServiceId(@Headers('authorization') token: string, @Body() body: ServiceModel) {
         await this.tokenValidation.validateToken(token);
-        return this.serviceService.removeLocationByServiceId(body,token);
+        return this.serviceService.removeLocationByServiceId(body, token);
     }
 
     @Patch('notation')
@@ -107,7 +126,7 @@ export class ServiceController {
     @ApiBadRequestResponse({description: 'Request body is not valid'})
     async notationService(@Headers('authorization') token: string, @Body() body: ServiceModel) {
         await this.tokenValidation.validateToken(token);
-        return this.serviceService.notationService(body,token);
+        return this.serviceService.notationService(body, token);
     }
 
     @Put(':id')

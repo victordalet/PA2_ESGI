@@ -2,7 +2,7 @@ import {Connection} from "mysql2/promise";
 import {DatabaseEntity} from "../../database/mysql.entity";
 import {Service} from "../../core/service";
 import {ServiceModel} from "./service.model";
-import {LocationLiaison} from "../../core/location";
+import {LocationAvailability, LocationLiaison} from "../../core/location";
 
 export class ServiceRepository {
     private db: Connection;
@@ -60,8 +60,8 @@ export class ServiceRepository {
 
     async createService(service: ServiceModel) {
         await this.db.connect()
-        await this.db.query("INSERT INTO service (name, created_at ,updated_at, description, price, duration, created_by, type) VALUES (?, ?, ?, ?, ?, ?, ?,?)",
-            [service.name, new Date(), new Date(), service.description, service.price, service.duration, service.created_by, service.type]);
+        await this.db.query("INSERT INTO service (name, created_at ,updated_at, description, price, duration, created_by, type, siret, is_valid,schedule,city) VALUES (?, ?, ?, ?, ?, ?, ?,?,?,?,?,?)",
+            [service.name, new Date(), new Date(), service.description, service.price, service.duration, service.created_by, service.type, service.siret, 0, service.schedule, service.city]);
         const [rows, filed] = await this.db.query("SELECT LAST_INSERT_ID() as id  FROM service");
         return rows[0];
 
@@ -80,13 +80,31 @@ export class ServiceRepository {
 
     async postServiceByUser(body: LocationLiaison) {
         await this.db.connect()
-        return this.db.query("INSERT INTO service_by_user (created_at,updated_at,location_occupation_id, service_id) VALUES (?, ?, ?, ?)",
-            [new Date(), new Date(), body.location_occupation_id, body.service_id]);
+        const [rows, filed] = await this.db.query("SELECT * FROM service WHERE id = ?", [body.service_id]);
+        await this.db.query("UPDATE occupation_request_service SET status = 'good',price=? WHERE location_occupation_id = ?", [rows[0].price, body.location_occupation_id]);
+        return this.db.query("INSERT INTO service_by_user (created_at,updated_at,location_occupation_id, service_id,status,from_datetime,to_datetime) VALUES (?, ?, ?, ?, ? ,? ,?)",
+            [new Date(), new Date(), body.location_occupation_id, body.service_id, 'pending', body.from_datetime, body.to_datetime]);
     }
 
     async postServiceByLocation(body: LocationLiaison) {
         await this.db.connect()
         return this.db.query("INSERT INTO service_by_location (location_id, service_id) VALUES (?, ?)", [body.location_id, body.service_id]);
+    }
+
+    async isYourServices(token: string, body: LocationAvailability) {
+        await this.db.connect()
+        const [rows, filed] = await this.db.query("SELECT email FROM USER WHERE connection = ?", [token]);
+        const [rows_2, filed_2] = await this.db.query("SELECT * FROM service WHERE created_by = ?", [rows[0].email]);
+        if (rows_2 instanceof Array) {
+            for (const row of rows_2) {
+                // @ts-ignore
+                if (row.id == body.id) {
+                    return true;
+                }
+            }
+        }
+        return false;
+
     }
 
     async getServiceByLocation(body: LocationLiaison) {
@@ -108,19 +126,9 @@ export class ServiceRepository {
 
     async getServiceByUser(body: LocationLiaison) {
         await this.db.connect()
-        const [rows, filed] = await this.db.query("SELECT service_id FROM service_by_user WHERE location_occupation_id = ?", [body.location_occupation_id]);
-        const [rows2, filed2] = await this.db.query("SELECT * FROM service");
-        const services = [];
-        if (rows instanceof Array && rows2 instanceof Array) {
-            rows.forEach(async (row) => {
-                rows2.forEach(async (row2) => {
-                    if (row2.id === row.service_id) {
-                        services.push(row2);
-                    }
-                });
-            });
-        }
-        return services;
+        const [rows, filed] = await this.db.query("SELECT service_id, (select price from service where id = service_id) as price,user_email,location_occupation_id,notation,status,from_datetime,to_datetime,(select address from location where id = (select location_id from location_occupation where id = location_occupation_id )) as title FROM service_by_user WHERE service_id = ?",
+            [body.service_id]);
+        return rows;
     }
 
     async notationServiceByUser(body: ServiceModel, token: string) {
@@ -172,5 +180,10 @@ export class ServiceRepository {
     async deleteServiceByAdmin(id: number) {
         await this.db.connect()
         return this.db.query("DELETE FROM service WHERE id = ?", [id]);
+    }
+
+    async adminAcceptService(service_id: number) {
+        await this.db.connect()
+        return this.db.query("UPDATE service SET is_valid = 1 WHERE id = ?", [service_id]);
     }
 }

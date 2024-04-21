@@ -48,3 +48,29 @@ export class LocationModel {
 
 
 }
+
+export class RequestLocationServiceModel {
+    @ApiProperty({type: 'number', description: 'location occupation id'})
+    @IsNumber()
+    location_occupation_id: number;
+
+    @ApiProperty({type: 'string', description: 'Service job'})
+    @IsString()
+    service_name: string;
+
+    @ApiProperty({type: 'string', description: 'user_email'})
+    @IsString()
+    user_email: string;
+
+    @ApiProperty({type: 'string', description: 'description'})
+    @IsString()
+    description: string;
+
+    @ApiProperty({type: 'string', description: 'status'})
+    @IsString()
+    status: string;
+
+    @ApiProperty({type: 'string', description: 'city'})
+    @IsString()
+    city: string;
+}

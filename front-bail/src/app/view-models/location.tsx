@@ -1,6 +1,16 @@
-import {FormLocation, LocationService} from "../@types/location";
+import {FormLocation} from "../@types/location";
 
 export default class LocationViewModel {
+
+    private modifyColorTitleBox = (title1: boolean, title2: boolean, title3: boolean) => {
+        const titles = document.querySelectorAll<HTMLElement>('.opener h2');
+        const colorTrue = '#0f5b06';
+        const colorFalse = '#9f0814';
+        titles[0].style.color = title1 ? colorTrue : colorFalse;
+        titles[1].style.color = title2 ? colorTrue : colorFalse;
+        titles[2].style.color = title3 ? colorTrue : colorFalse;
+
+    };
 
     public storeFormInJSON(): FormLocation {
         let typeConcierge = '';
@@ -32,11 +42,15 @@ export default class LocationViewModel {
             telephone: document.querySelector<HTMLInputElement>('#phone')?.value || '',
             time: time,
             privacy: document.querySelector<HTMLInputElement>('#privacy')?.checked || false,
-            service: []
+            description: document.querySelector<HTMLInputElement>('#description')?.value || ''
         };
 
         if (data.address === '' || data.country === '' || data.type === '' || data.typeLocation === '' ||
             data.nameFounder === '' || data.email === '' || data.telephone === '' || !data.privacy) {
+            this.modifyColorTitleBox(false, true, true);
+            if (data.description === '') {
+                this.modifyColorTitleBox(false, true, false);
+            }
             this.openPopupError();
             return {
                 typeConcierge: '',
@@ -50,7 +64,7 @@ export default class LocationViewModel {
                 email: '',
                 telephone: '',
                 time: [],
-                service: []
+                description: ''
             };
         }
 
@@ -82,6 +96,18 @@ export default class LocationViewModel {
         });
     }
 
+    public changeStyleCardSelected = (index: number) => {
+        const elements = document.querySelectorAll<HTMLElement>('.icon-type-location');
+        console.log(elements);
+        console.log(index);
+        const element = elements[index];
+        if (element.classList.contains('active')) {
+            element.classList.remove('active');
+        } else {
+            element.classList.add('active');
+        }
+    };
+
 
     public allSelectedRadioContact() {
         Array.from(Array(5).keys()).map((i) => {
@@ -93,51 +119,35 @@ export default class LocationViewModel {
     }
 
     public activeStep2 = () => {
-        if (document.querySelector<HTMLInputElement>('#name')?.value === '' ||
-            document.querySelector<HTMLInputElement>('#email')?.value === '' ||
-            document.querySelector<HTMLInputElement>('#phone')?.value === '' ||
-            document.querySelector<HTMLInputElement>('#address')?.value === '' ||
-            document.querySelector<HTMLSelectElement>('#country')?.value === '' ||
-            document.querySelector<HTMLSelectElement>('#type')?.value === '' ||
-            document.querySelector<HTMLSelectElement>('#rent')?.value === '' ||
-            document.querySelector<HTMLSelectElement>('#room')?.value === '' ||
-            document.querySelector<HTMLInputElement>('#price')?.value === ''
-        ) {
-            this.openPopupError();
-            return;
-        }
         const price = this.calculatePrice();
-        const div = document.querySelector<HTMLElement>(".container-price-and-creation");
         const inputPrice = document.querySelector<HTMLInputElement>("#price");
-        if (div) {
-            div.style.display = "flex";
-        }
         if (inputPrice) {
             inputPrice.value = price.toString();
         }
 
     };
 
-    public addServiceToForm = (service: LocationService, index: number) => {
-        const allPriceElement = document.querySelectorAll<HTMLInputElement>(".card");
-        const inputPrice = document.querySelector<HTMLInputElement>("#price");
-        const priceElement = allPriceElement[index];
-        if (priceElement && inputPrice) {
-            const price = parseInt(inputPrice.value);
-            if (priceElement.classList.contains("active")) {
-                priceElement.classList.remove("active");
-                inputPrice.value = (price - service.price).toString();
-            } else {
-                priceElement.classList.add("active");
-                inputPrice.value = (price + service.price).toString();
-            }
-        }
-    };
-
     public openPopupError = () => {
         const popup = document.querySelector<HTMLElement>(".pop-up");
         if (popup) {
             popup.style.transform = "translateX(0)";
+        }
+    };
+
+
+    public openOrCloseOpener = (index: number) => {
+        const openers = document.querySelectorAll<HTMLElement>(".close-or-open");
+        const icons = document.querySelectorAll<HTMLElement>('.opener i');
+        const icon = icons[index];
+        const opener = openers[index];
+        if (opener) {
+            if (opener.style.display === "none") {
+                opener.style.display = "block";
+                icon.style.transform = 'rotate(180deg)';
+            } else {
+                opener.style.display = "none";
+                icon.style.transform = 'rotate(0)';
+            }
         }
     };
 

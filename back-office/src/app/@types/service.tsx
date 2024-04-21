@@ -4,7 +4,9 @@ export interface ViewProps {
     data: resultData[];
     searchFilter: () => void;
     priceFilter: () => void;
-    deleteService: (id: string) => void;
+    deleteService: (id: number) => void;
+    isValidateFilter: () => void;
+    acceptService: (id: number) => void;
 }
 
 export interface ControllerProps {
@@ -23,4 +25,6 @@ export interface resultData {
     duration: number;
     nb_use: number;
     id: number;
+    siret: string;
+    is_valid: number;
 }

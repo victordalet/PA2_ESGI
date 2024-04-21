@@ -172,11 +172,16 @@ export class UserService {
         weekStats.map((value, index) => {
             weekStats[index] = value / users.length * 100;
         })
+        const getStats = await this.UserRepository.getStats();
         return {
             nb_users: users.length,
             nb_remove_user: users.filter(user => user.deleted_at).length,
             nb_premium: users.filter(user => user.premium).length,
-            nb_users_created_this_week: weekStats
+            nb_users_created_this_week: weekStats,
+            nb_services: getStats[0].nb_services,
+            nb_location: getStats[0].nb_location,
+            number_job: getStats[0].number_job,
+            number_location_type: getStats[0].number_location_type
         }
 
     }

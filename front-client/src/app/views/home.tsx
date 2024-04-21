@@ -8,7 +8,6 @@ import {ChatBot} from "../../components/chatBot";
 import {Language} from "../../components/language";
 
 
-
 export default class HomeView extends React.Component <ViewProps> {
 
 
@@ -49,32 +48,19 @@ export default class HomeView extends React.Component <ViewProps> {
                             })
                         }
                     </div>
-                    <h3>Last Services : </h3>
+                    <h3>Service available : </h3>
                     <div className={"container-last-services"}>
                         {
                             service.map((s, index) => {
                                 if (index > service.length - 6) {
                                     return (
                                         <Card
-                                            onclick={() => {
-                                                window.location.href = '/reserve-service?' + s.id + '&a=false';
-                                            }}
                                             cardInfo={{
                                                 title: s.name,
-                                                description: (<div>{
-                                                            Array.from(Array(5).keys()).map((i) => {
-                                                                if (s.notation) {
-                                                                    if (i < s.notation) {
-                                                                        return <i className="ai-star"
-                                                                                  color={"#d3ae1b"}></i>;
-                                                                    }
-                                                                }
-                                                                return <i className="ai-star" color={"#fff"}></i>;
-                                                            })
-                                                        }</div>),
-                                                price: s.price,
-                                                id: s.id,
-                                                type: 'service'
+                                                description: '',
+                                                price: 0,
+                                                id: 1,
+                                                type: s.name
                                             }}></Card>
                                     );
                                 }

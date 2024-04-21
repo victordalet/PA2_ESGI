@@ -41,7 +41,7 @@ export default class ResourcesView extends React.Component<ViewProps> {
                                     key={index}
                                     cardInfo={{
                                         title: l.name,
-                                        description: '',
+                                        description: l.is_valid === 1 ? 'Valid' : 'currently being validated',
                                         price: l.price,
                                         type: 'location',
                                         id: l.id
@@ -53,22 +53,15 @@ export default class ResourcesView extends React.Component<ViewProps> {
                             service.map((s, index) => (
                                 <Card
                                     key={index}
+                                    onclick={() => {
+                                        document.location = '/provider?id=' + s.id;
+                                    }}
                                     cardInfo={{
                                         title: s.name,
-                                        description: (<div>{
-                                            Array.from(Array(5).keys()).map((i) => {
-                                                if (s.notation) {
-                                                    if (i < s.notation) {
-                                                        return <i className="ai-star"
-                                                                  color={"#d3ae1b"}></i>;
-                                                    }
-                                                }
-                                                return <i className="ai-star" color={"#fff"}></i>;
-                                            })
-                                        }</div>),
+                                        description: s.is_valid === 1 ? 'Valid' : 'currently being validated',
                                         price: s.price,
-                                        type: 'service',
-                                        id: s.id
+                                        type: s.name,
+                                        id: 1
                                     }}
                                 />
                             ))

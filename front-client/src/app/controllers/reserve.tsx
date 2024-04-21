@@ -3,7 +3,7 @@ import {
     ControllerState,
     LocationOccupation,
     Subscription,
-    SubscriptionUtilisation
+    SubscriptionUtilisation, UserRequest
 } from "../@types/reserve";
 import React from "react";
 import {ReserveView} from "../views/reserve";
@@ -38,13 +38,14 @@ export default class Controller extends React.Component<
             this.idResa = parseInt(document.location.href.split("&id2=")[1]);
             this.isAlsoReserved();
         }
+        this.verifIsAdmin();
         this.getNameFileBail();
         this.fetchLocation();
         this.getStartNotation();
-        this.fetchService();
-        this.fetchServiceOfLocation();
+        this.fetchJob();
         this.fetchServiceReserved();
         this.getOccupationEvent();
+        this.getLocationsOccupationRequestInfor();
         this.reserveViewModel = new ReserveViewModel();
     }
 
@@ -56,43 +57,49 @@ export default class Controller extends React.Component<
         notation: 0,
         messages: [],
         isBail: undefined,
+        isAdmin: false,
         description: {} as LocationDescription,
         servicesSelected: [],
         eventCalendar: [],
         nameFiles: [],
+        userRequestService: []
     };
 
-    private fetchService = async () => {
-        const apiPath = process.env.API_HOST || "http://localhost:3001";
-        const response = await fetch(apiPath + "/service", {
-            method: "GET",
+
+    private getLocationsOccupationRequestInfor = async () => {
+        const apiPath = process.env.API_PATH || 'http://localhost:3001';
+        const response = await fetch(`${apiPath}/location/occupation-service`, {
+            method: 'POST',
             headers: {
-                "Content-Type": "application/json",
-                authorization: localStorage.getItem("token") || "",
-            },
+                'Content-Type': 'application/json',
+                authorization: localStorage.getItem('token') || ''
+            }
         });
-        const data: ServiceResponse[] = await response.json();
-        data.filter((service) => {
-            return service.type === 'USER';
-        });
-        this.setState({servicesGlobal: data});
+        let data: UserRequest[] = await response.json();
+        data = data.filter((user) => user.status === 'done' && user.location_occupation_id === this.idResa);
+        this.setState({userRequestService: data});
     };
 
-    private fetchServiceOfLocation = async () => {
-        const apiPath = process.env.API_HOST || "http://localhost:3001";
-        const response = await fetch(apiPath + "/service/get-service-by-location", {
-            method: "POST",
+    public sendRequestService = async () => {
+        const apiPath = process.env.API_HOST || 'http://localhost:3001';
+        const desc = document.querySelector<HTMLInputElement>('#service-description');
+        await fetch(apiPath + '/location/add-occupation-service', {
+            method: 'POST',
             headers: {
-                "Content-Type": "application/json",
-                authorization: localStorage.getItem("token") || "",
+                'Content-Type': 'application/json',
+                'authorization': localStorage.getItem('token') || ''
             },
             body: JSON.stringify({
-                location_id: this.id,
+                location_occupation_id: this.idResa,
+                service_name: document.querySelector<HTMLInputElement>('#service-name')?.value,
+                user_email: localStorage.getItem('email'),
+                description: document.querySelector<HTMLSelectElement>('#service-time')?.value + ' ' + desc?.value,
+                city: document.querySelector<HTMLElement>('#location-city')?.innerHTML,
             }),
         });
-        const data = await response.json();
-        this.setState({services: data});
+        document.location.reload();
     };
+
 
     public deleteLocation = async () => {
         const apiPath = process.env.API_HOST || "http://localhost:3001";
@@ -104,6 +111,35 @@ export default class Controller extends React.Component<
             },
         });
         document.location.href = "/location";
+    };
+
+    public bailIsOccupied = async () => {
+        const dateStart = document.querySelector<HTMLInputElement>("#date-start");
+        const dateEnd = document.querySelector<HTMLInputElement>("#date-end");
+        const repeat = document.querySelector<HTMLSelectElement>("#repeat-calendar-unavailable");
+        if (dateStart !== null && dateEnd !== null && repeat !== null) {
+            if (!this.reserveViewModel.verifyDate(dateStart.value, dateEnd.value)) {
+                this.reserveViewModel.openPopupBadDate();
+            } else {
+                const apiPath = process.env.API_HOST || "http://localhost:3001";
+                await fetch(apiPath + this.apiSubPath + "/occupation-bail", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        authorization: localStorage.getItem("token") || "",
+                    },
+                    body: JSON.stringify({
+                        location_id: this.id,
+                        from_datetime: dateStart.value,
+                        to_datetime: dateEnd.value,
+                        repeat: repeat.value,
+                    }),
+                });
+                document.location.reload();
+            }
+        } else {
+            this.reserveViewModel.openPopupBadDate();
+        }
     };
 
     private isBail = async () => {
@@ -141,7 +177,7 @@ export default class Controller extends React.Component<
         });
         const description: LocationDescription = JSON.parse(
             data.filter((location: ServiceResponse) => location.id === this.id)[0]
-                .description
+                .description_json
         );
         this.setState({description: description});
         this.isBail();
@@ -217,6 +253,55 @@ export default class Controller extends React.Component<
             }
         );
         const data: LocationOccupation[] = await response.json();
+        const maxToRepeat = 10;
+        const dataArrayToAppend: LocationOccupation[] = [];
+        console.log(data);
+        data.map((occupation) => {
+            if (occupation.repeat === "weekly") {
+                Array.from({length: maxToRepeat}, (_, i) => {
+                    const date = new Date(occupation.from_datetime);
+                    date.setDate(date.getDate() + 7 * (i + 1));
+                    const dateEnd = new Date(occupation.to_datetime);
+                    dateEnd.setDate(dateEnd.getDate() + 7 * (i + 1));
+                    dataArrayToAppend.push({
+                        id: occupation.id,
+                        from_datetime: date.toISOString().split("T")[0],
+                        to_datetime: dateEnd.toISOString().split("T")[0],
+                        user_email: occupation.user_email,
+                        repeat: occupation.repeat,
+                    });
+                });
+            } else if (occupation.repeat === "monthly") {
+                Array.from({length: maxToRepeat}, (_, i) => {
+                    const date = new Date(occupation.from_datetime);
+                    date.setMonth(date.getMonth() + (i + 1));
+                    const dateEnd = new Date(occupation.to_datetime);
+                    dateEnd.setMonth(dateEnd.getMonth() + (i + 1));
+                    dataArrayToAppend.push({
+                        id: occupation.id,
+                        from_datetime: date.toISOString().split("T")[0],
+                        to_datetime: dateEnd.toISOString().split("T")[0],
+                        user_email: occupation.user_email,
+                        repeat: occupation.repeat,
+                    });
+                });
+            } else if (occupation.repeat === 'daily') {
+                Array.from({length: maxToRepeat}, (_, i) => {
+                    const date = new Date(occupation.from_datetime);
+                    date.setDate(date.getDate() + (i + 1));
+                    const dateEnd = new Date(occupation.to_datetime);
+                    dateEnd.setDate(dateEnd.getDate() + (i + 1));
+                    dataArrayToAppend.push({
+                        id: occupation.id,
+                        from_datetime: date.toISOString().split("T")[0],
+                        to_datetime: dateEnd.toISOString().split("T")[0],
+                        user_email: occupation.user_email,
+                        repeat: occupation.repeat,
+                    });
+                });
+            }
+        });
+        data.push(...dataArrayToAppend);
         this.setState({eventCalendar: data});
     };
 
@@ -381,8 +466,13 @@ export default class Controller extends React.Component<
     };
 
 
-    public deleteOccupationBail = async () => {
-        const idLocation = document.querySelector<HTMLInputElement>('#message-select')?.value;
+    public deleteOccupationBail = async (type: number) => {
+        let idLocation = '';
+        if (type == 1) {
+            idLocation = document.querySelector<HTMLInputElement>('#message-select')?.value || '';
+        } else if (type == 2) {
+            idLocation = document.querySelector<HTMLInputElement>('#delete-location')?.value || '';
+        }
         const apiPath = process.env.API_HOST || 'http://localhost:3001';
         await fetch(apiPath + this.apiSubPath + '/occupation', {
             method: 'PATCH',
@@ -494,39 +584,27 @@ export default class Controller extends React.Component<
             color: rgb(0, 0, 0),
         });
         fontSize = 15;
-        const services = this.state.services;
-        const number_user_locate = this.state.eventCalendar.length;
         let positionYFinal = 9;
-        services.map((s, i) => {
-            page.drawText('Service ' + (i + 1) + ' : ' + s.name + ' - ' + s.price + '€ ', {
-                x: 50,
-                y: height - (positionYFinal + i) * fontSize,
-                size: fontSize,
-                font: timesRomanFont,
-                color: rgb(0, 0, 0),
-
-            });
-            positionYFinal += 2;
+        let totalPriceFinal = 0;
+        this.state.eventCalendar.map((event) => {
+            const date = new Date(event.from_datetime);
+            const dateEnd = new Date(event.to_datetime);
+            if (date.getMonth() === new Date().getMonth() && date.getFullYear() === new Date().getFullYear() && event.user_email !== this.state.data.created_by) {
+                const diff = dateEnd.getTime() - date.getTime();
+                const diffDays = diff / (1000 * 60 * 60 * 24);
+                const totalPrice = diffDays * this.state.data.price;
+                totalPriceFinal += totalPrice;
+                page.drawText(`Total : ${totalPrice} €`, {
+                    x: 50,
+                    y: height - (positionYFinal) * fontSize,
+                    size: fontSize,
+                    font: timesRomanFont,
+                    color: rgb(0, 0, 0),
+                });
+                positionYFinal += 2;
+            }
         });
-        positionYFinal += 3;
-        page.drawText(`Multiplication des services par  : ${number_user_locate} (nb de locations) `, {
-            x: 50,
-            y: height - (positionYFinal) * fontSize,
-            size: fontSize,
-            font: timesRomanFont,
-            color: rgb(0, 0, 0),
-        });
-        positionYFinal += 2;
-        page.drawLine({
-            start: {x: 50, y: height - positionYFinal * fontSize},
-            end: {x: width - 50, y: height - positionYFinal * fontSize},
-            thickness: 2,
-            color: rgb(0, 0, 0),
-        });
-        positionYFinal += 2;
-        const serviceTotalPrice = services.reduce((acc, service) => acc + service.price, 0);
-        const totalPrice = serviceTotalPrice * number_user_locate;
-        page.drawText(`Total : ${totalPrice} €`, {
+        page.drawText(`Total : ${totalPriceFinal} €`, {
             x: 50,
             y: height - (positionYFinal) * fontSize,
             size: fontSize,
@@ -645,8 +723,8 @@ export default class Controller extends React.Component<
             color: rgb(0, 0, 0),
         });
         y -= 2 * fontSize;
-        services.map((service) => {
-            page.drawText(service.name + ' : ' + service.price, {
+        this.state.userRequestService.map((service) => {
+            page.drawText(service.service_name + ' : ' + service.price, {
                 x: 50,
                 y: y,
                 size: fontSize,
@@ -774,11 +852,44 @@ export default class Controller extends React.Component<
         this.setState({servicesSelected: data});
     };
 
+    private fetchJob = async () => {
+        const apiPath = process.env.API_HOST || 'http://localhost:3001';
+        const response = await fetch(apiPath + '/job', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                authorization: localStorage.getItem('token') || ''
+            }
+        });
+        const data = await response.json();
+        console.log(data);
+        this.setState({services: data});
+    };
+
+    private verifIsAdmin = async () => {
+        const apiPath = process.env.API_HOST || "http://localhost:3001";
+        const response = await fetch(apiPath + "/user/isAdmin", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                authorization: localStorage.getItem("token") || "",
+            },
+        });
+        const data = await response.json();
+        if (data.connection) {
+            this.setState({isAdmin: true});
+        }
+    };
+
     render() {
         if (this.state.isBail === undefined && this.state.services.length === 0) {
             return <Loading/>;
         }
         return <ReserveView
+            userRequestService={this.state.userRequestService}
+            sendRequestService={this.sendRequestService}
+            isAdmin={this.state.isAdmin}
+            bailIsOccupied={this.bailIsOccupied}
             isService={this.isService}
             fetchMessagesForBail={this.fetchMessagesForBail}
             postMessageForBail={this.postMessageForBail}

@@ -24,6 +24,7 @@ export interface ServiceResponse {
     created_by: string;
     name: string;
     description: string;
+    description_json: string;
     price: number;
     duration: number;
     nb_use?: number;

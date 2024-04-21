@@ -13,20 +13,23 @@ create table USER
 
 create table location
 (
-    id          int primary key auto_increment,
-    created_at  datetime     not null,
-    updated_at  datetime     not null,
-    deleted_at  datetime,
-    created_by  varchar(100) not null references USER (email),
-    name        varchar(100) not null,
-    description longtext     not null,
-    price       int          not null,
-    picture     varchar(100) not null,
-    address     varchar(100) not null,
-    capacity    int          not null,
-    type        varchar(100) not null,
-    latitude    float        not null,
-    longitude   float        not null
+    id               int primary key auto_increment,
+    created_at       datetime     not null,
+    updated_at       datetime     not null,
+    deleted_at       datetime,
+    created_by       varchar(100) not null references USER (email),
+    name             varchar(100) not null,
+    description      longtext     not null,
+    description_json longtext,
+    icons            longtext,
+    is_valid         int,
+    price            int          not null,
+    picture          varchar(100) not null,
+    address          varchar(100) not null,
+    capacity         int          not null,
+    type             varchar(100) not null,
+    latitude         float        not null,
+    longitude        float        not null
 );
 
 create table location_occupation
@@ -37,9 +40,23 @@ create table location_occupation
     location_id   int          not null references location (id),
     user_email    varchar(100) not null references USER (email),
     deleted_at    datetime,
-    notation      int
+    notation      int,
+    `repeat`      varchar(100)
 );
 
+
+create table icon_location
+(
+    id   int primary key auto_increment,
+    name varchar(100) not null
+);
+
+create table location_icon_location
+(
+    id               int primary key auto_increment,
+    location_id      int not null references location (id),
+    icon_location_id int not null references icon_location (id)
+);
 
 create table location_message
 (
@@ -112,7 +129,11 @@ create table service
     description longtext     not null,
     price       int          not null,
     duration    int          not null,
-    type        varchar(100)
+    type        varchar(100),
+    siret       varchar(100),
+    is_valid    int,
+    schedule    longtext,
+    city        varchar(100)
 );
 
 
@@ -124,7 +145,10 @@ create table service_by_user
     service_id             int          not null references service (id),
     user_email             varchar(100) not null references USER (email),
     location_occupation_id int          not null references location_occupation (id),
-    notation               int
+    notation               int,
+    status                 varchar(100),
+    from_datetime          datetime,
+    to_datetime            datetime
 );
 
 create table service_by_location
@@ -146,6 +170,20 @@ create table message
     created_by varchar(100) not null references USER (email),
     to_user    varchar(100) not null references USER (email),
     message    varchar(220) not null
+);
+
+create table occupation_request_service
+(
+    id                     int primary key auto_increment,
+    created_at             datetime     not null,
+    deleted_at             datetime,
+    location_occupation_id int          not null references location_occupation (id),
+    service_name           varchar(100) not null,
+    user_email             varchar(100) not null references USER (email),
+    description            longtext     not null,
+    status                 varchar(100) not null,
+    city                   varchar(100) not null,
+    price                  int
 );
 
 create table note_user_to_location
@@ -217,9 +255,15 @@ create table translation
 
 create table subscription_utilisation
 (
-    id             int primary key auto_increment,
-    email         varchar(100) not null references USER (email),
-    last_date_free_service datetime not null
+    id                     int primary key auto_increment,
+    email                  varchar(100) not null references USER (email),
+    last_date_free_service datetime     not null
+);
+
+create table job
+(
+    id   int primary key auto_increment,
+    name varchar(100) not null
 );
 
 

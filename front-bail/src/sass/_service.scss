@@ -3,10 +3,11 @@
     position: absolute;
     top: 0;
     left: 50px;
-    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
+    background: $colorBody;
+    background-size: cover;
 
     @media (max-width: 768px) {
         left: 0;
@@ -15,11 +16,13 @@
 
     .form {
         display: flex;
+        opacity: 1;
         justify-content: center;
         align-items: center;
         flex-direction: column;
         width: 30%;
         transition: .5s;
+        background: $colorBody;
 
         @media (max-width: 768px) {
             width: 80vw;
@@ -28,6 +31,19 @@
 
         &:hover {
             box-shadow: 0 10px 50px 0 rgba(#05043e, .25);
+        }
+
+
+        h2 {
+            display: flex;
+            width: 60%;
+            justify-content: space-evenly;
+            align-items: center;
+        }
+
+        .calendar-schedule {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
         }
 
 

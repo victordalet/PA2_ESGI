@@ -13,4 +13,12 @@ export default class ServiceViewModel {
         const valueNum = Number(value);
         return data.filter((d: resultData) => d.price > parseInt(value));
     };
+
+    public isValidateFilter = (data: resultData[]) => {
+        const input = document.querySelector<HTMLInputElement>("#is_valid");
+        if (input?.checked) {
+            return data.filter((d: resultData) => d.is_valid === 0);
+        }
+        return data;
+    };
 }

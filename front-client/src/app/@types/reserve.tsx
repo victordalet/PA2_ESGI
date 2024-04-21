@@ -27,7 +27,22 @@ export interface ViewProps {
     nameFiles: string[];
     postFileBail: () => void;
     downloadFileBail: (name: string) => void;
-    deleteOccupationBail: () => void;
+    deleteOccupationBail: (type: number) => void;
+    bailIsOccupied: () => void;
+    isAdmin: boolean;
+    sendRequestService: () => void;
+    userRequestService: UserRequest[];
+}
+
+export interface UserRequest {
+    id: number;
+    location_occupation_id: number;
+    service_name: string;
+    user_email: string;
+    description: string;
+    status: string;
+    city: string;
+    price: number;
 }
 
 export interface ControllerProps {
@@ -46,13 +61,16 @@ export interface ControllerState {
     description: LocationDescription;
     eventCalendar: LocationOccupation[];
     nameFiles: string[];
+    isAdmin: boolean;
+    userRequestService: UserRequest[];
 }
 
 export interface LocationOccupation {
-    id?: number;
+    id: number;
     from_datetime: string;
     to_datetime: string;
     user_email: string;
+    repeat: string;
 }
 
 

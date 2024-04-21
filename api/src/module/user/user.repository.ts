@@ -86,6 +86,12 @@ export class UserRepository {
         await this.db.query("DELETE FROM USER WHERE email = ? and rules != ?", [email, 'ADMIN']);
     }
 
+    async getStats() {
+        await this.db.connect();
+        const [rows, filed] = await this.db.query("SELECT count(*) as number_job, (select count(*) from location ) as nb_location, (select count(*) from service) as nb_services, (select count(*) from icon_location) as number_location_type  FROM job");
+        return rows;
+    }
+
     async updateUser(userInformation: User) {
         await this.db.connect()
         await this.db.query("UPDATE USER SET name = ?, password = ?, rules = ?, address = ?, updated_at = ? WHERE email = ?",

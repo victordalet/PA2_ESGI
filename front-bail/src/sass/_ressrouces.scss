@@ -66,3 +66,37 @@
     }
 
 }
+
+.calendar {
+    box-shadow: 0 10px 50px 0 rgba(#05043e, .25);
+    padding: 20px;
+    border-radius: 20px;
+    z-index: 3;
+    width: 50%;
+    margin: 100px auto;
+
+    @media (max-width: 768px) {
+        margin-left: 50px;
+    }
+
+}
+
+.button-facture-provider {
+    width: 20%;
+    height: 40px;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    background: $primaryColor;
+    color: #fff;
+    cursor: pointer;
+    transition: .3s;
+    display: block;
+    position: relative;
+    margin-left: calc(50% - 10%);
+    font-family: 'Inter', sans-serif;
+
+    &:hover {
+        background: $secondaryColor;
+    }
+}

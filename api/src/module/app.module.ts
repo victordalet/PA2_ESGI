@@ -9,6 +9,8 @@ import {ServiceModule} from "./service/service.module";
 import {LanguageModule} from "./language/language.module";
 import {PictureModule} from "./picture/picture.module";
 import {FileModule} from "./file/file.module";
+import {JobModule} from "./job/job.module";
+import {TypeLocationModule} from "./type_location/typeLocation.module";
 
 @Module({
     imports: [
@@ -21,7 +23,9 @@ import {FileModule} from "./file/file.module";
         ServiceModule,
         LanguageModule,
         PictureModule,
-        FileModule
+        FileModule,
+        JobModule,
+        TypeLocationModule
     ]
 })
 export class AppModule {

@@ -1,19 +1,17 @@
 import React from "react";
-import {ControllerProps, ControllerState, LocationService, YoloResponse} from "../@types/location";
+import {ControllerProps, ControllerState, locationType, YoloResponse} from "../@types/location";
 import LocationViewModel from "../view-models/location";
 import {haveBailToken, haveToken} from "../../security/token";
 import LocationView from "../views/location";
-import {Service} from "../@types/service";
-
 
 export default class Controller extends React.Component<
     ControllerProps,
     ControllerState
 > {
     state: ControllerState = {
-        service: [],
-        serviceSelected: [],
         price: 0,
+        locationTypes: [],
+        selectedLocationTypes: []
     };
 
     private readonly locationViewModel: LocationViewModel;
@@ -26,40 +24,29 @@ export default class Controller extends React.Component<
                 document.location.href = "/home";
             }
         });
+        this.getTypeLocation('location');
         this.locationViewModel = new LocationViewModel();
-        this.fetchService();
     }
 
-
-    public addServiceSelected = (service: LocationService, index: number) => {
-        this.setState({serviceSelected: [...this.state.serviceSelected, service]});
-        this.locationViewModel.addServiceToForm(service, index);
-    };
 
     private validationCaptcha = (value: any) => {
         console.log(value);
     };
 
-
-    private fetchService = async () => {
-        const apiPath = process.env.API_HOST || 'http://localhost:3001';
-        const response = await fetch(`${apiPath}/service`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'authorization': localStorage.getItem('token') || ''
-            }
-        });
-        let data: Service[] = await response.json();
-        data = data.filter((service) => {
-            return service.type === 'BAIL';
-        });
-        this.setState({service: data});
+    public addTypeLocation = (type: string, id: number, idView: number) => {
+        this.locationViewModel.changeStyleCardSelected(idView);
+        if (this.state.selectedLocationTypes.find((locationType) => locationType.id === id)) {
+            this.setState({selectedLocationTypes: this.state.selectedLocationTypes.filter((locationType) => locationType.id !== id)});
+            return;
+        }
+        this.setState({selectedLocationTypes: [...this.state.selectedLocationTypes, {name: type, id: id}]});
     };
 
     public createLocation = async () => {
         const data = this.locationViewModel.storeFormInJSON();
-        data.service = this.state.serviceSelected;
+        if (data.description === '') {
+            return;
+        }
         const apiPath = process.env.API_HOST || 'http://localhost:3001';
         const res = await fetch(`${apiPath}/location`, {
             method: 'POST',
@@ -69,18 +56,62 @@ export default class Controller extends React.Component<
             },
             body: JSON.stringify({
                 created_by: data.email,
-                name: data.nameFounder,
-                description: JSON.stringify(data),
+                name: document.querySelector<HTMLInputElement>('#title-location')?.value || '',
+                description_json: JSON.stringify(data),
+                description: data.description,
                 address: data.address,
                 latitude: 0,
                 longitude: 0,
                 capacity: data.numberRoom,
                 price: 100,
                 type: data.typeLocation,
+                icons: ''
             })
         });
         const id = await res.json();
+        this.state.selectedLocationTypes.map(async (locationType) => {
+            await this.associateLocationToUser(id.id, locationType.id);
+        });
         await this.uploadImage(id.id);
+    };
+
+    private associateLocationToUser = async (id: number, locationTypeId: number) => {
+        const apiPath = process.env.API_HOST || 'http://localhost:3001';
+        const res = await fetch(`${apiPath}/type_location/associate`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'authorization': localStorage.getItem('token') || ''
+            },
+            body: JSON.stringify({
+                id: id,
+                type_location: locationTypeId
+            })
+        });
+    };
+
+    private getTypeLocation = async (type: string) => {
+        const apiPath = process.env.API_HOST || 'http://localhost:3001';
+        const response = await fetch(`${apiPath}/type_location`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'authorization': localStorage.getItem('token') || ''
+            }
+        });
+        const data: locationType[] = await response.json();
+        data.map(async (d) => {
+            const res = await fetch(`${apiPath}/picture/${d.name}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    authorization: localStorage.getItem("token") || "",
+                },
+            });
+            const picture = await res.json();
+            d.pictureUrl = `data:image/png;base64,${picture.base64}`;
+            this.setState({locationTypes: [...this.state.locationTypes, d]});
+        });
     };
 
     private uploadImage = async (id: number) => {
@@ -97,7 +128,7 @@ export default class Controller extends React.Component<
                 },
                 body: formData
             });
-            document.location.href = "/home";
+            document.location.href = "/resources";
         }
     };
 
@@ -125,10 +156,11 @@ export default class Controller extends React.Component<
     render() {
         return (
             <LocationView
+                addTypeLocation={this.addTypeLocation}
+                locationTypes={this.state.locationTypes}
+                openOrCloseOpener={this.locationViewModel.openOrCloseOpener}
                 getPredictYolo={this.getPredictYolo}
                 validationCaptcha={this.validationCaptcha}
-                addServiceToForm={this.addServiceSelected}
-                service={this.state.service}
                 activeStep2={this.locationViewModel.activeStep2}
                 allSelectedRadioContact={this.locationViewModel.allSelectedRadioContact}
                 resetChoiceConcierge={this.locationViewModel.resetChoiceConcierge}

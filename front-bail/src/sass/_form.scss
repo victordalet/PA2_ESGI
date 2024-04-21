@@ -118,26 +118,125 @@
 }
 
 .container-price-and-creation {
-    display: none;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    margin-top: 100px;
+    margin: 100px auto;
+    width: 80%;
+    box-shadow: 0 10px 50px 0 rgba(#05043e, .25);
+    border-radius: 20px;
+    padding: 20px;
 
     h2 {
         font-family: 'Inter', sans-serif;
     }
 
-    .container-yolo {
+
+
+    .container-price {
         display: flex;
-        justify-content: space-evenly;
+        justify-content: center;
         align-items: center;
+
+
+        input {
+            width: 100px;
+            height: 30px;
+            border: 0;
+            border-radius: 10px;
+            margin: 20px;
+            text-align: center;
+            background: $secondaryColor;
+            color: #FFFFFF;
+            font-weight: bold;
+            font-family: 'Inter', sans-serif;
+        }
+    }
+
+    h2 {
+        margin-top: 100px;
+    }
+
+    .service {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+        box-shadow: 0 10px 50px 0 rgba(#05043e, .25);
+        padding: 20px;
+        margin-top: 50px;
+        border-radius: 20px;
+    }
+
+
+    input[type='file'] {
+        margin-top: 20px;
+    }
+
+
+    button {
+        width: 150px;
+        height: 50px;
+        border: 0;
+        border-radius: 10px;
+        background-color: $secondaryColor;
+        color: #fff;
+        font-weight: bold;
+        cursor: pointer;
+        transition: .2s;
+        margin-top: 100px;
+        margin-bottom: 100px;
+
+        &:hover {
+            background-color: $primaryColor;
+            box-shadow: 0 10px 50px 0 rgba(#05043e, .5);
+        }
+    }
+
+}
+
+.container-yolo {
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
         width: 90%;
         margin-left: 5%;
-        height: 80vh;
+        height: 50vh;
         padding-bottom: 50px;
         margin-top: 20px;
         flex-direction: column;
+
+        input {
+            position: relative;
+            padding: 10px 20px;
+            width: 20%;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: border-color 0.3s;
+        }
+
+        button {
+            width: 20%;
+            position: absolute;
+            height: 40px;
+            border: none;
+            font-weight: 800;
+            background: $secondaryColor;
+            transition: .5s;
+            cursor: pointer;
+            color: #FFFFFF;
+            border-radius: 10px;
+            bottom: 0;
+
+            &:hover {
+                background-color: $primaryColor;
+            }
+
+        }
+
 
         .container-image-direct, .container-yolo-image-result {
             display: flex;
@@ -173,89 +272,3 @@
         }
 
     }
-
-    .container-price {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        box-shadow: 0 10px 50px 0 rgba(#05043e, .25);
-        transition: .5s;
-        border-radius: 20px;
-        padding: 20px;
-
-
-        &:hover {
-            transition: .5s;
-            box-shadow: 0 10px 50px 0 rgba(#05043e, .5);
-        }
-
-        h2 {
-            font-family: 'Inter', sans-serif;
-            margin-top: 20px;
-        }
-
-        input {
-            width: 100px;
-            height: 50px;
-            border: 0;
-            border-radius: 10px;
-            padding: 0 10px;
-            margin: 20px;
-            text-align: center;
-            font-size: 1.5em;
-            font-weight: bold;
-            color: $primaryColor;
-            background-color: $lightColor;
-            font-family: 'Inter', sans-serif;
-        }
-    }
-
-    h2 {
-        margin-top: 100px;
-    }
-
-    .service {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        justify-content: center;
-        align-items: center;
-        gap: 20px;
-        box-shadow: 0 10px 50px 0 rgba(#05043e, .25);
-        padding: 20px;
-        margin-top: 50px;
-        border-radius: 20px;
-    }
-
-
-    input[type='file'] {
-        margin-top: 20px;
-    }
-
-    .container-picture-file {
-        box-shadow: 0 10px 50px 0 rgba(#05043e, .25);
-        border-radius: 20px;
-        padding: 20px;
-        margin-top: 50px;
-    }
-
-
-    button {
-        width: 150px;
-        height: 50px;
-        border: 0;
-        border-radius: 10px;
-        background-color: $secondaryColor;
-        color: #fff;
-        font-weight: bold;
-        cursor: pointer;
-        transition: .2s;
-        margin-top: 100px;
-        margin-bottom: 100px;
-
-        &:hover {
-            background-color: $primaryColor;
-            box-shadow: 0 10px 50px 0 rgba(#05043e, .5);
-        }
-    }
-
-}

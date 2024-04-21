@@ -16,6 +16,9 @@ export interface Location {
     type: string;
     is_occupy_by?: string;
     location_occupation_id?: number;
+    description_json?: string;
+    icons?: string;
+    is_valid?: number;
 }
 
 export interface LocationAvailability {
@@ -25,7 +28,11 @@ export interface LocationAvailability {
     notation?: number;
     location_occupation_id?: number;
     price: number;
+    repeat?: string;
+    nb_message?: number;
+    id?: number;
 }
+
 
 export interface LocationMessage {
     location_occupation_id: number;
@@ -36,5 +43,7 @@ export interface LocationLiaison {
     service_id: number;
     location_id?: number;
     location_occupation_id?: number;
+    from_datetime?: string;
+    to_datetime?: string;
 }
 

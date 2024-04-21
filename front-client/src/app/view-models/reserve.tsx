@@ -1,12 +1,10 @@
 export default class ReserveViewModel {
 
     public verifyDate = (dateStart: string, dateEnd: string) => {
-        const dateStartValue = new Date(dateStart);
-        const dateEndValue = new Date(dateEnd);
-        if (dateStartValue > new Date()) {
-            return dateStartValue < dateEndValue;
-        }
-        return false;
+        const date = new Date();
+        const dateNow = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+        return dateStart < dateNow || dateEnd < dateNow;
+
     };
 
     public openPopupBadDate = () => {
