@@ -6,12 +6,16 @@ import View from "../views/home";
 import HomeViewModel from "../view-models/Home";
 import {haveToken} from "../../security/token";
 import {Loading} from "../../components/loading";
+import {HomeModel} from "../model/Home";
 
 @observer
 export default class HomeController extends Component<
     ControllerProps,
     ControllerState
 > {
+
+    homeModel: HomeModel;
+
     state: ControllerState = {
         addInput: "",
         stats: {
@@ -38,35 +42,26 @@ export default class HomeController extends Component<
 
     constructor(props: any, context: any) {
         super(props, context);
+        this.homeModel = new HomeModel();
         haveToken();
         this.fetchStats();
         this.homeViewModel.animationStart();
     }
 
-    private fetchStats = () => {
-        const apiPath = process.env.API_HOST || "http://localhost:3001";
-        fetch(apiPath + "/user/stats", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                authorization: localStorage.getItem("token") || "",
-            },
-        }).then((res) => {
-            res.json().then((data: StatsUser) => {
-                this.setState({
-                    stats: data,
-                });
-                this.setState({
-                    data: [
-                        {name: "Number User", number: data.nb_users},
-                        {name: "Number Premium", number: data.nb_premium},
-                        {name: "Number Services", number: data.nb_services},
-                        {name: "Number Location", number: data.nb_location},
-                        {name: "Number Job", number: data.number_job},
-                        {name: "Number Location Type", number: data.number_location_type},
-                    ],
-                });
-            });
+    private fetchStats = async () => {
+        const data = await this.homeModel.fetchStats();
+        this.setState({
+            stats: data,
+        });
+        this.setState({
+            data: [
+                {name: "Number User", number: data.nb_users},
+                {name: "Number Premium", number: data.nb_premium},
+                {name: "Number Services", number: data.nb_services},
+                {name: "Number Location", number: data.nb_location},
+                {name: "Number Job", number: data.number_job},
+                {name: "Number Location Type", number: data.number_location_type},
+            ],
         });
     };
 

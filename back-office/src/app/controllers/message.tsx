@@ -10,14 +10,19 @@ import View from "../views/message";
 import {Navbar} from "../../components/navbar";
 import {haveToken} from "../../security/token";
 import {Loading} from "../../components/loading";
+import {MessageModel} from "../model/message";
 
 @observer
 export default class MessageControllers extends Component<
     ControllerProps,
     ControllerState
 > {
+
+    messageModel: MessageModel;
+
     constructor(props: ControllerProps) {
         super(props);
+        this.messageModel = new MessageModel();
         haveToken();
         this.getIllegibleMessage();
     }
@@ -35,35 +40,13 @@ export default class MessageControllers extends Component<
         };
 
     addIllegibleMessage = () => {
-        const apiPath = process.env.API_HOST || "http://localhost:3001";
-        fetch(apiPath + "/message/illegible", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                authorization: localStorage.getItem("token") || "",
-            },
-            body: JSON.stringify({
-                word: this.state.addInput,
-            }),
-        }).then((r) => {
-            document.location.reload();
-        });
+        this.messageModel.addIllegibleMessage(this.state.addInput);
     };
 
-    getIllegibleMessage = () => {
-        const apiPath = process.env.API_HOST || "http://localhost:3001";
-        fetch(apiPath + "/message/illegible", {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                authorization: localStorage.getItem("token") || "",
-            },
-        }).then((r) => {
-            r.json().then((data: ResponseIllegibleMessage[]) => {
-                this.setState({
-                    data: data,
-                });
-            });
+    getIllegibleMessage = async () => {
+        const data = await this.messageModel.getIllegibleMessage();
+        this.setState({
+            data: data,
         });
     };
 

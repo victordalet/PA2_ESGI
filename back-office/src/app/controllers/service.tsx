@@ -6,6 +6,7 @@ import {ControllerProps, ControllerState, resultData} from '../@types/service';
 import View from '../views/service';
 import {haveToken} from "../../security/token";
 import {Loading} from "../../components/loading";
+import {ServiceModel} from "../model/service";
 
 
 @observer
@@ -15,12 +16,14 @@ export default class ServiceControllers extends Component<
 > {
 
     serviceViewModel: ServiceViewModel;
+    serviceModel: ServiceModel;
 
     constructor(props: ControllerProps) {
         super(props);
         haveToken();
-        this.getData();
+        this.serviceModel = new ServiceModel();
         this.serviceViewModel = new ServiceViewModel();
+        this.getData();
     }
 
     state: ControllerState = {
@@ -28,21 +31,11 @@ export default class ServiceControllers extends Component<
         dataNoFilter: [],
     };
 
-    getData = () => {
-        const apiPath = process.env.API_HOST || "http://localhost:3001";
-        fetch(apiPath + "/service", {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                authorization: localStorage.getItem("token") || "",
-            },
-        }).then((r) => {
-            r.json().then((data: resultData[]) => {
-                this.setState({
-                    data: data,
-                    dataNoFilter: data,
-                });
-            });
+    getData = async () => {
+        const data = await this.serviceModel.getData();
+        this.setState({
+            data: data,
+            dataNoFilter: data,
         });
     };
 
@@ -58,39 +51,13 @@ export default class ServiceControllers extends Component<
         this.setState({data: this.serviceViewModel.isValidateFilter(this.state.dataNoFilter)});
     };
 
-    public deleteService = async (id: number) => {
-        const apiPath = process.env.API_HOST || "http://localhost:3001";
-        await fetch(apiPath + "/service/admin/" + id, {
-            method: "DELETE",
-            headers: {
-                "Content-Type": "application/json",
-                authorization: localStorage.getItem("token") || "",
-            },
-        });
-        document.location.reload();
-    };
-
-    public acceptService = async (id: number) => {
-        const apiPath = process.env.API_HOST || "http://localhost:3001";
-        await fetch(apiPath + "/service/admin-accept", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                authorization: localStorage.getItem("token") || "",
-            },
-            body: JSON.stringify({
-                service_id: id,
-            }),
-        });
-        document.location.reload();
-    };
 
     render() {
 
         return <View
-            acceptService={this.acceptService}
+            acceptService={this.serviceModel.acceptService}
             isValidateFilter={this.isValidateFilter}
-            deleteService={this.deleteService}
+            deleteService={this.serviceModel.deleteService}
             data={this.state.data}
             priceFilter={this.priceFilter}
             searchFilter={this.searchFilter}/>;
