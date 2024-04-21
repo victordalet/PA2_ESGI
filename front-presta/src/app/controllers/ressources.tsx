@@ -1,7 +1,7 @@
 import {ControllerProps, ControllerState} from "../@types/ressources";
 import ResourcesView from "../views/ressources";
 import React from "react";
-import {Location} from "../@types/location";
+import {Service} from "../@types/service";
 import {haveToken} from "../../security/token";
 import {ResourcesModel} from "../model/ressources";
 
@@ -25,9 +25,10 @@ export default class Controller extends React.Component<ControllerProps, Control
 
 
     private fetchResources = async () => {
-        const dataLocation: Location[] = await this.resourcesModel.fetchLocation();
-        this.setState({locationNotFiltered: dataLocation});
-        this.setState({location: dataLocation});
+        const data: Service[] = await this.resourcesModel.fetchServices();
+        this.setState({serviceNotFiltered: data});
+        this.setState({services: data});
+        const apiPath = process.env.API_HOST || 'http://localhost:3001';
     };
 
     public filterResourcesByNameOrDescription = () => {

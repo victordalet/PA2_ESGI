@@ -1,6 +1,4 @@
 import ViewModel from '../view-models/location';
-import {Service} from "./service";
-import exp from "node:constants";
 
 export interface ViewProps {
     resetChoiceConcierge: (numberSelected: number) => void;
