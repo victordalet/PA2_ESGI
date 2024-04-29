@@ -43,7 +43,7 @@ export default class Controller extends React.Component<
 
     public createLocation = async () => {
         const data = this.locationViewModel.storeFormInJSON();
-        const id = await this.locationModel.createLocation(data);
+        const id = await this.locationModel.createLocation(data, this.state.selectedLocationTypes.toString());
         this.state.selectedLocationTypes.map(async (locationType) => {
             await this.locationModel.associateLocationToUser(id.id, locationType.id);
         });

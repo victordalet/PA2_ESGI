@@ -4,6 +4,7 @@ import {ControllerProps, ControllerState} from "../@types/location";
 import LocationViewModel from "../view-models/location";
 import {Loading} from "../../components/loading";
 import {LocationModel} from "../model/location";
+import {locationType} from "../@types/Home";
 
 export default class Controller extends React.Component<
     ControllerProps,
@@ -17,11 +18,14 @@ export default class Controller extends React.Component<
         this.locationModel = new LocationModel();
         this.locationViewModel = new LocationViewModel();
         this.fetchLocation();
+        this.getTypeLocation();
     }
 
     state = {
         location: [],
         locationNoFilter: [],
+        locationTypes: [],
+        selected: [],
     };
 
     private fetchLocation = async () => {
@@ -82,6 +86,27 @@ export default class Controller extends React.Component<
         });
     };
 
+    public getTypeLocation = async () => {
+        const data = await this.locationModel.getTypeLocation();
+        this.setState({locationTypes: data});
+        if (window.location.href.includes("?type=")) {
+            const type = window.location.href.split("?type=")[1];
+            const label = type;
+            this.handleChangeSelected([{label, value: type}]);
+        }
+    };
+
+    public handleChangeSelected = (selected: any) => {
+        this.setState({selected});
+        this.setState({
+            location: this.locationViewModel.filterLocationByType(
+                this.state.locationNoFilter,
+                selected
+            ),
+        });
+    };
+
+
     render() {
         if (this.state.locationNoFilter.length === 0) {
             return <Loading/>;
@@ -89,6 +114,9 @@ export default class Controller extends React.Component<
 
         return (
             <LocationView
+                selected={this.state.selected}
+                handleChangeSelected={this.handleChangeSelected}
+                locationTypes={this.state.locationTypes}
                 location={this.state.location}
                 filterByPrice={this.filterByPrice}
                 filterLocationByNameOrDescription={

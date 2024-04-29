@@ -14,8 +14,18 @@ export default class HomeView extends React.Component <ViewProps> {
     render() {
         const {
             service,
-            location
+            location,
+            locationTypes
         } = this.props;
+
+
+        const randomColorArray = [
+            '#e54a4a', '#356b0c',
+            '#1a968c', '#576AA5',
+            '#8757A5', '#C6366F',
+            '#DDEA42', '#4D9353',
+            '#5595B8', '#9387AD',
+            '#E09A0F', '#733E63',];
 
 
         return (
@@ -29,7 +39,7 @@ export default class HomeView extends React.Component <ViewProps> {
                     <div className={"container-last-location"}>
                         {
                             location.map((l, index) => {
-                                if (index > location.length - 6) {
+                                if (index > location.length - 6 && l.is_valid === 1) {
                                     return (
                                         <Card
                                             onclick={() => {
@@ -45,6 +55,21 @@ export default class HomeView extends React.Component <ViewProps> {
                                             }}></Card>
                                     );
                                 }
+                            })
+                        }
+                    </div>
+                    <h3>Rental criterion : </h3>
+                    <div className={"container-type-location"}>
+                        {
+                            locationTypes.map((l, index) => {
+                                return (<div
+                                    onClick={() => {
+                                        window.location.href = '/location?type=' + l.name;
+                                    }}
+                                    style={{backgroundColor: randomColorArray[index]}}
+                                    key={index}
+                                    className={"container-last-location"}>{l.name[0].toUpperCase() +
+                                    l.name.slice(1).replace('_', ' ')}</div>);
                             })
                         }
                     </div>

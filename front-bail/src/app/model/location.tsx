@@ -7,7 +7,7 @@ export class LocationModel {
     };
 
 
-    public createLocation = async (data: FormLocation) => {
+    public createLocation = async (data: FormLocation, locationTypes: string) => {
         if (data.description === '') {
             return;
         }
@@ -29,7 +29,7 @@ export class LocationModel {
                 capacity: data.numberRoom,
                 price: 100,
                 type: data.typeLocation,
-                icons: ''
+                icons: locationTypes
             })
         });
         return await res.json();
@@ -37,7 +37,7 @@ export class LocationModel {
 
     public associateLocationToUser = async (id: number, locationTypeId: number) => {
         const apiPath = process.env.API_HOST || 'http://localhost:3001';
-        const res = await fetch(`${apiPath}/type_location/associate`, {
+        await fetch(`${apiPath}/type_location/associate`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

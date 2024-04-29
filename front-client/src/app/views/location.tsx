@@ -4,6 +4,7 @@ import {Navbar} from "../../components/navbar";
 import {Card} from "../../components/card";
 import {ChatBot} from "../../components/chatBot";
 import {Language} from "../../components/language";
+import {MultiSelect} from "react-multi-select-component";
 
 export default class LocationView extends React.Component <ViewProps> {
     render() {
@@ -13,8 +14,10 @@ export default class LocationView extends React.Component <ViewProps> {
             location,
             filterLocationByNameOrDescription,
             filterLocationByCity,
-            filterLocationByCapacity,
-            filterByPrice
+            filterByPrice,
+            locationTypes,
+            handleChangeSelected,
+            selected
         } = this.props;
 
 
@@ -29,8 +32,11 @@ export default class LocationView extends React.Component <ViewProps> {
                         <input type="text" id={"search"} onChange={filterLocationByNameOrDescription}
                                placeholder="Search..."/>
                         <input type={'text'} id={"city"} onChange={filterLocationByCity} placeholder={"City..."}/>
-                        <input type={'number'} id={'capacity'} onChange={filterLocationByCapacity}
-                               placeholder={"Capacity..."}/>
+                        <MultiSelect options={
+                            locationTypes.map((type) => {
+                                return {label: type.name, value: type.name};
+                            })
+                        } value={selected} onChange={handleChangeSelected} labelledBy={''}/>
                         <select onChange={filterByPrice}>
                             <option value="0">ascending price</option>
                             <option value="1">descending price</option>
@@ -39,18 +45,19 @@ export default class LocationView extends React.Component <ViewProps> {
                     <div className={"container-card"}>
                         {
                             location.map((location: LocationResponse) => {
-                                return (
-                                    <Card cardInfo={{
-                                        title: location.name,
-                                        description: '',
-                                        price: location.price,
-                                        location: location.address,
-                                        id: location.id,
-                                        type: 'location'
-                                    }} onclick={() => {
-                                        window.location.href = '/reserve?' + location.id?.toString() + '&a=false';
-                                    }}/>
-                                );
+                                if (location.is_valid === 1)
+                                    return (
+                                        <Card cardInfo={{
+                                            title: location.name,
+                                            description: '',
+                                            price: location.price,
+                                            location: location.address,
+                                            id: location.id,
+                                            type: 'location'
+                                        }} onclick={() => {
+                                            window.location.href = '/reserve?' + location.id?.toString() + '&a=false';
+                                        }}/>
+                                    );
                             })
                         }
                     </div>

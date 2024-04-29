@@ -30,8 +30,7 @@ export default class Controller extends React.Component<
 
     public fetchUser = async () => {
         const response = await this.settingsModel.fetchUser();
-        this.setState({data: await response.json()});
-
+        this.setState({data: response});
     };
 
     public changePassword = async () => {

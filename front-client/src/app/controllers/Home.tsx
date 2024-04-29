@@ -17,6 +17,7 @@ export default class HomeController extends Component<
     state = {
         service: [],
         location: [],
+        locationTypes: []
     };
 
     homeViewModel = new HomeViewModel();
@@ -27,7 +28,7 @@ export default class HomeController extends Component<
         this.homeViewModel.animationStart();
         this.fetchService();
         this.fetchLocation();
-
+        this.getTypeLocation();
     }
 
 
@@ -42,6 +43,12 @@ export default class HomeController extends Component<
 
     };
 
+    private getTypeLocation = async () => {
+        const data = await this.homeModel.getTypeLocation();
+        this.setState({locationTypes: data});
+
+    };
+
     render() {
         const {viewModel} = this.props;
 
@@ -51,6 +58,7 @@ export default class HomeController extends Component<
 
         return (
             <View
+                locationTypes={this.state.locationTypes}
                 service={this.state.service}
                 location={this.state.location}
             />
