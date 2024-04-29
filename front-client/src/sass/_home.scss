@@ -16,6 +16,30 @@
         left: 0;
     }
 
+    .container-type-location {
+        display: grid;
+        margin-top: 50px;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        width: 90vw;
+        margin-left: 50px;
+        margin-bottom: 50px;
+
+        div {
+            display: flex;
+            cursor: pointer;
+            justify-content: center;
+            align-items: center;
+            border-radius: 20px;
+            width: 150px;
+            height: 40px;
+            transition: .5s;
+
+            &:hover {
+                transform: scale(1.1);
+            }
+        }
+    }
+
 
     h1 {
         font-size: 3em;
@@ -26,7 +50,6 @@
         transform: translateY(-500px);
         margin-left: 50px;
         padding-left: 20px;
-
 
 
         @media (max-width: 768px) {

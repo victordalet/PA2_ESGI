@@ -5,6 +5,7 @@ import {LocationResponse} from "./location";
 export interface ViewProps {
     service: ServiceResponse[];
     location: LocationResponse[];
+    locationTypes: locationType[];
 }
 
 export interface ControllerProps {
@@ -14,8 +15,15 @@ export interface ControllerProps {
 export interface ControllerState {
     service: ServiceResponse[];
     location: LocationResponse[];
+    locationTypes: locationType[];
 }
 
+
+export interface locationType {
+    id: number;
+    name: string;
+    pictureUrl?: string;
+}
 
 
 
