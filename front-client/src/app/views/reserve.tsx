@@ -6,7 +6,6 @@ import {ChatBot} from "../../components/chatBot";
 import {Language} from "../../components/language";
 import {Calendar, momentLocalizer} from 'react-big-calendar';
 import moment from 'moment';
-import {title} from "process";
 
 export class ReserveView extends React.Component <ViewProps> {
 
@@ -37,7 +36,8 @@ export class ReserveView extends React.Component <ViewProps> {
             bailIsOccupied,
             isAdmin,
             services,
-            sendRequestService
+            sendRequestService,
+            serviceUser
         } = this.props;
 
 
@@ -149,7 +149,7 @@ export class ReserveView extends React.Component <ViewProps> {
                         </div>
                     </div>
                     {
-                        isReserved ?
+                        isReserved || isAdmin ?
                             <div className={"calendar-form-complete"}
                                  style={{marginTop: '100px', width: '40%', padding: '20px'}}>
                                 <h2>Take Services</h2>
@@ -169,6 +169,32 @@ export class ReserveView extends React.Component <ViewProps> {
                                 </select>
                                 <textarea id={"service-description"}></textarea>
                                 <button onClick={sendRequestService}>Request service</button>
+                            </div> : ''
+                    }
+
+                    {
+                        isReserved || isAdmin ?
+                            <div className={"calendar-form-complete"}>
+                                <h2>Monitoring of services</h2>
+                                <div className={"table"}>
+                                    <div className={"row"}>
+                                        <div className={"row-content"}><h2>Name</h2></div>
+                                        <div className={"row-content"}><h2>Date</h2></div>
+                                        <div className={"row-content"}><h2>Status</h2></div>
+                                    </div>
+                                    {
+                                        serviceUser.map((service, index) => {
+                                            return (
+                                                <div key={index} className={"row"}>
+                                                    <div className={"row-content"}><h2>{service.service_name}</h2></div>
+                                                    <div className={"row-content"}>
+                                                        <h2>{service.from_datetime} - {service.to_datetime}</h2></div>
+                                                    <div className={"row-content"}><h2>{service.status}</h2></div>
+                                                </div>
+                                            );
+                                        })
+                                    }
+                                </div>
                             </div> : ''
                     }
 

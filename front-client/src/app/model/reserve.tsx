@@ -25,6 +25,22 @@ export class ReserveModel {
         return await response.json();
     };
 
+    public getServiceByLocationId = async () => {
+        const apiPath = process.env.API_PATH || 'http://localhost:3001';
+        const response = await fetch(`${apiPath}/service/get-service-by-user-v2`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                authorization: localStorage.getItem('token') || ''
+            },
+            body: JSON.stringify({
+                location_occupation_id: this.idResa
+            })
+        });
+        return await response.json();
+    }
+
+
     public sendRequestService = async () => {
         const apiPath = process.env.API_HOST || 'http://localhost:3001';
         const desc = document.querySelector<HTMLInputElement>('#service-description');

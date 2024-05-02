@@ -40,6 +40,7 @@ export interface LocationMessage {
 }
 
 export interface LocationLiaison {
+    id?: number;
     service_id: number;
     location_id?: number;
     location_occupation_id?: number;

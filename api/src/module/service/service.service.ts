@@ -62,6 +62,14 @@ export class ServiceService {
             return this.serviceRepository.postServiceByUser(body);
     }
 
+    async getServiceByUserV2(token: string, body: LocationLiaison) {
+        return await this.serviceRepository.getServiceByUserV2(body);
+    }
+
+    async serviceIsHere(body: LocationLiaison) {
+        return await this.serviceRepository.serviceIsHere(body);
+    }
+
     async isYourServices(token: string, body: LocationAvailability) {
         const r = await this.serviceRepository.isYourServices(token, body);
         console.log(r);

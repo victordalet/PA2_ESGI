@@ -68,47 +68,6 @@ create table location_message
     message                varchar(220) not null
 );
 
-
-create table facture
-(
-    id                    int primary key auto_increment,
-    created_at            datetime     not null,
-    updated_at            datetime     not null,
-    deleted_at            datetime,
-    created_by            varchar(100) not null references USER (email),
-    price                 int          not null,
-    type                  varchar(100) not null,
-    notification          boolean,
-    notification_interval int
-);
-
-create table facture_by_user
-(
-    id         int primary key auto_increment,
-    created_at datetime     not null,
-    updated_at datetime     not null,
-    facture_id int          not null references facture (id),
-    user_email varchar(100) not null references USER (email)
-);
-
-create table facture_by_location
-(
-    id          int primary key auto_increment,
-    created_at  datetime not null,
-    updated_at  datetime not null,
-    facture_id  int      not null references facture (id),
-    location_id int      not null references location (id)
-);
-
-create table facture_by_subscription
-(
-    id              int primary key auto_increment,
-    created_at      datetime not null,
-    updated_at      datetime not null,
-    facture_id      int      not null references facture (id),
-    subscription_id int      not null references subscription (id)
-);
-
 create table subscription
 (
     id         int primary key auto_increment,
@@ -183,7 +142,9 @@ create table occupation_request_service
     description            longtext     not null,
     status                 varchar(100) not null,
     city                   varchar(100) not null,
-    price                  int
+    price                  int,
+    from_datetime          datetime,
+    to_datetime            datetime
 );
 
 create table note_user_to_location

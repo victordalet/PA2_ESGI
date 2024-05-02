@@ -25,10 +25,6 @@ export default class ResourcesView extends React.Component<ViewProps> {
                         <input onChange={filterResourcesByNameOrDescription} type={"text"} id={"search"}
                                placeholder={"Search..."}/>
                         <input onChange={filterResourcesByPrice} type={"number"} id={"price"} placeholder={"Price..."}/>
-                        <select onChange={filterResourcesByType} name={"type"} id={"type"}>
-                            <option value={"location"}>Location</option>
-                            <option value={"service"}>Service</option>
-                        </select>
                     </div>
                     <div className={'grid'}>
                         {

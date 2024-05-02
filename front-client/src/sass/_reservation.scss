@@ -54,6 +54,30 @@
         border-radius: 20px;
         margin-bottom: 50px;
 
+
+        .table {
+            display: flex;
+            justify-content: center;
+            align-content: center;
+            flex-direction: column;
+
+
+            .row {
+                display: flex;
+                margin-top: 50px;
+                justify-content: center;
+                align-content: center;
+
+
+                .row-content {
+                    width: 30vw;
+                    display: flex;
+                    justify-content: center;
+                    align-content: center;
+                }
+            }
+        }
+
         h2 {
             margin: 0;
             display: flex;
@@ -117,7 +141,6 @@
 
         }
     }
-
 
 
     .services {

@@ -53,6 +53,24 @@ export class ServiceController {
         return this.serviceService.postServiceByUser(token, body);
     }
 
+    @Post('get-service-by-user-v2')
+    @ApiOperation({summary: 'Get service by user'})
+    @ApiCreatedResponse({description: 'Service'})
+    @ApiBadRequestResponse({description: 'Request body is not valid'})
+    async getServiceByUserV2(@Headers('authorization') token: string, @Body() body: LocationLiaison) {
+        await this.tokenValidation.validateToken(token);
+        return this.serviceService.getServiceByUserV2(token, body);
+    }
+
+    @Post('service-is-here')
+    @ApiOperation({summary: 'Verif is here services'})
+    @ApiCreatedResponse({description: 'Service'})
+    @ApiBadRequestResponse({description: 'Request body is not valid'})
+    async getIsHereServices(@Headers('authorization') token: string, @Body() body: LocationLiaison) {
+        await this.tokenValidation.validateToken(token);
+        return await this.serviceService.serviceIsHere(body);
+    }
+
     @Post('your')
     @ApiOperation({summary: 'Verif is your your services'})
     @ApiCreatedResponse({description: 'Service'})

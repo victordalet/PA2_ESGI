@@ -65,7 +65,10 @@
         <ListView
             andrdoid:id="@+id/listView"
             andrdoid:layout_width="match_parent"
-            andrdoid:layout_height="wrap_content" />
+            andrdoid:layout_height="wrap_content"/>
+
+
+
 
 
     </LinearLayout>
