@@ -92,7 +92,8 @@ create table service
     siret       varchar(100),
     is_valid    int,
     schedule    longtext,
-    city        varchar(100)
+    city        varchar(100),
+    nfc         varchar(100)
 );
 
 

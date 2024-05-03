@@ -38,14 +38,7 @@ class ServicesAdapter : BaseAdapter {
         var currentService = services[position]
         view.findViewById<TextView>(R.id.service_name).text = currentService.name
         var state = currentService.state
-        if (state == "1") {
-            view.findViewById<TextView>(R.id.service_state).text = "Valid"
-        }
-        if (state == "2") {
-            view.findViewById<TextView>(R.id.service_state).text = "Finished"
-        } else {
-            view.findViewById<TextView>(R.id.service_state).text = "In validation"
-        }
+        view.findViewById<TextView>(R.id.service_state).text = state
         return view
     }
 

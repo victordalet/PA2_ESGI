@@ -110,6 +110,11 @@ export class LocationRepository {
                 const r: any = rows2[i];
                 const [location, filed3] = await this.db.query("SELECT * FROM location WHERE id = ?", [r.location_id]);
                 location[0].location_occupation_id = r.id;
+                location[0].from_datetime = r.from_datetime;
+                location[0].to_datetime = r.to_datetime;
+                location[0].notation = r.notation;
+                location[0].repeat = r.repeat;
+                location[0].deleted_at = r.deleted_at;
                 locations.push(location[0]);
             }
         }

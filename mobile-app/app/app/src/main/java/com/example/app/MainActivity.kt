@@ -2,17 +2,11 @@ package com.example.app
 
 
 import android.os.Bundle
-import android.view.View
 import android.widget.Button
 import android.widget.EditText
-import android.widget.ListView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.android.volley.Request
-import com.android.volley.toolbox.StringRequest
-import com.android.volley.toolbox.Volley
 import okhttp3.OkHttpClient
-import org.json.JSONObject
 
 
 class MainActivity : AppCompatActivity() {
@@ -26,11 +20,12 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        println("test")
 
         this.password = findViewById(R.id.password)
         this.email = findViewById(R.id.email)
         this.loginButton = findViewById(R.id.loginButton)
-        this.loginButton.setOnClickListener(View.OnClickListener {
+        this.loginButton.setOnClickListener {
             val apiPath = "http://172.20.10.2:3001/user/connection"
             try {
 
@@ -51,11 +46,8 @@ class MainActivity : AppCompatActivity() {
 
                     override fun onResponse(call: okhttp3.Call, response: okhttp3.Response) {
                         val responseBody: String? = response.body()?.string()
-                        if (responseBody == "{\"connection\":null}") {
-                            runOnUiThread {
-                                password.error = "Invalid email or password"
-                            }
-                        } else {
+                        println(responseBody)
+                        if (responseBody != "{\"connection\":null}" && !responseBody?.contains("error")!!) {
                             val sharedPref = getSharedPreferences("user", MODE_PRIVATE)
                             with(sharedPref.edit()) {
                                 if (responseBody != null) {
@@ -63,15 +55,23 @@ class MainActivity : AppCompatActivity() {
                                         "token",
                                         responseBody.split(":")[1].split("}")[0].replace("\"", "")
                                     )
+                                    putString("email", emailValue)
                                     putBoolean("isConnected", true)
                                     apply()
                                     val apiPath = "http://172.20.10.2:3001/user/isAdmin"
+                                    println(apiPath)
                                     val request = okhttp3.Request.Builder().url(apiPath).post(
+                                        // add header token
+
                                         okhttp3.RequestBody.create(
                                             okhttp3.MediaType.parse("application/json"),
                                             "{\"email\":\"$emailValue\",\"password\":\"$passwordValue\"}"
                                         )
-                                    ).build()
+                                    ).addHeader(
+                                        "authorization",
+                                        responseBody.split(":")[1].split("}")[0].replace("\"", "")
+                                    )
+                                        .build()
                                     val response = client.newCall(request)
                                     response.enqueue(object : okhttp3.Callback {
                                         override fun onFailure(
@@ -86,28 +86,38 @@ class MainActivity : AppCompatActivity() {
                                             response: okhttp3.Response
                                         ) {
                                             val responseBody: String? = response.body()?.string()
+                                            println(responseBody)
                                             if (responseBody == "{\"connection\":true}") {
                                                 with(sharedPref.edit()) {
                                                     putBoolean("isAdmin", true)
                                                     apply()
+                                                    runOnUiThread {
+                                                        val intent = android.content.Intent(
+                                                            this@MainActivity,
+                                                            AdminHomeActivity::class.java
+                                                        )
+                                                        startActivity(intent)
+                                                    }
                                                 }
                                             } else {
                                                 with(sharedPref.edit()) {
                                                     putBoolean("isAdmin", false)
                                                     apply()
+                                                    runOnUiThread {
+                                                        val intent = android.content.Intent(
+                                                            this@MainActivity,
+                                                            HomeActivity::class.java
+                                                        )
+                                                        startActivity(intent)
+                                                    }
                                                 }
                                             }
                                         }
                                     })
-
-
-                                    val intent = android.content.Intent(
-                                        this@MainActivity,
-                                        HomeActivity::class.java
-                                    )
-                                    startActivity(intent)
                                 }
                             }
+                        } else {
+                            println("error")
                         }
                     }
                 })
@@ -115,7 +125,7 @@ class MainActivity : AppCompatActivity() {
                 println("Error: $e")
                 Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show()
             }
-        })
+        }
     }
 }
 

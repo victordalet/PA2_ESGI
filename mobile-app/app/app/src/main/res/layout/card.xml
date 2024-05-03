@@ -41,7 +41,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:text="Subtitle"
+                android:text=""
                 android:textAlignment="center"
                 android:textColor="#111"
                 android:textSize="24sp" />
@@ -60,8 +60,7 @@
                 android:id="@+id/imageView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:src="@drawable/ic_launcher_foreground" />
+                android:layout_marginTop="20dp"/>
 
         </LinearLayout>
 

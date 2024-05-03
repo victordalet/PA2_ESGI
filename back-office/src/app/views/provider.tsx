@@ -65,7 +65,8 @@ export class ProviderView extends React.Component<ViewProps> {
                         <div className={'table-content'}>
                             {
                                 provider.map(dataLine => (
-                                    <div className={'table-row'} style={{cursor: 'pointer'}} onClick={() => updateCalendar(dataLine.id)}>
+                                    <div className={'table-row'} style={{cursor: 'pointer'}}
+                                         onClick={() => updateCalendar(dataLine.id)}>
                                         {[dataLine.name,
                                             dataLine.city
                                         ].map(dataColumn => (
@@ -87,6 +88,27 @@ export class ProviderView extends React.Component<ViewProps> {
                                 title: event.title
                             };
                         })}
+                        eventPropGetter={(event, start, end, isSelected) => {
+                            let newStyle = {
+                                backgroundColor: "red",
+                                color: 'white',
+                                borderRadius: "0px",
+                                border: "none"
+                            };
+
+                            if (event.title === "good") {
+                                newStyle.backgroundColor = "blue";
+                            }
+
+                            if (event.title === "valid") {
+                                newStyle.backgroundColor = "green";
+                            }
+
+                            return {
+                                className: "",
+                                style: newStyle
+                            };
+                        }}
                         startAccessor="start"
                         endAccessor="end"
                         style={{height: 500}}/>

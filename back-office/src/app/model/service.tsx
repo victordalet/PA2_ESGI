@@ -10,7 +10,6 @@ export class ServiceModel {
             },
         });
         return await response.json();
-
     };
 
 

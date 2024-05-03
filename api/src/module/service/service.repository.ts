@@ -58,10 +58,10 @@ export class ServiceRepository {
         return services;
     }
 
-    async createService(service: ServiceModel) {
+    async createService(service: ServiceModel, nfc: string) {
         await this.db.connect()
-        await this.db.query("INSERT INTO service (name, created_at ,updated_at, description, price, duration, created_by, type, siret, is_valid,schedule,city) VALUES (?, ?, ?, ?, ?, ?, ?,?,?,?,?,?)",
-            [service.name, new Date(), new Date(), service.description, service.price, service.duration, service.created_by, service.type, service.siret, 0, service.schedule, service.city]);
+        await this.db.query("INSERT INTO service (name, created_at ,updated_at, description, price, duration, created_by, type, siret, is_valid,schedule,city,nfc) VALUES (?, ?, ?, ?, ?, ?, ?,?,?,?,?,?,?)",
+            [service.name, new Date(), new Date(), service.description, service.price, service.duration, service.created_by, service.type, service.siret, 0, service.schedule, service.city, nfc]);
         const [rows, filed] = await this.db.query("SELECT LAST_INSERT_ID() as id  FROM service");
         return rows[0];
 
@@ -94,7 +94,7 @@ export class ServiceRepository {
 
     async serviceIsHere(body: LocationLiaison) {
         await this.db.connect();
-        return await this.db.query("UPDATE occupation_request_service SET status = 'good' WHERE id = ?", [body.id]);
+        return await this.db.query("UPDATE occupation_request_service SET status = 'valid' WHERE id = ?", [body.id]);
     }
 
     async postServiceByLocation(body: LocationLiaison) {

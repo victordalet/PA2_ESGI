@@ -32,6 +32,27 @@ export class ProviderView extends React.Component<ViewProps> {
                                 title: event.title
                             };
                         })}
+                        eventPropGetter={(event, start, end, isSelected) => {
+                            let newStyle = {
+                                backgroundColor: "red",
+                                color: 'white',
+                                borderRadius: "0px",
+                                border: "none"
+                            };
+
+                            if (event.title === "good") {
+                                newStyle.backgroundColor = "blue";
+                            }
+
+                            if (event.title === "valid") {
+                                newStyle.backgroundColor = "green";
+                            }
+
+                            return {
+                                className: "",
+                                style: newStyle
+                            };
+                        }}
                         startAccessor="start"
                         endAccessor="end"
                         style={{height: 500}}/>

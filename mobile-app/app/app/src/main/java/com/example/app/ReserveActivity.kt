@@ -40,9 +40,17 @@ class ReserveActivity : AppCompatActivity() {
         val arrayAdapter = ServicesAdapter(this, cardList)
         listView.adapter = arrayAdapter
 
+        listView.setOnItemClickListener { parent, view, position, id ->
+            val item = parent.getItemAtPosition(position) as Services
+            val intent = Intent(this, NFCClientActivity::class.java)
+            intent.putExtra("id", item.id)
+            intent.putExtra("nfc", item.nfc)
+            startActivity(intent)
+        }
 
-        fetchServices()
+
         fetchMessages()
+        fetchServices()
 
 
         val backHome = findViewById<Button>(R.id.backHome)
@@ -92,11 +100,9 @@ class ReserveActivity : AppCompatActivity() {
                                         )
                                     runOnUiThread {
                                         messageList.add(Messages("", messageTest))
+                                        messageAdapter?.notifyDataSetChanged()
                                     }
                                 }
-                            }
-                            runOnUiThread {
-                                messageAdapter?.notifyDataSetChanged()
                             }
                         }
 
@@ -205,10 +211,25 @@ class ReserveActivity : AppCompatActivity() {
                                         service.split("status")[1].split(":")[1].split(',')[0].replace(
                                             "\"", ""
                                         )
+                                    val id =
+                                        service.split("id")[1].split(":")[1].split(",")[0].replace(
+                                            "\"", ""
+                                        )
+                                    val nfc =
+                                        service.split("nfc")[1].split(":")[1].split(",")[0].replace(
+                                            "\"", ""
+                                        )
 
                                     runOnUiThread {
                                         cardList.add(
-                                            Services(name, toDatetime, fromDatetime, status)
+                                            Services(
+                                                name,
+                                                fromDatetime,
+                                                toDatetime,
+                                                status,
+                                                id,
+                                                nfc
+                                            )
                                         )
                                     }
                                 }
