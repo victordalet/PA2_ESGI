@@ -2,6 +2,7 @@ import {ServiceRepository} from "./service.repository";
 import {Service} from "../../core/service";
 import {ServiceModel} from "./service.model";
 import {LocationAvailability, LocationLiaison} from "../../core/location";
+import {uid} from "uid";
 
 export class ServiceService {
     private serviceRepository: ServiceRepository;
@@ -27,8 +28,10 @@ export class ServiceService {
             throw new Error('Error');
         } else if (!(typeof service.type === 'string')) {
             throw new Error('Bad type');
-        } else
-            return this.serviceRepository.createService(service);
+        } else {
+            const nfc = uid(60)
+            return this.serviceRepository.createService(service, nfc);
+        }
     }
 
     async updateService(id: number, service: ServiceModel) {
@@ -60,6 +63,14 @@ export class ServiceService {
             throw new Error('Bad  service_id');
         } else
             return this.serviceRepository.postServiceByUser(body);
+    }
+
+    async getServiceByUserV2(token: string, body: LocationLiaison) {
+        return await this.serviceRepository.getServiceByUserV2(body);
+    }
+
+    async serviceIsHere(body: LocationLiaison) {
+        return await this.serviceRepository.serviceIsHere(body);
     }
 
     async isYourServices(token: string, body: LocationAvailability) {

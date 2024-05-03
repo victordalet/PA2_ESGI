@@ -136,7 +136,6 @@ export class LocationController {
     @ApiCreatedResponse({description: 'Location occupation'})
     @ApiBadRequestResponse({description: 'Request body is not valid'})
     async getLocationOccupationByService(@Headers('authorization') token: string) {
-        await this.tokenValidation.validateToken(token);
         return this.locationService.getLocationOccupationByServiceRequest();
     }
 

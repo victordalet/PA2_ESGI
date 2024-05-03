@@ -32,6 +32,7 @@ export interface ViewProps {
     isAdmin: boolean;
     sendRequestService: () => void;
     userRequestService: UserRequest[];
+    serviceUser: ServiceUser[];
 }
 
 export interface UserRequest {
@@ -63,6 +64,7 @@ export interface ControllerState {
     nameFiles: string[];
     isAdmin: boolean;
     userRequestService: UserRequest[];
+    serviceUser: ServiceUser[];
 }
 
 export interface LocationOccupation {
@@ -90,4 +92,16 @@ export interface SubscriptionUtilisation {
     id: number;
     email: string;
     last_date_free_service: string;
+}
+
+export interface ServiceUser {
+    id: number;
+    service_name: string;
+    description: string;
+    user_email: string;
+    status: string;
+    city: string;
+    price: string;
+    from_datetime: string;
+    to_datetime: string;
 }

@@ -41,6 +41,7 @@ export default class Controller extends React.Component<
             this.isAlsoReserved();
         }
         this.reserveModel = new ReserveModel(this.idResa, this.apiSubPath, this.id);
+        this.reserveViewModel = new ReserveViewModel();
         this.verifIsAdmin();
         this.reserveModel.getNameFileBail();
         this.fetchLocation();
@@ -49,7 +50,7 @@ export default class Controller extends React.Component<
         this.fetchServiceReserved();
         this.getOccupationEvent();
         this.getLocationsOccupationRequestInfor();
-        this.reserveViewModel = new ReserveViewModel();
+        this.fetchServiceUser();
     }
 
     state: ControllerState = {
@@ -65,7 +66,13 @@ export default class Controller extends React.Component<
         servicesSelected: [],
         eventCalendar: [],
         nameFiles: [],
-        userRequestService: []
+        userRequestService: [],
+        serviceUser: []
+    };
+
+
+    private fetchServiceUser = async () => {
+        this.setState({serviceUser: await this.reserveModel.getServiceByLocationId()});
     };
 
 
@@ -546,6 +553,7 @@ export default class Controller extends React.Component<
             return <Loading/>;
         }
         return <ReserveView
+            serviceUser={this.state.serviceUser}
             userRequestService={this.state.userRequestService}
             sendRequestService={this.reserveModel.sendRequestService}
             isAdmin={this.state.isAdmin}

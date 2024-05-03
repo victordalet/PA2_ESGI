@@ -22,7 +22,6 @@ export class TypeLocationController {
     @ApiOkResponse({description: 'type location'})
     @ApiNotFoundResponse({description: 'No type location found'})
     async getTypeLocation(@Headers('authorization') token: string) {
-        await this.tokenValidation.validateToken(token);
         return await this.typeLocationService.getTypeLocation();
     }
 
