@@ -1,4 +1,5 @@
 import ViewModel from "../view-models/location";
+import {locationType} from "./Home";
 
 export interface ViewProps {
     location: LocationResponse[];
@@ -6,6 +7,9 @@ export interface ViewProps {
     filterLocationByNameOrDescription: () => void;
     filterLocationByCity: () => void;
     filterLocationByCapacity: () => void;
+    locationTypes: locationType[];
+    selected: any[];
+    handleChangeSelected: (selected: any) => void;
 }
 
 export interface ControllerProps {
@@ -15,6 +19,8 @@ export interface ControllerProps {
 export interface ControllerState {
     location: LocationResponse[];
     locationNoFilter: LocationResponse[];
+    locationTypes: locationType[];
+    selected: any[];
 }
 
 
@@ -36,6 +42,8 @@ export interface LocationResponse {
     type: string;
     is_occupy_by?: string;
     location_occupation_id?: number;
+    icons?: string;
+    is_valid: number;
 }
 
 export interface LocationDescription {

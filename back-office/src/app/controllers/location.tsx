@@ -6,6 +6,7 @@ import View from '../views/location';
 import {haveToken} from "../../security/token";
 import {Loading} from "../../components/loading";
 import LocationViewModel from "../view-models/location";
+import {LocationModel} from "../model/location";
 
 @observer
 export default class LocationController extends Component<
@@ -14,10 +15,12 @@ export default class LocationController extends Component<
 > {
 
     locationViewModel: LocationViewModel;
+    locationModel: LocationModel;
 
     constructor(props: ControllerProps) {
         super(props);
         this.locationViewModel = new LocationViewModel();
+        this.locationModel = new LocationModel();
         haveToken();
         this.getData();
     }
@@ -27,22 +30,11 @@ export default class LocationController extends Component<
         dataNoFilter: [],
     };
 
-    getData = async () => {
-        const apiPath = process.env.API_HOST || "http://localhost:3001";
-        fetch(apiPath + "/location", {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                authorization: localStorage.getItem("token") || "",
-            },
-        }).then((r) => {
-            console.log(r);
-            r.json().then((data: DataResponse[]) => {
-                this.setState({
-                    data: data,
-                    dataNoFilter: data,
-                });
-            });
+    private getData = async () => {
+        const data = await this.locationModel.fetchData();
+        this.setState({
+            data: data,
+            dataNoFilter: data,
         });
     };
 
@@ -58,24 +50,19 @@ export default class LocationController extends Component<
         this.setState({data: this.locationViewModel.capacityFilter(this.state.dataNoFilter)});
     };
 
-    public deleteLocation = async (id: string) => {
-        const apiPath = process.env.API_HOST || "http://localhost:3001";
-        await fetch(apiPath + "/location/admin/" + id, {
-            method: "DELETE",
-            headers: {
-                "Content-Type": "application/json",
-                authorization: localStorage.getItem("token") || "",
-            },
-        });
-        document.location.reload();
+    public isValidateFilter = () => {
+        this.setState({data: this.locationViewModel.isValidateFilter(this.state.dataNoFilter)});
     };
+
 
     render() {
         if (this.state.dataNoFilter.length === 0) {
             return <Loading/>;
         }
         return <View
-            deleteLocation={this.deleteLocation}
+            acceptLocation={this.locationModel.acceptLocation}
+            isValidateFilter={this.isValidateFilter}
+            deleteLocation={this.locationModel.deleteLocation}
             data={this.state.data}
             capacityFilter={this.capacityFilter}
             priceFilter={this.priceFilter}

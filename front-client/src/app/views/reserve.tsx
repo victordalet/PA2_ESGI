@@ -4,7 +4,6 @@ import {ViewProps} from "../@types/reserve";
 import {PopupError} from "../../components/popup";
 import {ChatBot} from "../../components/chatBot";
 import {Language} from "../../components/language";
-import {Card} from "../../components/card";
 import {Calendar, momentLocalizer} from 'react-big-calendar';
 import moment from 'moment';
 
@@ -15,7 +14,6 @@ export class ReserveView extends React.Component <ViewProps> {
 
         const {
             data,
-            services,
             isReserved,
             fetchReservations,
             addNotation,
@@ -27,21 +25,22 @@ export class ReserveView extends React.Component <ViewProps> {
             isBail,
             deleteLocation,
             description,
-            servicesGlobal,
-            addService,
-            servicesSelected,
             eventCalendar,
             fetchMessagesForBail,
             postMessageForBail,
-            isService,
             downloadFactureBail,
             nameFiles,
             postFileBail,
             downloadFileBail,
-            deleteOccupationBail
+            deleteOccupationBail,
+            bailIsOccupied,
+            isAdmin,
+            services,
+            sendRequestService,
+            serviceUser,
+            idResa
         } = this.props;
 
-        let cardToRemoveIndex = 0;
 
         const now = momentLocalizer(moment);
 
@@ -61,6 +60,7 @@ export class ReserveView extends React.Component <ViewProps> {
                                 description ?
                                     (
                                         <div>
+                                            <h3><span>Description:</span>{data.description}</h3>
                                             <h3><span>Concierge :</span>{description.typeConcierge}</h3>
                                             <h3><span>Address :</span>{description.address}</h3>
                                             <h3><span>Country :</span>{description.country}</h3>
@@ -97,7 +97,8 @@ export class ReserveView extends React.Component <ViewProps> {
                         </div>
                         <div className={"info"}>
                             <h3 id={"price"}><i className="ai-coin"></i>{data.price}</h3>
-                            <h3 id={"location"}><i className="ai-map"></i>{data.address}</h3>
+                            <h3 id={"location"}><i className="ai-map"></i><span
+                                id={"location-city"}>{data.address}</span></h3>
                             <h3 id={"contact"}><i className="ai-paper-airplane"></i>{data.created_by}</h3>
                             {
                                 !isReserved
@@ -118,13 +119,17 @@ export class ReserveView extends React.Component <ViewProps> {
                             }
 
                             {
-                                isBail ?
+                                isBail || isAdmin ?
                                     (
                                         <div className={"reservation"}>
                                             <button id={"cancel"} onClick={deleteLocation}
                                                     style={{background: '#c91919', marginBottom: '20px'}}>Delete
                                             </button>
-                                            <button id={"facture"} onClick={downloadFactureBail}>My facture</button>
+                                            {
+                                                isBail ?
+                                                    <button id={"facture"} onClick={downloadFactureBail}>My
+                                                        facture</button> : ''
+                                            }
                                         </div>
                                     )
                                     :
@@ -148,137 +153,122 @@ export class ReserveView extends React.Component <ViewProps> {
                             }
                         </div>
                     </div>
-
-
-                    {
-                        services.length === 0 ? '' :
-
-                            <div style={{marginLeft: '250px'}}>
-
-                                <h2 style={{marginLeft: '0px'}}>Services included in the rental:</h2>
-                                <div style={{marginLeft: '0'}} className={"services"}>
-
-                                    <ul>
-                                        {
-                                            services.map((service, index) => {
-                                                return (
-                                                    <Card cardInfo={{
-                                                        title: service.name,
-                                                        description: (<div>{
-                                                            Array.from(Array(5).keys()).map((i) => {
-                                                                if (service.notation) {
-                                                                    if (i < service.notation) {
-                                                                        return <i className="ai-star"
-                                                                                  color={"#d3ae1b"}></i>;
-                                                                    }
-                                                                }
-                                                                return <i className="ai-star" color={"#fff"}></i>;
-                                                            })
-                                                        }</div>),
-                                                        price: service.price,
-                                                        id: service.id,
-                                                        type: 'service'
-                                                    }}/>
-                                                );
-                                            })
-                                        }
-                                    </ul>
-                                </div>
-                            </div>
-                    }
                     {
                         isReserved ?
-                            servicesSelected.length === 0 ?
-                                <h2>No additional services</h2>
-                                :
-                                <h2>Your services add : </h2>
-                            :
-                            isBail ? '' :
-                                <h2>Choose additional services : </h2>
-                    }
-                    <div className={"services services-new"}
-                         style={isReserved && servicesSelected.length === 0 ? {display: 'none'} : {}}>
-
-                        {
-                            !isReserved && !isBail ?
-
-                                servicesGlobal.map((service, index) => {
-                                    if (!services.find((s) => s.id === service.id)) {
-                                        return (
-                                            <Card
-                                                onclick={() => {
-                                                    addService(index + cardToRemoveIndex, service.id);
-
-                                                }}
-                                                cardInfo={{
-                                                    title: service.name,
-                                                    description: (<div>{
-                                                        Array.from(Array(5).keys()).map((i) => {
-                                                            if (service.notation) {
-                                                                if (i < service.notation) {
-                                                                    return <i className="ai-star"
-                                                                              color={"#d3ae1b"}></i>;
-                                                                }
-                                                            }
-                                                            return <i className="ai-star" color={"#fff"}></i>;
-                                                        })
-                                                    }</div>),
-                                                    price: service.price,
-                                                    id: service.id,
-                                                    type: 'service'
-                                                }}/>
-                                        );
-                                    } else {
-                                        cardToRemoveIndex -= 1;
+                            <div className={"calendar-form-complete"}
+                                 style={{marginTop: '100px', width: '40%', padding: '20px'}}>
+                                <h2>Take Services</h2>
+                                <select id={"service-name"}>
+                                    {
+                                        services.map((service, index) => {
+                                            return (
+                                                <option key={service.name} value={service.name}>{service.name}</option>
+                                            );
+                                        })
                                     }
-                                }) :
-                                servicesSelected.map((service, index) => {
-                                    return (
-
-                                        <Card
-                                            cardInfo={{
-                                                title: service.name,
-                                                description: (<div>{
-                                                    Array.from(Array(5).keys()).map((i) => {
-                                                        if (service.notation) {
-                                                            if (i < service.notation) {
-                                                                return <i className="ai-star"
-                                                                          color={"#d3ae1b"}></i>;
-                                                            }
-                                                        }
-                                                        return <i className="ai-star" color={"#fff"}></i>;
-                                                    })
-                                                }</div>),
-                                                price: service.price,
-                                                id: service.id,
-                                                type: 'service'
-                                            }}/>
-                                    );
-                                })
-                        }
-                    </div>
+                                </select>
+                                <select id={"service-time"}>
+                                    <option value={"before"}>Before resea</option>
+                                    <option value={"during"}>During resa</option>
+                                    <option value={"after"}>After resa</option>
+                                </select>
+                                <textarea id={"service-description"}></textarea>
+                                <button onClick={sendRequestService}>Request service</button>
+                            </div> : ''
+                    }
 
                     {
+                        isReserved ?
+                            <div className={"calendar-form-complete"}>
+                                <h2>Monitoring of services</h2>
+                                <div className={"table"}>
+                                    <div className={"row"}>
+                                        <div className={"row-content"}><h2>Name</h2></div>
+                                        <div className={"row-content"}><h2>Date</h2></div>
+                                        <div className={"row-content"}><h2>Price</h2></div>
+                                        <div className={"row-content"}><h2>Status</h2></div>
+                                    </div>
+                                    {
+                                        serviceUser.map((service, index) => {
+                                            return (
+                                                <div key={index} className={"row"}>
+                                                    <div className={"row-content"}><h2>{service.service_name}</h2></div>
+                                                    <div className={"row-content"}>
+                                                        <h2>from {new Date(service.from_datetime).toLocaleDateString('fr-FR') + ' ' + new Date(service.from_datetime).toLocaleTimeString('fr-FR')} to {new Date(service.to_datetime).toLocaleDateString('fr-FR') + ' ' + new Date(service.to_datetime).toLocaleTimeString('fr-FR')}
+                                                        </h2></div>
+                                                    <div className={"row-content"}><h2>{service.price} €</h2></div>
+                                                    <div className={"row-content"}><h2>{service.status}</h2></div>
+                                                </div>
+                                            );
+                                        })
+                                    }
+                                </div>
+                            </div> : ''
+                    }
+
+                    <h1>Calendar</h1>
+                    <div className={"calendar"}>
+                        <Calendar
+                            localizer={now}
+                            events={eventCalendar.map((event, index) => {
+                                return {
+                                    start: new Date(event.from_datetime),
+                                    end: new Date(event.to_datetime),
+                                    title: isBail ? (data.created_by == event.user_email ? 'Baileur' : event.user_email) :
+                                        isReserved && event.id == idResa ? 'Your Reservation' : 'Occupied'
+                                };
+                            })}
+                            startAccessor="start"
+                            endAccessor="end"
+                            style={{height: 500}}/>
+                    </div>
+                    {
                         isBail ?
-                            <div className={"calendar"}>
-                                <Calendar
-                                    localizer={now}
-                                    events={eventCalendar.map((event, index) => {
-                                        return {
-                                            start: new Date(event.from_datetime),
-                                            end: new Date(event.to_datetime),
-                                            title: event.user_email
-                                        };
-                                    })}
-                                    startAccessor="start"
-                                    endAccessor="end"
-                                    style={{height: 500}}/>
+                            <div className={"calendar-form-complete"}>
+                                <h2>Rental unavailable</h2>
+                                <div className={"date-wrapper"}>
+                                    <input type={"date"} id={"date-start"}/>
+                                    <input type={"date"} id={"date-end"}/>
+                                </div>
+                                <label htmlFor={"auto-calendar-unavailable"}>Repeat</label>
+                                <select id={"repeat-calendar-unavailable"}>
+                                    <option value={"none"}>Never</option>
+                                    <option value={"daily"}>Daily</option>
+                                    <option value={"weekly"}>Weekly</option>
+                                    <option value={"monthly"}>Monthly</option>
+                                </select>
+                                <button onClick={bailIsOccupied}>Apply</button>
+                            </div>
+                            : ''
+                    }
+                    {
+                        isBail ?
+                            <div className={"calendar-form-complete"}>
+                                <h2>Delete occupation</h2>
+                                {
+                                    eventCalendar.length === 0 ?
+                                        <h3>No location to delete</h3>
+                                        :
+                                        <div>
+                                            <select id={"delete-location"}>
+                                                {eventCalendar.map((event, index) => {
+                                                    return (
+                                                        <option
+                                                            value={event.id}>{event.user_email} - {event.from_datetime.split('T')[0]} / {event.to_datetime.split('T')[0]}</option>
+                                                    );
+                                                })}
+                                            </select>
+                                            <button style={{background: '#c91919'}}
+                                                    onClick={() => deleteOccupationBail(2)}>Delete
+                                            </button>
+                                        </div>
+                                }
                             </div>
                             : ''
                     }
 
                     {
-                        isReserved || isBail ?
+                        isReserved || isAdmin ?
                             (
                                 <div className={"if-is-buy"}>
                                     {
@@ -303,25 +293,27 @@ export class ReserveView extends React.Component <ViewProps> {
                                     <div className={"container-message"}>
                                         <h3>Messages</h3>
                                         {
-                                            isBail ?
+                                            isAdmin ?
                                                 <select id={"message-select"} onChange={fetchMessagesForBail}>
                                                     {eventCalendar.map((event, index) => {
-                                                        return (
-                                                            <option
-                                                                value={event.id}>{event.user_email} -
-                                                                {event.from_datetime.split('T')[0]} /
-                                                                {event.to_datetime.split('T')[0]}
-                                                            </option>
-                                                        );
+                                                        if (data.created_by !== event.user_email) {
+                                                            return (
+                                                                <option
+                                                                    value={event.id}>{event.user_email} -
+                                                                    {event.from_datetime.split('T')[0]} /
+                                                                    {event.to_datetime.split('T')[0]}
+                                                                </option>
+                                                            );
+                                                        }
                                                     })}
                                                 </select>
                                                 : ''
                                         }
                                         <div className={"messages"}>
                                             {
-                                                isBail && messages.length != 0 ?
+                                                isAdmin && messages.length != 0 ?
                                                     <button className={"delete-occupation-bail"}
-                                                            onClick={() => deleteOccupationBail()}>Cancel this
+                                                            onClick={() => deleteOccupationBail(1)}>Cancel this
                                                         location</button>
                                                     : ''
                                             }
@@ -338,7 +330,7 @@ export class ReserveView extends React.Component <ViewProps> {
                                         </div>
                                         <input type={"text"} id={"message-input"}/>
                                         {
-                                            isBail ?
+                                            isAdmin ?
                                                 <i className={"ai-paper-airplane"} onClick={postMessageForBail}></i>
                                                 :
                                                 <i className={"ai-paper-airplane"} onClick={addMessage}></i>

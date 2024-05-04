@@ -53,6 +53,15 @@ services:
       FRONT_CLIENT_PORT: "3003"
       YOLO_ESTIMATOR_PORT: "3006"
 
+  front-presta:
+    build: front-presta/
+    ports:
+      - "3008:3000"
+    environment:
+      API_HOST: "3001"
+      FRONT_CLIENT_PORT: "3003"
+      YOLO_ESTIMATOR_PORT: "3006"
+
   scraper:
     build: scraper/
     ports:

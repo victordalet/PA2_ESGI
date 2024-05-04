@@ -3,17 +3,20 @@ import ServiceView from "../views/service";
 import {ControllerProps, ControllerState, ServiceResponse} from "../@types/service";
 import ServiceViewModel from "../view-models/service";
 import {Loading} from "../../components/loading";
+import {ServiceModel} from "../model/service";
 
 export default class Controller extends React.Component<
     ControllerProps,
     ControllerState
 > {
     private serviceViewModel: ServiceViewModel;
+    private serviceModel: ServiceModel;
 
     constructor(props: ControllerProps) {
         super(props);
-        this.fetchService();
+        this.serviceModel = new ServiceModel();
         this.serviceViewModel = new ServiceViewModel();
+        this.fetchService();
     }
 
     state = {
@@ -23,15 +26,7 @@ export default class Controller extends React.Component<
 
 
     private fetchService = async () => {
-        const apiPath = process.env.API_HOST || 'http://localhost:3001';
-        const response = await fetch(apiPath + '/service', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'authorization': localStorage.getItem('token') || ''
-            }
-        });
-        const data: ServiceResponse[] = await response.json();
+        const data: ServiceResponse[] = await this.serviceModel.fetchService();
         data.filter((service) => {
             return service.type === 'USER';
         });

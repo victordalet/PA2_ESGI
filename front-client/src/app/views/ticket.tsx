@@ -16,7 +16,7 @@ export default class TicketView extends React.Component<ViewProps> {
                 <PopupError text={"All fields are required"}/>
                 <PopupError text={"Ticket created"}/>
                 <div className="container-ticket">
-                    <h2>Create new ticket</h2>
+                    <h2>Report a bug</h2>
                     <div className={"ticket-form"}>
                         <input className={"ticket-input"} type="text" placeholder="Title"/>
                         <textarea className={"ticket-textarea"} placeholder="Description"/>

@@ -1,7 +1,6 @@
 import {DataResponse, ViewProps} from "../@types/location";
 import React from "react";
 import {Navbar} from "../../components/navbar";
-import {Table} from "../../components/table";
 
 export default class LocationView extends React.Component<ViewProps> {
     render() {
@@ -10,7 +9,9 @@ export default class LocationView extends React.Component<ViewProps> {
             capacityFilter,
             priceFilter,
             searchFilter,
-            deleteLocation
+            deleteLocation,
+            isValidateFilter,
+            acceptLocation
         } = this.props;
 
         return (
@@ -42,13 +43,21 @@ export default class LocationView extends React.Component<ViewProps> {
                                 placeholder={"Price max"}
                             />{" "}
                         </div>
+                        <div className="premium-checkbox">
+                            <label htmlFor={"is_valid"}>Unvalidated</label>
+                            <input
+                                onChange={isValidateFilter}
+                                type={"checkbox"}
+                                id={"is_valid"}
+                                autoComplete={"none"}/>
+                        </div>
                     </div>
                 </div>
 
                 <div className="table">
                     <div className={"table-header"}>
                         {
-                            ["by", "name", "price", "is_occupy_by", "nb address", "capacity", "type", "delete"].map((data) => (
+                            ["by", "name", "price", "is_occupy_by", "nb address", "capacity", "type", "ACTION"].map((data) => (
                                 <div className="header__item"><a className="filter__link" href="#"> {data}</a></div>
                             ))
                         }
@@ -65,11 +74,17 @@ export default class LocationView extends React.Component<ViewProps> {
                                         dataLine.capacity,
                                         dataLine.type,
                                         (<i
-                                            style={{color: '#c90b1a', cursor: 'pointer', fontSize: '2em'}}
-                                            onClick={() => {
-                                                deleteLocation(dataLine.id.toString());
+                                            style={{
+                                                color: dataLine.is_valid ? '#c90b1a' : '#11963f',
+                                                cursor: 'pointer',
+                                                fontSize: '2em'
                                             }}
-                                            className="ai-circle-minus-fill"></i>)
+                                            onClick={() => {
+                                                dataLine.is_valid ?
+                                                    deleteLocation(dataLine.id) :
+                                                    acceptLocation(dataLine.id);
+                                            }}
+                                            className={dataLine.is_valid ? "ai-circle-minus-fill" : "ai-circle-plus-fill"}></i>)
                                     ].map(dataColumn => (
                                         <div className="table-data">{dataColumn}</div>
                                     ))}

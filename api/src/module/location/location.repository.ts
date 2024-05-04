@@ -1,6 +1,7 @@
 import {Connection} from "mysql2/promise";
 import {DatabaseEntity} from "../../database/mysql.entity";
-import {Location} from "../../core/location";
+import {Location, LocationAvailability} from "../../core/location";
+import {RequestLocationServiceModel} from "./location.model";
 
 export class LocationRepository {
     private db: Connection;
@@ -12,6 +13,7 @@ export class LocationRepository {
             this.db = this.database.db;
         }, 500);
     }
+
 
     async getLocations(): Promise<Location[]> {
         //await this.db.connect()
@@ -42,9 +44,21 @@ export class LocationRepository {
         return locations;
     }
 
+    async getLocationOccupationByService() {
+        await this.db.connect()
+        const [rows, filed] = await this.db.query("SELECT *, (select from_datetime from location_occupation where id = occupation_request_service.id limit 1) as from_datetime,(select to_datetime from location_occupation where id = occupation_request_service.id limit 1) as to_datetime  FROM occupation_request_service");
+        return rows;
+    }
+
+    async addLocationOccupationByService(body: RequestLocationServiceModel) {
+        await this.db.connect()
+        return this.db.query("INSERT INTO occupation_request_service (location_occupation_id, service_name, user_email,description,status,city,created_at) VALUES (?,?,?,?,?,?,?)",
+            [body.location_occupation_id, body.service_name, body.user_email, body.description, 'pending', body.city, new Date()]);
+    }
+
     async createLocation(location: Location) {
         await this.db.connect()
-        await this.db.query("INSERT INTO location (name, description, address, latitude, longitude, capacity, price, type, created_at, updated_at,created_by,picture) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)",
+        await this.db.query("INSERT INTO location (name, description, address, latitude, longitude, capacity, price, type, created_at, updated_at,created_by,picture,description_json,icons,is_valid) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?)",
             [location.name,
                 location.description,
                 location.address,
@@ -54,7 +68,10 @@ export class LocationRepository {
                 location.price,
                 location.type,
                 new Date(), new Date(),
-                location.created_by, ' ']);
+                location.created_by, ' ',
+                location.description_json,
+                location.icons,
+                0,]);
         const [rows, filed] = await this.db.query("SELECT LAST_INSERT_ID() as id FROM location");
         return rows[0];
     }
@@ -76,14 +93,10 @@ export class LocationRepository {
 
     }
 
-    async locationIsOccupied(locationId: number, fromDatetime: string, toDatetime: string) {
+    async locationIsOccupied(locationId: number) {
         await this.db.connect()
         const [rows, filed] = await this.db.query("SELECT * FROM location_occupation WHERE location_id = ? AND deleted_at IS NULL", [locationId]);
-        if (rows instanceof Array) {
-            return rows.some((row: any) => {
-                return (new Date(fromDatetime) >= new Date(row.from_datetime) && new Date(fromDatetime) <= new Date(row.to_datetime)) || (new Date(toDatetime) >= new Date(row.from_datetime) && new Date(toDatetime) <= new Date(row.to_datetime)) || (new Date(fromDatetime) <= new Date(row.from_datetime) && new Date(toDatetime) >= new Date(row.to_datetime));
-            });
-        }
+        return rows;
 
     }
 
@@ -97,6 +110,11 @@ export class LocationRepository {
                 const r: any = rows2[i];
                 const [location, filed3] = await this.db.query("SELECT * FROM location WHERE id = ?", [r.location_id]);
                 location[0].location_occupation_id = r.id;
+                location[0].from_datetime = r.from_datetime;
+                location[0].to_datetime = r.to_datetime;
+                location[0].notation = r.notation;
+                location[0].repeat = r.repeat;
+                location[0].deleted_at = r.deleted_at;
                 locations.push(location[0]);
             }
         }
@@ -107,7 +125,8 @@ export class LocationRepository {
     async addLocationOccupation(locationId: number, token: string, fromDatetime: string, toDatetime: string) {
         await this.db.connect()
         const [rows, filed] = await this.db.query("SELECT email FROM USER WHERE connection = ?", [token]);
-        await this.db.query("INSERT INTO location_occupation (from_datetime, to_datetime, location_id, user_email) VALUES (?, ?, ?, ?)", [fromDatetime, toDatetime, locationId, rows[0].email]);
+        await this.db.query("INSERT INTO location_occupation (from_datetime, to_datetime, location_id, user_email, `repeat`) VALUES (?, ?, ?, ?,?)",
+            [fromDatetime, toDatetime, locationId, rows[0].email, 'none']);
         const [rows2, filed2] = await this.db.query("SELECT LAST_INSERT_ID() as id FROM location_occupation");
         return rows2[0].id;
     }
@@ -124,10 +143,15 @@ export class LocationRepository {
 
     }
 
+    async adminAcceptLocationOccupation(locationId: number) {
+        await this.db.connect()
+        return this.db.query("UPDATE location SET is_valid = 1 WHERE id = ?", [locationId]);
+    }
+
     async locationIsOccupiedByUser(locationId: number, token: string) {
         await this.db.connect()
         const [rows, filed] = await this.db.query("SELECT email FROM USER WHERE connection = ?", [token]);
-        const [rows2, filed2] = await this.db.query("SELECT * FROM location_occupation WHERE location_id = ? AND user_email = ? AND deleted_at IS NULL",
+        const [rows2, filed2] = await this.db.query("SELECT * FROM location_occupation WHERE id = ? AND user_email = ? AND deleted_at IS NULL",
             [locationId, rows[0].email]);
         if (rows2 instanceof Array) {
             return rows2.length > 0;
@@ -135,7 +159,7 @@ export class LocationRepository {
     }
 
     async getLocationOccupation(locationId: number) {
-        await this.db.connect()
+        await this.db.connect();
         const [rows, filed] = await this.db.query("SELECT * FROM location_occupation WHERE location_id = ? AND deleted_at IS NULL", [locationId]);
         return rows;
     }
@@ -169,6 +193,23 @@ export class LocationRepository {
                 }
             }
         }
+    }
+
+    async getLocationOccupationInfoByAdmin() {
+        await this.db.connect();
+        const sqlRequest: string = "select location_id,from_datetime,to_datetime,notation,user_email, (select name from location where id = location_id) as location_name,(select address from location where id = location_id) as city,(select created_by from location where id = location_id)  as created_by , (select count(*) as message from location_message where location_occupation_id = id) as nb_message from location_occupation where deleted_at is null";
+        const [rows, filed] = await this.db.query(sqlRequest);
+        return rows;
+
+    }
+
+    async addLocationOccupationByBail(locationId: number, token: string, fromDatetime: string, toDatetime: string, repeat: string) {
+        await this.db.connect();
+        const [rows, filed] = await this.db.query("SELECT email FROM USER WHERE connection = ?", [token]);
+        await this.db.query("INSERT INTO location_occupation (from_datetime, to_datetime, location_id, user_email, `repeat`) VALUES (?, ?, ?, ?, ?)",
+            [fromDatetime, toDatetime, locationId, rows[0].email, repeat]);
+        const [rows2, filed2] = await this.db.query("SELECT LAST_INSERT_ID() as id FROM location_occupation");
+        return rows2[0].id;
     }
 
     async addMessageToLocationOccupation(locationOccupationId: number, message: string, token: string) {

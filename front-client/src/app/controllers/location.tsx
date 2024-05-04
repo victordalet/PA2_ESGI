@@ -3,37 +3,35 @@ import LocationView from "../views/location";
 import {ControllerProps, ControllerState} from "../@types/location";
 import LocationViewModel from "../view-models/location";
 import {Loading} from "../../components/loading";
+import {LocationModel} from "../model/location";
+import {locationType} from "../@types/Home";
 
 export default class Controller extends React.Component<
     ControllerProps,
     ControllerState
 > {
     private locationViewModel: LocationViewModel;
+    private locationModel: LocationModel;
 
     constructor(props: ControllerProps) {
         super(props);
-        this.fetchLocation();
+        this.locationModel = new LocationModel();
         this.locationViewModel = new LocationViewModel();
+        this.fetchLocation();
+        this.getTypeLocation();
     }
 
     state = {
         location: [],
         locationNoFilter: [],
+        locationTypes: [],
+        selected: [],
     };
 
-    private fetchLocation = () => {
-        const apiPath = process.env.API_HOST || "http://localhost:3001";
-        fetch(apiPath + "/location", {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                authorization: localStorage.getItem("token") || "",
-            },
-        }).then((res) => {
-            res.json().then((data) => {
-                this.setState({location: data, locationNoFilter: data});
-            });
-        });
+    private fetchLocation = async () => {
+        const data = await this.locationModel.fetchLocation();
+        this.setState({location: data});
+        this.setState({locationNoFilter: data});
     };
 
     public filterByPrice = () => {
@@ -88,6 +86,27 @@ export default class Controller extends React.Component<
         });
     };
 
+    public getTypeLocation = async () => {
+        const data = await this.locationModel.getTypeLocation();
+        this.setState({locationTypes: data});
+        if (window.location.href.includes("?type=")) {
+            const type = window.location.href.split("?type=")[1];
+            const label = type;
+            this.handleChangeSelected([{label, value: type}]);
+        }
+    };
+
+    public handleChangeSelected = (selected: any) => {
+        this.setState({selected});
+        this.setState({
+            location: this.locationViewModel.filterLocationByType(
+                this.state.locationNoFilter,
+                selected
+            ),
+        });
+    };
+
+
     render() {
         if (this.state.locationNoFilter.length === 0) {
             return <Loading/>;
@@ -95,6 +114,9 @@ export default class Controller extends React.Component<
 
         return (
             <LocationView
+                selected={this.state.selected}
+                handleChangeSelected={this.handleChangeSelected}
+                locationTypes={this.state.locationTypes}
                 location={this.state.location}
                 filterByPrice={this.filterByPrice}
                 filterLocationByNameOrDescription={

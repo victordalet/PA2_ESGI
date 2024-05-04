@@ -1,5 +1,5 @@
 import {ApiProperty} from "@nestjs/swagger";
-import {IsNumber, IsString} from "class-validator";
+import {IsNumber, IsOptional, IsString} from "class-validator";
 
 export class ServiceModel {
 
@@ -39,4 +39,20 @@ export class ServiceModel {
     @IsNumber()
     location_id?: number;
 
+    @ApiProperty({example: '...', description: 'siret'})
+    @IsString()
+    siret?: string;
+
+    @ApiProperty({example: '...', description: 'is valid'})
+    @IsOptional()
+    @IsNumber()
+    is_valid?: number
+
+    @ApiProperty({example: '...', description: 'schedule'})
+    @IsString()
+    schedule: string;
+
+    @ApiProperty({example: 'PARIS', description: 'city'})
+    @IsString()
+    city: string;
 }

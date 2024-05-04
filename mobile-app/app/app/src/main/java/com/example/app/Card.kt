@@ -1,6 +1,6 @@
 package com.example.app
 
-class Card// constructor
+class Card
     (
     private var title: String?,
     private var price: String?,
@@ -37,10 +37,6 @@ class Card// constructor
 
     fun getLocationId(): Int? {
         return locationId
-    }
-
-    fun getImages(): String? {
-        return image
     }
 
     fun setImages(image: String?) {

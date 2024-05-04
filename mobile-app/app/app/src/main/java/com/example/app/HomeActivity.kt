@@ -22,6 +22,7 @@ class HomeActivity : AppCompatActivity() {
         arrayAdapter = CardAdapter(this, cardList)
         listView.adapter = arrayAdapter
 
+
         val logoutButton = findViewById<Button>(R.id.logout)
         logoutButton.setOnClickListener(View.OnClickListener {
             logout()
@@ -60,7 +61,7 @@ class HomeActivity : AppCompatActivity() {
         val sharedPref = getSharedPreferences("user", AppCompatActivity.MODE_PRIVATE)
         val token = sharedPref.getString("token", null)
         if (token != null) {
-            val apiPath = "http://10.66.125.162:3001/picture/location-${card.getId()}"
+            val apiPath = "http://172.20.10.2:3001/picture/location-${card.getId()}"
             try {
                 val request =
                     okhttp3.Request.Builder().url(apiPath).get().addHeader("authorization", token)
@@ -73,8 +74,10 @@ class HomeActivity : AppCompatActivity() {
 
                     override fun onResponse(call: okhttp3.Call, response: okhttp3.Response) {
                         val responseBody: String? = response.body()?.string()
+                        println(responseBody)
                         runOnUiThread {
                             card.setImages(responseBody)
+                            arrayAdapter?.notifyDataSetChanged()
                         }
                     }
                 })
@@ -88,7 +91,7 @@ class HomeActivity : AppCompatActivity() {
         val sharedPref = getSharedPreferences("user", MODE_PRIVATE)
         val token = sharedPref.getString("token", null)
         if (token != null) {
-            val apiPath = "http://10.66.125.162:3001/location/get-location-occupation"
+            val apiPath = "http://172.20.10.2:3001/location/get-location-occupation"
             try {
                 val request = okhttp3.Request.Builder().url(apiPath).post(
                     okhttp3.RequestBody.create(
@@ -102,6 +105,7 @@ class HomeActivity : AppCompatActivity() {
                     }
 
                     override fun onResponse(call: okhttp3.Call, response: okhttp3.Response) {
+                        var user_email = sharedPref.getString("email", null)
                         val responseBody: String? = response.body()?.string()
                         if (responseBody != null) {
                             if (responseBody == "[]") {
@@ -126,23 +130,39 @@ class HomeActivity : AppCompatActivity() {
                                     )
                                 val locationId =
                                     location.split("location_occupation_id")[1].split(":")[1].split(
-                                        '}'
+                                        ','
                                     )[0].replace(
                                         "\"", ""
                                     )
-
-                                runOnUiThread {
-                                    cardList.add(
-                                        Card(
-                                            name,
-                                            price,
-                                            "Image",
-                                            "",
-                                            "",
-                                            id.toInt(),
-                                            locationId.toInt()
-                                        )
+                                val createdBy =
+                                    location.split("created_by")[1].split(":")[1].split(",")[0].replace(
+                                        "\"", ""
                                     )
+                                val fromDatetime =
+                                    location.split("from_datetime")[1].split(":")[1].split(",")[0].replace(
+                                        "\"", ""
+                                    )
+                                val toDatetime =
+                                    location.split("to_datetime")[1].split(":")[1].split(",")[0].replace(
+                                        "\"", ""
+                                    )
+
+
+                                if (createdBy != user_email) {
+
+                                    runOnUiThread {
+                                        cardList.add(
+                                            Card(
+                                                name,
+                                                price,
+                                                "Image",
+                                                "$fromDatetime - $toDatetime",
+                                                createdBy,
+                                                id.toInt(),
+                                                locationId.toInt()
+                                            )
+                                        )
+                                    }
                                 }
                             }
                             runOnUiThread {

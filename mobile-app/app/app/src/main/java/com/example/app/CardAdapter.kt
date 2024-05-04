@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 
 class CardAdapter() : BaseAdapter() {
 
@@ -17,6 +16,11 @@ class CardAdapter() : BaseAdapter() {
     }
 
     constructor(context: ReserveActivity, cardList: MutableList<Card>) : this() {
+        this.context = context
+        this.cardList = cardList
+    }
+
+    constructor(context: AdminHomeActivity, cardList: MutableList<Card>) : this() {
         this.context = context
         this.cardList = cardList
     }
@@ -43,18 +47,26 @@ class CardAdapter() : BaseAdapter() {
         var view: View? = convertView
         if (view == null) {
             view = View.inflate(parent.context, R.layout.card, null)
+            view = View.inflate(parent.context, R.layout.card, null)
         }
         view = LayoutInflater.from(context as Context?).inflate(R.layout.card, parent, false)
         title = view.findViewById(R.id.title)
         price = view.findViewById(R.id.price)
         image = view.findViewById(R.id.imageView)
+        val description = view.findViewById<TextView>(R.id.description)
         title.text = cardList[position].getTitle()
         price.text = cardList[position].getPrice()
-        val base64Image = cardList[position].getPrice() as String
-        val imageT = android.util.Base64.decode(base64Image, android.util.Base64.DEFAULT)
-        val bitmap = android.graphics.BitmapFactory.decodeByteArray(imageT, 0, imageT.size)
-        image.background =
-            android.graphics.drawable.BitmapDrawable((context as Context).resources, bitmap)
+        description.text = cardList[position].getDescription()
+        var base64Image = cardList[position].getImage() as String
+        if (base64Image != "Image") {
+            base64Image = base64Image.split(":\"")[1].split("\"")[0]
+            val imageT = android.util.Base64.decode(base64Image, android.util.Base64.DEFAULT)
+            val bitmap = android.graphics.BitmapFactory.decodeByteArray(imageT, 0, imageT.size)
+            image.background =
+                android.graphics.drawable.BitmapDrawable((context as Context).resources, bitmap)
+            image.layoutParams.height = 200
+            image.layoutParams.width = 200
+        }
 
 
 

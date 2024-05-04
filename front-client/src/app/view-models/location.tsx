@@ -32,4 +32,13 @@ export default class LocationViewModel {
         });
     }
 
+    filterLocationByType(locations: LocationResponse[], selected: any[]): LocationResponse[] {
+        if (selected.length === 0) return locations;
+        return locations.filter((l) => {
+            if (l.icons === undefined) return l;
+            return l.icons.includes(selected[0].value);
+        });
+
+    }
+
 }

@@ -36,6 +36,7 @@ export default class ConnectionController extends Component<
             res.json().then((data: dataConnection) => {
                 if (data.connection != null) {
                     localStorage.setItem("token", data.connection);
+                    localStorage.setItem("email", this.state.email);
                     window.location.href = "/home";
                 } else {
                     this.connectionViewModel.openPopup();

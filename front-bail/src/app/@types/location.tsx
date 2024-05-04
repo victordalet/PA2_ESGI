@@ -1,15 +1,15 @@
 import ViewModel from '../view-models/location';
-import {Service} from "./service";
 
 export interface ViewProps {
     resetChoiceConcierge: (numberSelected: number) => void;
     allSelectedRadioContact: () => void;
     storeFormInJSON: () => void;
-    service: Service[];
     activeStep2: () => void;
-    addServiceToForm: (service: LocationService, index: number) => void;
     validationCaptcha: (value: any) => void;
     getPredictYolo: () => void;
+    openOrCloseOpener: (index: number) => void;
+    locationTypes: locationType[];
+    addTypeLocation: (type: string, id: number, idView: number) => void;
 }
 
 export interface ControllerProps {
@@ -17,9 +17,9 @@ export interface ControllerProps {
 }
 
 export interface ControllerState {
-    service: Service[];
-    serviceSelected: LocationService[];
     price: number;
+    locationTypes: locationType[];
+    selectedLocationTypes: locationType[];
 }
 
 export interface FormLocation {
@@ -34,7 +34,7 @@ export interface FormLocation {
     email: string;
     telephone: string;
     time: number[];
-    service?: LocationService[];
+    description: string;
 }
 
 export interface Location {
@@ -55,15 +55,17 @@ export interface Location {
     type: string;
     is_occupy_by?: string;
     location_occupation_id?: number;
+    is_valid: number;
 }
 
-export interface LocationService {
-    id?: number;
-    name: string;
-    price: number;
-}
 
 export interface YoloResponse {
     price: number;
     image: string;
+}
+
+export interface locationType {
+    id: number;
+    name: string;
+    pictureUrl?: string;
 }

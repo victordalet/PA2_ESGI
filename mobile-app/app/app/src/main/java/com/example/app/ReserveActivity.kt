@@ -14,7 +14,7 @@ import okhttp3.OkHttpClient
 
 class ReserveActivity : AppCompatActivity() {
 
-    private val cardList = mutableListOf<Card>()
+    private val cardList = mutableListOf<Services>()
     private val messageList = mutableListOf<Messages>()
     private val client = OkHttpClient()
     private lateinit var messageInput: EditText
@@ -37,12 +37,20 @@ class ReserveActivity : AppCompatActivity() {
         messageListView.adapter = messageAdapter
 
         val listView = findViewById<ListView>(R.id.listServicesView)
-        val arrayAdapter = CardAdapter(this, cardList)
+        val arrayAdapter = ServicesAdapter(this, cardList)
         listView.adapter = arrayAdapter
 
+        listView.setOnItemClickListener { parent, view, position, id ->
+            val item = parent.getItemAtPosition(position) as Services
+            val intent = Intent(this, NFCClientActivity::class.java)
+            intent.putExtra("id", item.id)
+            intent.putExtra("nfc", item.nfc)
+            startActivity(intent)
+        }
 
-        fetchServices()
+
         fetchMessages()
+        fetchServices()
 
 
         val backHome = findViewById<Button>(R.id.backHome)
@@ -59,7 +67,7 @@ class ReserveActivity : AppCompatActivity() {
         val token = sharedPref.getString("token", null)
         val locationID = sharedPref.getString("locationOccupationId", null)
         if (token != null) {
-            val apiPath = "http://10.66.125.162:3001/location/get-messages"
+            val apiPath = "http://172.20.10.2:3001/location/get-messages"
             try {
                 val request = okhttp3.Request.Builder().url(apiPath).post(
                     okhttp3.RequestBody.create(
@@ -92,11 +100,9 @@ class ReserveActivity : AppCompatActivity() {
                                         )
                                     runOnUiThread {
                                         messageList.add(Messages("", messageTest))
+                                        messageAdapter?.notifyDataSetChanged()
                                     }
                                 }
-                            }
-                            runOnUiThread {
-                                messageAdapter?.notifyDataSetChanged()
                             }
                         }
 
@@ -125,7 +131,7 @@ class ReserveActivity : AppCompatActivity() {
         this.messageInput.text.clear()
         val locationID = sharedPref.getString("locationOccupationId", null)
         if (token != null) {
-            val apiPath = "http://10.66.125.162:3001/location/add-message"
+            val apiPath = "http://172.20.10.2:3001/location/add-message"
             try {
                 val request = okhttp3.Request.Builder().url(apiPath).post(
                     okhttp3.RequestBody.create(
@@ -162,7 +168,7 @@ class ReserveActivity : AppCompatActivity() {
         val locationOccupationId = sharedPref.getString("locationOccupationId", null)
         val locationID = sharedPref.getString("locationID", null)
         if (token != null) {
-            val apiPath = "http://10.66.125.162:3001/service/get-service-by-user"
+            val apiPath = "http://172.20.10.2:3001/service/get-service-by-user-v2"
             try {
                 val request = okhttp3.Request.Builder().url(apiPath).post(
                     okhttp3.RequestBody.create(
@@ -193,20 +199,39 @@ class ReserveActivity : AppCompatActivity() {
                                         service.split("name")[1].split(":")[1].split(",")[0].replace(
                                             "\"", ""
                                         )
-                                    val price =
-                                        service.split("price")[1].split(":")[1].split(',')[0].replace(
+                                    val toDatetime =
+                                        service.split("to_datetime")[1].split(":")[1].split(',')[0].replace(
                                             "\"", ""
                                         )
+                                    val fromDatetime =
+                                        service.split("from_datetime")[1].split(":")[1].split(',')[0].replace(
+                                            "\"", ""
+                                        )
+                                    val status =
+                                        service.split("status")[1].split(":")[1].split(',')[0].replace(
+                                            "\"", ""
+                                        )
+                                    val id =
+                                        service.split("id")[1].split(":")[1].split(",")[0].replace(
+                                            "\"", ""
+                                        )
+                                    val nfc =
+                                        service.split("nfc")[1].split(":")[1].split(",")[0].replace(
+                                            "\"", ""
+                                        )
+
                                     runOnUiThread {
                                         cardList.add(
-                                            Card(
-                                                name, price, "Image", "", "", 0, 0
+                                            Services(
+                                                name,
+                                                fromDatetime,
+                                                toDatetime,
+                                                status,
+                                                id,
+                                                nfc
                                             )
                                         )
                                     }
-                                }
-                                for (card in cardList) {
-                                    fetchImage(card)
                                 }
                                 runOnUiThread {
                                     arrayAdapter?.notifyDataSetChanged()
@@ -223,23 +248,5 @@ class ReserveActivity : AppCompatActivity() {
         }
     }
 
-    private fun fetchImage(card: Card) {
-        val pathPictureBase64 = "http://10.66.125.162:3001/picture/service-${card.getId()}"
-        val request = okhttp3.Request.Builder().url(pathPictureBase64).get().build()
-        val response = client.newCall(request)
-        response.enqueue(object : okhttp3.Callback {
-            override fun onFailure(call: okhttp3.Call, e: java.io.IOException) {
-                println("Error: $e")
-            }
-
-            override fun onResponse(call: okhttp3.Call, response: okhttp3.Response) {
-                val responseBody: String? = response.body()?.string()
-                runOnUiThread {
-                    card.setImages(responseBody)
-                    arrayAdapter?.notifyDataSetChanged()
-                }
-            }
-        })
-    }
 
 }
