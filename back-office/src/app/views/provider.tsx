@@ -35,7 +35,7 @@ export class ProviderView extends React.Component<ViewProps> {
                     <div className="table">
                         <div className={"table-header"}>
                             {
-                                ["LOCATION CITY", "OCCUPANT"].map((data) => (
+                                ["LOCATION CITY", "DESCRIPTION", "START DATE", "END DATE", "OCCUPANT"].map((data) => (
                                     <div className="header__item"><a className="filter__link"> {data}</a></div>
                                 ))
                             }
@@ -45,7 +45,10 @@ export class ProviderView extends React.Component<ViewProps> {
                                 user.map(dataLine => (
                                     <div className={'table-row'}>
                                         {[dataLine.city,
-                                            dataLine.user_email
+                                            dataLine.description,
+                                            new Date(dataLine.from_datetime).toLocaleDateString('fr-FR') + ' ' + new Date(dataLine.from_datetime).toLocaleTimeString('fr-FR'),
+                                            new Date(dataLine.to_datetime).toLocaleDateString('fr-FR') + ' ' + new Date(dataLine.to_datetime).toLocaleTimeString('fr-FR'),
+                                            dataLine.user_email,
                                         ].map(dataColumn => (
                                             <div className="table-data">{dataColumn}</div>
                                         ))}
@@ -57,7 +60,7 @@ export class ProviderView extends React.Component<ViewProps> {
                     <div className="table">
                         <div className={"table-header"}>
                             {
-                                ["PROVIDER", "CITY"].map((data) => (
+                                ["PROVIDER", "EMAIL", "CITY"].map((data) => (
                                     <div className="header__item"><a className="filter__link"> {data}</a></div>
                                 ))
                             }
@@ -68,6 +71,7 @@ export class ProviderView extends React.Component<ViewProps> {
                                     <div className={'table-row'} style={{cursor: 'pointer'}}
                                          onClick={() => updateCalendar(dataLine.id)}>
                                         {[dataLine.name,
+                                            dataLine.created_by,
                                             dataLine.city
                                         ].map(dataColumn => (
                                             <div className="table-data">{dataColumn}</div>
@@ -89,7 +93,7 @@ export class ProviderView extends React.Component<ViewProps> {
                             };
                         })}
                         eventPropGetter={(event, start, end, isSelected) => {
-                            let newStyle = {
+                            const newStyle = {
                                 backgroundColor: "red",
                                 color: 'white',
                                 borderRadius: "0px",
@@ -118,14 +122,14 @@ export class ProviderView extends React.Component<ViewProps> {
                         {
                             user.map((location) => {
                                 return <option
-                                    value={location.location_occupation_id}>{location.user_email}</option>;
+                                    value={location.id}>{location.user_email} - {new Date(location.from_datetime).toLocaleDateString('fr-FR')}</option>;
                             })
                         }
                     </select>
-                    <select id={"service"} name={"service"}>
+                    <select id={"service-provider-select"} name={"service"}>
                         {
-                            service.map((service) => {
-                                return <option value={service.id}>{service.name}</option>;
+                            provider.map((service) => {
+                                return <option value={service.id}>{service.name} - {service.created_by}</option>;
                             })
                         }
                     </select>

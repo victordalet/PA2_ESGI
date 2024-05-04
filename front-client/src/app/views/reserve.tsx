@@ -37,7 +37,8 @@ export class ReserveView extends React.Component <ViewProps> {
             isAdmin,
             services,
             sendRequestService,
-            serviceUser
+            serviceUser,
+            idResa
         } = this.props;
 
 
@@ -118,13 +119,17 @@ export class ReserveView extends React.Component <ViewProps> {
                             }
 
                             {
-                                isBail ?
+                                isBail || isAdmin ?
                                     (
                                         <div className={"reservation"}>
                                             <button id={"cancel"} onClick={deleteLocation}
                                                     style={{background: '#c91919', marginBottom: '20px'}}>Delete
                                             </button>
-                                            <button id={"facture"} onClick={downloadFactureBail}>My facture</button>
+                                            {
+                                                isBail ?
+                                                    <button id={"facture"} onClick={downloadFactureBail}>My
+                                                        facture</button> : ''
+                                            }
                                         </div>
                                     )
                                     :
@@ -149,7 +154,7 @@ export class ReserveView extends React.Component <ViewProps> {
                         </div>
                     </div>
                     {
-                        isReserved || isAdmin ?
+                        isReserved ?
                             <div className={"calendar-form-complete"}
                                  style={{marginTop: '100px', width: '40%', padding: '20px'}}>
                                 <h2>Take Services</h2>
@@ -173,13 +178,14 @@ export class ReserveView extends React.Component <ViewProps> {
                     }
 
                     {
-                        isReserved || isAdmin ?
+                        isReserved ?
                             <div className={"calendar-form-complete"}>
                                 <h2>Monitoring of services</h2>
                                 <div className={"table"}>
                                     <div className={"row"}>
                                         <div className={"row-content"}><h2>Name</h2></div>
                                         <div className={"row-content"}><h2>Date</h2></div>
+                                        <div className={"row-content"}><h2>Price</h2></div>
                                         <div className={"row-content"}><h2>Status</h2></div>
                                     </div>
                                     {
@@ -188,7 +194,9 @@ export class ReserveView extends React.Component <ViewProps> {
                                                 <div key={index} className={"row"}>
                                                     <div className={"row-content"}><h2>{service.service_name}</h2></div>
                                                     <div className={"row-content"}>
-                                                        <h2>{service.from_datetime} - {service.to_datetime}</h2></div>
+                                                        <h2>from {new Date(service.from_datetime).toLocaleDateString('fr-FR') + ' ' + new Date(service.from_datetime).toLocaleTimeString('fr-FR')} to {new Date(service.to_datetime).toLocaleDateString('fr-FR') + ' ' + new Date(service.to_datetime).toLocaleTimeString('fr-FR')}
+                                                        </h2></div>
+                                                    <div className={"row-content"}><h2>{service.price} €</h2></div>
                                                     <div className={"row-content"}><h2>{service.status}</h2></div>
                                                 </div>
                                             );
@@ -206,7 +214,8 @@ export class ReserveView extends React.Component <ViewProps> {
                                 return {
                                     start: new Date(event.from_datetime),
                                     end: new Date(event.to_datetime),
-                                    title: isBail ? (data.created_by == event.user_email ? 'Baileur' : event.user_email) : 'Occupied'
+                                    title: isBail ? (data.created_by == event.user_email ? 'Baileur' : event.user_email) :
+                                        isReserved && event.id == idResa ? 'Your Reservation' : 'Occupied'
                                 };
                             })}
                             startAccessor="start"

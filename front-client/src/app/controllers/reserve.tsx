@@ -36,12 +36,13 @@ export default class Controller extends React.Component<
         this.type = document.location.href.split('&a=')[1].includes('true');
         this.isService = false;
         this.apiSubPath = this.isService ? '/service' : '/location';
-        if (this.type) {
-            this.idResa = parseInt(document.location.href.split("&id2=")[1]);
-            this.isAlsoReserved();
-        }
         this.reserveModel = new ReserveModel(this.idResa, this.apiSubPath, this.id);
         this.reserveViewModel = new ReserveViewModel();
+        if (this.type) {
+            this.idResa = parseInt(document.location.href.split("&id2=")[1]);
+            this.reserveModel = new ReserveModel(this.idResa, this.apiSubPath, this.id);
+            this.isAlsoReserved();
+        }
         this.verifIsAdmin();
         this.reserveModel.getNameFileBail();
         this.fetchLocation();
@@ -142,7 +143,7 @@ export default class Controller extends React.Component<
     };
 
     private isAlsoReserved = async () => {
-        const response = await this.reserveModel.isAlsoReserved();
+        const response = await this.reserveModel.isAlsoReserved(this.idResa);
         response.json().then((data: { is_occupied: boolean }) => {
             this.setState({isReserved: data.is_occupied});
             if (data.is_occupied) {
@@ -501,7 +502,6 @@ export default class Controller extends React.Component<
         const cardElement = document.querySelectorAll<HTMLDivElement>(
             ".services-new .card"
         );
-        console.log(cardElement);
         if (cardElement.length === 0) {
             return;
         }
@@ -514,7 +514,6 @@ export default class Controller extends React.Component<
 
         await cardElement.forEach(async (card, index) => {
             if (card.classList.contains('active')) {
-                console.log('fetch');
                 const apiPath = process.env.API_HOST || 'http://localhost:3001';
                 await fetch(apiPath + '/service/service-by-user', {
                     method: 'POST',
@@ -548,11 +547,21 @@ export default class Controller extends React.Component<
         }
     };
 
+    public addMessage = async () => {
+        const messageTemp = this.state.messages;
+        messageTemp.push({
+            message: document.querySelector<HTMLInputElement>("#message")?.value || "",
+        });
+        this.setState({messages: messageTemp});
+        await this.reserveModel.addMessage();
+    };
+
     render() {
         if (this.state.isBail === undefined && this.state.services.length === 0) {
             return <Loading/>;
         }
         return <ReserveView
+            idResa={this.idResa}
             serviceUser={this.state.serviceUser}
             userRequestService={this.state.userRequestService}
             sendRequestService={this.reserveModel.sendRequestService}
@@ -571,7 +580,7 @@ export default class Controller extends React.Component<
             downloadFacture={this.downloadFacture}
             deleteOccupation={this.reserveModel.deleteOccupation}
             messages={this.state.messages}
-            addMessage={this.reserveModel.addMessage}
+            addMessage={this.addMessage}
             notation={this.state.notation}
             addNotation={this.addNotation}
             data={this.state.data}

@@ -33,6 +33,7 @@ export interface ViewProps {
     sendRequestService: () => void;
     userRequestService: UserRequest[];
     serviceUser: ServiceUser[];
+    idResa: number;
 }
 
 export interface UserRequest {

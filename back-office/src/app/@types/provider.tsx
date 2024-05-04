@@ -78,5 +78,7 @@ export interface UserRequest {
     description: string;
     status: string;
     city: string;
+    from_datetime: string;
+    to_datetime: string;
 }
 

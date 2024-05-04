@@ -60,7 +60,6 @@ export class Language extends React.Component {
                         document.querySelectorAll("h1,h2,h3,h4").forEach((element) => {
                             if (element.textContent) {
                                 if (element.textContent.includes(word)) {
-                                    console.log(element.textContent);
                                     element.textContent = element.textContent.replace(word, translation);
                                 }
                             }

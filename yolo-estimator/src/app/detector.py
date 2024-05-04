@@ -18,7 +18,8 @@ class Detector:
         json_result = json.loads(json_result)
         price = 0
         for i in range(len(json_result)):
-            print(json_result[i])
+            if json_result[i]['name'] not in PRICE:
+                continue
             print(PRICE[json_result[i]['name']])
             price += PRICE[json_result[i]['name']]
         return price
