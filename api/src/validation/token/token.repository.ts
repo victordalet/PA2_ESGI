@@ -26,12 +26,12 @@ export class TokenRepository {
 
     async isBailToken(token: string): Promise<boolean> {
         const [row, field] = await this.db.query("SELECT rules FROM USER WHERE connection = ?", [token]);
-        return row[0]?.rules === 'USER';
+        return row[0]?.rules === 'user';
     }
 
     async iSPrestataireToken(token: string): Promise<boolean> {
         const [row, field] = await this.db.query("SELECT rules FROM USER WHERE connection = ?", [token]);
-        return row[0]?.rules === 'USER';
+        return row[0]?.rules === 'user';
     }
 
 }

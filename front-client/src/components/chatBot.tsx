@@ -19,7 +19,6 @@ export class ChatBot extends React.Component {
     private openChat() {
         const chatBox = document.querySelector<HTMLElement>(".container-chat");
         if (chatBox) {
-            console.log(chatBox.style.transform);
             if (chatBox.style.transform == "scale(1)") {
                 chatBox.style.transform = "scale(0)";
             } else {

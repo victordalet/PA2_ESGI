@@ -38,7 +38,7 @@ export class ReserveModel {
             })
         });
         return await response.json();
-    }
+    };
 
 
     public sendRequestService = async () => {
@@ -115,7 +115,7 @@ export class ReserveModel {
         });
     };
 
-    public isAlsoReserved = async () => {
+    public isAlsoReserved = async (idResa: number) => {
         const API_PATH = process.env.API_HOST || "http://localhost:3001";
         return await fetch(API_PATH + this.apiSubPath + "/is-occupied-by-user", {
             method: "POST",
@@ -124,7 +124,7 @@ export class ReserveModel {
                 authorization: localStorage.getItem("token") || "",
             },
             body: JSON.stringify({
-                location_id: this.id,
+                location_id: idResa,
             }),
         });
 
@@ -318,7 +318,6 @@ export class ReserveModel {
         if (data.length === 0) {
             return 0;
         }
-        console.log(data);
         return data[0].price;
     };
 
@@ -368,10 +367,11 @@ export class ReserveModel {
                 },
                 body: JSON.stringify({
                     location_occupation_id: idLocation,
-                    message: message.value
+                    message: 'Concierge : ' + message.value
                 })
             });
-            await this.fetchMessagesForBail();
+            message.value = '';
+            document.location.reload();
         }
     };
 

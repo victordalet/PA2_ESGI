@@ -36,7 +36,6 @@ export class Navbar extends React.Component {
 
     constructor(pos: any) {
         super(pos);
-        console.log(document.cookie);
         if (document.cookie.includes("Theme=black")) {
             this.setLightModeCookie("white");
         }

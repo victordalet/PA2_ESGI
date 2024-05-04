@@ -37,8 +37,8 @@ export class OccupationView extends Component<ViewProps> {
                             <div className={'table-row'}>
                                 {[dataLine.location_name,
                                     dataLine.user_email,
-                                    dataLine.from_datetime,
-                                    dataLine.to_datetime,
+                                    new Date(dataLine.from_datetime).toLocaleDateString('fr-FR') + ' ' + new Date(dataLine.from_datetime).toLocaleTimeString('fr-FR'),
+                                    new Date(dataLine.to_datetime).toLocaleDateString('fr-FR') + ' ' + new Date(dataLine.to_datetime).toLocaleTimeString('fr-FR'),
                                     (<span
                                         style={{cursor: 'pointer', textDecoration: 'underline'}}
                                         onClick={() => {

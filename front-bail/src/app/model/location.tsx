@@ -69,11 +69,10 @@ export class LocationModel {
     };
 
     public getPredictYolo = async () => {
-        const apiPath = process.env.YOLO_ESTIMATOR_PORT || 'http://localhost:5000';
+        const apiPath = process.env.YOLO_ESTIMATOR_PORT || 'http://localhost:3006';
         const imageElement = (document.getElementById("image-file-to-yolo") as HTMLInputElement).files;
         const formData = new FormData();
         if (imageElement) {
-            console.log(imageElement[0]);
             formData.append('image', imageElement[0]);
             const response = await fetch(`${apiPath}/predict`, {
                 method: 'POST',

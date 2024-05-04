@@ -150,15 +150,12 @@ export default class LocationView extends React.Component <ViewProps> {
                                     <input type={'checkbox'} id={'privacy'} name={'privacy'} value={'privacy'}/>
                                     <a href={"#"}>Confidentiality declaration</a>
                                 </div>
-
+                                {/*
                                 <ReCAPTCHA
                                     sitekey="6LfIvZspAAAAAFzFfvk2JWywUKLZGf2VJhCnGOmz"
                                     onChange={validationCaptcha}
                                 />,
-                                <div className={"step"}>
-                                    <button onClick={activeStep2} className={"submit"}>Receive my profitability study
-                                    </button>
-                                </div>
+                                */}
 
                             </div>
 

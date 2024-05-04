@@ -57,12 +57,7 @@ export class ServiceService {
     }
 
     async postServiceByUser(token: string, body: LocationLiaison) {
-        if (!(typeof body.location_occupation_id === 'number')) {
-            throw new Error('Bad location_occupation_id');
-        } else if (!(typeof body.service_id === 'number')) {
-            throw new Error('Bad  service_id');
-        } else
-            return this.serviceRepository.postServiceByUser(body);
+        return await this.serviceRepository.postServiceByUser(body);
     }
 
     async getServiceByUserV2(token: string, body: LocationLiaison) {
@@ -75,7 +70,6 @@ export class ServiceService {
 
     async isYourServices(token: string, body: LocationAvailability) {
         const r = await this.serviceRepository.isYourServices(token, body);
-        console.log(r);
         return {accept: r}
     }
 

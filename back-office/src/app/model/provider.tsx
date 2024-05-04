@@ -30,7 +30,7 @@ export default class ProviderModel {
 
     public reservedService = async () => {
         const locationOccupationId = (document.getElementById('location-occupation') as HTMLSelectElement).value;
-        const serviceId = (document.getElementById('service') as HTMLSelectElement).value;
+        const serviceId = (document.getElementById('service-provider-select') as HTMLSelectElement).value;
         const fromDatetime = (document.getElementById('from-datetime') as HTMLSelectElement).value;
         const toDatetime = (document.getElementById('to-datetime') as HTMLSelectElement).value;
         const apiPath = process.env.API_HOST || 'http://localhost:3001';

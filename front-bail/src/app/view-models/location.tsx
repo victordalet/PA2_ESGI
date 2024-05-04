@@ -98,8 +98,6 @@ export default class LocationViewModel {
 
     public changeStyleCardSelected = (index: number) => {
         const elements = document.querySelectorAll<HTMLElement>('.icon-type-location');
-        console.log(elements);
-        console.log(index);
         const element = elements[index];
         if (element.classList.contains('active')) {
             element.classList.remove('active');

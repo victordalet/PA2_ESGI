@@ -34,8 +34,6 @@ export class FileController {
         name: string;
     }, @UploadedFile() file: Express.Multer.File, @Headers('authorization') token: string) {
         await this.tokenValidation.validatePrestataireOrBailToken(token);
-        console.log(file);
-        console.log(body);
         return this.fileService.createFileByName(body.name, file);
     }
 

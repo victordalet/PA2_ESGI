@@ -33,7 +33,7 @@ export class ProviderView extends React.Component<ViewProps> {
                             };
                         })}
                         eventPropGetter={(event, start, end, isSelected) => {
-                            let newStyle = {
+                            const newStyle = {
                                 backgroundColor: "red",
                                 color: 'white',
                                 borderRadius: "0px",

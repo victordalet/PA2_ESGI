@@ -157,6 +157,7 @@ export class LocationService {
                 cancel_url: `${process.env.FRONTEND_URL}/home`,
             });
             const response = await this.locationRepository.addLocationOccupation(body.location_id, token, body.from_datetime, body.to_datetime);
+            await this.locationRepository.addMessageToLocationOccupation(response, 'Hi', token);
             return {id: response, url: session.url};
         }
     }
@@ -207,12 +208,7 @@ export class LocationService {
     }
 
     async addMessageByLocationOccupationId(locationOccupationId: number, message: string, token: string) {
-        if (!(typeof message === 'string')) {
-            throw new Error('Bad message');
-        } else if (!(typeof locationOccupationId === 'number')) {
-            throw new Error('Bad locationOccupationId');
-        } else
-            return await this.locationRepository.addMessageToLocationOccupation(locationOccupationId, message, token);
+        return await this.locationRepository.addMessageToLocationOccupation(locationOccupationId, message, token);
     }
 
     async deleteLocationOccupation(locationId: number, token: string) {

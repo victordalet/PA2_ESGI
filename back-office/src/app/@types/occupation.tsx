@@ -18,8 +18,8 @@ export interface ControllerState {
 
 export interface LocationAvailability {
     location_id: number;
-    from_datetime?: string;
-    to_datetime?: string;
+    from_datetime: string;
+    to_datetime: string;
     notation?: number;
     location_occupation_id?: number;
     price: number;
