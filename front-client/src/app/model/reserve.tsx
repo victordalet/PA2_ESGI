@@ -318,7 +318,7 @@ export class ReserveModel {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'authorization': localStorage.getItem('token') || ''
+                authorization: localStorage.getItem('token') || ''
             }
         });
         const data: Subscription[] = await response.json();
