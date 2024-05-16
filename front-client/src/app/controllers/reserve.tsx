@@ -51,6 +51,7 @@ export default class Controller extends React.Component<
         this.getOccupationEvent();
         this.getLocationsOccupationRequestInfor();
         this.fetchServiceUser();
+        this.updatePriceModem();
     }
 
     state: ControllerState = {
@@ -69,6 +70,29 @@ export default class Controller extends React.Component<
         userRequestService: [],
         serviceUser: [],
         serviceSelected: "",
+    };
+
+    private updatePriceModem = async () => {
+        const locationPrice: number = this.state.data.price;
+        const isSubscribed = await this.reserveModel.fetchIsSubscribed();
+        const lastDateFreeService = '';
+        let totalPrice = locationPrice;
+        this.state.serviceUser.map((service) => {
+            if (service.status === 'good') {
+                if (isSubscribed == 19) {
+                    totalPrice += service.price * 0.95;
+                } else {
+                    totalPrice += service.price;
+                }
+            }
+        });
+        const services = this.state.serviceUser.filter((service) => service.status === 'good');
+        if (isSubscribed == 19 && new Date(lastDateFreeService).getTime() < new Date().getTime() - 3 * 30 * 24 * 60 * 60 * 1000) {
+            totalPrice -= services[0].price;
+        } else if (isSubscribed == 10 && new Date(lastDateFreeService).getTime() < new Date().getTime() - 12 * 30 * 24 * 60 * 60 * 1000) {
+            totalPrice -= services[0].price;
+        }
+        this.reserveModel.setPrice(totalPrice);
     };
 
 
@@ -170,6 +194,7 @@ export default class Controller extends React.Component<
                         to_datetime: dateEnd.toISOString().split("T")[0],
                         user_email: occupation.user_email,
                         repeat: occupation.repeat,
+                        is_pay: occupation.is_pay,
                     });
                 });
             } else if (occupation.repeat === "monthly") {
@@ -184,6 +209,7 @@ export default class Controller extends React.Component<
                         to_datetime: dateEnd.toISOString().split("T")[0],
                         user_email: occupation.user_email,
                         repeat: occupation.repeat,
+                        is_pay: occupation.is_pay,
                     });
                 });
             } else if (occupation.repeat === 'daily') {
@@ -198,6 +224,7 @@ export default class Controller extends React.Component<
                         to_datetime: dateEnd.toISOString().split("T")[0],
                         user_email: occupation.user_email,
                         repeat: occupation.repeat,
+                        is_pay: occupation.is_pay,
                     });
                 });
             }
@@ -600,6 +627,8 @@ export default class Controller extends React.Component<
             postFileBail={this.reserveModel.postFileBail}
             serviceSelected={this.state.serviceSelected}
             updateServiceSelected={this.updateServiceSelected}
+            locationsPaiement={this.reserveModel.locationsPaiement}
+            locationOccupationPaiement={this.reserveModel.locationOccupationPaiement}
             deleteOccupationBail={this.reserveModel.deleteOccupationBail}/>;
     }
 }

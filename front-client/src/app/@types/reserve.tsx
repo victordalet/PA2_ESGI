@@ -36,6 +36,8 @@ export interface ViewProps {
     idResa: number;
     serviceSelected : string;
     updateServiceSelected: () => void;
+    locationsPaiement: () => void;
+    locationOccupationPaiement: () => void;
 }
 
 export interface UserRequest {
@@ -77,6 +79,7 @@ export interface LocationOccupation {
     to_datetime: string;
     user_email: string;
     repeat: string;
+    is_pay: number;
 }
 
 

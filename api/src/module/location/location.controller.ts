@@ -71,7 +71,7 @@ export class LocationController {
     @ApiCreatedResponse({description: 'Location created'})
     @ApiBadRequestResponse({description: 'Request body is not valid'})
     async locationOccupationPaiement(@Headers('authorization') token: string, @Body() body: LocationModel) {
-        return this.locationService.locationOccupationPaiement(body.price, body.price);
+        return this.locationService.locationOccupationPaiement(body.id, body.price);
     }
 
     @Post('occupation')
