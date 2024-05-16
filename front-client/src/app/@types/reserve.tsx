@@ -34,6 +34,8 @@ export interface ViewProps {
     userRequestService: UserRequest[];
     serviceUser: ServiceUser[];
     idResa: number;
+    serviceSelected : string;
+    updateServiceSelected: () => void;
 }
 
 export interface UserRequest {
@@ -66,6 +68,7 @@ export interface ControllerState {
     isAdmin: boolean;
     userRequestService: UserRequest[];
     serviceUser: ServiceUser[];
+    serviceSelected: string;
 }
 
 export interface LocationOccupation {
