@@ -1,9 +1,8 @@
 import {
     ControllerProps,
     ControllerState,
-    LocationOccupation,
-    Subscription,
-    SubscriptionUtilisation, UserRequest
+    LocationOccupation, ServiceUser,
+    UserRequest
 } from "../@types/reserve";
 import React from "react";
 import {ReserveView} from "../views/reserve";
@@ -403,11 +402,6 @@ export default class Controller extends React.Component<
             font: timesRomanFont,
             color: rgb(0, 0, 0),
         });
-
-        const services: ServiceResponse[] = this.state.servicesSelected;
-        this.state.services.map((service) => {
-            services.push(service);
-        });
         page.drawLine({
             start: {x: 50, y: height - 22 * fontSize},
             end: {x: width - 50, y: height - 22 * fontSize},
@@ -424,15 +418,17 @@ export default class Controller extends React.Component<
             color: rgb(0, 0, 0),
         });
         y -= 2 * fontSize;
-        this.state.userRequestService.map((service) => {
-            page.drawText(service.service_name + ' : ' + service.price, {
-                x: 50,
-                y: y,
-                size: fontSize,
-                font: timesRomanFont,
-                color: rgb(0, 0, 0),
-            });
-            y -= 2 * fontSize;
+        this.state.serviceUser.map((service) => {
+            if (service.status === 'good') {
+                page.drawText(service.service_name + ' : ' + service.price, {
+                    x: 50,
+                    y: y,
+                    size: fontSize,
+                    font: timesRomanFont,
+                    color: rgb(0, 0, 0),
+                });
+                y -= 2 * fontSize;
+            }
         });
         page.drawLine({
             start: {x: 50, y: y},
@@ -471,13 +467,16 @@ export default class Controller extends React.Component<
             y -= 2 * fontSize;
         }
         let totalPrice = locationPrice;
-        services.map((service) => {
-            if (isSubscribed == 19) {
-                totalPrice += service.price * 0.95;
-            } else {
-                totalPrice += service.price;
+        this.state.serviceUser.map((service) => {
+            if (service.status === 'good') {
+                if (isSubscribed == 19) {
+                    totalPrice += service.price * 0.95;
+                } else {
+                    totalPrice += service.price;
+                }
             }
         });
+        const services = this.state.serviceUser.filter((service) => service.status === 'good');
         if (isSubscribed == 19 && new Date(lastDateFreeService).getTime() < new Date().getTime() - 3 * 30 * 24 * 60 * 60 * 1000) {
             totalPrice -= services[0].price;
         } else if (isSubscribed == 10 && new Date(lastDateFreeService).getTime() < new Date().getTime() - 12 * 30 * 24 * 60 * 60 * 1000) {
@@ -513,10 +512,10 @@ export default class Controller extends React.Component<
             }
         });
 
-        await cardElement.forEach(async (card, index) => {
+        cardElement.forEach((card, index) => {
             if (card.classList.contains('active')) {
                 const apiPath = process.env.API_HOST || 'http://localhost:3001';
-                await fetch(apiPath + '/service/service-by-user', {
+                fetch(apiPath + '/service/service-by-user', {
                     method: 'POST',
                     headers: {
                         "Content-Type": "application/json",

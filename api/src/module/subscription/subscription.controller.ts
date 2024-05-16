@@ -56,7 +56,6 @@ export class SubscriptionController {
     @ApiOkResponse({description: 'User is subscribed'})
     @ApiBadRequestResponse({description: 'Request param is not valid'})
     async userIsSubscribed(@Headers('authorization') token: string) {
-        await this.tokenValidation.validateAdminToken(token);
         return this.subscriptionService.userIsSubscribed(token);
     }
 

@@ -105,7 +105,7 @@ export interface ServiceUser {
     user_email: string;
     status: string;
     city: string;
-    price: string;
+    price: number;
     from_datetime: string;
     to_datetime: string;
 }
