@@ -38,7 +38,9 @@ export class ReserveView extends React.Component <ViewProps> {
             services,
             sendRequestService,
             serviceUser,
-            idResa
+            idResa,
+            updateServiceSelected,
+            serviceSelected
         } = this.props;
 
 
@@ -158,7 +160,7 @@ export class ReserveView extends React.Component <ViewProps> {
                             <div className={"calendar-form-complete"}
                                  style={{marginTop: '100px', width: '40%', padding: '20px'}}>
                                 <h2>Take Services</h2>
-                                <select id={"service-name"}>
+                                <select id={"service-name"} onChange={updateServiceSelected}>
                                     {
                                         services.map((service, index) => {
                                             return (
@@ -167,6 +169,16 @@ export class ReserveView extends React.Component <ViewProps> {
                                         })
                                     }
                                 </select>
+                                {
+                                    serviceSelected === 'taxi' ?
+                                        <div>
+                                            <input type={"text"} id={"service-taxi-start"} placeholder={"Start"}/>
+                                            <input type={"text"} id={"service-taxi-stop"} placeholder={"Arrival"}/>
+                                            <input type={"datetime-local"} id={"service-taxi-arrival"}
+                                                   placeholder={"Arrival time"}/>
+                                        </div>
+                                        : ''
+                                }
                                 <select id={"service-time"}>
                                     <option value={"before"}>Before resea</option>
                                     <option value={"during"}>During resa</option>

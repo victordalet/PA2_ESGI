@@ -43,7 +43,14 @@ export class ReserveModel {
 
     public sendRequestService = async () => {
         const apiPath = process.env.API_HOST || 'http://localhost:3001';
-        const desc = document.querySelector<HTMLInputElement>('#service-description');
+        const name = document.querySelector<HTMLInputElement>('#service-name')?.value;
+        let desc = document.querySelector<HTMLInputElement>('#service-description')?.value;
+        if (name === 'taxi') {
+            const start = document.querySelector<HTMLInputElement>('#service-taxi-start')?.value;
+            const arrival = document.querySelector<HTMLInputElement>('#service-taxi-stop')?.value;
+            const arrivalTime = document.querySelector<HTMLInputElement>('#service-taxi-arrival')?.value;
+            desc += ' ' + start + ' ' + arrival + ' ' + arrivalTime;
+        }
         await fetch(apiPath + '/location/add-occupation-service', {
             method: 'POST',
             headers: {
@@ -52,9 +59,9 @@ export class ReserveModel {
             },
             body: JSON.stringify({
                 location_occupation_id: this.idResa,
-                service_name: document.querySelector<HTMLInputElement>('#service-name')?.value,
+                service_name: name,
                 user_email: localStorage.getItem('email'),
-                description: document.querySelector<HTMLSelectElement>('#service-time')?.value + ' ' + desc?.value,
+                description: document.querySelector<HTMLSelectElement>('#service-time')?.value + ' ' + desc,
                 city: document.querySelector<HTMLElement>('#location-city')?.innerHTML,
             }),
         });

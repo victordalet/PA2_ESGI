@@ -68,7 +68,8 @@ export default class Controller extends React.Component<
         eventCalendar: [],
         nameFiles: [],
         userRequestService: [],
-        serviceUser: []
+        serviceUser: [],
+        serviceSelected: "",
     };
 
 
@@ -556,6 +557,13 @@ export default class Controller extends React.Component<
         await this.reserveModel.addMessage();
     };
 
+    public updateServiceSelected = () => {
+        const serviceSelected = document.querySelector<HTMLSelectElement>("#service-name");
+        if (serviceSelected !== null) {
+            this.setState({serviceSelected: serviceSelected.value});
+        }
+    };
+
     render() {
         if (this.state.isBail === undefined && this.state.services.length === 0) {
             return <Loading/>;
@@ -591,6 +599,8 @@ export default class Controller extends React.Component<
             nameFiles={this.state.nameFiles}
             downloadFileBail={this.reserveModel.downloadFileBail}
             postFileBail={this.reserveModel.postFileBail}
+            serviceSelected={this.state.serviceSelected}
+            updateServiceSelected={this.updateServiceSelected}
             deleteOccupationBail={this.reserveModel.deleteOccupationBail}/>;
     }
 }
