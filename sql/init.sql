@@ -93,7 +93,8 @@ create table service
     is_valid    int,
     schedule    longtext,
     city        varchar(100),
-    nfc         varchar(100)
+    nfc         varchar(100),
+    is_vip      int
 );
 
 

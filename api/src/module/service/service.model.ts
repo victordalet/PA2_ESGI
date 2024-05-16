@@ -55,4 +55,8 @@ export class ServiceModel {
     @ApiProperty({example: 'PARIS', description: 'city'})
     @IsString()
     city: string;
+
+    @ApiProperty({example: '0', description: 'is VIP'})
+    @IsNumber()
+    is_vip: number;
 }
