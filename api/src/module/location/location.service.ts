@@ -4,6 +4,7 @@ import * as NodeGeocoder from 'node-geocoder';
 import node_geocoder from 'node-geocoder';
 import {Stripe} from "stripe";
 import {RequestLocationServiceModel} from "./location.model";
+import {uid} from "uid";
 
 export class LocationService {
 
@@ -47,6 +48,69 @@ export class LocationService {
             return await this.locationRepository.createLocation(location);
         }
     }
+
+    async createLocationValidation(token: string) {
+        return await this.locationRepository.validePaiement(token);
+    }
+
+    async locationPaiement(id: number){
+        const uidToken = uid(32);
+        await this.locationRepository.paiementUID(uidToken,id);
+        const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+            const session = await stripe.checkout.sessions.create({
+                payment_method_types: ['card'],
+                billing_address_collection: 'auto',
+                line_items: [
+                    {
+                        price_data: {
+                            currency: 'usd',
+                            product_data: {
+                                name: 'Bailleur subcription',
+                            },
+                            unit_amount: 2000,
+                            recurring: {interval: 'month'},
+                        },
+                        quantity: 1,
+                    },
+                ],
+                mode: 'subscription',
+                success_url: `http://localhost:3001/location/create-location-validation?id=${uidToken}`,
+                cancel_url: `${process.env.FRONTEND_URL}/home`,
+            });
+            return {url: session.url};
+    }
+
+    async locationOccupationPaiementValidation(token: string) {
+        return await this.locationRepository.locationOccupationPaiementValidation(token);
+    }
+
+    async locationOccupationPaiement(id: number, price: number){
+        const uidToken = uid(32);
+        await this.locationRepository.locationOccupationPaiement(uidToken,id);
+        const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+            const session = await stripe.checkout.sessions.create({
+                payment_method_types: ['card'],
+                billing_address_collection: 'auto',
+                line_items: [
+                    {
+                        price_data: {
+                            currency: 'usd',
+                            product_data: {
+                                name: 'Bailleur subcription',
+                            },
+                            unit_amount: price * 100,
+                            recurring: {interval: 'month'},
+                        },
+                        quantity: 1,
+                    },
+                ],
+                mode: 'subscription',
+                success_url: `http://localhost:3001/location/location-paiement-validation?id=${uidToken}`,
+                cancel_url: `${process.env.FRONTEND_URL}/home`,
+            });
+            return {url: session.url};
+    }
+
 
     async updateLocation(id: number, location: Location) {
         if (!(typeof location.name === 'string')) {
