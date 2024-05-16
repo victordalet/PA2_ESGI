@@ -58,7 +58,7 @@ export default class Controller extends React.Component<
             this.ServiceViewModel.openPopupError();
             return;
         }
-
+        const vipForm = document.querySelector<HTMLSelectElement>("#type-service")?.value;
         const dataToSend: Service = {
             name: title,
             price: parseInt(price),
@@ -70,7 +70,8 @@ export default class Controller extends React.Component<
             type: (document.querySelector('#type-service') as HTMLSelectElement).value,
             schedule: JSON.stringify(this.serviceModel.formatSchedule()),
             city: city,
-            siret: siret
+            siret: siret,
+            is_vip: vipForm === "VIP" ? 1 : 0
         };
         await this.serviceModel.createService(dataToSend);
     };
