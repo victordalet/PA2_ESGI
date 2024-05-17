@@ -5,6 +5,7 @@ export class ReserveModel {
     private readonly idResa: number;
     private readonly apiSubPath: string;
     private readonly id: number;
+    private price = 0;
 
     constructor(idResa: number, apiSubPath: string, id: number) {
         this.idResa = idResa;
@@ -12,6 +13,9 @@ export class ReserveModel {
         this.id = id;
     }
 
+    public setPrice(price: number){
+        this.price = price;
+    }
 
     public getLocationsOccupationRequestInfor = async () => {
         const apiPath = process.env.API_PATH || 'http://localhost:3001';
@@ -425,4 +429,39 @@ export class ReserveModel {
         return await response.json();
 
     };
+
+    public locationsPaiement = async () => {
+        const apiPath = process.env.API_PATH || 'http://localhost:3001';
+        const response = await fetch(`${apiPath}/location/location-paiement`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                authorization: localStorage.getItem('token') || ''
+            },
+            body: JSON.stringify({
+                id: this.id
+            })
+        });
+        const data = await response.json();
+        window.open(data.url, '_blank');
+    };
+
+    public locationOccupationPaiement = async () => {
+        const apiPath = process.env.API_PATH || 'http://localhost:3001';
+        const response = await fetch(`${apiPath}/location/location-occupation-paiement`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                authorization: localStorage.getItem('token') || ''
+            },
+            body: JSON.stringify({
+                id: this.idResa,
+                price: this.price
+            })
+        });
+        const data = await response.json();
+        window.open(data.url, '_blank');
+    };
+
+    
 }

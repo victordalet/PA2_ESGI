@@ -1,6 +1,7 @@
 import {BodySubscription} from "./subscription.model";
 import {SubscriptionRepository} from "./subscription.repository";
 import {Stripe} from 'stripe';
+import {uid} from 'uid';
 
 export class SubscriptionService {
 
@@ -38,6 +39,8 @@ export class SubscriptionService {
         if (!(typeof subscription.price === "number")) {
             throw new Error('Bad price');
         } else {
+            const uidToken = uid(30)
+            await this.SubscriptionRepository.subscribeUserByToken(token, subscription.price, uidToken);
             const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
             const session = await stripe.checkout.sessions.create({
                 payment_method_types: ['card'],
@@ -56,15 +59,15 @@ export class SubscriptionService {
                     },
                 ],
                 mode: 'subscription',
-                success_url: `http://localhost:3001/subscription/subscribe-validation?token=${token}&price=${subscription.price}&session_id={CHECKOUT_SESSION_ID}`,
+                success_url: `http://localhost:3001/subscription/subscribe-validation?token=${uidToken}`,
                 cancel_url: `${process.env.FRONTEND_URL}/home`,
             });
             return {url: session.url};
         }
     }
 
-    async subscribeUserValidation(token: string, subscription: BodySubscription) {
-        await this.SubscriptionRepository.subscribeUserByToken(token, subscription.price);
+    async subscribeUserValidation(token: string) {
+        await this.SubscriptionRepository.valdationSubscription(token);
         return "<script>window.close();</script>";
     }
 

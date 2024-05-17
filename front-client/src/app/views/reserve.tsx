@@ -40,8 +40,17 @@ export class ReserveView extends React.Component <ViewProps> {
             serviceUser,
             idResa,
             updateServiceSelected,
-            serviceSelected
+            serviceSelected,
+            locationOccupationPaiement
         } = this.props;
+
+        let isToday = false;
+
+        eventCalendar.forEach((event) => {
+            if (isReserved && event.id == idResa && event.is_pay == 0) {
+                isToday = true;
+            }
+        });
 
 
         const now = momentLocalizer(moment);
@@ -129,8 +138,12 @@ export class ReserveView extends React.Component <ViewProps> {
                                             </button>
                                             {
                                                 isBail ?
-                                                    <button id={"facture"} onClick={downloadFactureBail}>My
-                                                        facture</button> : ''
+                                                    <div>
+                                                        <button id={"facture"} onClick={downloadFactureBail}>My
+                                                            facture
+                                                        </button>
+                                                    </div> : ''
+
                                             }
                                         </div>
                                     )
@@ -146,9 +159,22 @@ export class ReserveView extends React.Component <ViewProps> {
                                         ) :
                                         (
                                             <div className={"reservation"}>
-                                                <button id={"cancel"} onClick={deleteOccupation}
-                                                        style={{marginBottom: '20px', background: '#c91919'}}>Cancel
-                                                </button>
+                                                {
+                                                    isToday ?
+                                                        <button id={"Pay"} onClick={locationOccupationPaiement}
+                                                                style={{
+                                                                    marginBottom: '20px',
+                                                                    background: '#0f7e03'
+                                                                }}>Pay
+                                                        </button>
+                                                        :
+                                                        <button id={"cancel"} onClick={deleteOccupation}
+                                                                style={{
+                                                                    marginBottom: '20px',
+                                                                    background: '#c91919'
+                                                                }}>Cancel
+                                                        </button>
+                                                }
                                                 <button id={"facture"} onClick={downloadFacture}>My facture</button>
                                             </div>
                                         ))

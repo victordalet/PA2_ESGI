@@ -29,7 +29,8 @@ create table location
     capacity         int          not null,
     type             varchar(100) not null,
     latitude         float        not null,
-    longitude        float        not null
+    longitude        float        not null,
+    is_pay           varchar(100)
 );
 
 create table location_occupation
@@ -41,7 +42,8 @@ create table location_occupation
     user_email    varchar(100) not null references USER (email),
     deleted_at    datetime,
     notation      int,
-    `repeat`      varchar(100)
+    `repeat`      varchar(100),
+    is_pay        varchar(100)
 );
 
 
@@ -74,7 +76,8 @@ create table subscription
     created_at datetime     not null,
     deleted_at datetime,
     price      int          not null,
-    user_email varchar(100) not null references USER (email)
+    user_email varchar(100) not null references USER (email),
+    is_pay     varchar(100)
 );
 
 create table service

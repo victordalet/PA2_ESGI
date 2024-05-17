@@ -50,12 +50,12 @@ export class SubscriptionRepository {
         const [rows, filed] = await this.db.query("SELECT * FROM USER WHERE connection = ?", [token]);
         if (rows instanceof Array) {
             const row: any = rows[0];
-            const [rows2, filed2] = await this.db.query("SELECT * FROM subscription WHERE user_email = ?", [row.email]);
+            const [rows2, filed2] = await this.db.query("SELECT * FROM subscription WHERE user_email = ? and (is_pay = '' or is_pay is null) ", [row.email]);
             return rows2;
         }
     }
 
-    async subscribeUserByToken(token: string, price: number) {
+    async subscribeUserByToken(token: string, price: number, uid: string) {
         await this.db.connect()
         const [rows, filed] = await this.db.query("SELECT * FROM USER WHERE connection = ?", [token]);
         if (rows instanceof Array) {
@@ -66,7 +66,7 @@ export class SubscriptionRepository {
                     await this.db.query("DELETE FROM subscription WHERE user_email = ?", [row.email]);
                 }
             }
-            return this.db.query("INSERT INTO subscription (user_email, created_at, price) VALUES (?, ?, ?)", [row.email, new Date(), price]);
+            return this.db.query("INSERT INTO subscription (user_email, created_at, price, is_pay) VALUES (?, ?, ?, ?)", [row.email, new Date(), price, token]);
         }
 
     }
@@ -83,6 +83,12 @@ export class SubscriptionRepository {
                 }
             }
         }
+    }
+
+    async valdationSubscription(token: string){
+        await this.db.connect()
+        await this.db.query("UPDATE subcription set is_pay = '' where is_pay = ?", [token])
+        return
     }
 
     async lastDateFreeService(token: string) {

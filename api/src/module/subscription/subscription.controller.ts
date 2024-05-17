@@ -47,8 +47,7 @@ export class SubscriptionController {
     @ApiCreatedResponse({description: 'User subscribed'})
     @ApiBadRequestResponse({description: 'Request body is not valid'})
     async subscribeUserValidation(@Headers('authorization') token: string, @Param() body: BodySubscription) {
-        await this.tokenValidation.validateToken(token);
-        return await this.subscriptionService.subscribeUserValidation(token, body);
+        return await this.subscriptionService.subscribeUserValidation(token);
     }
 
     @Post('is_subscribe')

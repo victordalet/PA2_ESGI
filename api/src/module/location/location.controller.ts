@@ -42,6 +42,38 @@ export class LocationController {
         return this.locationService.createLocation(body);
     }
 
+    @Post("create-location-validation")
+    @ApiOperation({summary: 'Create location'})
+    @ApiCreatedResponse({description: 'Location created'})
+    @ApiBadRequestResponse({description: 'Request body is not valid'})
+    async createLocationValidation(@Headers('authorization') token: string, @Param() uid: string) {
+        return this.locationService.createLocationValidation(uid);
+    }
+
+    @Post("location-paiement")
+    @ApiOperation({summary: 'Create location'})
+    @ApiCreatedResponse({description: 'Location created'})
+    @ApiBadRequestResponse({description: 'Request body is not valid'})
+    async locationPaiement(@Headers('authorization') token: string, @Body() body: LocationModel) {
+        return this.locationService.locationPaiement(body.id);
+    }
+
+    @Post("location-occupation-paiement-validation")
+    @ApiOperation({summary: 'Create location'})
+    @ApiCreatedResponse({description: 'Location created'})
+    @ApiBadRequestResponse({description: 'Request body is not valid'})
+    async locationOccupationPaiementValidation(@Headers('authorization') token: string, @Param() uid: string) {
+        return this.locationService.locationOccupationPaiementValidation(uid);
+    }
+
+    @Post("location-occupation-paiement")
+    @ApiOperation({summary: 'Create location'})
+    @ApiCreatedResponse({description: 'Location created'})
+    @ApiBadRequestResponse({description: 'Request body is not valid'})
+    async locationOccupationPaiement(@Headers('authorization') token: string, @Body() body: LocationModel) {
+        return this.locationService.locationOccupationPaiement(body.id, body.price);
+    }
+
     @Post('occupation')
     @ApiOperation({summary: 'Add location occupation'})
     @ApiCreatedResponse({description: 'Location occupation added'})
