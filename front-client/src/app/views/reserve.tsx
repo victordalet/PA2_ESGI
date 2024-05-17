@@ -72,14 +72,17 @@ export class ReserveView extends React.Component <ViewProps> {
                                     (
                                         <div>
                                             <h3><span>Description:</span>{data.description}</h3>
-                                            <h3><span>Concierge :</span>{description.typeConcierge}</h3>
                                             <h3><span>Address :</span>{description.address}</h3>
                                             <h3><span>Country :</span>{description.country}</h3>
                                             <h3><span>Type :</span>{description.type}</h3>
                                             <h3><span>Type de location :</span>{description.typeLocation}</h3>
-                                            <h3><span>Number room :</span>{description.numberRoom}</h3>
                                             <h3><span>Surface :</span>{description.surface}</h3>
-                                            <h3><span>Info sup : </span></h3>
+                                            <h3><span>Nb Rooms :</span>{description.room}</h3>
+                                            <h3><span>Nb Kitchen :</span>{description.kitchen}</h3>
+                                            <h3><span>Nb Bathroom :</span>{description.bathroom}</h3>
+                                            <h3><span>Nb Parking places :</span>{description.parking}</h3>
+
+
                                             <h3><span>Documents :</span></h3>
                                             <div className={"resources-files"}>
                                                 {

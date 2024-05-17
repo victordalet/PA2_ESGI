@@ -83,16 +83,6 @@ export default class LocationView extends React.Component <ViewProps> {
                                     </div>
                                 </div>
                                 <div className={"step"}>
-                                    <h2>Number of rooms <span className={"req"}>(Necessary)</span></h2>
-                                    <select name="room" id="room">
-                                        {
-                                            Array.from(Array(10).keys()).map((i) => {
-                                                return <option value={i}>{i}</option>;
-                                            })
-                                        }
-                                    </select>
-                                </div>
-                                <div className={"step"}>
                                     <h2>Area in m2 <span className={"req"}>(Necessary)</span></h2>
                                     <input type={"number"} id={"surface"} name={"surface"} placeholder={"Surface"}/>
                                 </div>
@@ -193,8 +183,15 @@ export default class LocationView extends React.Component <ViewProps> {
                     <div className={"close-or-open"}>
                         <h2>Describe your location</h2>
                         <textarea id={"description"} name={"description"} placeholder={"Description"}/>
+                        <div className={"icon-description container-title"}>
+                            <h2>Precise your location</h2>
+                            <input type={"number"} id={"nb-rooms"} placeholder={"Nb rooms"}/>
+                            <input type={"number"} id={"nb-bathroom"} placeholder={"Nb bathroom"}/>
+                            <input type={"number"} id={"nb-kitchen"} placeholder={"Nb kitchen"}/>
+                            <input type={"number"} id={"nb-parking"} placeholder={"Nb parking space"}/>
+                        </div>
                         <div className={"icon-description"}>
-                            <h2>Choice your material</h2>
+                        <h2>Choice your material</h2>
                             <div className={"container-icon-type-location"}>
                                 {
                                     locationTypes.map((type, index) => {

@@ -7,6 +7,7 @@ export interface ViewProps {
     filterResourcesByNameOrDescription: () => void;
     filterResourcesByPrice: () => void;
     filterResourcesByType: () => void;
+    payLocation: (id: number) => void;
 }
 
 export interface ControllerProps {

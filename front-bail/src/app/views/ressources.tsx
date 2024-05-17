@@ -12,7 +12,7 @@ export default class ResourcesView extends React.Component<ViewProps> {
             service,
             filterResourcesByNameOrDescription,
             filterResourcesByPrice,
-            filterResourcesByType
+            payLocation
         } = this.props;
 
         return (
@@ -31,13 +31,32 @@ export default class ResourcesView extends React.Component<ViewProps> {
                             location.map((l, index) => (
                                 <Card
                                     onclick={() => {
-                                        const sourcePath = process.env.FRONT_CLIENT_PORT || 'http://localhost:3003';
-                                        window.open(`${sourcePath}/reserve?` + l.id, '_blank');
+                                        if (l.is_valid === 2) {
+                                            const sourcePath = process.env.FRONT_CLIENT_PORT || 'http://localhost:3003';
+                                            window.open(`${sourcePath}/reserve?` + l.id, '_blank');
+                                        }
                                     }}
                                     key={index}
                                     cardInfo={{
                                         title: l.name,
-                                        description: l.is_valid === 1 ? 'Valid' : 'currently being validated',
+                                        description: l.is_valid === 2 ? 'Valid' : l.is_valid === 1 ?
+                                            (<div>
+                                                <button
+                                                    style={{
+                                                        backgroundColor: '#122583',
+                                                        width: '100px',
+                                                        borderRadius: '10px',
+                                                        color: 'white',
+                                                        padding: '10px',
+                                                        border: 'none',
+                                                        zIndex: 9999,
+                                                        position: 'relative',
+                                                    }}
+                                                    onClick={() => payLocation(l.id)}
+                                                >Pay
+                                                </button>
+                                            </div>)
+                                            : 'currently being validated',
                                         price: l.price,
                                         type: 'location',
                                         id: l.id

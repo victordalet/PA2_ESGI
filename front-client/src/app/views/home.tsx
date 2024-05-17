@@ -39,7 +39,7 @@ export default class HomeView extends React.Component <ViewProps> {
                     <div className={"container-last-location"}>
                         {
                             location.map((l, index) => {
-                                if (index > location.length - 6 && l.is_valid === 1) {
+                                if (index > location.length - 6 && l.is_valid === 2) {
                                     return (
                                         <Card
                                             onclick={() => {
