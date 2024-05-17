@@ -61,6 +61,7 @@ export interface ProviderInfoTable {
     city: string;
     description: string;
     schedule: string;
+    type: string;
 }
 
 export interface Schedule {
@@ -80,5 +81,6 @@ export interface UserRequest {
     city: string;
     from_datetime: string;
     to_datetime: string;
+    is_vip: number;
 }
 

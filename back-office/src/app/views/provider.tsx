@@ -35,7 +35,7 @@ export class ProviderView extends React.Component<ViewProps> {
                     <div className="table">
                         <div className={"table-header"}>
                             {
-                                ["LOCATION CITY", "DESCRIPTION", "START DATE", "END DATE", "OCCUPANT"].map((data) => (
+                                ["LOCATION CITY", "DESCRIPTION", "START DATE", "END DATE", "OCCUPANT", "VIP"].map((data) => (
                                     <div className="header__item"><a className="filter__link"> {data}</a></div>
                                 ))
                             }
@@ -49,6 +49,7 @@ export class ProviderView extends React.Component<ViewProps> {
                                             new Date(dataLine.from_datetime).toLocaleDateString('fr-FR') + ' ' + new Date(dataLine.from_datetime).toLocaleTimeString('fr-FR'),
                                             new Date(dataLine.to_datetime).toLocaleDateString('fr-FR') + ' ' + new Date(dataLine.to_datetime).toLocaleTimeString('fr-FR'),
                                             dataLine.user_email,
+                                            dataLine.is_vip !== undefined ? 'yes' : 'no'
                                         ].map(dataColumn => (
                                             <div className="table-data">{dataColumn}</div>
                                         ))}
@@ -60,7 +61,7 @@ export class ProviderView extends React.Component<ViewProps> {
                     <div className="table">
                         <div className={"table-header"}>
                             {
-                                ["PROVIDER", "EMAIL", "CITY"].map((data) => (
+                                ["PROVIDER", "EMAIL", "CITY", "VIP"].map((data) => (
                                     <div className="header__item"><a className="filter__link"> {data}</a></div>
                                 ))
                             }
@@ -72,7 +73,8 @@ export class ProviderView extends React.Component<ViewProps> {
                                          onClick={() => updateCalendar(dataLine.id)}>
                                         {[dataLine.name,
                                             dataLine.created_by,
-                                            dataLine.city
+                                            dataLine.city,
+                                            dataLine.type
                                         ].map(dataColumn => (
                                             <div className="table-data">{dataColumn}</div>
                                         ))}
