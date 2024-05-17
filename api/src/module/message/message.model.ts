@@ -6,11 +6,11 @@ export class BodyMessage {
     @IsNumber()
     id?: number;
 
-    @ApiProperty({example: 'mail_from', description: 'Mail from'})
+    @ApiProperty({example: 'mail_from', description: 'MailModule from'})
     @IsString()
     mail_from?: string;
 
-    @ApiProperty({example: 'mail_to', description: 'Mail to'})
+    @ApiProperty({example: 'mail_to', description: 'MailModule to'})
     @IsString()
     mail_to?: string;
 

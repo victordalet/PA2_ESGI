@@ -27,6 +27,8 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY}
       FRONTEND_URL: ${FRONTEND_URL}
+      GMAIL_USER: ${GMAIL_USER}
+      GMAIL_PASSWORD: ${GMAIL_PASSWORD}
     volumes:
       - ./api/public:/app/public
     networks:

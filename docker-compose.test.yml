@@ -8,6 +8,7 @@ services:
       MYSQL_DATABASE: test
       MYSQL_USER: test
       MYSQL_PASSWORD: test
+
     ports:
       - "3307:3306"
     volumes:
