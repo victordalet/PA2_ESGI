@@ -235,26 +235,26 @@ export class LocationRepository {
         return
     }
 
-    async validePaiement(token: string){
+    async validePaiement(token: string) {
         await this.db.connect()
         await this.db.query("UPDATE location set is_pay = valide where is_pay = ?", [token]);
         return
     }
 
-    async paiementUID(uid: string, id: number){
+    async paiementUID(uid: string, id: number) {
         await this.db.connect();
-        await this.db.query("UPDATE location set is_pay = ? where id = ?", [uid,id])
+        await this.db.query("UPDATE location set is_pay = ?, is_valid = 2 where id = ?", [uid, id])
     }
 
 
-    async locationOccupationPaiementValidation(token: string){
+    async locationOccupationPaiementValidation(token: string) {
         await this.db.connect()
         await this.db.query("UPDATE location_occupation set is_pay = valide where is_pay = ?", [token]);
         return
     }
 
-    async locationOccupationPaiement(uid: string, id: number){
+    async locationOccupationPaiement(uid: string, id: number) {
         await this.db.connect();
-        await this.db.query("UPDATE location_occupation set is_pay = ? where id = ?", [uid,id])
+        await this.db.query("UPDATE location_occupation set is_pay = ? where id = ?", [uid, id])
     }
 }

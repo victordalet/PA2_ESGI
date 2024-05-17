@@ -29,7 +29,7 @@ export default class LocationViewModel {
         });
 
 
-        const data = {
+        const data: FormLocation = {
             typeConcierge: typeConcierge,
             address: document.querySelector<HTMLInputElement>('#address')?.value || '',
             country: document.querySelector<HTMLSelectElement>('#country')?.value || '',
@@ -42,7 +42,11 @@ export default class LocationViewModel {
             telephone: document.querySelector<HTMLInputElement>('#phone')?.value || '',
             time: time,
             privacy: document.querySelector<HTMLInputElement>('#privacy')?.checked || false,
-            description: document.querySelector<HTMLInputElement>('#description')?.value || ''
+            description: document.querySelector<HTMLInputElement>('#description')?.value || '',
+            room: document.querySelector<HTMLInputElement>('#nb-rooms')?.value || '',
+            bathroom: document.querySelector<HTMLInputElement>('#nb-bathroom')?.value || '',
+            kitchen: document.querySelector<HTMLInputElement>('#nb-kitchen')?.value || '',
+            parking: document.querySelector<HTMLInputElement>('#nb-parking')?.value || ''
         };
 
         if (data.address === '' || data.country === '' || data.type === '' || data.typeLocation === '' ||
@@ -64,7 +68,11 @@ export default class LocationViewModel {
                 email: '',
                 telephone: '',
                 time: [],
-                description: ''
+                description: '',
+                room: '',
+                bathroom: '',
+                kitchen: '',
+                parking: '',
             };
         }
 
