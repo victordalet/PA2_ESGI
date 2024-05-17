@@ -57,7 +57,7 @@ export default class LocationView extends React.Component<ViewProps> {
                 <div className="table">
                     <div className={"table-header"}>
                         {
-                            ["by", "name", "price", "is_occupy_by", "nb address", "capacity", "type", "ACTION"].map((data) => (
+                            ["by", "name", "price", "nb address", "capacity", "type", "ACTION", "DETAILS"].map((data) => (
                                 <div className="header__item"><a className="filter__link" href="#"> {data}</a></div>
                             ))
                         }
@@ -69,7 +69,6 @@ export default class LocationView extends React.Component<ViewProps> {
                                     {[dataLine.created_by,
                                         dataLine.name,
                                         dataLine.price.toString(),
-                                        dataLine.is_occupy_by,
                                         dataLine.address,
                                         dataLine.capacity,
                                         dataLine.type,
@@ -84,7 +83,16 @@ export default class LocationView extends React.Component<ViewProps> {
                                                     deleteLocation(dataLine.id) :
                                                     acceptLocation(dataLine.id);
                                             }}
-                                            className={dataLine.is_valid ? "ai-circle-minus-fill" : "ai-circle-plus-fill"}></i>)
+                                            className={dataLine.is_valid ? "ai-circle-minus-fill" : "ai-circle-plus-fill"}></i>),
+                                        (<a
+                                            onClick={() => {
+                                                window.location.href = `http://localhost:3003/reserve?${dataLine.id}&a=false`;
+                                            }}
+                                            style={{
+                                                cursor: 'pointer',
+                                                textDecoration: 'underline',
+                                            }}
+                                        >Link</a>)
                                     ].map(dataColumn => (
                                         <div className="table-data">{dataColumn}</div>
                                     ))}

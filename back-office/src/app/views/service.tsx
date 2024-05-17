@@ -13,6 +13,8 @@ export default class ServiceView extends React.Component<ViewProps> {
             acceptService
         } = this.props;
 
+        console.log(data);
+
         return (
             <div>
                 <Navbar/>
@@ -51,31 +53,49 @@ export default class ServiceView extends React.Component<ViewProps> {
                             ))
                         }
                     </div>
-                    <div className={'table-content'}>
+                    <div className={'table-content'} style={{height: '100%',marginBottom: 200}}>
                         {
                             data.map(dataLine => (
-                                <div className={'table-row'}>
-                                    {[dataLine.created_by,
-                                        dataLine.name,
-                                        dataLine.price.toString(),
-                                        dataLine.duration.toString(),
-                                        dataLine.nb_use.toString(),
-                                        dataLine.siret,
-                                        (<i
-                                            style={{
-                                                color: dataLine.is_valid ? "#c90b1a" : "#11963f",
-                                                cursor: 'pointer',
-                                                fontSize: '2em'
-                                            }}
-                                            onClick={() => {
-                                                dataLine.is_valid ?
-                                                    deleteService(dataLine.id) :
-                                                    acceptService(dataLine.id);
-                                            }}
-                                            className={dataLine.is_valid ? "ai-circle-minus-fill" : "ai-circle-plus-fill"}></i>)
-                                    ].map(dataColumn => (
-                                        <div className="table-data">{dataColumn}</div>
-                                    ))}
+                                <div>
+                                    <div className={'table-row'}>
+                                        {[dataLine.created_by,
+                                            dataLine.name,
+                                            dataLine.price.toString(),
+                                            dataLine.duration.toString(),
+                                            dataLine.nb_use.toString(),
+                                            dataLine.siret,
+                                            (<i
+                                                style={{
+                                                    color: dataLine.is_valid ? "#c90b1a" : "#11963f",
+                                                    cursor: 'pointer',
+                                                    fontSize: '2em'
+                                                }}
+                                                onClick={() => {
+                                                    dataLine.is_valid ?
+                                                        deleteService(dataLine.id) :
+                                                        acceptService(dataLine.id);
+                                                }}
+                                                className={dataLine.is_valid ? "ai-circle-minus-fill" : "ai-circle-plus-fill"}></i>)
+                                        ].map(dataColumn => (
+                                            <div className="table-data">{dataColumn}</div>
+                                        ))}
+                                    </div>
+                                    <div className={'table-row'}>
+                                        {
+                                            ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"].map(day => (
+                                                <div className="table-data">{day}</div>
+                                            ))
+                                        }
+                                    </div>
+                                    <div className={'table-row'} style={{background : '#fff'}}>
+                                        {
+                                            Object.keys(JSON.parse(dataLine.schedule)).map((schedule: any) => (
+                                                <div className="table-data">
+                                                    {schedule.start} - {schedule.end}
+                                                </div>
+                                            ))
+                                        }
+                                    </div>
                                 </div>
                             ))
                         }
