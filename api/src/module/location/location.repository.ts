@@ -46,7 +46,7 @@ export class LocationRepository {
 
     async getLocationOccupationByService() {
         await this.db.connect()
-        const [rows, filed] = await this.db.query("SELECT *, (select from_datetime from location_occupation where id = occupation_request_service.id limit 1) as from_datetime,(select to_datetime from location_occupation where id = occupation_request_service.id limit 1) as to_datetime  FROM occupation_request_service");
+        const [rows, filed] = await this.db.query("SELECT *, (select from_datetime from location_occupation where id = occupation_request_service.id limit 1) as from_datetime, (select id from subscription where user_email =occupation_request_service.user_email limit 1) as is_vip,(select to_datetime from location_occupation where id = occupation_request_service.id limit 1) as to_datetime  FROM occupation_request_service");
         return rows;
     }
 
