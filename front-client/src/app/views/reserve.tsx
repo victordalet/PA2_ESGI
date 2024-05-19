@@ -72,7 +72,9 @@ export class ReserveView extends React.Component <ViewProps> {
                 <PopupError text={"Note have been saved"}/>
                 <div className={"container-location-reservation"}>
                     <h1>{data.name}</h1>
-                    <h1>Satus : {status}</h1>
+                    {
+                        isReserved ? <h1>Satus : {status}</h1> : ''
+                    }
                     {
                         status === 'accepted' && isReserved ?
                             <button id={"pay"} onClick={locationOccupationPaiement}
@@ -90,6 +92,7 @@ export class ReserveView extends React.Component <ViewProps> {
                          }}>
 
                     </div>
+                    <div id={"container-picture-all"}></div>
                     <div className={"description"}>
                         <div className={"description-text"}>
                             {

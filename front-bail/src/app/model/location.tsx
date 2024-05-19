@@ -53,6 +53,19 @@ export class LocationModel {
     public uploadImage = async (id: number) => {
         const file = (document.getElementById("image") as HTMLInputElement).files;
         if (file) {
+            for (let i = 0; i < file.length; i++) {
+                const formData = new FormData();
+                formData.append('file', file[i]);
+                formData.append('picture', `location-${id.toString()}-${i.toString()}`);
+                const apiPath = process.env.API_HOST || 'http://localhost:3001';
+                await fetch(`${apiPath}/picture`, {
+                    method: "POST",
+                    headers: {
+                        'authorization': localStorage.getItem('token') || ''
+                    },
+                    body: formData
+                });
+            }
             const formData = new FormData();
             formData.append('file', file[0]);
             formData.append('picture', `location-${id.toString()}`);

@@ -191,7 +191,7 @@ export default class LocationView extends React.Component <ViewProps> {
                             <input type={"number"} id={"nb-parking"} placeholder={"Nb parking space"}/>
                         </div>
                         <div className={"icon-description"}>
-                        <h2>Choice your material</h2>
+                            <h2>Choice your material</h2>
                             <div className={"container-icon-type-location"}>
                                 {
                                     locationTypes.map((type, index) => {
@@ -208,8 +208,8 @@ export default class LocationView extends React.Component <ViewProps> {
                 </div>
                 <div className={"container-price-and-creation"}>
                     <div className={"container-picture-file"}>
-                        <h2>Picture of the location</h2>
-                        <input type={"file"} id={"image"} name={"image"} placeholder={"Image"}/>
+                        <h2>Pictures of the location</h2>
+                        <input type={"file"} id={"image"} name={"image"} placeholder={"Image"} multiple/>
                     </div>
                     <div className={"container-picture-file"}>
                         <h2>Price and name of the location</h2>

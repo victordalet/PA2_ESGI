@@ -609,15 +609,28 @@ export default class Controller extends React.Component<
 
     private displayPicture = async () => {
         const pictures = await this.reserveModel.getPicture(this.id);
+        const allPictures = await this.reserveModel.getAllPicture(this.id);
         setTimeout(async () => {
-        const card = document.querySelector<HTMLElement>('#container-picture');
-        if (card) {
-            if (pictures.status !== 500) {
-                const data = await pictures.json();
-                const imgBase64 = `data:image/png;base64,${data.base64}`;
-                card.style.backgroundImage = `url(${imgBase64})`;
+            const card = document.querySelector<HTMLElement>('#container-picture');
+            if (card) {
+                if (pictures.status !== 500) {
+                    const data = await pictures.json();
+                    const imgBase64 = `data:image/png;base64,${data.base64}`;
+                    card.style.backgroundImage = `url(${imgBase64})`;
+                }
             }
-        }
+            const cardContainer = document.querySelector<HTMLElement>('#container-picture-all');
+            if (cardContainer) {
+                allPictures.map(async (picture) => {
+                    const card = document.createElement('div');
+                    card.classList.add('calendar-form-complete');
+                    card.style.backgroundSize = 'cover';
+                    card.style.height = '200px';
+                    card.style.width = '200px';
+                    card.style.backgroundImage = `url(data:image/png;base64,${picture.base64})`;
+                    cardContainer.appendChild(card);
+                });
+            }
         }, 200);
     };
 

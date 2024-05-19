@@ -16,6 +16,15 @@
     }
 }
 
+#container-picture-all {
+
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    width: 70vw;
+    margin: 50px auto 50px;
+
+}
+
 .container-location-reservation {
     width: calc(100% - 50px);
     min-height: 100vh;

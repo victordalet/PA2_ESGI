@@ -511,5 +511,25 @@ export class ReserveModel {
         });
     };
 
+    public getAllPicture = async (id: number) => {
+        const pictures = [];
+        for (let i = 0; i < 10; i++) {
+            const apiPath = process.env.API_HOST || "http://localhost:3001";
+            const response = await fetch(`${apiPath}/picture/location-${id}-${i}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    authorization: localStorage.getItem("token") || "",
+                },
+            });
+            if (response.status === 200) {
+                pictures.push(await response.json());
+            } else {
+                break;
+            }
+        }
+        return pictures;
+    };
+
 
 }
