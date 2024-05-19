@@ -85,7 +85,9 @@ export class ServiceRepository {
         const servicePrice = rows[0].price;
         const serviceDuration = rows[0].duration;
         const finalPrice = (time / serviceDuration) * servicePrice;
-        return this.db.query("UPDATE occupation_request_service SET status = 'good',price=?, from_datetime=?, to_datetime=? WHERE id = ?", [finalPrice, body.from_datetime, body.to_datetime, body.location_occupation_id]);
+        await this.db.query("UPDATE occupation_request_service SET status = 'good',price=?, from_datetime=?, to_datetime=?,service_id=? WHERE id = ?", [finalPrice, body.from_datetime, body.to_datetime, body.service_id, body.location_occupation_id]);
+        const [rows2, filed2] = await this.db.query("SELECT city,user_email FROM location WHERE id = (select location_id from occupation_request_service where id = ?)", [body.location_occupation_id]);
+        return {address: rows2[0].city, price: finalPrice, email: rows2[0].user_email};
     }
 
     async getServiceByUserV2(body: LocationLiaison) {
@@ -93,9 +95,8 @@ export class ServiceRepository {
         if (body.location_occupation_id !== 0) {
             const [rows, filed] = await this.db.query("SELECT * FROM occupation_request_service WHERE location_occupation_id = ?", [body.location_occupation_id]);
             return rows;
-        }
-        else {
-            const [rows, filed] = await this.db.query("SELECT * FROM occupation_request_service WHERE service_id = ?", [body.service_id]);
+        } else {
+            const [rows, filed] = await this.db.query("SELECT *,(select latitude from location where id = (select location_id from location_occupation where id =occupation_request_service.location_occupation_id )) as latitude,(select longitude from location where id = (select location_id from location_occupation where id =occupation_request_service.location_occupation_id )) as longitude FROM occupation_request_service WHERE service_id = ?", [body.service_id]);
             return rows;
         }
     }

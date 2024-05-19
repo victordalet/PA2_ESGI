@@ -19,5 +19,9 @@ export interface EventCalendar {
     end: string;
     title: string;
     price?: number;
+    city: string;
+    user_email: string;
+    latitude?: number;
+    longitude?: number;
 }
 
