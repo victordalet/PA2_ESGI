@@ -36,4 +36,7 @@ export interface LocationAvailability {
     city: string;
     description: string;
     status: string;
+    latitude: number;
+    longitude: number;
+    state_place: string;
 }

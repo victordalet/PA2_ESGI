@@ -197,7 +197,7 @@ export class LocationRepository {
 
     async getLocationOccupationInfoByAdmin() {
         await this.db.connect();
-        const sqlRequest: string = "select location_id,from_datetime,to_datetime,notation,user_email,description,status,id as location_occupation_id, (select name from location where id = location_id) as location_name,(select address from location where id = location_id) as city,(select created_by from location where id = location_id)  as created_by , (select count(*) as message from location_message where location_occupation_id = id) as nb_message from location_occupation where deleted_at is null";
+        const sqlRequest: string = "select location_id,from_datetime,to_datetime,notation,user_email,description,status,state_place,id as location_occupation_id, (select name from location where id = location_id) as location_name,(select address from location where id = location_id) as city,(select latitude from location where id = location_id) as latitude,(select longitude from location where id = location_id) as longitude,(select created_by from location where id = location_id)  as created_by , (select count(*) as message from location_message where location_occupation_id = id) as nb_message from location_occupation where deleted_at is null";
         const [rows, filed] = await this.db.query(sqlRequest);
         return rows;
 
