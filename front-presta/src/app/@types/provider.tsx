@@ -3,6 +3,7 @@ import ViewModel from '../view-models/provider';
 export interface ViewProps {
     eventCalendar: EventCalendar[];
     downloadFacture: () => void;
+    addOccupation: () => void;
 }
 
 export interface ControllerProps {

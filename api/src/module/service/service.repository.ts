@@ -1,7 +1,7 @@
 import {Connection} from "mysql2/promise";
 import {DatabaseEntity} from "../../database/mysql.entity";
 import {Service} from "../../core/service";
-import {ServiceModel} from "./service.model";
+import {ServiceByServiceModel, ServiceModel} from "./service.model";
 import {LocationAvailability, LocationLiaison} from "../../core/location";
 
 export class ServiceRepository {
@@ -90,8 +90,14 @@ export class ServiceRepository {
 
     async getServiceByUserV2(body: LocationLiaison) {
         await this.db.connect()
-        const [rows, filed] = await this.db.query("SELECT * FROM occupation_request_service WHERE location_occupation_id = ?", [body.location_occupation_id]);
-        return rows;
+        if (body.location_occupation_id !== 0) {
+            const [rows, filed] = await this.db.query("SELECT * FROM occupation_request_service WHERE location_occupation_id = ?", [body.location_occupation_id]);
+            return rows;
+        }
+        else {
+            const [rows, filed] = await this.db.query("SELECT * FROM occupation_request_service WHERE service_id = ?", [body.service_id]);
+            return rows;
+        }
     }
 
     async serviceIsHere(body: LocationLiaison) {
@@ -198,5 +204,13 @@ export class ServiceRepository {
     async adminAcceptService(service_id: number) {
         await this.db.connect()
         return this.db.query("UPDATE service SET is_valid = 1 WHERE id = ?", [service_id]);
+    }
+
+    async addServiceByService(token: string, body: ServiceByServiceModel) {
+        await this.db.connect();
+        const [rows, filed] = await this.db.query("SELECT email FROM USER WHERE connection = ?", [token]);
+        if (rows)
+            return this.db.query("INSERT INTO occupation_request_service (created_at,location_occupation_id,service_name,user_email,description,status,city,from_datetime,to_datetime,service_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                [new Date(), 0, 'OCCUPY', rows[0].email, 'OCCUPY', 'valid', '', body.from, body.to, body.service_id]);
     }
 }

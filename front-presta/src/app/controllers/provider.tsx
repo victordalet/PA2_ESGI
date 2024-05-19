@@ -32,7 +32,7 @@ export default class ProviderController extends React.Component<
             eventCalendarTemp.push({
                 start: service.from_datetime,
                 end: service.to_datetime,
-                title: service.title
+                title: service.description,
             });
         });
         this.setState({eventCalendar: eventCalendarTemp});
@@ -100,6 +100,7 @@ export default class ProviderController extends React.Component<
 
     render() {
         return <ProviderView
+            addOccupation={this.providerModel.addOccupation}
             downloadFacture={this.downloadFacture}
             eventCalendar={this.state.eventCalendar}
         />;

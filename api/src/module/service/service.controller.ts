@@ -1,7 +1,7 @@
 import {Body, Controller, Delete, Get, Headers, Param, Patch, Post, Put} from "@nestjs/common";
 import {ApiBadRequestResponse, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiTags} from "@nestjs/swagger";
 import {ServiceService} from "./service.service";
-import {ServiceModel} from "./service.model";
+import {ServiceByServiceModel, ServiceModel} from "./service.model";
 import {TokenValidation} from "../../validation/token/token.validation";
 import {LocationAvailability, LocationLiaison} from "../../core/location";
 
@@ -51,6 +51,15 @@ export class ServiceController {
     async postServiceByUser(@Headers('authorization') token: string, @Body() body: LocationLiaison) {
         await this.tokenValidation.validateToken(token);
         return this.serviceService.postServiceByUser(token, body);
+    }
+
+    @Post('add-service-by-service')
+    @ApiOperation({summary: 'Add service by service'})
+    @ApiCreatedResponse({description: 'Service'})
+    @ApiBadRequestResponse({description: 'Request body is not valid'})
+    async addServiceByService(@Headers('authorization') token: string, @Body() body: ServiceByServiceModel) {
+        await this.tokenValidation.validateToken(token);
+        return this.serviceService.addServiceByService(token, body);
     }
 
     @Post('get-service-by-user-v2')

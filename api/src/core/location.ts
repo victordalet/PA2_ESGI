@@ -47,4 +47,3 @@ export interface LocationLiaison {
     from_datetime?: string;
     to_datetime?: string;
 }
-

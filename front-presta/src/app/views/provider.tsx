@@ -11,7 +11,8 @@ export class ProviderView extends React.Component<ViewProps> {
 
         const {
             eventCalendar,
-            downloadFacture
+            downloadFacture,
+            addOccupation
         } = this.props;
 
         const now = momentLocalizer(moment);
@@ -62,6 +63,13 @@ export class ProviderView extends React.Component<ViewProps> {
                     onClick={downloadFacture}
                     className={"button-facture-provider"}>Facture
                 </button>
+
+                <div className={"form-add-client"}>
+                    <h2>Added unavailability</h2>
+                    <input type="datetime-local" placeholder={"from"} id={"from"}/>
+                    <input type="datetime-local" placeholder={"to"} id={"to"}/>
+                    <button onClick={addOccupation}>Add</button>
+                </div>
 
 
             </div>

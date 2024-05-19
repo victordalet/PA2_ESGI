@@ -149,7 +149,8 @@ create table occupation_request_service
     city                   varchar(100) not null,
     price                  int,
     from_datetime          datetime,
-    to_datetime            datetime
+    to_datetime            datetime,
+    service_id             int
 );
 
 create table note_user_to_location
