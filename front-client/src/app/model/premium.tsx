@@ -27,4 +27,16 @@ export class PremiumModel {
             }
         });
     };
+
+    public getPrice = async () => {
+        const apiPath: string = process.env.API_HOST || 'http://localhost:3001';
+        const res = await fetch(`${apiPath}/subscription/price`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                "authorization": localStorage.getItem('token') || ''
+            }
+        });
+        return await res.json();
+    };
 }

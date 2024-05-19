@@ -1,4 +1,4 @@
-import {BodySubscription} from "./subscription.model";
+import {BodySubscription, BodySubscriptionPrice} from "./subscription.model";
 import {SubscriptionRepository} from "./subscription.repository";
 import {Stripe} from 'stripe';
 import {uid} from 'uid';
@@ -78,5 +78,14 @@ export class SubscriptionService {
     async lastDateFreeService(token: string) {
         return await this.SubscriptionRepository.lastDateFreeService(token);
 
+    }
+
+
+    async subscriptionPrice() {
+        return await this.SubscriptionRepository.subscriptionPrice();
+    }
+
+    async updateSubscriptionPrice(subscription: BodySubscriptionPrice) {
+        return await this.SubscriptionRepository.updateSubscriptionPrice(subscription);
     }
 }

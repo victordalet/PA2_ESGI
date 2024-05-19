@@ -1,7 +1,7 @@
 import {Connection} from "mysql2/promise";
 import {DatabaseEntity} from "../../database/mysql.entity";
 import {User} from "../../core/user";
-import { BodySubscription } from "./subscription.model";
+import {BodySubscription, BodySubscriptionPrice} from "./subscription.model";
 
 export class SubscriptionRepository {
     private db: Connection;
@@ -85,7 +85,7 @@ export class SubscriptionRepository {
         }
     }
 
-    async valdationSubscription(token: string){
+    async valdationSubscription(token: string) {
         await this.db.connect()
         await this.db.query("UPDATE subcription set is_pay = '' where is_pay = ?", [token])
         return
@@ -94,10 +94,21 @@ export class SubscriptionRepository {
     async lastDateFreeService(token: string) {
         const [rows, filed] = await this.db.query("SELECT * FROM USER WHERE connection = ?", [token]);
         if (rows instanceof Array) {
-            const row: any = rows[0];
+            const row: any = rows[0]
             const [rows2, filed2] = await this.db.query("SELECT * FROM subscription_utilisation WHERE email = ?", [row.email]);
             return rows2;
         }
+    }
+
+    async subscriptionPrice() {
+        await this.db.connect();
+        const [rows, filed] = await this.db.query("SELECT * FROM price_sub");
+        return rows;
+    }
+
+    async updateSubscriptionPrice(body: BodySubscriptionPrice) {
+        await this.db.connect();
+        return this.db.query("UPDATE price_sub SET price = ? WHERE name = ?", [body.price, body.name]);
     }
 
 }

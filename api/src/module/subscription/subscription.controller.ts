@@ -1,6 +1,6 @@
 import {Body, Controller, Delete, Get, Headers, Param, Post, Put} from "@nestjs/common";
 import {ApiBadRequestResponse, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiTags} from "@nestjs/swagger";
-import {BodySubscription} from "./subscription.model";
+import {BodySubscription, BodySubscriptionPrice} from "./subscription.model";
 import {SubscriptionService} from "./subscription.service";
 import {TokenValidation} from "../../validation/token/token.validation";
 
@@ -66,6 +66,24 @@ export class SubscriptionController {
         await this.tokenValidation.validateToken(token);
         return this.subscriptionService.lastDateFreeService(token);
     }
+
+    @Post('price')
+    @ApiOperation({summary: 'Get subscription price'})
+    @ApiOkResponse({description: 'Subscription price'})
+    @ApiBadRequestResponse({description: 'Request body is not valid'})
+    async subscriptionPrice() {
+        return this.subscriptionService.subscriptionPrice();
+    }
+
+    @Put('price')
+    @ApiOperation({summary: 'Update subscription price'})
+    @ApiOkResponse({description: 'Subscription price updated'})
+    @ApiBadRequestResponse({description: 'Request body is not valid'})
+    async updateSubscriptionPrice(@Headers('authorization') token: string, @Body() body: BodySubscriptionPrice) {
+        await this.tokenValidation.validateAdminToken(token);
+        return this.subscriptionService.updateSubscriptionPrice(body);
+    }
+
 
     @Put(':id')
     @ApiOperation({summary: 'Update subscription'})

@@ -232,6 +232,13 @@ create table job
     name varchar(100) not null
 );
 
+create table price_sub
+(
+    id    int primary key auto_increment,
+    price int,
+    name  varchar(100)
+);
+
 
 
 insert into USER (email, password, name, rules, created_at, updated_at, address)
