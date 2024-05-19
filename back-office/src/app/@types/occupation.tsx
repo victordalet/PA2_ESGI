@@ -4,6 +4,7 @@ export interface ViewProps {
     data: LocationAvailability[];
     filterOccupationMessage: () => void;
     filterOccupation: () => void;
+    downloadFolderClientOccupation: (location_occupation_id: number) => void;
 }
 
 export interface ControllerProps {
@@ -21,7 +22,7 @@ export interface LocationAvailability {
     from_datetime: string;
     to_datetime: string;
     notation?: number;
-    location_occupation_id?: number;
+    location_occupation_id: number;
     price: number;
     repeat?: string;
     nb_message?: number;
@@ -29,4 +30,5 @@ export interface LocationAvailability {
     user_email: string;
     created_by: string;
     city: string;
+    description: string;
 }

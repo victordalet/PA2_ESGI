@@ -45,6 +45,7 @@ export default class OccupationController extends Component<
 
     render() {
         return <OccupationView
+            downloadFolderClientOccupation={this.occupationModel.downloadFolderClientOccupation}
             filterOccupation={this.filterOccupation}
             filterOccupationMessage={this.filterOccupationMessage}
             data={this.state.data}/>;

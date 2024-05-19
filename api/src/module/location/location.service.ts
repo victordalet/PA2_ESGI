@@ -201,28 +201,10 @@ export class LocationService {
         if (!(typeof body.location_id === 'number')) {
             throw new Error('Bad id');
         } else {
-            const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
-            const session = await stripe.checkout.sessions.create({
-                payment_method_types: ['card'],
-                line_items: [
-                    {
-                        price_data: {
-                            currency: 'usd',
-                            product_data: {
-                                name: 'Premium',
-                            },
-                            unit_amount: body.price * 100,
-                        },
-                        quantity: 1,
-                    },
-                ],
-                mode: 'payment',
-                success_url: `${process.env.FRONTEND_URL}/premium`,
-                cancel_url: `${process.env.FRONTEND_URL}/home`,
-            });
-            const response = await this.locationRepository.addLocationOccupation(body.location_id, token, body.from_datetime, body.to_datetime);
+            console.log(body);
+            const response = await this.locationRepository.addLocationOccupation(body.location_id, token, body.from_datetime, body.to_datetime,body.description);
             await this.locationRepository.addMessageToLocationOccupation(response, 'Hi', token);
-            return {id: response, url: session.url};
+            return {id: response};
         }
     }
 

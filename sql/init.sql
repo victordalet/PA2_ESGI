@@ -43,7 +43,8 @@ create table location_occupation
     deleted_at    datetime,
     notation      int,
     `repeat`      varchar(100),
-    is_pay        varchar(100)
+    is_pay        varchar(100),
+    description   longtext
 );
 
 

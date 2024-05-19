@@ -31,6 +31,7 @@ export interface LocationAvailability {
     repeat?: string;
     nb_message?: number;
     id?: number;
+    description?: string;
 }
 
 

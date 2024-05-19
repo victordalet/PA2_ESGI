@@ -13,7 +13,7 @@ export class ReserveModel {
         this.id = id;
     }
 
-    public setPrice(price: number){
+    public setPrice(price: number) {
         this.price = price;
     }
 
@@ -463,5 +463,41 @@ export class ReserveModel {
         window.open(data.url, '_blank');
     };
 
-    
+
+    public getFileNameLocationOccupation = async () => {
+        const apiPath = process.env.API_HOST || 'http://localhost:3001';
+        const response = await fetch(`${apiPath}/file/get-name-files`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'authorization': localStorage.getItem('token') || ''
+            },
+            body: JSON.stringify({
+                file: `location-occupation-${this.idResa}`
+            })
+        });
+        return await response.json();
+    };
+
+    public postFileLocationOccupation = async () => {
+        const apiPath = process.env.API_HOST || 'http://localhost:3001';
+        const file = document.querySelector<HTMLInputElement>('#file-occupation-input');
+        if (!file || !file.files) {
+            return;
+        }
+        const formData = new FormData();
+        formData.append('file', file.files[0]);
+        const name = `location-occupation-${this.idResa}-${file.files[0].name}`;
+        formData.append('name', name);
+        await fetch(`${apiPath}/file`, {
+            method: 'POST',
+            headers: {
+                'authorization': localStorage.getItem('token') || ''
+            },
+            body: formData
+        });
+        document.location.reload();
+    };
+
+
 }

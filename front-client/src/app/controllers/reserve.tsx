@@ -52,6 +52,7 @@ export default class Controller extends React.Component<
         this.getLocationsOccupationRequestInfor();
         this.fetchServiceUser();
         this.updatePriceModem();
+        this.getFileNameLocationOccupation();
     }
 
     state: ControllerState = {
@@ -70,6 +71,7 @@ export default class Controller extends React.Component<
         userRequestService: [],
         serviceUser: [],
         serviceSelected: "",
+        fileNameOccupation: [],
     };
 
     private updatePriceModem = async () => {
@@ -245,6 +247,9 @@ export default class Controller extends React.Component<
             if (!this.reserveViewModel.verifyDate(dateStart.value, dateEnd.value)) {
                 this.reserveViewModel.openPopupBadDate();
             } else if (!(await this.reserveModel.isOccupied(dateStart.value, dateEnd.value))) {
+                const status = document.querySelector<HTMLSelectElement>("#status-reservation")?.value;
+                const presentation = document.querySelector<HTMLInputElement>("#presentation")?.value;
+                const salary = document.querySelector<HTMLInputElement>("#salary")?.value;
                 const apiPath = process.env.API_HOST || "http://localhost:3001";
                 const response = await fetch(
                     apiPath + this.apiSubPath + "/occupation",
@@ -259,12 +264,12 @@ export default class Controller extends React.Component<
                             from_datetime: dateStart.value,
                             to_datetime: dateEnd.value,
                             price: this.state.data.price,
+                            description: `${status} - ${presentation} - ${salary}€/m`,
                         }),
                     }
                 );
                 const data = await response.json();
                 await this.reservedNewService(data.id);
-                window.open(data.url, "_blank");
                 document.location.href = "/resa";
             } else {
                 this.reserveViewModel.openPopupBadDate();
@@ -590,12 +595,18 @@ export default class Controller extends React.Component<
         }
     };
 
+    private getFileNameLocationOccupation = async () => {
+        const data = await this.reserveModel.getFileNameLocationOccupation();
+        this.setState({fileNameOccupation: data.data});
+    };
+
     render() {
         if (this.state.isBail === undefined && this.state.services.length === 0) {
             return <Loading/>;
         }
         return <ReserveView
             idResa={this.idResa}
+            fileNameOccupation={this.state.fileNameOccupation}
             serviceUser={this.state.serviceUser}
             userRequestService={this.state.userRequestService}
             sendRequestService={this.reserveModel.sendRequestService}
@@ -629,6 +640,7 @@ export default class Controller extends React.Component<
             updateServiceSelected={this.updateServiceSelected}
             locationsPaiement={this.reserveModel.locationsPaiement}
             locationOccupationPaiement={this.reserveModel.locationOccupationPaiement}
-            deleteOccupationBail={this.reserveModel.deleteOccupationBail}/>;
+            deleteOccupationBail={this.reserveModel.deleteOccupationBail}
+            postFileLocationOccupation={this.reserveModel.postFileLocationOccupation}/>;
     }
 }

@@ -38,6 +38,8 @@ export interface ViewProps {
     updateServiceSelected: () => void;
     locationsPaiement: () => void;
     locationOccupationPaiement: () => void;
+    postFileLocationOccupation: () => void;
+    fileNameOccupation: string[];
 }
 
 export interface UserRequest {
@@ -71,6 +73,7 @@ export interface ControllerState {
     userRequestService: UserRequest[];
     serviceUser: ServiceUser[];
     serviceSelected: string;
+    fileNameOccupation: string[];
 }
 
 export interface LocationOccupation {

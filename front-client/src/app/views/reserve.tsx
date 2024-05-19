@@ -41,7 +41,9 @@ export class ReserveView extends React.Component <ViewProps> {
             idResa,
             updateServiceSelected,
             serviceSelected,
-            locationOccupationPaiement
+            locationOccupationPaiement,
+            postFileLocationOccupation,
+            fileNameOccupation
         } = this.props;
 
         let isToday = false;
@@ -113,7 +115,11 @@ export class ReserveView extends React.Component <ViewProps> {
                             <h3 id={"price"}><i className="ai-coin"></i>{data.price}</h3>
                             <h3 id={"location"}><i className="ai-map"></i><span
                                 id={"location-city"}>{data.address}</span></h3>
-                            <h3 id={"contact"}><i className="ai-paper-airplane"></i>{data.created_by}</h3>
+                            {
+                                isAdmin ?
+                                    <h3 id={"contact"}><i className="ai-paper-airplane"></i>{data.created_by}</h3> : ''
+                            }
+
                             {
                                 !isReserved
                                     ? (
@@ -153,13 +159,7 @@ export class ReserveView extends React.Component <ViewProps> {
                                     :
 
                                     (!isReserved ?
-                                        (
-                                            <div className={"reservation"}>
-                                                <input type={"date"} id={"date-start"}/>
-                                                <input type={"date"} id={"date-end"}/>
-                                                <button id={"reserve"} onClick={fetchReservations}>Reserve</button>
-                                            </div>
-                                        ) :
+                                        '' :
                                         (
                                             <div className={"reservation"}>
                                                 {
@@ -184,6 +184,54 @@ export class ReserveView extends React.Component <ViewProps> {
                             }
                         </div>
                     </div>
+                    {
+                        !isReserved && !isBail && !isAdmin ?
+                            <div className={"calendar-form-complete"}
+                                 style={{marginTop: '50px', width: '40%', padding: '20px'}}>
+                                <h2>Reservation</h2>
+                                <div className={"date-wrapper"}>
+                                    <input type={"date"} id={"date-start"}/>
+                                    <input type={"date"} id={"date-end"}/>
+                                </div>
+                                <h3>Your status</h3>
+                                <select id={"status-reservation"}>
+                                    <option value={"student"}>Student</option>
+                                    <option value={"worker"}>Worker</option>
+                                    <option value={"student-with-guarantor"}>Student with guarantor</option>
+                                </select>
+                                <h3>Your salary</h3>
+                                <input type={"number"} id={"salary"}/>
+                                <h3>Present your self</h3>
+                                <textarea id={"presentation"}></textarea>
+                                <button onClick={fetchReservations}>Reserve</button>
+                            </div>
+                            : ''
+                    }
+
+                    {
+                        isReserved ?
+                            <div className={"calendar-form-complete"} style={{marginTop: '50px',width: '60%' ,padding: '20px'}}>
+                                <h2>Add documents</h2>
+                                <div className={"resources-files"}>
+                                    {
+                                        fileNameOccupation.map((name, index) => {
+                                            return (
+                                                <div key={index}>
+                                                    <h3>{name}</h3>
+                                                    <i className="ai-download"
+                                                       onClick={() => downloadFileBail(name)}></i>
+                                                </div>
+                                            );
+                                        })
+                                    }
+                                </div>
+                                <input type={"file"} id={"file-occupation-input"}/>
+                                <button onClick={postFileLocationOccupation}>Send</button>
+                            </div>
+                            : ''
+                    }
+
+
                     {
                         isReserved ?
                             <div className={"calendar-form-complete"}
