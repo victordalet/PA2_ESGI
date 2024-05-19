@@ -28,11 +28,17 @@ export default class ProviderController extends React.Component<
     private fetchService = async () => {
         const data: any[] = await this.providerModel.fetchService();
         const eventCalendarTemp: EventCalendar[] = [];
+        console.log(data);
         data.forEach((service) => {
             eventCalendarTemp.push({
                 start: service.from_datetime,
                 end: service.to_datetime,
-                title: service.title
+                title: service.description,
+                price: service.price,
+                city: service.city,
+                user_email: service.email,
+                latitude: service.latitude,
+                longitude: service.longitude
             });
         });
         this.setState({eventCalendar: eventCalendarTemp});
@@ -100,6 +106,7 @@ export default class ProviderController extends React.Component<
 
     render() {
         return <ProviderView
+            addOccupation={this.providerModel.addOccupation}
             downloadFacture={this.downloadFacture}
             eventCalendar={this.state.eventCalendar}
         />;

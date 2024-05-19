@@ -15,7 +15,8 @@ import {
     Scraper,
     Provider as ProviderPage,
     Element,
-    Occupation
+    Occupation,
+    Inventory
 } from './app/providers';
 import './sass/index.scss';
 import {Provider} from "mobx-react";
@@ -41,6 +42,7 @@ root.render(
                     <Route path={"/location-occupation"} element={<Occupation/>}></Route>
                     <Route path={"/provider-request"} element={<ProviderPage/>}></Route>
                     <Route path={"/elements"} element={<Element/>}></Route>
+                    <Route path={"/inventory"} element={<Inventory/>}></Route>
                     <Route path={"*"} element={<Home/>}></Route>
                 </Routes>
             </BrowserRouter>

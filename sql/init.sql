@@ -43,7 +43,10 @@ create table location_occupation
     deleted_at    datetime,
     notation      int,
     `repeat`      varchar(100),
-    is_pay        varchar(100)
+    is_pay        varchar(100),
+    description   longtext,
+    status        varchar(50),
+    state_place   varchar(100)
 );
 
 
@@ -149,7 +152,8 @@ create table occupation_request_service
     city                   varchar(100) not null,
     price                  int,
     from_datetime          datetime,
-    to_datetime            datetime
+    to_datetime            datetime,
+    service_id             int
 );
 
 create table note_user_to_location
@@ -230,6 +234,13 @@ create table job
 (
     id   int primary key auto_increment,
     name varchar(100) not null
+);
+
+create table price_sub
+(
+    id    int primary key auto_increment,
+    price int,
+    name  varchar(100)
 );
 
 

@@ -22,6 +22,7 @@ export interface Location {
 }
 
 export interface LocationAvailability {
+    name?: string;
     location_id: number;
     from_datetime?: string;
     to_datetime?: string;
@@ -31,6 +32,9 @@ export interface LocationAvailability {
     repeat?: string;
     nb_message?: number;
     id?: number;
+    description?: string;
+    state_place?: string;
+    email?: string;
 }
 
 
@@ -47,4 +51,3 @@ export interface LocationLiaison {
     from_datetime?: string;
     to_datetime?: string;
 }
-

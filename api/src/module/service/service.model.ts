@@ -60,3 +60,18 @@ export class ServiceModel {
     @IsNumber()
     is_vip: number;
 }
+
+export class ServiceByServiceModel {
+
+    @ApiProperty({example: '...', description: 'Service from'})
+    @IsString()
+    from: string;
+
+    @ApiProperty({example: '...', description: 'Service to'})
+    @IsString()
+    to: string;
+
+    @ApiProperty({example: '...', description: 'Service id'})
+    @IsNumber()
+    service_id: number;
+}

@@ -189,6 +189,26 @@ export class LocationController {
         return this.locationService.getLocationOccupationByUser(token);
     }
 
+    @Post('remove-location-occupation')
+    @ApiOperation({summary: 'Remove location occupation'})
+    @ApiCreatedResponse({description: 'Location occupation removed'})
+    @ApiBadRequestResponse({description: 'Request body is not valid'})
+    async removeLocationOccupation(@Headers('authorization') token: string, @Body() body: LocationAvailability) {
+        await this.tokenValidation.validateAdminToken(token);
+        return this.locationService.removeLocationOccupation(body.location_occupation_id);
+    }
+
+    @Post('accept-location-occupation')
+    @ApiOperation({summary: 'Accept location occupation'})
+    @ApiCreatedResponse({description: 'Location occupation accepted'})
+    @ApiBadRequestResponse({description: 'Request body is not valid'})
+    async acceptLocationOccupation(@Headers('authorization') token: string, @Body() body: LocationAvailability) {
+        await this.tokenValidation.validateAdminToken(token);
+        return this.locationService.acceptLocationOccupation(body.location_occupation_id,body.from_datetime,body.to_datetime,body.state_place,body.email,body.name);
+    }
+
+
+
     @Put(':id')
     @ApiOperation({summary: 'Update location'})
     @ApiOkResponse({description: 'Location updated'})

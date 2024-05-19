@@ -6,6 +6,7 @@ export interface ViewProps {
     data: LocationResponse;
     services: ServiceResponse[];
     isReserved: boolean;
+    isProvider: boolean;
     fetchReservations: () => void;
     addNotation: (note: number) => void;
     notation: number;
@@ -38,6 +39,8 @@ export interface ViewProps {
     updateServiceSelected: () => void;
     locationsPaiement: () => void;
     locationOccupationPaiement: () => void;
+    postFileLocationOccupation: () => void;
+    fileNameOccupation: string[];
 }
 
 export interface UserRequest {
@@ -71,6 +74,7 @@ export interface ControllerState {
     userRequestService: UserRequest[];
     serviceUser: ServiceUser[];
     serviceSelected: string;
+    fileNameOccupation: string[];
 }
 
 export interface LocationOccupation {
@@ -80,6 +84,7 @@ export interface LocationOccupation {
     user_email: string;
     repeat: string;
     is_pay: number;
+    status: string;
 }
 
 

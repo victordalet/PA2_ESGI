@@ -22,3 +22,14 @@ export class BodySubscription {
     @IsNumber()
     price?: number;
 }
+
+export class BodySubscriptionPrice {
+    @ApiProperty({example: '10', description: 'Price'})
+    @IsNumber()
+    price: number;
+
+    @ApiProperty({example: 'explorateur', description: 'name'})
+    @IsString()
+    name: string;
+
+}

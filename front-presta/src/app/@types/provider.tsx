@@ -3,6 +3,7 @@ import ViewModel from '../view-models/provider';
 export interface ViewProps {
     eventCalendar: EventCalendar[];
     downloadFacture: () => void;
+    addOccupation: () => void;
 }
 
 export interface ControllerProps {
@@ -18,5 +19,9 @@ export interface EventCalendar {
     end: string;
     title: string;
     price?: number;
+    city: string;
+    user_email: string;
+    latitude?: number;
+    longitude?: number;
 }
 

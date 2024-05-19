@@ -8,7 +8,11 @@ import {Language} from "../../components/language";
 export class PremiumView extends React.Component <ViewProps> {
     render() {
 
-        const {subscribe, deleteSubscription} = this.props;
+        const {
+            subscribe,
+            deleteSubscription,
+            price
+        } = this.props;
 
         return (
             <div>
@@ -33,7 +37,7 @@ export class PremiumView extends React.Component <ViewProps> {
                         </div>
                         <div className={"premium"}>
                             <h3>Bag Packer</h3>
-                            <h3 id={"price"}>9.90€ /mouth</h3>
+                            <h3 id={"price"}>{price[0].price}€ /mouth</h3>
                             <ul>
                                 <li><i className="ai-circle-plus-fill"></i>removal of advertising</li>
                                 <li><i className="ai-circle-minus-fill"></i>permanent reduction of 5%</li>
@@ -41,11 +45,12 @@ export class PremiumView extends React.Component <ViewProps> {
                                 <li><i className="ai-circle-minus-fill"></i>Services VIP</li>
                                 <li><i className="ai-circle-plus-fill"></i>Renewal bonus of the subscription</li>
                             </ul>
-                            <button onClick={() => subscribe(10)}>Subscribe</button>
+                            <button onClick={() => subscribe(price[0].price)}>Subscribe
+                            </button>
                         </div>
                         <div className={"premium"}>
                             <h3>Exploratory</h3>
-                            <h3 id={"price"}>19€ /mouth</h3>
+                            <h3 id={"price"}>{price[1].price}€ /mouth</h3>
                             <ul>
                                 <li><i className="ai-circle-plus-fill"></i>removal of advertising</li>
                                 <li><i className="ai-circle-plus-fill"></i>permanent reduction of 5%</li>
@@ -53,7 +58,9 @@ export class PremiumView extends React.Component <ViewProps> {
                                 <li><i className="ai-circle-plus-fill"></i>Services VIP</li>
                                 <li><i className="ai-circle-plus-fill"></i>Renewal bonus of the subscription</li>
                             </ul>
-                            <button onClick={() => subscribe(19)}>Subscribe</button>
+                            <button
+                                onClick={() => subscribe(price[1].price)}>Subscribe
+                            </button>
                         </div>
                     </div>
                 </div>

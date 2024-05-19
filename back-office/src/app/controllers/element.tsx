@@ -11,12 +11,14 @@ export default class ElementController extends React.Component<ControllerProps, 
         super(props);
         this.state = {};
         this.elementModel = new ElementModel();
+        this.elementModel.getLastPrice();
     }
 
 
     render() {
         return (
             <ElementView
+                updatePrice={this.elementModel.updatePrice}
                 postElement={this.elementModel.postElement}
                 postJob={this.elementModel.postJob}
             />

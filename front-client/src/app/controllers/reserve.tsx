@@ -26,6 +26,7 @@ export default class Controller extends React.Component<
     private readonly isService: boolean;
     private readonly apiSubPath: string;
     private readonly reserveModel: ReserveModel;
+    private isProvider: boolean;
 
     constructor(props: ControllerProps) {
         super(props);
@@ -34,10 +35,12 @@ export default class Controller extends React.Component<
         this.id = parseInt(document.location.href.split('?')[1].split('&')[0]);
         this.type = document.location.href.split('&a=')[1].includes('true');
         this.isService = false;
+        this.isProvider = false;
         this.apiSubPath = this.isService ? '/service' : '/location';
         this.reserveModel = new ReserveModel(this.idResa, this.apiSubPath, this.id);
         this.reserveViewModel = new ReserveViewModel();
         if (this.type) {
+            this.isProvider = document.location.href.includes('provider');
             this.idResa = parseInt(document.location.href.split("&id2=")[1]);
             this.reserveModel = new ReserveModel(this.idResa, this.apiSubPath, this.id);
             this.isAlsoReserved();
@@ -52,6 +55,8 @@ export default class Controller extends React.Component<
         this.getLocationsOccupationRequestInfor();
         this.fetchServiceUser();
         this.updatePriceModem();
+        this.displayPicture();
+        this.getFileNameLocationOccupation();
     }
 
     state: ControllerState = {
@@ -70,6 +75,7 @@ export default class Controller extends React.Component<
         userRequestService: [],
         serviceUser: [],
         serviceSelected: "",
+        fileNameOccupation: [],
     };
 
     private updatePriceModem = async () => {
@@ -195,6 +201,7 @@ export default class Controller extends React.Component<
                         user_email: occupation.user_email,
                         repeat: occupation.repeat,
                         is_pay: occupation.is_pay,
+                        status: occupation.status,
                     });
                 });
             } else if (occupation.repeat === "monthly") {
@@ -210,6 +217,7 @@ export default class Controller extends React.Component<
                         user_email: occupation.user_email,
                         repeat: occupation.repeat,
                         is_pay: occupation.is_pay,
+                        status: occupation.status,
                     });
                 });
             } else if (occupation.repeat === 'daily') {
@@ -225,6 +233,7 @@ export default class Controller extends React.Component<
                         user_email: occupation.user_email,
                         repeat: occupation.repeat,
                         is_pay: occupation.is_pay,
+                        status: occupation.status,
                     });
                 });
             }
@@ -245,6 +254,9 @@ export default class Controller extends React.Component<
             if (!this.reserveViewModel.verifyDate(dateStart.value, dateEnd.value)) {
                 this.reserveViewModel.openPopupBadDate();
             } else if (!(await this.reserveModel.isOccupied(dateStart.value, dateEnd.value))) {
+                const status = document.querySelector<HTMLSelectElement>("#status-reservation")?.value;
+                const presentation = document.querySelector<HTMLInputElement>("#presentation")?.value;
+                const salary = document.querySelector<HTMLInputElement>("#salary")?.value;
                 const apiPath = process.env.API_HOST || "http://localhost:3001";
                 const response = await fetch(
                     apiPath + this.apiSubPath + "/occupation",
@@ -259,12 +271,12 @@ export default class Controller extends React.Component<
                             from_datetime: dateStart.value,
                             to_datetime: dateEnd.value,
                             price: this.state.data.price,
+                            description: `${status} - ${presentation} - ${salary}€/m`,
                         }),
                     }
                 );
                 const data = await response.json();
                 await this.reservedNewService(data.id);
-                window.open(data.url, "_blank");
                 document.location.href = "/resa";
             } else {
                 this.reserveViewModel.openPopupBadDate();
@@ -590,12 +602,46 @@ export default class Controller extends React.Component<
         }
     };
 
+    private getFileNameLocationOccupation = async () => {
+        const data = await this.reserveModel.getFileNameLocationOccupation();
+        this.setState({fileNameOccupation: data.data});
+    };
+
+    private displayPicture = async () => {
+        const pictures = await this.reserveModel.getPicture(this.id);
+        const allPictures = await this.reserveModel.getAllPicture(this.id);
+        setTimeout(async () => {
+            const card = document.querySelector<HTMLElement>('#container-picture');
+            if (card) {
+                if (pictures.status !== 500) {
+                    const data = await pictures.json();
+                    const imgBase64 = `data:image/png;base64,${data.base64}`;
+                    card.style.backgroundImage = `url(${imgBase64})`;
+                }
+            }
+            const cardContainer = document.querySelector<HTMLElement>('#container-picture-all');
+            if (cardContainer) {
+                allPictures.map(async (picture) => {
+                    const card = document.createElement('div');
+                    card.classList.add('calendar-form-complete');
+                    card.style.backgroundSize = 'cover';
+                    card.style.height = '200px';
+                    card.style.width = '200px';
+                    card.style.backgroundImage = `url(data:image/png;base64,${picture.base64})`;
+                    cardContainer.appendChild(card);
+                });
+            }
+        }, 200);
+    };
+
     render() {
         if (this.state.isBail === undefined && this.state.services.length === 0) {
             return <Loading/>;
         }
         return <ReserveView
+            isProvider={this.isProvider}
             idResa={this.idResa}
+            fileNameOccupation={this.state.fileNameOccupation}
             serviceUser={this.state.serviceUser}
             userRequestService={this.state.userRequestService}
             sendRequestService={this.reserveModel.sendRequestService}
@@ -629,6 +675,7 @@ export default class Controller extends React.Component<
             updateServiceSelected={this.updateServiceSelected}
             locationsPaiement={this.reserveModel.locationsPaiement}
             locationOccupationPaiement={this.reserveModel.locationOccupationPaiement}
-            deleteOccupationBail={this.reserveModel.deleteOccupationBail}/>;
+            deleteOccupationBail={this.reserveModel.deleteOccupationBail}
+            postFileLocationOccupation={this.reserveModel.postFileLocationOccupation}/>;
     }
 }
