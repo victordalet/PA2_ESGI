@@ -47,10 +47,14 @@ export class ReserveView extends React.Component <ViewProps> {
         } = this.props;
 
         let isToday = false;
+        let status = '';
 
         eventCalendar.forEach((event) => {
             if (isReserved && event.id == idResa && event.is_pay == 0) {
                 isToday = true;
+            }
+            if (isReserved && event.id == idResa) {
+                status = event.status;
             }
         });
 
@@ -67,6 +71,14 @@ export class ReserveView extends React.Component <ViewProps> {
                 <PopupError text={"Note have been saved"}/>
                 <div className={"container-location-reservation"}>
                     <h1>{data.name}</h1>
+                    <h1>Satus : {status}</h1>
+                    {
+                        status === 'accepted' && isReserved ?
+                            <button id={"pay"} onClick={locationOccupationPaiement}
+                            >Pay
+                            </button>
+                            : ''
+                    }
                     <div className={"description"}>
                         <div className={"description-text"}>
                             {
@@ -163,20 +175,12 @@ export class ReserveView extends React.Component <ViewProps> {
                                         (
                                             <div className={"reservation"}>
                                                 {
-                                                    isToday ?
-                                                        <button id={"Pay"} onClick={locationOccupationPaiement}
-                                                                style={{
-                                                                    marginBottom: '20px',
-                                                                    background: '#0f7e03'
-                                                                }}>Pay
-                                                        </button>
-                                                        :
-                                                        <button id={"cancel"} onClick={deleteOccupation}
-                                                                style={{
-                                                                    marginBottom: '20px',
-                                                                    background: '#c91919'
-                                                                }}>Cancel
-                                                        </button>
+                                                    <button id={"cancel"} onClick={deleteOccupation}
+                                                            style={{
+                                                                marginBottom: '20px',
+                                                                background: '#c91919'
+                                                            }}>Cancel
+                                                    </button>
                                                 }
                                                 <button id={"facture"} onClick={downloadFacture}>My facture</button>
                                             </div>
@@ -210,7 +214,8 @@ export class ReserveView extends React.Component <ViewProps> {
 
                     {
                         isReserved ?
-                            <div className={"calendar-form-complete"} style={{marginTop: '50px',width: '60%' ,padding: '20px'}}>
+                            <div className={"calendar-form-complete"}
+                                 style={{marginTop: '50px', width: '60%', padding: '20px'}}>
                                 <h2>Add documents</h2>
                                 <div className={"resources-files"}>
                                     {

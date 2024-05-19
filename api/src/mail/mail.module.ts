@@ -18,23 +18,26 @@ export class Emailer {
         return this.transporter.sendMail(mailOptions);
     }
 
-    public notifyUserForSignup(email: string, username: string) {
-        this.sendEmail(newUserEmailTemplate(email, username));
+    public acceptLocationOccupation(email: string, from: string, to: string, locationName: string, state_place: string) {
+        this.sendEmail(acceptLocationOccupationTemplate(email, from, to, locationName, state_place));
     }
 }
 
 export const emailer = new Emailer();
 
-export const newUserEmailTemplate = (email: string, username: string) => {
+export const acceptLocationOccupationTemplate = (email: string, from: string, to: string, locationName: string, state_place: string) => {
     return {
         from: process.env.GMAIL_USER,
         to: email,
-        subject: `${username}, Welcome to the our website`,
-        text: "Welcome to the our website",
+        subject: `${locationName} PCS`,
         html: `
-      <h1>Welcome to our website!</h1>
-      <p>We're glad you've decided to join us. We hope you find everything you're looking for here and enjoy using our site.</p>
-      <p>If you have any questions or need any help, please don't hesitate to contact us. Thank you for signing up!</p>
+        <h1>PCS</h1>
+        <p>Your location occupation request has been accepted.</p>
+        <p>From: ${from}</p>
+        <p>To: ${to}</p>
+        <p>We'll meet again on ${state_place} for the inventory</p>
+        <p>Thank you for using PCS</p>
+        <h2>You can make payment on your reservation page for the first month, and send a CEPA direct debit request in your documents</h2>
     `,
     } as MailOptions;
 };

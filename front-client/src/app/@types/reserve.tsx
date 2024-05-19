@@ -83,6 +83,7 @@ export interface LocationOccupation {
     user_email: string;
     repeat: string;
     is_pay: number;
+    status: string;
 }
 
 

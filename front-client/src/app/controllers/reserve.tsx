@@ -197,6 +197,7 @@ export default class Controller extends React.Component<
                         user_email: occupation.user_email,
                         repeat: occupation.repeat,
                         is_pay: occupation.is_pay,
+                        status: occupation.status,
                     });
                 });
             } else if (occupation.repeat === "monthly") {
@@ -212,6 +213,7 @@ export default class Controller extends React.Component<
                         user_email: occupation.user_email,
                         repeat: occupation.repeat,
                         is_pay: occupation.is_pay,
+                        status: occupation.status,
                     });
                 });
             } else if (occupation.repeat === 'daily') {
@@ -227,6 +229,7 @@ export default class Controller extends React.Component<
                         user_email: occupation.user_email,
                         repeat: occupation.repeat,
                         is_pay: occupation.is_pay,
+                        status: occupation.status,
                     });
                 });
             }

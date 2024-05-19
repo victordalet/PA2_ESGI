@@ -44,7 +44,9 @@ create table location_occupation
     notation      int,
     `repeat`      varchar(100),
     is_pay        varchar(100),
-    description   longtext
+    description   longtext,
+    status        varchar(50),
+    state_place   varchar(100)
 );
 
 

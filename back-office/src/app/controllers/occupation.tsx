@@ -4,6 +4,7 @@ import {observer} from "mobx-react";
 import {OccupationView} from "../views/occupation";
 import {haveToken} from "../../security/token";
 import {OccupationModel} from "../model/occupation";
+import OccupationViewModel from "../view-models/occupation";
 
 @observer
 export default class OccupationController extends Component<
@@ -12,11 +13,13 @@ export default class OccupationController extends Component<
 > {
 
     occupationModel: OccupationModel;
+    occupationViewModel: OccupationViewModel;
 
     constructor(props: ControllerProps) {
         super(props);
         haveToken();
         this.occupationModel = new OccupationModel();
+        this.occupationViewModel = new OccupationViewModel();
         this.getLocationsOccupationAdminInfo();
     }
 
@@ -36,7 +39,8 @@ export default class OccupationController extends Component<
     };
 
     public getLocationsOccupationAdminInfo = async () => {
-        const data = await this.occupationModel.getLocationsOccupationAdminInfo();
+        let data = await this.occupationModel.getLocationsOccupationAdminInfo();
+        data = data.filter((item: LocationAvailability) => item.status === 'pending' || 'accepted');
         this.setState({
             data: data,
             dataNotFiltered: data
@@ -45,6 +49,10 @@ export default class OccupationController extends Component<
 
     render() {
         return <OccupationView
+            acceptLocationOccupation={this.occupationModel.acceptLocationOccupation}
+            refuseLocationOccupation={this.occupationModel.refuseLocationOccupation}
+            launchPopUpState={this.occupationViewModel.launchPopUpState}
+            closePopUpState={this.occupationViewModel.closePopUpState}
             downloadFolderClientOccupation={this.occupationModel.downloadFolderClientOccupation}
             filterOccupation={this.filterOccupation}
             filterOccupationMessage={this.filterOccupationMessage}

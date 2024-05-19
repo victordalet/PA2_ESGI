@@ -42,4 +42,42 @@ export class OccupationModel {
         }
     };
 
+    public acceptLocationOccupation = async () => {
+        const location_occupation_id = parseInt(window.localStorage.getItem('location_occupation_id') || '');
+        const from = (document.querySelector<HTMLInputElement>('#input-start-time') as HTMLInputElement).value;
+        const to = (document.querySelector<HTMLInputElement>('#input-end-time') as HTMLInputElement).value;
+        const state = (document.querySelector<HTMLInputElement>('#input-state-time') as HTMLInputElement).value;
+        const apiPath = process.env.API_PATH || 'http://localhost:3001';
+        await fetch(`${apiPath}/location/accept-location-occupation`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                authorization: localStorage.getItem('token') || ''
+            },
+            body: JSON.stringify({
+                location_occupation_id: location_occupation_id,
+                from_datetime: from,
+                to_datetime: to,
+                state_place: state,
+                email: window.localStorage.getItem('email'),
+                name: window.localStorage.getItem('name')
+            })
+        });
+        document.location.reload();
+    };
+
+    public refuseLocationOccupation = async (location_occupation_id: number) => {
+        const apiPath = process.env.API_PATH || 'http://localhost:3001';
+        await fetch(`${apiPath}/location/remove-location-occupation`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                authorization: localStorage.getItem('token') || ''
+            },
+            body: JSON.stringify({
+                location_occupation_id: location_occupation_id
+            })
+        });
+    };
+
 }

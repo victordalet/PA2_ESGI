@@ -9,7 +9,11 @@ export class OccupationView extends Component<ViewProps> {
             data,
             filterOccupationMessage,
             filterOccupation,
-            downloadFolderClientOccupation
+            downloadFolderClientOccupation,
+            launchPopUpState,
+            closePopUpState,
+            acceptLocationOccupation,
+            refuseLocationOccupation
         } = this.props;
 
 
@@ -66,9 +70,7 @@ export class OccupationView extends Component<ViewProps> {
                                                 borderRadius: '50%',
                                                 padding: '5px'
                                             }}
-                                            onClick={() => {
-                                                alert('Accept');
-                                            }}> </i>
+                                            onClick={() => launchPopUpState(dataLine.from_datetime, dataLine.to_datetime, dataLine.location_occupation_id, dataLine.user_email,dataLine.location_name)}> </i>
                                         <i
                                             className={"ai-thumbs-down"}
                                             style={{
@@ -79,7 +81,7 @@ export class OccupationView extends Component<ViewProps> {
                                                 padding: '5px'
                                             }}
                                             onClick={() => {
-                                                alert('Reject');
+                                                refuseLocationOccupation(dataLine.location_occupation_id);
                                             }}> </i>
                                     </div>)
                                 ].map(dataColumn => (
@@ -92,12 +94,17 @@ export class OccupationView extends Component<ViewProps> {
             </div>
 
             <div className={"container-state"}>
+                <div className={"close"} onClick={closePopUpState}>
+                    <i className={"ai-circle-x-fill"}> </i>
+                </div>
                 <h2>Choice date of State of play</h2>
                 <input type="datetime-local" id={"input-state-time"}/>
                 <h2>Confirm Start and end Date</h2>
-                <input type="datetime-local" id={"input-start-time"}/>
-                <input type="datetime-local" id={"input-end-time"}/>
-                <button>Send</button>
+                <input type="date" id={"input-start-time"}/>
+                <input type="date" id={"input-end-time"}/>
+                <button
+                    onClick={() => acceptLocationOccupation()}>Send
+                </button>
             </div>
 
         </div>;

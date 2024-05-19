@@ -125,7 +125,7 @@ export class LocationRepository {
     async addLocationOccupation(locationId: number, token: string, fromDatetime: string, toDatetime: string, description: string) {
         await this.db.connect()
         const [rows, filed] = await this.db.query("SELECT email FROM USER WHERE connection = ?", [token]);
-        await this.db.query("INSERT INTO location_occupation (from_datetime, to_datetime, location_id, user_email, `repeat`,description) VALUES (?, ?, ?, ?,?,?)",
+        await this.db.query("INSERT INTO location_occupation (from_datetime, to_datetime, location_id, user_email, `repeat`,description,status) VALUES (?, ?, ?, ?,?,?,'pending')",
             [fromDatetime, toDatetime, locationId, rows[0].email, 'none', description]);
         const [rows2, filed2] = await this.db.query("SELECT LAST_INSERT_ID() as id FROM location_occupation");
         return rows2[0].id;
@@ -197,7 +197,7 @@ export class LocationRepository {
 
     async getLocationOccupationInfoByAdmin() {
         await this.db.connect();
-        const sqlRequest: string = "select location_id,from_datetime,to_datetime,notation,user_email,description,id as location_occupation_id, (select name from location where id = location_id) as location_name,(select address from location where id = location_id) as city,(select created_by from location where id = location_id)  as created_by , (select count(*) as message from location_message where location_occupation_id = id) as nb_message from location_occupation where deleted_at is null";
+        const sqlRequest: string = "select location_id,from_datetime,to_datetime,notation,user_email,description,status,id as location_occupation_id, (select name from location where id = location_id) as location_name,(select address from location where id = location_id) as city,(select created_by from location where id = location_id)  as created_by , (select count(*) as message from location_message where location_occupation_id = id) as nb_message from location_occupation where deleted_at is null";
         const [rows, filed] = await this.db.query(sqlRequest);
         return rows;
 
@@ -249,12 +249,26 @@ export class LocationRepository {
 
     async locationOccupationPaiementValidation(token: string) {
         await this.db.connect()
-        await this.db.query("UPDATE location_occupation set is_pay = valide where is_pay = ?", [token]);
+        await this.db.query("UPDATE location_occupation set is_pay = 1, status = 'finish' where is_pay = ?", [token]);
         return
     }
 
     async locationOccupationPaiement(uid: string, id: number) {
         await this.db.connect();
         await this.db.query("UPDATE location_occupation set is_pay = ? where id = ?", [uid, id])
+    }
+
+    async removeLocationOccupation(locationOccupationId: number) {
+        await this.db.connect();
+        return await this.db.query("UPDATE location_occupation SET status = 'rejected' WHERE id = ?", [locationOccupationId]);
+    }
+
+    async acceptLocationOccupation(locationOccupationId: number, fromDatetime: string, toDatetime: string, state_place: string) {
+        await this.db.connect();
+        await this.db.query("UPDATE location_occupation SET status = 'accepted', from_datetime = ?, to_datetime= ?, state_place = ? WHERE id = ?", [fromDatetime, toDatetime, state_place, locationOccupationId]);
+        const [rows, filed] = await this.db.query("SELECT location_id FROM location_occupation WHERE id = ?", [locationOccupationId]);
+        await this.db.query("UPDATE location_occupation SET status = 'rejected' WHERE location_id = ? AND id != ?", [rows[0].location_id, locationOccupationId]);
+        return;
+
     }
 }

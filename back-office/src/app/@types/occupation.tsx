@@ -5,6 +5,10 @@ export interface ViewProps {
     filterOccupationMessage: () => void;
     filterOccupation: () => void;
     downloadFolderClientOccupation: (location_occupation_id: number) => void;
+    launchPopUpState: (from: string, to: string, location_occupation_id: number, email: string, name: string) => void;
+    closePopUpState: () => void;
+    acceptLocationOccupation: () => void;
+    refuseLocationOccupation: (location_occupation_id: number) => void;
 }
 
 export interface ControllerProps {
@@ -26,9 +30,10 @@ export interface LocationAvailability {
     price: number;
     repeat?: string;
     nb_message?: number;
-    location_name?: string;
+    location_name: string;
     user_email: string;
     created_by: string;
     city: string;
     description: string;
+    status: string;
 }
