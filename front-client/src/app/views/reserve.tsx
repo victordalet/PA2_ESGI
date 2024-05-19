@@ -43,7 +43,8 @@ export class ReserveView extends React.Component <ViewProps> {
             serviceSelected,
             locationOccupationPaiement,
             postFileLocationOccupation,
-            fileNameOccupation
+            fileNameOccupation,
+            isProvider
         } = this.props;
 
         let isToday = false;
@@ -79,6 +80,16 @@ export class ReserveView extends React.Component <ViewProps> {
                             </button>
                             : ''
                     }
+                    <div className={"calendar-form-complete"} id={"container-picture"}
+                         style={{
+                             marginTop: '50px',
+                             height: '40vh',
+                             backgroundSize: 'cover',
+                             width: '40%',
+                             padding: '20px'
+                         }}>
+
+                    </div>
                     <div className={"description"}>
                         <div className={"description-text"}>
                             {

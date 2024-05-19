@@ -26,6 +26,7 @@ export default class Controller extends React.Component<
     private readonly isService: boolean;
     private readonly apiSubPath: string;
     private readonly reserveModel: ReserveModel;
+    private isProvider: boolean;
 
     constructor(props: ControllerProps) {
         super(props);
@@ -34,10 +35,12 @@ export default class Controller extends React.Component<
         this.id = parseInt(document.location.href.split('?')[1].split('&')[0]);
         this.type = document.location.href.split('&a=')[1].includes('true');
         this.isService = false;
+        this.isProvider = false;
         this.apiSubPath = this.isService ? '/service' : '/location';
         this.reserveModel = new ReserveModel(this.idResa, this.apiSubPath, this.id);
         this.reserveViewModel = new ReserveViewModel();
         if (this.type) {
+            this.isProvider = document.location.href.includes('provider');
             this.idResa = parseInt(document.location.href.split("&id2=")[1]);
             this.reserveModel = new ReserveModel(this.idResa, this.apiSubPath, this.id);
             this.isAlsoReserved();
@@ -52,6 +55,7 @@ export default class Controller extends React.Component<
         this.getLocationsOccupationRequestInfor();
         this.fetchServiceUser();
         this.updatePriceModem();
+        this.displayPicture();
         this.getFileNameLocationOccupation();
     }
 
@@ -603,11 +607,26 @@ export default class Controller extends React.Component<
         this.setState({fileNameOccupation: data.data});
     };
 
+    private displayPicture = async () => {
+        const pictures = await this.reserveModel.getPicture(this.id);
+        setTimeout(async () => {
+        const card = document.querySelector<HTMLElement>('#container-picture');
+        if (card) {
+            if (pictures.status !== 500) {
+                const data = await pictures.json();
+                const imgBase64 = `data:image/png;base64,${data.base64}`;
+                card.style.backgroundImage = `url(${imgBase64})`;
+            }
+        }
+        }, 200);
+    };
+
     render() {
         if (this.state.isBail === undefined && this.state.services.length === 0) {
             return <Loading/>;
         }
         return <ReserveView
+            isProvider={this.isProvider}
             idResa={this.idResa}
             fileNameOccupation={this.state.fileNameOccupation}
             serviceUser={this.state.serviceUser}

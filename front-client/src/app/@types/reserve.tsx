@@ -6,6 +6,7 @@ export interface ViewProps {
     data: LocationResponse;
     services: ServiceResponse[];
     isReserved: boolean;
+    isProvider: boolean;
     fetchReservations: () => void;
     addNotation: (note: number) => void;
     notation: number;

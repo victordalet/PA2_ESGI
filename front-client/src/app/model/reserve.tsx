@@ -500,4 +500,16 @@ export class ReserveModel {
     };
 
 
+    public getPicture = async (id: number) => {
+        const apiPath = process.env.API_HOST || "http://localhost:3001";
+        return await fetch(`${apiPath}/picture/location-${id}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                authorization: localStorage.getItem("token") || "",
+            },
+        });
+    };
+
+
 }
