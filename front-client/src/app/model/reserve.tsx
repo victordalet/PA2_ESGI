@@ -5,6 +5,7 @@ export class ReserveModel {
     private readonly idResa: number;
     private readonly apiSubPath: string;
     private readonly id: number;
+    private price = 0;
 
     constructor(idResa: number, apiSubPath: string, id: number) {
         this.idResa = idResa;
@@ -12,6 +13,9 @@ export class ReserveModel {
         this.id = id;
     }
 
+    public setPrice(price: number) {
+        this.price = price;
+    }
 
     public getLocationsOccupationRequestInfor = async () => {
         const apiPath = process.env.API_PATH || 'http://localhost:3001';
@@ -43,7 +47,14 @@ export class ReserveModel {
 
     public sendRequestService = async () => {
         const apiPath = process.env.API_HOST || 'http://localhost:3001';
-        const desc = document.querySelector<HTMLInputElement>('#service-description');
+        const name = document.querySelector<HTMLInputElement>('#service-name')?.value;
+        let desc = document.querySelector<HTMLInputElement>('#service-description')?.value;
+        if (name === 'taxi') {
+            const start = document.querySelector<HTMLInputElement>('#service-taxi-start')?.value;
+            const arrival = document.querySelector<HTMLInputElement>('#service-taxi-stop')?.value;
+            const arrivalTime = document.querySelector<HTMLInputElement>('#service-taxi-arrival')?.value;
+            desc += ' ' + start + ' ' + arrival + ' ' + arrivalTime;
+        }
         await fetch(apiPath + '/location/add-occupation-service', {
             method: 'POST',
             headers: {
@@ -52,9 +63,9 @@ export class ReserveModel {
             },
             body: JSON.stringify({
                 location_occupation_id: this.idResa,
-                service_name: document.querySelector<HTMLInputElement>('#service-name')?.value,
+                service_name: name,
                 user_email: localStorage.getItem('email'),
-                description: document.querySelector<HTMLSelectElement>('#service-time')?.value + ' ' + desc?.value,
+                description: document.querySelector<HTMLSelectElement>('#service-time')?.value + ' ' + desc,
                 city: document.querySelector<HTMLElement>('#location-city')?.innerHTML,
             }),
         });
@@ -111,6 +122,20 @@ export class ReserveModel {
             body: JSON.stringify({
                 location_id: this.idResa,
                 notation: note,
+            }),
+        });
+    };
+
+    public resetNewMessage = async () => {
+        const API_PATH = process.env.API_HOST || "http://localhost:3001";
+        await fetch(API_PATH + "/location/reset-messages-occupation", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                authorization: localStorage.getItem("token") || "",
+            },
+            body: JSON.stringify({
+                location_id: this.id
             }),
         });
     };
@@ -311,7 +336,7 @@ export class ReserveModel {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'authorization': localStorage.getItem('token') || ''
+                authorization: localStorage.getItem('token') || ''
             }
         });
         const data: Subscription[] = await response.json();
@@ -418,4 +443,107 @@ export class ReserveModel {
         return await response.json();
 
     };
+
+    public locationsPaiement = async () => {
+        const apiPath = process.env.API_PATH || 'http://localhost:3001';
+        const response = await fetch(`${apiPath}/location/location-paiement`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                authorization: localStorage.getItem('token') || ''
+            },
+            body: JSON.stringify({
+                id: this.id
+            })
+        });
+        const data = await response.json();
+        window.open(data.url, '_blank');
+    };
+
+    public locationOccupationPaiement = async () => {
+        const apiPath = process.env.API_PATH || 'http://localhost:3001';
+        const response = await fetch(`${apiPath}/location/location-occupation-paiement`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                authorization: localStorage.getItem('token') || ''
+            },
+            body: JSON.stringify({
+                id: this.idResa,
+                price: this.price
+            })
+        });
+        const data = await response.json();
+        window.open(data.url, '_blank');
+    };
+
+
+    public getFileNameLocationOccupation = async () => {
+        const apiPath = process.env.API_HOST || 'http://localhost:3001';
+        const response = await fetch(`${apiPath}/file/get-name-files`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'authorization': localStorage.getItem('token') || ''
+            },
+            body: JSON.stringify({
+                file: `location-occupation-${this.idResa}`
+            })
+        });
+        return await response.json();
+    };
+
+    public postFileLocationOccupation = async () => {
+        const apiPath = process.env.API_HOST || 'http://localhost:3001';
+        const file = document.querySelector<HTMLInputElement>('#file-occupation-input');
+        if (!file || !file.files) {
+            return;
+        }
+        const formData = new FormData();
+        formData.append('file', file.files[0]);
+        const name = `location-occupation-${this.idResa}-${file.files[0].name}`;
+        formData.append('name', name);
+        await fetch(`${apiPath}/file`, {
+            method: 'POST',
+            headers: {
+                'authorization': localStorage.getItem('token') || ''
+            },
+            body: formData
+        });
+        document.location.reload();
+    };
+
+
+    public getPicture = async (id: number) => {
+        const apiPath = process.env.API_HOST || "http://localhost:3001";
+        return await fetch(`${apiPath}/picture/location-${id}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                authorization: localStorage.getItem("token") || "",
+            },
+        });
+    };
+
+    public getAllPicture = async (id: number) => {
+        const pictures = [];
+        for (let i = 0; i < 10; i++) {
+            const apiPath = process.env.API_HOST || "http://localhost:3001";
+            const response = await fetch(`${apiPath}/picture/location-${id}-${i}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    authorization: localStorage.getItem("token") || "",
+                },
+            });
+            if (response.status === 200) {
+                pictures.push(await response.json());
+            } else {
+                break;
+            }
+        }
+        return pictures;
+    };
+
+
 }

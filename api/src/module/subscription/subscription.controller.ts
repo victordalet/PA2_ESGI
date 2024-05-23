@@ -1,6 +1,6 @@
-import {Body, Controller, Delete, Get, Headers, Param, Post, Put} from "@nestjs/common";
+import {Body, Controller, Delete, Get, Headers, Param, Post, Put, Redirect} from "@nestjs/common";
 import {ApiBadRequestResponse, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiTags} from "@nestjs/swagger";
-import {BodySubscription} from "./subscription.model";
+import {BodySubscription, BodySubscriptionPrice} from "./subscription.model";
 import {SubscriptionService} from "./subscription.service";
 import {TokenValidation} from "../../validation/token/token.validation";
 
@@ -42,13 +42,13 @@ export class SubscriptionController {
         return await this.subscriptionService.subscribeUserByToken(token, body);
     }
 
-    @Post('subscribe-validation')
+    @Get('subscribe-validation:uid')
+    @Redirect("http://localhost:3000", 301)
     @ApiOperation({summary: 'Subscribe user'})
     @ApiCreatedResponse({description: 'User subscribed'})
     @ApiBadRequestResponse({description: 'Request body is not valid'})
-    async subscribeUserValidation(@Headers('authorization') token: string, @Param() body: BodySubscription) {
-        await this.tokenValidation.validateToken(token);
-        return await this.subscriptionService.subscribeUserValidation(token, body);
+    async subscribeUserValidation(@Headers('authorization') token: string, @Param() body: any) {
+        return await this.subscriptionService.subscribeUserValidation(body.uid);
     }
 
     @Post('is_subscribe')
@@ -56,7 +56,6 @@ export class SubscriptionController {
     @ApiOkResponse({description: 'User is subscribed'})
     @ApiBadRequestResponse({description: 'Request param is not valid'})
     async userIsSubscribed(@Headers('authorization') token: string) {
-        await this.tokenValidation.validateAdminToken(token);
         return this.subscriptionService.userIsSubscribed(token);
     }
 
@@ -68,6 +67,24 @@ export class SubscriptionController {
         await this.tokenValidation.validateToken(token);
         return this.subscriptionService.lastDateFreeService(token);
     }
+
+    @Post('price')
+    @ApiOperation({summary: 'Get subscription price'})
+    @ApiOkResponse({description: 'Subscription price'})
+    @ApiBadRequestResponse({description: 'Request body is not valid'})
+    async subscriptionPrice() {
+        return this.subscriptionService.subscriptionPrice();
+    }
+
+    @Put('price')
+    @ApiOperation({summary: 'Update subscription price'})
+    @ApiOkResponse({description: 'Subscription price updated'})
+    @ApiBadRequestResponse({description: 'Request body is not valid'})
+    async updateSubscriptionPrice(@Headers('authorization') token: string, @Body() body: BodySubscriptionPrice) {
+        await this.tokenValidation.validateAdminToken(token);
+        return this.subscriptionService.updateSubscriptionPrice(body);
+    }
+
 
     @Put(':id')
     @ApiOperation({summary: 'Update subscription'})

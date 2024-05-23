@@ -49,9 +49,11 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY}
       FRONTEND_URL: ${FRONTEND_URL}
+      GMAIL_USER: ${GMAIL_USER}
+      GMAIL_PASSWORD: ${GMAIL_PASSWORD}
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.apipaesig.rule=Host(`apipaesig.c2smr.fr`)"
+      - "traefik.http.routers.apipaesig.rule=Host(`apipcs.c2smr.fr`)"
       - "traefik.http.routers.apipaesig.entrypoints=websecure"
     volumes:
       - ./api/public:/app/public
@@ -68,7 +70,7 @@ services:
       API_HOST: ${API_HOST}
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.backofficepaesgi.rule=Host(`backofficepaesgi.c2smr.fr`)"
+      - "traefik.http.routers.backofficepaesgi.rule=Host(`adminpcs.c2smr.fr`)"
       - "traefik.http.routers.backofficepaesgi.entrypoints=websecure"
     networks:
       - web
@@ -84,7 +86,7 @@ services:
       CHAT_BOT_HOST: ${CHAT_BOT_HOST}
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.frontclientpaesig.rule=Host(`frontclientpaesig.c2smr.fr`)"
+      - "traefik.http.routers.frontclientpaesig.rule=Host(`pcs.c2smr.fr`)"
       - "traefik.http.routers.frontclientpaesig.entrypoints=websecure"
     networks:
       - web
@@ -109,7 +111,7 @@ services:
       YOLO_ESTIMATOR_PORT: ${YOLO_ESTIMATOR_PORT}
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.fontbailpaesgi.rule=Host(`fontbailpaesgi.c2smr.fr`)"
+      - "traefik.http.routers.fontbailpaesgi.rule=Host(`bailpcs.c2smr.fr`)"
       - "traefik.http.routers.fontbailpaesgi.entrypoints=websecure"
     networks:
       - web
@@ -126,7 +128,7 @@ services:
       YOLO_ESTIMATOR_PORT: ${YOLO_ESTIMATOR_PORT}
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.fontprestapaesgi.rule=Host(`fontprestapaesgi.c2smr.fr`)"
+      - "traefik.http.routers.fontprestapaesgi.rule=Host(`prestapcs.c2smr.fr`)"
       - "traefik.http.routers.fontprestapaesgi.entrypoints=websecure"
     networks:
       - web

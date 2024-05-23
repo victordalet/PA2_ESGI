@@ -1,3 +1,30 @@
+#pay {
+    width: 20%;
+    height: 40px;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    background: $primaryColor;
+    color: #fff;
+    cursor: pointer;
+    transition: .3s;
+    margin: 10px 0 50px;
+    font-family: 'Inter', sans-serif;
+
+    &:hover {
+        background: $secondaryColor;
+    }
+}
+
+#container-picture-all {
+
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    width: 70vw;
+    margin: 50px auto 50px;
+
+}
+
 .container-location-reservation {
     width: calc(100% - 50px);
     min-height: 100vh;
@@ -53,6 +80,18 @@
         text-align: center;
         border-radius: 20px;
         margin-bottom: 50px;
+
+        input[type='file'] {
+            position: relative;
+            padding: 10px 20px;
+            width: 20%;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: border-color 0.3s;
+
+        }
 
 
         .table {

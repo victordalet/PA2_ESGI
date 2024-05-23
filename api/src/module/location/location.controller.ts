@@ -1,4 +1,4 @@
-import {Body, Controller, Delete, Get, Headers, Param, Patch, Post, Put} from "@nestjs/common";
+import {Body, Controller, Delete, Get, Redirect, Headers, Param, Patch, Post, Put} from "@nestjs/common";
 import {ApiBadRequestResponse, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiTags} from "@nestjs/swagger";
 import {LocationService} from "./location.service";
 import {LocationModel, RequestLocationServiceModel} from "./location.model";
@@ -33,6 +33,15 @@ export class LocationController {
         return this.locationService.getLocationByEmail(token);
     }
 
+    @Post('reset-messages-occupation')
+    @ApiOperation({summary: 'Reset messages occupation'})
+    @ApiCreatedResponse({description: 'Messages occupation reset'})
+    @ApiBadRequestResponse({description: 'Request body is not valid'})
+    async resetMessagesOccupation(@Headers('authorization') token: string, @Body() body: LocationAvailability) {
+        await this.tokenValidation.validateAdminToken(token);
+        return this.locationService.resetNewMessages(body.location_id);
+    }
+
     @Post()
     @ApiOperation({summary: 'Create location'})
     @ApiCreatedResponse({description: 'Location created'})
@@ -40,6 +49,40 @@ export class LocationController {
     async createLocation(@Headers('authorization') token: string, @Body() body: LocationModel) {
         await this.tokenValidation.validateToken(token)
         return this.locationService.createLocation(body);
+    }
+
+    @Get("create-location-validation:uid")
+    @Redirect("http://localhost:3000/", 302)
+    @ApiOperation({summary: 'Create location'})
+    @ApiCreatedResponse({description: 'Location created'})
+    @ApiBadRequestResponse({description: 'Request body is not valid'})
+    async createLocationValidation(@Headers('authorization') token: string, @Param() p: any) {
+        return this.locationService.createLocationValidation(p.uid);
+    }
+
+    @Post("location-paiement")
+    @ApiOperation({summary: 'Create location'})
+    @ApiCreatedResponse({description: 'Location created'})
+    @ApiBadRequestResponse({description: 'Request body is not valid'})
+    async locationPaiement(@Headers('authorization') token: string, @Body() body: LocationModel) {
+        return this.locationService.locationPaiement(body.id);
+    }
+
+    @Get("location-occupation-paiement-validation:uid")
+    @Redirect("http://localhost:3000/", 302)
+    @ApiOperation({summary: 'Create location'})
+    @ApiCreatedResponse({description: 'Location created'})
+    @ApiBadRequestResponse({description: 'Request body is not valid'})
+    async locationOccupationPaiementValidation(@Param() p: any) {
+        return this.locationService.locationOccupationPaiementValidation(p.uid);
+    }
+
+    @Post("location-occupation-paiement")
+    @ApiOperation({summary: 'Create location'})
+    @ApiCreatedResponse({description: 'Location created'})
+    @ApiBadRequestResponse({description: 'Request body is not valid'})
+    async locationOccupationPaiement(@Headers('authorization') token: string, @Body() body: LocationModel) {
+        return this.locationService.locationOccupationPaiement(body.id, body.price);
     }
 
     @Post('occupation')
@@ -156,6 +199,25 @@ export class LocationController {
         await this.tokenValidation.validateToken(token);
         return this.locationService.getLocationOccupationByUser(token);
     }
+
+    @Post('remove-location-occupation')
+    @ApiOperation({summary: 'Remove location occupation'})
+    @ApiCreatedResponse({description: 'Location occupation removed'})
+    @ApiBadRequestResponse({description: 'Request body is not valid'})
+    async removeLocationOccupation(@Headers('authorization') token: string, @Body() body: LocationAvailability) {
+        await this.tokenValidation.validateAdminToken(token);
+        return this.locationService.removeLocationOccupation(body.location_occupation_id);
+    }
+
+    @Post('accept-location-occupation')
+    @ApiOperation({summary: 'Accept location occupation'})
+    @ApiCreatedResponse({description: 'Location occupation accepted'})
+    @ApiBadRequestResponse({description: 'Request body is not valid'})
+    async acceptLocationOccupation(@Headers('authorization') token: string, @Body() body: LocationAvailability) {
+        await this.tokenValidation.validateAdminToken(token);
+        return this.locationService.acceptLocationOccupation(body.location_occupation_id, body.from_datetime, body.to_datetime, body.state_place, body.email, body.name);
+    }
+
 
     @Put(':id')
     @ApiOperation({summary: 'Update location'})

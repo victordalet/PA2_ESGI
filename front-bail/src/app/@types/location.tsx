@@ -35,6 +35,11 @@ export interface FormLocation {
     telephone: string;
     time: number[];
     description: string;
+    room: string;
+    bathroom: string;
+    kitchen: string;
+    parking: string;
+    privacy?: boolean;
 }
 
 export interface Location {

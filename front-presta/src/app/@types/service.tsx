@@ -32,6 +32,7 @@ export interface Service {
     schedule?: string;
     city: string;
     siret: string;
+    is_vip: number;
 }
 
 export interface ServiceForm {

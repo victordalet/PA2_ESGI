@@ -27,4 +27,5 @@ export interface resultData {
     id: number;
     siret: string;
     is_valid: number;
+    schedule: string;
 }

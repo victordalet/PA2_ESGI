@@ -1,6 +1,7 @@
-import {BodySubscription} from "./subscription.model";
+import {BodySubscription, BodySubscriptionPrice} from "./subscription.model";
 import {SubscriptionRepository} from "./subscription.repository";
 import {Stripe} from 'stripe';
+import {uid} from 'uid';
 
 export class SubscriptionService {
 
@@ -38,6 +39,8 @@ export class SubscriptionService {
         if (!(typeof subscription.price === "number")) {
             throw new Error('Bad price');
         } else {
+            const uidToken = uid(30)
+            await this.SubscriptionRepository.subscribeUserByToken(token, subscription.price, uidToken);
             const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
             const session = await stripe.checkout.sessions.create({
                 payment_method_types: ['card'],
@@ -56,16 +59,16 @@ export class SubscriptionService {
                     },
                 ],
                 mode: 'subscription',
-                success_url: `http://localhost:3001/subscription/subscribe-validation?token=${token}&price=${subscription.price}&session_id={CHECKOUT_SESSION_ID}`,
+                success_url: `http://localhost:3001/subscription/subscribe-validation:${uidToken}`,
                 cancel_url: `${process.env.FRONTEND_URL}/home`,
             });
             return {url: session.url};
         }
     }
 
-    async subscribeUserValidation(token: string, subscription: BodySubscription) {
-        await this.SubscriptionRepository.subscribeUserByToken(token, subscription.price);
-        return "<script>window.close();</script>";
+    async subscribeUserValidation(token: string) {
+        await this.SubscriptionRepository.valdationSubscription(token);
+        return "User subscribed";
     }
 
     async unsubscribeUserByToken(token: string) {
@@ -75,5 +78,14 @@ export class SubscriptionService {
     async lastDateFreeService(token: string) {
         return await this.SubscriptionRepository.lastDateFreeService(token);
 
+    }
+
+
+    async subscriptionPrice() {
+        return await this.SubscriptionRepository.subscriptionPrice();
+    }
+
+    async updateSubscriptionPrice(subscription: BodySubscriptionPrice) {
+        return await this.SubscriptionRepository.updateSubscriptionPrice(subscription);
     }
 }

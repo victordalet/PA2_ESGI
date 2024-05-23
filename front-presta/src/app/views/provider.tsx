@@ -3,6 +3,7 @@ import {ViewProps} from "../@types/provider";
 import {Navbar} from "../../components/navbar";
 import {Calendar, momentLocalizer} from 'react-big-calendar';
 import moment from 'moment';
+import {MapComponents} from "../../components/map";
 
 export class ProviderView extends React.Component<ViewProps> {
 
@@ -11,7 +12,8 @@ export class ProviderView extends React.Component<ViewProps> {
 
         const {
             eventCalendar,
-            downloadFacture
+            downloadFacture,
+            addOccupation
         } = this.props;
 
         const now = momentLocalizer(moment);
@@ -58,10 +60,28 @@ export class ProviderView extends React.Component<ViewProps> {
                         style={{height: 500}}/>
                 </div>
 
+
+                <div className={"map"}>
+                    <MapComponents dataCoordinate={eventCalendar.map(i => {
+                        return {
+                            lat: i.latitude ? i.latitude : 0,
+                            long: i.longitude ? i.longitude : 0,
+                            city: `${i.user_email}-${new Date(i.start).toLocaleDateString()}`
+                        };
+                    })}/>
+                </div>
+
                 <button
                     onClick={downloadFacture}
                     className={"button-facture-provider"}>Facture
                 </button>
+
+                <div className={"form-add-client"}>
+                    <h2>Added unavailability</h2>
+                    <input type="datetime-local" placeholder={"from"} id={"from"}/>
+                    <input type="datetime-local" placeholder={"to"} id={"to"}/>
+                    <button onClick={addOccupation}>Add</button>
+                </div>
 
 
             </div>

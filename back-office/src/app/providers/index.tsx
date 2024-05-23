@@ -11,4 +11,5 @@ export {default as Scraper} from './scraper';
 export {default as Element} from './element';
 export {default as Occupation} from './occupation';
 export {default as Provider} from './provider';
+export {default as Inventory} from './inventory';
 

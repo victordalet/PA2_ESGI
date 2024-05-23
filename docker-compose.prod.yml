@@ -28,6 +28,8 @@ services:
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY}
+      GMAIL_USER: ${GMAIL_USER}
+      GMAIL_PASSWORD: ${GMAIL_PASSWORD}
     volumes:
       - ./api/public:/app/public
     networks:

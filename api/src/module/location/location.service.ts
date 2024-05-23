@@ -4,13 +4,17 @@ import * as NodeGeocoder from 'node-geocoder';
 import node_geocoder from 'node-geocoder';
 import {Stripe} from "stripe";
 import {RequestLocationServiceModel} from "./location.model";
+import {uid} from "uid";
+import {Emailer} from "../../mail/mail.module";
 
 export class LocationService {
 
     private locationRepository: LocationRepository;
+    private emailer: Emailer;
 
     constructor() {
         this.locationRepository = new LocationRepository();
+        this.emailer = new Emailer();
     }
 
     async getLocations() {
@@ -47,6 +51,70 @@ export class LocationService {
             return await this.locationRepository.createLocation(location);
         }
     }
+
+    async createLocationValidation(token: string) {
+        return await this.locationRepository.validePaiement(token);
+    }
+
+    async locationPaiement(id: number) {
+        const uidToken = uid(32);
+        await this.locationRepository.paiementUID(uidToken, id);
+        const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+        const session = await stripe.checkout.sessions.create({
+            payment_method_types: ['card'],
+            billing_address_collection: 'auto',
+            line_items: [
+                {
+                    price_data: {
+                        currency: 'usd',
+                        product_data: {
+                            name: 'Bailleur subcription',
+                        },
+                        unit_amount: 2000,
+                        recurring: {interval: 'month'},
+                    },
+                    quantity: 1,
+                },
+            ],
+            mode: 'subscription',
+            success_url: `http://localhost:3001/location/create-location-validation:${uidToken}`,
+            cancel_url: `${process.env.FRONTEND_URL}/home`,
+        });
+        return {url: session.url};
+    }
+
+    async locationOccupationPaiementValidation(token: string) {
+        await this.locationRepository.locationOccupationPaiementValidation(token);
+        return "Paiement validé, vous pouvez maintenant occuper la location.";
+    }
+
+    async locationOccupationPaiement(id: number, price: number) {
+        const uidToken = uid(32);
+        await this.locationRepository.locationOccupationPaiement(uidToken, id);
+        const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+        const session = await stripe.checkout.sessions.create({
+            payment_method_types: ['card'],
+            billing_address_collection: 'auto',
+            line_items: [
+                {
+                    price_data: {
+                        currency: 'usd',
+                        product_data: {
+                            name: 'Bailleur subcription',
+                        },
+                        unit_amount: price * 100,
+                        recurring: {interval: 'month'},
+                    },
+                    quantity: 1,
+                },
+            ],
+            mode: 'subscription',
+            success_url: `http://localhost:3001/location/location-occupation-paiement-validation:${uidToken}`,
+            cancel_url: `${process.env.FRONTEND_URL}/home`,
+        });
+        return {url: session.url};
+    }
+
 
     async updateLocation(id: number, location: Location) {
         if (!(typeof location.name === 'string')) {
@@ -137,28 +205,10 @@ export class LocationService {
         if (!(typeof body.location_id === 'number')) {
             throw new Error('Bad id');
         } else {
-            const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
-            const session = await stripe.checkout.sessions.create({
-                payment_method_types: ['card'],
-                line_items: [
-                    {
-                        price_data: {
-                            currency: 'usd',
-                            product_data: {
-                                name: 'Premium',
-                            },
-                            unit_amount: body.price * 100,
-                        },
-                        quantity: 1,
-                    },
-                ],
-                mode: 'payment',
-                success_url: `${process.env.FRONTEND_URL}/premium`,
-                cancel_url: `${process.env.FRONTEND_URL}/home`,
-            });
-            const response = await this.locationRepository.addLocationOccupation(body.location_id, token, body.from_datetime, body.to_datetime);
+            console.log(body);
+            const response = await this.locationRepository.addLocationOccupation(body.location_id, token, body.from_datetime, body.to_datetime, body.description);
             await this.locationRepository.addMessageToLocationOccupation(response, 'Hi', token);
-            return {id: response, url: session.url};
+            return {id: response};
         }
     }
 
@@ -237,5 +287,18 @@ export class LocationService {
 
     async deleteLocationByAdmin(locationId: number) {
         return await this.locationRepository.deleteLocationByAdmin(locationId);
+    }
+
+    async removeLocationOccupation(locationOccupationId: number) {
+        return await this.locationRepository.removeLocationOccupation(locationOccupationId);
+    }
+
+    async acceptLocationOccupation(locationOccupationId: number, from_datetime: string, to_datetime: string, state_place: string, email: string, name: string) {
+        this.emailer.acceptLocationOccupation(email, from_datetime, to_datetime, name, state_place);
+        return await this.locationRepository.acceptLocationOccupation(locationOccupationId, from_datetime, to_datetime, state_place);
+    }
+
+    async resetNewMessages(locationId: number) {
+        return await this.locationRepository.resetNewMessages(locationId);
     }
 }

@@ -1,11 +1,13 @@
 import {ServiceRepository} from "./service.repository";
 import {Service} from "../../core/service";
-import {ServiceModel} from "./service.model";
+import {ServiceByServiceModel, ServiceModel} from "./service.model";
 import {LocationAvailability, LocationLiaison} from "../../core/location";
 import {uid} from "uid";
+import {Emailer} from "../../mail/mail.module";
 
 export class ServiceService {
     private serviceRepository: ServiceRepository;
+    private emailer: Emailer;
 
     constructor() {
         this.serviceRepository = new ServiceRepository();
@@ -57,7 +59,12 @@ export class ServiceService {
     }
 
     async postServiceByUser(token: string, body: LocationLiaison) {
-        return await this.serviceRepository.postServiceByUser(body);
+        const data = await this.serviceRepository.postServiceByUser(body);
+        this.emailer.PrestateConfirmation(data.email, body.from_datetime, data.price, data.address);
+    }
+
+    async addServiceByService(token: string, body: ServiceByServiceModel) {
+        return await this.serviceRepository.addServiceByService(token, body);
     }
 
     async getServiceByUserV2(token: string, body: LocationLiaison) {

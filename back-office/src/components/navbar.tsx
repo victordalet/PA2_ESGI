@@ -55,6 +55,13 @@ export class Navbar extends React.Component {
             notification: true
         },
         {
+            name: "Inventory",
+            url: "/inventory",
+            icon: "ai-map",
+            notification: false
+        }
+        ,
+        {
             name: "Add elements",
             url: 'elements',
             icon: 'ai-planet',

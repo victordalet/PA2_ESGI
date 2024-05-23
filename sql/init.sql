@@ -29,7 +29,8 @@ create table location
     capacity         int          not null,
     type             varchar(100) not null,
     latitude         float        not null,
-    longitude        float        not null
+    longitude        float        not null,
+    is_pay           varchar(100)
 );
 
 create table location_occupation
@@ -41,7 +42,12 @@ create table location_occupation
     user_email    varchar(100) not null references USER (email),
     deleted_at    datetime,
     notation      int,
-    `repeat`      varchar(100)
+    `repeat`      varchar(100),
+    is_pay        varchar(100),
+    description   longtext,
+    status        varchar(50),
+    state_place   varchar(100),
+    nb_new_messages int
 );
 
 
@@ -74,7 +80,8 @@ create table subscription
     created_at datetime     not null,
     deleted_at datetime,
     price      int          not null,
-    user_email varchar(100) not null references USER (email)
+    user_email varchar(100) not null references USER (email),
+    is_pay     varchar(100)
 );
 
 create table service
@@ -93,7 +100,8 @@ create table service
     is_valid    int,
     schedule    longtext,
     city        varchar(100),
-    nfc         varchar(100)
+    nfc         varchar(100),
+    is_vip      int
 );
 
 
@@ -145,7 +153,8 @@ create table occupation_request_service
     city                   varchar(100) not null,
     price                  int,
     from_datetime          datetime,
-    to_datetime            datetime
+    to_datetime            datetime,
+    service_id             int
 );
 
 create table note_user_to_location
@@ -226,6 +235,13 @@ create table job
 (
     id   int primary key auto_increment,
     name varchar(100) not null
+);
+
+create table price_sub
+(
+    id    int primary key auto_increment,
+    price int,
+    name  varchar(100)
 );
 
 

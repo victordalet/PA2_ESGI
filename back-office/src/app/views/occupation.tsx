@@ -8,14 +8,19 @@ export class OccupationView extends Component<ViewProps> {
         const {
             data,
             filterOccupationMessage,
-            filterOccupation
+            filterOccupation,
+            downloadFolderClientOccupation,
+            launchPopUpState,
+            closePopUpState,
+            acceptLocationOccupation,
+            refuseLocationOccupation
         } = this.props;
 
 
         return <div>
             <Navbar/>
             <div className="container-user">
-                <h2>Location</h2>
+                <h2>Location Occupation</h2>
                 <div className="container-filter">
                     <input onChange={filterOccupation} type="text" placeholder="Search Ocucupant" id={"search-occ"}/>
                     <input onChange={filterOccupationMessage} type={"number"} placeholder={"Number of messages"}
@@ -26,7 +31,7 @@ export class OccupationView extends Component<ViewProps> {
             <div className="table">
                 <div className={"table-header"}>
                     {
-                        ["LOCATION", "OCCUPANT", "FROM", "TO", "LINK", "NEW MESSAGES"].map((data) => (
+                        ["LOCATION", "OCCUPANT", "FROM", "TO", "LINK", "DESCRIPTION", "DOSSIER", "ACCEPTED","NB NEW MESSAGES"].map((data) => (
                             <div className="header__item"><a className="filter__link"> {data}</a></div>
                         ))
                     }
@@ -45,7 +50,41 @@ export class OccupationView extends Component<ViewProps> {
                                             const sourcePath = process.env.FRONT_CLIENT_PORT || 'http://localhost:3003';
                                             window.open(`${sourcePath}/reserve?` + dataLine.location_id, '_blank');
                                         }}> link</span>),
-                                    dataLine.nb_message
+                                    dataLine.description,
+                                    (<span
+                                        style={{cursor: 'pointer', textDecoration: 'underline'}}
+                                        onClick={() => downloadFolderClientOccupation(dataLine.location_occupation_id)}> Download </span>),
+                                    (<div
+                                        style={{
+                                            display: 'flex',
+                                            justifyContent: 'space-evenly',
+                                            alignItems: 'center'
+                                        }}
+                                    >
+                                        <i
+                                            className={"ai-check"}
+                                            style={{
+                                                cursor: 'pointer',
+                                                background: 'green',
+                                                color: 'white',
+                                                borderRadius: '50%',
+                                                padding: '5px'
+                                            }}
+                                            onClick={() => launchPopUpState(dataLine.from_datetime, dataLine.to_datetime, dataLine.location_occupation_id, dataLine.user_email,dataLine.location_name)}> </i>
+                                        <i
+                                            className={"ai-thumbs-down"}
+                                            style={{
+                                                cursor: 'pointer',
+                                                background: 'red',
+                                                color: 'white',
+                                                borderRadius: '50%',
+                                                padding: '5px'
+                                            }}
+                                            onClick={() => {
+                                                refuseLocationOccupation(dataLine.location_occupation_id);
+                                            }}> </i>
+                                    </div>),
+                                    dataLine.nb_new_messages
                                 ].map(dataColumn => (
                                     <div className="table-data">{dataColumn}</div>
                                 ))}
@@ -53,6 +92,20 @@ export class OccupationView extends Component<ViewProps> {
                         ))
                     }
                 </div>
+            </div>
+
+            <div className={"container-state"}>
+                <div className={"close"} onClick={closePopUpState}>
+                    <i className={"ai-circle-x-fill"}> </i>
+                </div>
+                <h2>Choice date of State of play</h2>
+                <input type="datetime-local" id={"input-state-time"}/>
+                <h2>Confirm Start and end Date</h2>
+                <input type="date" id={"input-start-time"}/>
+                <input type="date" id={"input-end-time"}/>
+                <button
+                    onClick={() => acceptLocationOccupation()}>Send
+                </button>
             </div>
 
         </div>;

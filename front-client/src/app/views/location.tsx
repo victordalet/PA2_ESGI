@@ -45,7 +45,7 @@ export default class LocationView extends React.Component <ViewProps> {
                     <div className={"container-card"}>
                         {
                             location.map((location: LocationResponse) => {
-                                if (location.is_valid === 1)
+                                if (location.is_valid === 2)
                                     return (
                                         <Card cardInfo={{
                                             title: location.name,

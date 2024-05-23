@@ -71,6 +71,7 @@ export default class Controller extends React.Component<ControllerProps, Control
                 filterResourcesByType={this.filterResourcesByType}
                 location={this.state.location}
                 service={this.state.services}
+                payLocation={this.resourcesModel.payLocation}
             />
         );
     }

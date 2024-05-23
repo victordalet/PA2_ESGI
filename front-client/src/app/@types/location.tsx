@@ -58,7 +58,11 @@ export interface LocationDescription {
     email: string
     telephone: string
     time: any[]
-    service: ServiceLocationDescription[]
+    service: ServiceLocationDescription[];
+    room: string;
+    bathroom: string;
+    kitchen: string;
+    parking: string;
 }
 
 export interface ServiceLocationDescription {
