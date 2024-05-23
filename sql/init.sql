@@ -46,7 +46,8 @@ create table location_occupation
     is_pay        varchar(100),
     description   longtext,
     status        varchar(50),
-    state_place   varchar(100)
+    state_place   varchar(100),
+    nb_new_messages int
 );
 
 

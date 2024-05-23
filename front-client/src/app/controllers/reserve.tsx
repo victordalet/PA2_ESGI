@@ -583,6 +583,7 @@ export default class Controller extends React.Component<
         const data = await this.reserveModel.verifIsAdmin();
         if (data.connection) {
             this.setState({isAdmin: true});
+            await this.reserveModel.resetNewMessage();
         }
     };
 

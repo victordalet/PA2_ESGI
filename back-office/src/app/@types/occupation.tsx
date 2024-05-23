@@ -39,4 +39,5 @@ export interface LocationAvailability {
     latitude: number;
     longitude: number;
     state_place: string;
+    nb_new_messages: number;
 }
