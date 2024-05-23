@@ -8,6 +8,7 @@ import {
     Home,
     Location,
     Premium,
+    Pres,
     Resa,
     Reserve,
     ReserveService,
@@ -42,6 +43,7 @@ root.render(
                     <Route path={"/reserve"} element={<Reserve/>}></Route>
                     <Route path={"/ticket"} element={<Ticket/>}></Route>
                     <Route path={"/reserve-service"} element={<ReserveService/>}></Route>
+                    <Route path={"/pres"} element={<Pres/>}></Route>
                     <Route path={"*"} element={<Home/>}></Route>
                 </Routes>
             </BrowserRouter>

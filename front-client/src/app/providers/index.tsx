@@ -9,3 +9,4 @@ export {default as Sign} from './sign';
 export {default as Reserve} from './reserve';
 export {default as Ticket} from './ticket';
 export {default as ReserveService} from './reserveService';
+export {default as Pres} from './pres';

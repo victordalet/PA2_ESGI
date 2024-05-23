@@ -80,7 +80,6 @@ export class SubscriptionService {
 
     }
 
-
     async subscriptionPrice() {
         return await this.SubscriptionRepository.subscriptionPrice();
     }
