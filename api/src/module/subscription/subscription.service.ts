@@ -59,7 +59,7 @@ export class SubscriptionService {
                     },
                 ],
                 mode: 'subscription',
-                success_url: `http://localhost:3001/subscription/subscribe-validation?token=${uidToken}`,
+                success_url: `http://localhost:3001/subscription/subscribe-validation:${uidToken}`,
                 cancel_url: `${process.env.FRONTEND_URL}/home`,
             });
             return {url: session.url};
@@ -68,7 +68,7 @@ export class SubscriptionService {
 
     async subscribeUserValidation(token: string) {
         await this.SubscriptionRepository.valdationSubscription(token);
-        return "<script>window.close();</script>";
+        return "User subscribed";
     }
 
     async unsubscribeUserByToken(token: string) {
