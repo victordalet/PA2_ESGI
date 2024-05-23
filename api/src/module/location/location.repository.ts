@@ -258,8 +258,7 @@ export class LocationRepository {
 
     async locationOccupationPaiementValidation(token: string) {
         await this.db.connect()
-        await this.db.query("UPDATE location_occupation set is_pay = 1, status = 'finish' where is_pay = ?", [token]);
-        return
+        return await this.db.query("UPDATE location_occupation set is_pay = 1, status = 'finish' where is_pay = ?", [token.replace(":", "")]);
     }
 
     async locationOccupationPaiement(uid: string, id: number) {

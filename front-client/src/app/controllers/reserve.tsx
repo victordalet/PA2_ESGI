@@ -54,7 +54,6 @@ export default class Controller extends React.Component<
         this.getOccupationEvent();
         this.getLocationsOccupationRequestInfor();
         this.fetchServiceUser();
-        this.updatePriceModem();
         this.displayPicture();
         this.getFileNameLocationOccupation();
     }
@@ -78,28 +77,6 @@ export default class Controller extends React.Component<
         fileNameOccupation: [],
     };
 
-    private updatePriceModem = async () => {
-        const locationPrice: number = this.state.data.price;
-        const isSubscribed = await this.reserveModel.fetchIsSubscribed();
-        const lastDateFreeService = '';
-        let totalPrice = locationPrice;
-        this.state.serviceUser.map((service) => {
-            if (service.status === 'good') {
-                if (isSubscribed == 19) {
-                    totalPrice += service.price * 0.95;
-                } else {
-                    totalPrice += service.price;
-                }
-            }
-        });
-        const services = this.state.serviceUser.filter((service) => service.status === 'good');
-        if (isSubscribed == 19 && new Date(lastDateFreeService).getTime() < new Date().getTime() - 3 * 30 * 24 * 60 * 60 * 1000) {
-            totalPrice -= services[0].price;
-        } else if (isSubscribed == 10 && new Date(lastDateFreeService).getTime() < new Date().getTime() - 12 * 30 * 24 * 60 * 60 * 1000) {
-            totalPrice -= services[0].price;
-        }
-        this.reserveModel.setPrice(totalPrice);
-    };
 
 
     private fetchServiceUser = async () => {
@@ -159,6 +136,9 @@ export default class Controller extends React.Component<
                 (location: ServiceResponse) => location.id === this.id
             )[0],
         });
+        this.reserveModel.setPrice(data.filter(
+                (location: ServiceResponse) => location.id === this.id
+            )[0].price);
         const description: LocationDescription = JSON.parse(
             data.filter((location: ServiceResponse) => location.id === this.id)[0]
                 .description_json

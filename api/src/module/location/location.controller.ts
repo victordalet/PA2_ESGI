@@ -1,4 +1,4 @@
-import {Body, Controller, Delete, Get, Headers, Param, Patch, Post, Put} from "@nestjs/common";
+import {Body, Controller, Delete, Get, Redirect, Headers, Param, Patch, Post, Put} from "@nestjs/common";
 import {ApiBadRequestResponse, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiTags} from "@nestjs/swagger";
 import {LocationService} from "./location.service";
 import {LocationModel, RequestLocationServiceModel} from "./location.model";
@@ -51,7 +51,7 @@ export class LocationController {
         return this.locationService.createLocation(body);
     }
 
-    @Post("create-location-validation")
+    @Get("create-location-validation")
     @ApiOperation({summary: 'Create location'})
     @ApiCreatedResponse({description: 'Location created'})
     @ApiBadRequestResponse({description: 'Request body is not valid'})
@@ -67,12 +67,13 @@ export class LocationController {
         return this.locationService.locationPaiement(body.id);
     }
 
-    @Post("location-occupation-paiement-validation")
+    @Get("location-occupation-paiement-validation:uid")
+    @Redirect("http://localhost:3000/", 302)
     @ApiOperation({summary: 'Create location'})
     @ApiCreatedResponse({description: 'Location created'})
     @ApiBadRequestResponse({description: 'Request body is not valid'})
-    async locationOccupationPaiementValidation(@Headers('authorization') token: string, @Param() uid: string) {
-        return this.locationService.locationOccupationPaiementValidation(uid);
+    async locationOccupationPaiementValidation(@Param() p: any) {
+        return this.locationService.locationOccupationPaiementValidation(p.uid);
     }
 
     @Post("location-occupation-paiement")
