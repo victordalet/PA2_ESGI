@@ -246,13 +246,13 @@ export class LocationRepository {
 
     async validePaiement(token: string) {
         await this.db.connect()
-        await this.db.query("UPDATE location set is_pay = valide where is_pay = ?", [token]);
+        await this.db.query("UPDATE location set is_pay = '', is_valid = 2 where is_pay = ?", [token.replace(":", "")]);
         return
     }
 
     async paiementUID(uid: string, id: number) {
         await this.db.connect();
-        await this.db.query("UPDATE location set is_pay = ?, is_valid = 2 where id = ?", [uid, id])
+        await this.db.query("UPDATE location set is_pay = ? where id = ?", [uid, id])
     }
 
 

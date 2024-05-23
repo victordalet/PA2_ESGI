@@ -51,12 +51,13 @@ export class LocationController {
         return this.locationService.createLocation(body);
     }
 
-    @Get("create-location-validation")
+    @Get("create-location-validation:uid")
+    @Redirect("http://localhost:3000/", 302)
     @ApiOperation({summary: 'Create location'})
     @ApiCreatedResponse({description: 'Location created'})
     @ApiBadRequestResponse({description: 'Request body is not valid'})
-    async createLocationValidation(@Headers('authorization') token: string, @Param() uid: string) {
-        return this.locationService.createLocationValidation(uid);
+    async createLocationValidation(@Headers('authorization') token: string, @Param() p: any) {
+        return this.locationService.createLocationValidation(p.uid);
     }
 
     @Post("location-paiement")

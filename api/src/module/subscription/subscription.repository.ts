@@ -66,7 +66,7 @@ export class SubscriptionRepository {
                     await this.db.query("DELETE FROM subscription WHERE user_email = ?", [row.email]);
                 }
             }
-            return this.db.query("INSERT INTO subscription (user_email, created_at, price, is_pay) VALUES (?, ?, ?, ?)", [row.email, new Date(), price, token]);
+            return this.db.query("INSERT INTO subscription (user_email, created_at, price, is_pay) VALUES (?, ?, ?, ?)", [row.email, new Date(), price, uid]);
         }
 
     }
@@ -87,7 +87,7 @@ export class SubscriptionRepository {
 
     async valdationSubscription(token: string) {
         await this.db.connect()
-        await this.db.query("UPDATE subcription set is_pay = '' where is_pay = ?", [token])
+        await this.db.query("UPDATE subscription set is_pay = '' where is_pay = ?", [token.replace(":", "")])
         return
     }
 

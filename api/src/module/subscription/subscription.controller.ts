@@ -1,4 +1,4 @@
-import {Body, Controller, Delete, Get, Headers, Param, Post, Put} from "@nestjs/common";
+import {Body, Controller, Delete, Get, Headers, Param, Post, Put, Redirect} from "@nestjs/common";
 import {ApiBadRequestResponse, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiTags} from "@nestjs/swagger";
 import {BodySubscription, BodySubscriptionPrice} from "./subscription.model";
 import {SubscriptionService} from "./subscription.service";
@@ -42,12 +42,13 @@ export class SubscriptionController {
         return await this.subscriptionService.subscribeUserByToken(token, body);
     }
 
-    @Post('subscribe-validation')
+    @Get('subscribe-validation:uid')
+    @Redirect("http://localhost:3000", 301)
     @ApiOperation({summary: 'Subscribe user'})
     @ApiCreatedResponse({description: 'User subscribed'})
     @ApiBadRequestResponse({description: 'Request body is not valid'})
-    async subscribeUserValidation(@Headers('authorization') token: string, @Param() body: BodySubscription) {
-        return await this.subscriptionService.subscribeUserValidation(token);
+    async subscribeUserValidation(@Headers('authorization') token: string, @Param() body: any) {
+        return await this.subscriptionService.subscribeUserValidation(body.uid);
     }
 
     @Post('is_subscribe')

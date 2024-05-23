@@ -77,7 +77,7 @@ export class LocationService {
                 },
             ],
             mode: 'subscription',
-            success_url: `http://localhost:3001/location/create-location-validation?id=${uidToken}`,
+            success_url: `http://localhost:3001/location/create-location-validation:${uidToken}`,
             cancel_url: `${process.env.FRONTEND_URL}/home`,
         });
         return {url: session.url};
