@@ -296,4 +296,8 @@ export class LocationService {
         this.emailer.acceptLocationOccupation(email, from_datetime, to_datetime, name, state_place);
         return await this.locationRepository.acceptLocationOccupation(locationOccupationId, from_datetime, to_datetime, state_place);
     }
+
+    async resetNewMessages(locationId: number) {
+        return await this.locationRepository.resetNewMessages(locationId);
+    }
 }

@@ -44,7 +44,7 @@ export class ReserveView extends React.Component <ViewProps> {
             locationOccupationPaiement,
             postFileLocationOccupation,
             fileNameOccupation,
-            isProvider
+            downloadFactureService
         } = this.props;
 
         let isToday = false;
@@ -189,12 +189,13 @@ export class ReserveView extends React.Component <ViewProps> {
                                         (
                                             <div className={"reservation"}>
                                                 {
-                                                    <button id={"cancel"} onClick={deleteOccupation}
-                                                            style={{
-                                                                marginBottom: '20px',
-                                                                background: '#c91919'
-                                                            }}>Cancel
-                                                    </button>
+                                                    status !== 'finish' ?
+                                                        <button id={"cancel"} onClick={deleteOccupation}
+                                                                style={{
+                                                                    marginBottom: '20px',
+                                                                    background: '#c91919'
+                                                                }}>Cancel
+                                                        </button> : ''
                                                 }
                                                 <button id={"facture"} onClick={downloadFacture}>My facture</button>
                                             </div>
@@ -295,6 +296,7 @@ export class ReserveView extends React.Component <ViewProps> {
                                         <div className={"row-content"}><h2>Date</h2></div>
                                         <div className={"row-content"}><h2>Price</h2></div>
                                         <div className={"row-content"}><h2>Status</h2></div>
+                                        <div className={"row-content"}><h2>Facture</h2></div>
                                     </div>
                                     {
                                         serviceUser.map((service, index) => {
@@ -306,6 +308,12 @@ export class ReserveView extends React.Component <ViewProps> {
                                                         </h2></div>
                                                     <div className={"row-content"}><h2>{service.price} €</h2></div>
                                                     <div className={"row-content"}><h2>{service.status}</h2></div>
+                                                    <div className={"row-content"}>
+                                                        <button
+                                                            onClick={() => downloadFactureService(service.service_name, new Date(service.from_datetime).toLocaleDateString('fr-FR'), service.price)}
+                                                        >Download
+                                                        </button>
+                                                    </div>
                                                 </div>
                                             );
                                         })

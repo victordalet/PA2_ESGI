@@ -35,12 +35,13 @@ export interface ViewProps {
     userRequestService: UserRequest[];
     serviceUser: ServiceUser[];
     idResa: number;
-    serviceSelected : string;
+    serviceSelected: string;
     updateServiceSelected: () => void;
     locationsPaiement: () => void;
     locationOccupationPaiement: () => void;
     postFileLocationOccupation: () => void;
     fileNameOccupation: string[];
+    downloadFactureService: (name: string, date: string, price: number) => void;
 }
 
 export interface UserRequest {

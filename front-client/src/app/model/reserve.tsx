@@ -126,6 +126,20 @@ export class ReserveModel {
         });
     };
 
+    public resetNewMessage = async () => {
+        const API_PATH = process.env.API_HOST || "http://localhost:3001";
+        await fetch(API_PATH + "/location/reset-messages-occupation", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                authorization: localStorage.getItem("token") || "",
+            },
+            body: JSON.stringify({
+                location_id: this.id
+            }),
+        });
+    };
+
     public isAlsoReserved = async (idResa: number) => {
         const API_PATH = process.env.API_HOST || "http://localhost:3001";
         return await fetch(API_PATH + this.apiSubPath + "/is-occupied-by-user", {

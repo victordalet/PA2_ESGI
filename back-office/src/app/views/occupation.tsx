@@ -31,7 +31,7 @@ export class OccupationView extends Component<ViewProps> {
             <div className="table">
                 <div className={"table-header"}>
                     {
-                        ["LOCATION", "OCCUPANT", "FROM", "TO", "LINK", "DESCRIPTION", "DOSSIER", "ACCEPTED"].map((data) => (
+                        ["LOCATION", "OCCUPANT", "FROM", "TO", "LINK", "DESCRIPTION", "DOSSIER", "ACCEPTED","NB NEW MESSAGES"].map((data) => (
                             <div className="header__item"><a className="filter__link"> {data}</a></div>
                         ))
                     }
@@ -83,7 +83,8 @@ export class OccupationView extends Component<ViewProps> {
                                             onClick={() => {
                                                 refuseLocationOccupation(dataLine.location_occupation_id);
                                             }}> </i>
-                                    </div>)
+                                    </div>),
+                                    dataLine.nb_new_messages
                                 ].map(dataColumn => (
                                     <div className="table-data">{dataColumn}</div>
                                 ))}

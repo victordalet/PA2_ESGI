@@ -297,6 +297,62 @@ export default class Controller extends React.Component<
         this.setState({messages: messages[0]});
     };
 
+
+    public downloadFactureService = async (name: string, date: string, price: number) => {
+        const pdfDoc = await PDFDocument.create();
+        const timesRomanFont = await pdfDoc.embedFont(StandardFonts.TimesRoman);
+        const page = await pdfDoc.addPage();
+        const {width, height} = page.getSize();
+        let fontSize = 30;
+        page.drawLine({
+            start: {x: 50, y: height - 2 * fontSize},
+            end: {x: width - 50, y: height - 2 * fontSize},
+            thickness: 2,
+            color: rgb(0, 0, 0),
+        });
+        page.drawText('Facture', {
+            x: width / 2 - 50,
+            y: height - 4 * fontSize,
+            size: fontSize,
+            font: timesRomanFont,
+            color: rgb(0, 0, 0),
+        });
+        page.drawLine({
+            start: {x: 50, y: height - 5 * fontSize},
+            end: {x: width - 50, y: height - 5 * fontSize},
+            thickness: 2,
+            color: rgb(0, 0, 0),
+        });
+        fontSize = 15;
+        page.drawText('Location : ' + name, {
+            x: 50,
+            y: height - 12 * fontSize,
+            size: fontSize,
+            font: timesRomanFont,
+            color: rgb(0, 0, 0),
+        });
+        page.drawText('Date : ' + date, {
+            x: 50,
+            y: height - 14 * fontSize,
+            size: fontSize,
+            font: timesRomanFont,
+            color: rgb(0, 0, 0),
+        });
+        page.drawText('Prix : ' + price + '€', {
+            x: 50,
+            y: height - 16 * fontSize,
+            size: fontSize,
+            font: timesRomanFont,
+            color: rgb(0, 0, 0),
+        });
+        const pdfBytes = await pdfDoc.save();
+        const blob = new Blob([pdfBytes], {type: 'application/pdf'});
+        const link = document.createElement('a');
+        link.href = window.URL.createObjectURL(blob);
+        link.download = 'facture.pdf';
+        link.click();
+    };
+
     public downloadFactureBail = async () => {
         const pdfDoc = await PDFDocument.create();
         const timesRomanFont = await pdfDoc.embedFont(StandardFonts.TimesRoman);
@@ -448,86 +504,6 @@ export default class Controller extends React.Component<
             color: rgb(0, 0, 0),
         });
 
-        let y: number = height - 24 * fontSize;
-        page.drawText('Services :', {
-            x: 50,
-            y: y,
-            size: fontSize,
-            font: timesRomanFont,
-            color: rgb(0, 0, 0),
-        });
-        y -= 2 * fontSize;
-        this.state.serviceUser.map((service) => {
-            if (service.status === 'good') {
-                page.drawText(service.service_name + ' : ' + service.price, {
-                    x: 50,
-                    y: y,
-                    size: fontSize,
-                    font: timesRomanFont,
-                    color: rgb(0, 0, 0),
-                });
-                y -= 2 * fontSize;
-            }
-        });
-        page.drawLine({
-            start: {x: 50, y: y},
-            end: {x: width - 50, y: y},
-            thickness: 2,
-            color: rgb(0, 0, 0),
-        });
-        y -= 2 * fontSize;
-        if (isSubscribed == 19 && new Date(lastDateFreeService).getTime() < new Date().getTime() - 3 * 30 * 24 * 60 * 60 * 1000) {
-            page.drawText('1 service gratuit', {
-                x: 50,
-                y: y,
-                size: fontSize,
-                font: timesRomanFont,
-                color: rgb(0, 0, 0),
-            });
-            y -= 2 * fontSize;
-        } else if (isSubscribed == 10 && new Date(lastDateFreeService).getTime() < new Date().getTime() - 12 * 30 * 24 * 60 * 60 * 1000) {
-            page.drawText('1 service gratuit', {
-                x: 50,
-                y: y,
-                size: fontSize,
-                font: timesRomanFont,
-                color: rgb(0, 0, 0),
-            });
-            y -= 2 * fontSize;
-        }
-        if (isSubscribed == 19) {
-            page.drawText('Réduction de 5 % sur les services', {
-                x: 50,
-                y: y,
-                size: fontSize,
-                font: timesRomanFont,
-                color: rgb(0, 0, 0),
-            });
-            y -= 2 * fontSize;
-        }
-        let totalPrice = locationPrice;
-        this.state.serviceUser.map((service) => {
-            if (service.status === 'good') {
-                if (isSubscribed == 19) {
-                    totalPrice += service.price * 0.95;
-                } else {
-                    totalPrice += service.price;
-                }
-            }
-        });
-        const services = this.state.serviceUser.filter((service) => service.status === 'good');
-        if (isSubscribed == 19 && new Date(lastDateFreeService).getTime() < new Date().getTime() - 3 * 30 * 24 * 60 * 60 * 1000) {
-            totalPrice -= services[0].price;
-        } else if (isSubscribed == 10 && new Date(lastDateFreeService).getTime() < new Date().getTime() - 12 * 30 * 24 * 60 * 60 * 1000) {
-            totalPrice -= services[0].price;
-        }
-        page.drawText(`Total : ${totalPrice} €`, {
-            x: 50,
-            y: y,
-            size: fontSize,
-            font: timesRomanFont,
-            color: rgb(0, 0, 0),
-        });
 
         const pdfBytes = await pdfDoc.save();
         const blob = new Blob([pdfBytes], {type: "application/pdf"});
@@ -583,6 +559,7 @@ export default class Controller extends React.Component<
         const data = await this.reserveModel.verifIsAdmin();
         if (data.connection) {
             this.setState({isAdmin: true});
+            await this.reserveModel.resetNewMessage();
         }
     };
 
@@ -676,6 +653,7 @@ export default class Controller extends React.Component<
             locationsPaiement={this.reserveModel.locationsPaiement}
             locationOccupationPaiement={this.reserveModel.locationOccupationPaiement}
             deleteOccupationBail={this.reserveModel.deleteOccupationBail}
+            downloadFactureService={this.downloadFactureService}
             postFileLocationOccupation={this.reserveModel.postFileLocationOccupation}/>;
     }
 }

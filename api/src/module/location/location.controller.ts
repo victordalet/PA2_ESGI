@@ -33,6 +33,15 @@ export class LocationController {
         return this.locationService.getLocationByEmail(token);
     }
 
+    @Post('reset-messages-occupation')
+    @ApiOperation({summary: 'Reset messages occupation'})
+    @ApiCreatedResponse({description: 'Messages occupation reset'})
+    @ApiBadRequestResponse({description: 'Request body is not valid'})
+    async resetMessagesOccupation(@Headers('authorization') token: string, @Body() body: LocationAvailability) {
+        await this.tokenValidation.validateAdminToken(token);
+        return this.locationService.resetNewMessages(body.location_id);
+    }
+
     @Post()
     @ApiOperation({summary: 'Create location'})
     @ApiCreatedResponse({description: 'Location created'})
@@ -204,9 +213,8 @@ export class LocationController {
     @ApiBadRequestResponse({description: 'Request body is not valid'})
     async acceptLocationOccupation(@Headers('authorization') token: string, @Body() body: LocationAvailability) {
         await this.tokenValidation.validateAdminToken(token);
-        return this.locationService.acceptLocationOccupation(body.location_occupation_id,body.from_datetime,body.to_datetime,body.state_place,body.email,body.name);
+        return this.locationService.acceptLocationOccupation(body.location_occupation_id, body.from_datetime, body.to_datetime, body.state_place, body.email, body.name);
     }
-
 
 
     @Put(':id')
