@@ -226,6 +226,7 @@ export class LocationRepository {
                 let nb_messages = 0
                 const [rows4, field4] = await this.db.query("select nb_new_messages from location_occupation where id = ?", [locationOccupationId]);
                 nb_messages = rows4[0].nb_new_messages;
+                nb_messages += 1
                 await this.db.query("update location_occupation set nb_new_messages = ? where id = ?", [nb_messages, locationOccupationId]);
                 await this.db.query("INSERT INTO message (message, created_at, updated_at, to_user, created_by) VALUES (?, ?, ?, ?, ?)",
                     [message, new Date(), new Date(), ' ', rows[0].email]);
