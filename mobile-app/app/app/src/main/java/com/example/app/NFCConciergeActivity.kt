@@ -29,6 +29,7 @@ class NFCConciergeActivity : AppCompatActivity() {
 
 
         nfc_string = intent.getStringExtra("nfc").toString()
+        println(nfc_string)
 
 
         var backButton = findViewById<Button>(R.id.backHome)
@@ -43,6 +44,7 @@ class NFCConciergeActivity : AppCompatActivity() {
             scaleXBy(1f)
             scaleYBy(1f)
         }.start()
+
 
 
     }
@@ -87,22 +89,23 @@ class NFCConciergeActivity : AppCompatActivity() {
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
+        println("test")
         if (intent?.action == NfcAdapter.ACTION_TAG_DISCOVERED) {
             val tag = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 intent.getParcelableExtra(NfcAdapter.EXTRA_TAG, Tag::class.java)
             } else {
                 intent.getParcelableExtra(NfcAdapter.EXTRA_TAG)
             }
+            println("test2")
             tag?.id?.let {
-                val tagValue = it.toHexString()
-                Toast.makeText(this, "NFC tag detected: $tagValue", Toast.LENGTH_SHORT).show()
+                println("test3")
                 writeNFC(tag, nfc_string)
-
             }
         }
     }
 
     private fun writeNFC(tag: Tag, message: String) {
+        println(message)
         val ndef = Ndef.get(tag)
         ndef.connect()
         val ndefMessage = NdefMessage(

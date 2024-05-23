@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">app</string>
-    <string name="api_path">http://172.20.10.2:3001</string>
+    <string name="api_path">https://apipcs.c2smr.fr</string>
 </resources>

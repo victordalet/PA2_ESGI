@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
         this.email = findViewById(R.id.email)
         this.loginButton = findViewById(R.id.loginButton)
         this.loginButton.setOnClickListener {
-            val apiPath = "http://172.20.10.2:3001/user/connection"
+            val apiPath = "https://apipcs.c2smr.fr/user/connection"
             try {
 
                 val emailValue = this.email.text.toString()
@@ -58,7 +58,7 @@ class MainActivity : AppCompatActivity() {
                                     putString("email", emailValue)
                                     putBoolean("isConnected", true)
                                     apply()
-                                    val apiPath = "http://172.20.10.2:3001/user/isAdmin"
+                                    val apiPath = "https://apipcs.c2smr.fr/user/isAdmin"
                                     println(apiPath)
                                     val request = okhttp3.Request.Builder().url(apiPath).post(
                                         // add header token

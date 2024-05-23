@@ -32,9 +32,9 @@
 
     <Button
         android:id="@+id/scanNFC"
-        android:layout_width="185dp"
+        android:layout_width="194dp"
         android:layout_height="180dp"
-        android:layout_gravity="end"
+        android:layout_gravity="center"
         android:layout_marginTop="16dp"
         android:backgroundTint="@color/purple"
         android:padding="8dp"
