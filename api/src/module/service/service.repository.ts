@@ -220,6 +220,25 @@ export class ServiceRepository {
         return this.db.query("UPDATE occupation_request_service SET uid_payment = ? WHERE id = ?", [uidPayment, serviceId]);
     }
 
+    async isFreeService(service: ServiceModel, token: string): Promise<boolean> {
+        await this.db.connect()
+        const [rows, filed] = await this.db.query("SELECT email FROM USER WHERE connection = ?", [token]);
+        const [rows2, filed2] = await this.db.query("SELECT * FROM subscription WHERE user_email = ? and is_pay is NULL", [rows[0].email]);
+        const [rows3, filed3] = await this.db.query("SELECT * FROM occupation_request_service WHERE user_email = ? and service_id = ? and status = 'good' and created_at > DATE_SUB(NOW(), INTERVAL 3 MONTH)", [rows[0].email, service.service_id]);
+        return !!(rows2 && rows3);
+    }
+
+    async isReductionService(price: number, token: string): Promise<number> {
+        await this.db.connect()
+        const [rows, filed] = await this.db.query("SELECT email FROM USER WHERE connection = ?", [token]);
+        const [rows2, filed2] = await this.db.query("SELECT * FROM subscription WHERE user_email = ? and is_pay is NULL", [rows[0].email]);
+        if (rows2) {
+            return price * 0.9;
+        }
+        return price;
+    }
+
+
     async validatePayment(uid: string) {
         await this.db.connect()
         return this.db.query("UPDATE occupation_request_service SET status = 'pay' WHERE uid_payment = ?", [uid]);

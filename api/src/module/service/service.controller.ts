@@ -144,7 +144,7 @@ export class ServiceController {
     @ApiBadRequestResponse({description: 'Request body is not valid'})
     async paidPresentation(@Headers('authorization') token: string, @Body() body: ServiceModel) {
         await this.tokenValidation.validateToken(token);
-        return this.serviceService.paidPresentation(body);
+        return this.serviceService.paidPresentation(body,token);
     }
 
     @Get('validate-payment:uid')

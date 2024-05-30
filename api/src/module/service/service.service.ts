@@ -136,27 +136,36 @@ export class ServiceService {
         return this.serviceRepository.deleteServiceByAdmin(id);
     }
 
-    async paidPresentation(service: ServiceModel) {
+    async isFreeService(service: ServiceModel, token: string): Promise<boolean> {
+        return this.serviceRepository.isFreeService(service, token);
+    }
+
+    async isReductionService(price: number, token: string): Promise<number> {
+        return this.serviceRepository.isReductionService(price, token);
+    }
+
+    async paidPresentation(service: ServiceModel, token: string) {
         const uidPayment = uid(60);
         await this.serviceRepository.paidPresentation(service.service_id, uidPayment);
         const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+        const isFree = await this.isFreeService(service, token);
+        const price = await this.isReductionService(service.price, token);
         const session = await stripe.checkout.sessions.create({
             payment_method_types: ['card'],
-            billing_address_collection: 'auto',
             line_items: [
                 {
                     price_data: {
                         currency: 'usd',
                         product_data: {
-                            name: service.name,
+                            name: service.name + (isFree ? ' (Free)' : ''),
                         },
-                        unit_amount: service.price * 100,
+                        unit_amount: (isFree ? 0 : price * 100),
                         recurring: {interval: 'month'},
                     },
                     quantity: 1,
                 },
             ],
-            mode: 'subscription',
+            mode: 'payment',
             success_url: `http://localhost:3001/service/validate-payment:${uidPayment}`,
             cancel_url: `${process.env.FRONTEND_URL}/home`,
         });
