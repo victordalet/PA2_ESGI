@@ -214,4 +214,14 @@ export class ServiceRepository {
             return this.db.query("INSERT INTO occupation_request_service (created_at,location_occupation_id,service_name,user_email,description,status,city,from_datetime,to_datetime,service_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
                 [new Date(), 0, 'OCCUPY', rows[0].email, 'OCCUPY', 'valid', '', body.from, body.to, body.service_id]);
     }
+
+    async paidPresentation(serviceId: number, uidPayment: string) {
+        await this.db.connect()
+        return this.db.query("UPDATE occupation_request_service SET uid_payment = ? WHERE id = ?", [uidPayment, serviceId]);
+    }
+
+    async validatePayment(uid: string) {
+        await this.db.connect()
+        return this.db.query("UPDATE occupation_request_service SET status = 'pay' WHERE uid_payment = ?", [uid]);
+    }
 }

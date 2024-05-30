@@ -4,6 +4,7 @@ import {ServiceByServiceModel, ServiceModel} from "./service.model";
 import {LocationAvailability, LocationLiaison} from "../../core/location";
 import {uid} from "uid";
 import {Emailer} from "../../mail/mail.module";
+import {Stripe} from "stripe";
 
 export class ServiceService {
     private serviceRepository: ServiceRepository;
@@ -133,6 +134,37 @@ export class ServiceService {
 
     async deleteServiceByAdmin(id: number) {
         return this.serviceRepository.deleteServiceByAdmin(id);
+    }
+
+    async paidPresentation(service: ServiceModel) {
+        const uidPayment = uid(60);
+        await this.serviceRepository.paidPresentation(service.service_id, uidPayment);
+        const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+        const session = await stripe.checkout.sessions.create({
+            payment_method_types: ['card'],
+            billing_address_collection: 'auto',
+            line_items: [
+                {
+                    price_data: {
+                        currency: 'usd',
+                        product_data: {
+                            name: service.name,
+                        },
+                        unit_amount: service.price * 100,
+                        recurring: {interval: 'month'},
+                    },
+                    quantity: 1,
+                },
+            ],
+            mode: 'subscription',
+            success_url: `http://localhost:3001/service/validate-payment:${uidPayment}`,
+            cancel_url: `${process.env.FRONTEND_URL}/home`,
+        });
+        return {url: session.url};
+    }
+
+    async validatePayment(uid: string) {
+        return this.serviceRepository.validatePayment(uid.replace(':', ''));
     }
 
 

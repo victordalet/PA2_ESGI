@@ -634,6 +634,7 @@ export default class Controller extends React.Component<
             locationOccupationPaiement={this.reserveModel.locationOccupationPaiement}
             deleteOccupationBail={this.reserveModel.deleteOccupationBail}
             downloadFactureService={this.downloadFactureService}
+            paidPresentation={this.reserveModel.paidPresentation}
             postFileLocationOccupation={this.reserveModel.postFileLocationOccupation}/>;
     }
 }

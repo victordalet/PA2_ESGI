@@ -545,5 +545,23 @@ export class ReserveModel {
         return pictures;
     };
 
+    public paidPresentation = async (serviceId: number, serviceName: string, servicePrice: number) => {
+        const apiPath = process.env.API_HOST || 'http://localhost:3001';
+        const response = await fetch(`${apiPath}/service/paid-presentation`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'authorization': localStorage.getItem('token') || ''
+            },
+            body: JSON.stringify({
+                service_id: serviceId,
+                name: serviceName,
+                price: servicePrice
+            })
+        });
+        const data = await response.json();
+        window.open(data.url, '_blank');
+    };
+
 
 }

@@ -24,6 +24,7 @@ export class ReserveView extends React.Component <ViewProps> {
             downloadFacture,
             isBail,
             deleteLocation,
+            paidPresentation,
             description,
             eventCalendar,
             fetchMessagesForBail,
@@ -297,6 +298,7 @@ export class ReserveView extends React.Component <ViewProps> {
                                         <div className={"row-content"}><h2>Price</h2></div>
                                         <div className={"row-content"}><h2>Status</h2></div>
                                         <div className={"row-content"}><h2>Facture</h2></div>
+                                        <div className={"row-content"}><h2>Pay</h2></div>
                                     </div>
                                     {
                                         serviceUser.map((service, index) => {
@@ -312,6 +314,22 @@ export class ReserveView extends React.Component <ViewProps> {
                                                         <button
                                                             onClick={() => downloadFactureService(service.service_name, new Date(service.from_datetime).toLocaleDateString('fr-FR'), service.price)}
                                                         >Download
+                                                        </button>
+                                                    </div>
+                                                    <div className={"row-content"}>
+                                                        <button
+                                                            onClick={() => {
+                                                                if (service.status === 'accepted' || service.status === 'valid') {
+                                                                    paidPresentation(service.id, service.service_name, service.price);
+                                                                } else {
+                                                                    if (service.status === 'pay') {
+                                                                        alert('Service already paid');
+                                                                    } else {
+                                                                        alert('Service not accepted');
+                                                                    }
+                                                                }
+                                                            }}
+                                                        >Pay
                                                         </button>
                                                     </div>
                                                 </div>
