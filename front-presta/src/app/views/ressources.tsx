@@ -31,7 +31,7 @@ export default class ResourcesView extends React.Component<ViewProps> {
                             location.map((l, index) => (
                                 <Card
                                     onclick={() => {
-                                        const sourcePath = process.env.FRONT_CLIENT_PORT || 'http://localhost:3003';
+                                        const sourcePath = process.env.FRONT_CLIENT_PORT || 'https://pcs.c2smr.Fr';
                                         window.open(`${sourcePath}/reserve?` + l.id, '_blank');
                                     }}
                                     key={index}

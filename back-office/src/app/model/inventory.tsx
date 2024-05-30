@@ -3,7 +3,7 @@ import {LocationAvailability} from "../@types/occupation";
 export class InventoryModel {
 
     public getInventory = async (): Promise<LocationAvailability[]> => {
-        const apiPath = process.env.API_PATH || 'http://localhost:3001';
+        const apiPath = process.env.API_PATH || 'https://apipcs.c2smr.fr';
         const response = await fetch(`${apiPath}/location/occupation-info-admin`, {
             method: 'POST',
             headers: {

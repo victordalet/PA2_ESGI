@@ -32,7 +32,7 @@ export default class ResourcesView extends React.Component<ViewProps> {
                                 <Card
                                     onclick={() => {
                                         if (l.is_valid === 2) {
-                                            const sourcePath = process.env.FRONT_CLIENT_PORT || 'http://localhost:3003';
+                                            const sourcePath = process.env.FRONT_CLIENT_PORT || 'https://pcs.c2smr.Fr';
                                             window.open(`${sourcePath}/reserve?` + l.id, '_blank');
                                         }
                                     }}

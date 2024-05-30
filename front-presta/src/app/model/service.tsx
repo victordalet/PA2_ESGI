@@ -5,7 +5,7 @@ export class ServiceModel {
 
     public getPictureBackground = async () => {
         const job = (document.getElementById("job") as HTMLSelectElement).value;
-        const apiPath = process.env.API_HOST || 'http://localhost:3001';
+        const apiPath = process.env.API_HOST || 'https://apipcs.c2smr.fr';
         const res = await fetch(`${apiPath}/picture/${job}-1`, {
             headers: {
                 'authorization': localStorage.getItem('token') || ''
@@ -33,7 +33,7 @@ export class ServiceModel {
     };
 
     public createService = async (dataToSend: Service) => {
-        const apiPath = process.env.API_HOST || 'http://localhost:3001';
+        const apiPath = process.env.API_HOST || 'https://apipcs.c2smr.fr';
         await fetch(apiPath + '/service', {
             method: "POST",
             headers: {
@@ -47,7 +47,7 @@ export class ServiceModel {
 
 
     public async getJobs() {
-        const apiPath = process.env.API_HOST || 'http://localhost:3001';
+        const apiPath = process.env.API_HOST || 'https://apipcs.c2smr.fr';
         const res = await fetch(apiPath + '/job', {
             headers: {
                 'authorization': localStorage.getItem('token') || ''

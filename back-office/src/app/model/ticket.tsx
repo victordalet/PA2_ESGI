@@ -1,7 +1,7 @@
 export class TicketModel {
 
     public getData = async () => {
-        const apiPath = process.env.API_HOST || "http://localhost:3001";
+        const apiPath = process.env.API_HOST || "https://apipcs.c2smr.fr";
         const res = await fetch(apiPath + "/ticket", {
             method: "GET",
             headers: {

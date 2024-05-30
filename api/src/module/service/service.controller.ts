@@ -148,7 +148,7 @@ export class ServiceController {
     }
 
     @Get('validate-payment:uid')
-    @Redirect("http://localhost:3000", 301)
+    @Redirect("https://pcs.c2smr.fr", 301)
     @ApiOperation({summary: 'Validate payment'})
     @ApiOkResponse({description: 'Payment validated'})
     @ApiBadRequestResponse({description: 'Request param is not valid'})

@@ -28,7 +28,7 @@ export default class Controller extends React.Component<ControllerProps, Control
         const data: Service[] = await this.resourcesModel.fetchServices();
         this.setState({serviceNotFiltered: data});
         this.setState({services: data});
-        const apiPath = process.env.API_HOST || 'http://localhost:3001';
+        const apiPath = process.env.API_HOST || 'https://apipcs.c2smr.fr';
     };
 
     public filterResourcesByNameOrDescription = () => {

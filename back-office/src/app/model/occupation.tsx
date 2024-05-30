@@ -1,7 +1,7 @@
 export class OccupationModel {
 
     public getLocationsOccupationAdminInfo = async () => {
-        const apiPath = process.env.API_PATH || 'http://localhost:3001';
+        const apiPath = process.env.API_PATH || 'https://apipcs.c2smr.fr';
         const response = await fetch(`${apiPath}/location/occupation-info-admin`, {
             method: 'POST',
             headers: {
@@ -13,7 +13,7 @@ export class OccupationModel {
     };
 
     public downloadFolderClientOccupation = async (location_occupation_id: number) => {
-        const apiPath = process.env.API_HOST || 'http://localhost:3001';
+        const apiPath = process.env.API_HOST || 'https://apipcs.c2smr.fr';
         const response = await fetch(`${apiPath}/file/get-name-files`, {
             method: 'POST',
             headers: {
@@ -47,7 +47,7 @@ export class OccupationModel {
         const from = (document.querySelector<HTMLInputElement>('#input-start-time') as HTMLInputElement).value;
         const to = (document.querySelector<HTMLInputElement>('#input-end-time') as HTMLInputElement).value;
         const state = (document.querySelector<HTMLInputElement>('#input-state-time') as HTMLInputElement).value;
-        const apiPath = process.env.API_PATH || 'http://localhost:3001';
+        const apiPath = process.env.API_PATH || 'https://apipcs.c2smr.fr';
         await fetch(`${apiPath}/location/accept-location-occupation`, {
             method: 'POST',
             headers: {
@@ -67,7 +67,7 @@ export class OccupationModel {
     };
 
     public refuseLocationOccupation = async (location_occupation_id: number) => {
-        const apiPath = process.env.API_PATH || 'http://localhost:3001';
+        const apiPath = process.env.API_PATH || 'https://apipcs.c2smr.fr';
         await fetch(`${apiPath}/location/remove-location-occupation`, {
             method: 'POST',
             headers: {

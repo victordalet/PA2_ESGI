@@ -2,7 +2,7 @@ export class LocationModel {
 
 
     public fetchData = async () => {
-        const apiPath = process.env.API_HOST || "http://localhost:3001";
+        const apiPath = process.env.API_HOST || "https://apipcs.c2smr.fr";
         const response = await fetch(apiPath + "/location", {
             method: "GET",
             headers: {
@@ -15,7 +15,7 @@ export class LocationModel {
 
 
     public deleteLocation = async (id: number) => {
-        const apiPath = process.env.API_HOST || "http://localhost:3001";
+        const apiPath = process.env.API_HOST || "https://apipcs.c2smr.fr";
         await fetch(apiPath + "/location/admin/" + id, {
             method: "DELETE",
             headers: {
@@ -27,7 +27,7 @@ export class LocationModel {
     };
 
     public acceptLocation = async (id: number) => {
-        const apiPath = process.env.API_HOST || "http://localhost:3001";
+        const apiPath = process.env.API_HOST || "https://apipcs.c2smr.fr";
         await fetch(apiPath + "/location/admin-accept", {
             method: "PATCH",
             headers: {

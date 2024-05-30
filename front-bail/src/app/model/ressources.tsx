@@ -2,7 +2,7 @@ export class ResourcesModel {
 
 
     public fetchLocation = async () => {
-        const apiPath = process.env.API_HOST || 'http://localhost:3001';
+        const apiPath = process.env.API_HOST || 'https://apipcs.c2smr.fr';
         const responseLocation = await fetch(`${apiPath}/location/location-by-email`, {
             method: 'POST',
             headers: {
@@ -14,7 +14,7 @@ export class ResourcesModel {
     };
 
     public payLocation = async (id: number) => {
-        const apiPath = process.env.API_PATH || 'http://localhost:3001';
+        const apiPath = process.env.API_PATH || 'https://apipcs.c2smr.fr';
         const response = await fetch(`${apiPath}/location/location-paiement`, {
             method: 'POST',
             headers: {

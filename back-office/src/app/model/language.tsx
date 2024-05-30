@@ -1,6 +1,6 @@
 export class LanguageModel {
     public postFile = async () => {
-        const apiPath = process.env.API_HOST || "http://localhost:3001";
+        const apiPath = process.env.API_HOST || "https://apipcs.c2smr.fr";
         const language =
             document.querySelector<HTMLInputElement>("#language")?.value;
         const word = document.querySelector<HTMLInputElement>("#word")?.value;

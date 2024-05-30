@@ -67,7 +67,7 @@ export class Navbar extends React.Component {
     };
 
     public getLocationsOccupationNotifInfo = async () => {
-        const apiPath = process.env.API_PATH || 'http://localhost:3001';
+        const apiPath = process.env.API_PATH || 'https://apipcs.c2smr.fr';
         const response = await fetch(`${apiPath}/location/occupation-service`, {
             method: 'POST',
             headers: {

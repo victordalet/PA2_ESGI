@@ -23,7 +23,7 @@ export default class ConnectionController extends Component<
             this.connectionViewModel.openPopup(1);
             return;
         }
-        const apiPath = process.env.API_HOST || "http://localhost:3001";
+        const apiPath = process.env.API_HOST || "https://apipcs.c2smr.fr";
         const res = await fetch(apiPath + "/user/connection", {
             method: "POST",
             headers: {
@@ -70,7 +70,7 @@ export default class ConnectionController extends Component<
             return;
         }
         await this.testLogin(2);
-        const apiPath = process.env.API_HOST || 'http://localhost:3001';
+        const apiPath = process.env.API_HOST || 'https://apipcs.c2smr.fr';
         const rule = document.querySelector<HTMLSelectElement>('#typeRequest')?.value || '';
         if (rule === '') {
             return;
