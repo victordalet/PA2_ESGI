@@ -1,7 +1,7 @@
 export class ProviderModel {
 
     public fetchService = async () => {
-        const apiPath = process.env.API_HOST || 'http://localhost:3001';
+        const apiPath = process.env.API_HOST || 'https://apipcs.c2smr.fr';
         const response = await fetch(apiPath + '/service/get-service-by-user-v2', {
             method: 'POST',
             headers: {
@@ -17,7 +17,7 @@ export class ProviderModel {
     };
 
     public isYourService = async () => {
-        const apiPath = process.env.API_HOST || 'http://localhost:3001';
+        const apiPath = process.env.API_HOST || 'https://apipcs.c2smr.fr';
         const res = await fetch(`${apiPath}/service/your`, {
             method: 'POST',
             headers: {
@@ -35,7 +35,7 @@ export class ProviderModel {
     };
 
     public addOccupation = async () => {
-        const apiPath = process.env.API_HOST || 'http://localhost:3001';
+        const apiPath = process.env.API_HOST || 'https://apipcs.c2smr.fr';
         await fetch(apiPath + '/service/add-service-by-service', {
             method: 'POST',
             headers: {

@@ -1,7 +1,7 @@
 export class MessageModel {
 
     public addIllegibleMessage = (addInput: string) => {
-        const apiPath = process.env.API_HOST || "http://localhost:3001";
+        const apiPath = process.env.API_HOST || "https://apipcs.c2smr.fr";
         fetch(apiPath + "/message/illegible", {
             method: "POST",
             headers: {
@@ -17,7 +17,7 @@ export class MessageModel {
     };
 
     public getIllegibleMessage = async () => {
-        const apiPath = process.env.API_HOST || "http://localhost:3001";
+        const apiPath = process.env.API_HOST || "https://apipcs.c2smr.fr";
         const res = await fetch(apiPath + "/message/illegible", {
             method: "GET",
             headers: {

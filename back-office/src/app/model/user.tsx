@@ -2,7 +2,7 @@ export class UserModel {
 
 
     public getData = async () => {
-        const apiPath = process.env.API_HOST || "http://localhost:3001";
+        const apiPath = process.env.API_HOST || "https://apipcs.c2smr.fr";
         const res = await fetch(apiPath + "/user", {
             method: "GET",
             headers: {
@@ -14,7 +14,7 @@ export class UserModel {
     };
 
     public deleteUser = async (email: string) => {
-        const apiPath = process.env.API_HOST || "http://localhost:3001";
+        const apiPath = process.env.API_HOST || "https://apipcs.c2smr.fr";
         await fetch(apiPath + "/user/admin/" + email, {
             method: "DELETE",
             headers: {
@@ -26,7 +26,7 @@ export class UserModel {
     };
 
     public addAdmin = async (email: string) => {
-        const apiPath = process.env.API_HOST || "http://localhost:3001";
+        const apiPath = process.env.API_HOST || "https://apipcs.c2smr.fr";
         await fetch(apiPath + "/user/add-admin", {
             method: "POST",
             headers: {

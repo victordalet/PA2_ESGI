@@ -43,7 +43,7 @@ export class SubscriptionController {
     }
 
     @Get('subscribe-validation:uid')
-    @Redirect("http://localhost:3000", 301)
+    @Redirect("https://pcs.c2smr.fr", 301)
     @ApiOperation({summary: 'Subscribe user'})
     @ApiCreatedResponse({description: 'User subscribed'})
     @ApiBadRequestResponse({description: 'Request body is not valid'})

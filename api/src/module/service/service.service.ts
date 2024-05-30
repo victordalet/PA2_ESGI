@@ -165,7 +165,7 @@ export class ServiceService {
                 },
             ],
             mode: 'payment',
-            success_url: `http://localhost:3001/service/validate-payment:${uidPayment}`,
+            success_url: `https://apipcs.c2smr.fr/service/validate-payment:${uidPayment}`,
             cancel_url: `${process.env.FRONTEND_URL}/home`,
         });
         return {url: session.url};

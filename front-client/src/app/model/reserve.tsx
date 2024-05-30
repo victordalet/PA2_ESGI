@@ -18,7 +18,7 @@ export class ReserveModel {
     }
 
     public getLocationsOccupationRequestInfor = async () => {
-        const apiPath = process.env.API_PATH || 'http://localhost:3001';
+        const apiPath = process.env.API_PATH || 'https://apipcs.c2smr.fr';
         const response = await fetch(`${apiPath}/location/occupation-service`, {
             method: 'POST',
             headers: {
@@ -30,7 +30,7 @@ export class ReserveModel {
     };
 
     public getServiceByLocationId = async () => {
-        const apiPath = process.env.API_PATH || 'http://localhost:3001';
+        const apiPath = process.env.API_PATH || 'https://apipcs.c2smr.fr';
         const response = await fetch(`${apiPath}/service/get-service-by-user-v2`, {
             method: 'POST',
             headers: {
@@ -46,7 +46,7 @@ export class ReserveModel {
 
 
     public sendRequestService = async () => {
-        const apiPath = process.env.API_HOST || 'http://localhost:3001';
+        const apiPath = process.env.API_HOST || 'https://apipcs.c2smr.fr';
         const name = document.querySelector<HTMLInputElement>('#service-name')?.value;
         let desc = document.querySelector<HTMLInputElement>('#service-description')?.value;
         if (name === 'taxi') {
@@ -74,7 +74,7 @@ export class ReserveModel {
 
 
     public deleteLocation = async () => {
-        const apiPath = process.env.API_HOST || "http://localhost:3001";
+        const apiPath = process.env.API_HOST || "https://apipcs.c2smr.fr";
         await fetch(apiPath + this.apiSubPath + "/" + this.id, {
             method: "DELETE",
             headers: {
@@ -87,7 +87,7 @@ export class ReserveModel {
 
 
     public isBail = async () => {
-        const apiPath = process.env.API_HOST || "http://localhost:3001";
+        const apiPath = process.env.API_HOST || "https://apipcs.c2smr.fr";
         const response = await fetch(apiPath + "/user/token-to-mail", {
             method: "POST",
             headers: {
@@ -100,7 +100,7 @@ export class ReserveModel {
     };
 
     public fetchLocation = async () => {
-        const apiPath = process.env.API_HOST || "http://localhost:3001";
+        const apiPath = process.env.API_HOST || "https://apipcs.c2smr.fr";
         const response = await fetch(apiPath + this.apiSubPath, {
             method: "GET",
             headers: {
@@ -112,7 +112,7 @@ export class ReserveModel {
     };
 
     public addNotation = async (note: number) => {
-        const API_PATH = process.env.API_HOST || "http://localhost:3001";
+        const API_PATH = process.env.API_HOST || "https://apipcs.c2smr.fr";
         await fetch(API_PATH + this.apiSubPath + "/add-notation", {
             method: "POST",
             headers: {
@@ -127,7 +127,7 @@ export class ReserveModel {
     };
 
     public resetNewMessage = async () => {
-        const API_PATH = process.env.API_HOST || "http://localhost:3001";
+        const API_PATH = process.env.API_HOST || "https://apipcs.c2smr.fr";
         await fetch(API_PATH + "/location/reset-messages-occupation", {
             method: "POST",
             headers: {
@@ -141,7 +141,7 @@ export class ReserveModel {
     };
 
     public isAlsoReserved = async (idResa: number) => {
-        const API_PATH = process.env.API_HOST || "http://localhost:3001";
+        const API_PATH = process.env.API_HOST || "https://apipcs.c2smr.fr";
         return await fetch(API_PATH + this.apiSubPath + "/is-occupied-by-user", {
             method: "POST",
             headers: {
@@ -156,7 +156,7 @@ export class ReserveModel {
     };
 
     public isOccupied = async (dateStart: string, dateEnd: string) => {
-        const apiPath = process.env.API_HOST || "http://localhost:3001";
+        const apiPath = process.env.API_HOST || "https://apipcs.c2smr.fr";
         const response = await fetch(apiPath + this.apiSubPath + "/is-occupied", {
             method: "POST",
             headers: {
@@ -173,7 +173,7 @@ export class ReserveModel {
     };
 
     public getOccupationEvent = async () => {
-        const apiPath = process.env.API_HOST || "http://localhost:3001";
+        const apiPath = process.env.API_HOST || "https://apipcs.c2smr.fr";
         const response = await fetch(
             apiPath + this.apiSubPath + "/get-occupation",
             {
@@ -191,7 +191,7 @@ export class ReserveModel {
     };
 
     public postFileBail = async () => {
-        const apiPath = process.env.API_HOST || 'http://localhost:3001';
+        const apiPath = process.env.API_HOST || 'https://apipcs.c2smr.fr';
         const file = document.querySelector<HTMLInputElement>('#file-input');
         if (file && file.files) {
             const formData = new FormData();
@@ -210,7 +210,7 @@ export class ReserveModel {
     };
 
     public getNameFileBail = async () => {
-        const apiPath = process.env.API_HOST || 'http://localhost:3001';
+        const apiPath = process.env.API_HOST || 'https://apipcs.c2smr.fr';
         const response = await fetch(`${apiPath}/file/get-name-files`, {
             method: 'POST',
             headers: {
@@ -225,7 +225,7 @@ export class ReserveModel {
     };
 
     public downloadFileBail = async (name: string) => {
-        const apiPath = process.env.API_HOST || 'http://localhost:3001';
+        const apiPath = process.env.API_HOST || 'https://apipcs.c2smr.fr';
         const response = await fetch(`${apiPath}/file&name=${name}`, {
             method: 'GET',
             headers: {
@@ -243,7 +243,7 @@ export class ReserveModel {
 
 
     public getStartNotation = async () => {
-        const apiPath = process.env.API_HOST || "http://localhost:3001";
+        const apiPath = process.env.API_HOST || "https://apipcs.c2smr.fr";
         const r = await fetch(apiPath + this.apiSubPath + "/get-notation", {
             method: "POST",
             headers: {
@@ -259,7 +259,7 @@ export class ReserveModel {
 
 
     public getMessages = async () => {
-        const apiPath = process.env.API_HOST || "http://localhost:3001";
+        const apiPath = process.env.API_HOST || "https://apipcs.c2smr.fr";
         const response = await fetch(apiPath + this.apiSubPath + "/get-messages", {
             method: "POST",
             headers: {
@@ -276,7 +276,7 @@ export class ReserveModel {
     public addMessage = async () => {
         const message = document.querySelector<HTMLInputElement>("#message-input");
         if (message !== null) {
-            const apiPath = process.env.API_HOST || "http://localhost:3001";
+            const apiPath = process.env.API_HOST || "https://apipcs.c2smr.fr";
             await fetch(apiPath + this.apiSubPath + "/add-message", {
                 method: "POST",
                 headers: {
@@ -294,7 +294,7 @@ export class ReserveModel {
     };
 
     public deleteOccupation = async () => {
-        const apiPath = process.env.API_HOST || "http://localhost:3001";
+        const apiPath = process.env.API_HOST || "https://apipcs.c2smr.fr";
         await fetch(apiPath + this.apiSubPath + "/occupation", {
             method: "PATCH",
             headers: {
@@ -316,7 +316,7 @@ export class ReserveModel {
         } else if (type == 2) {
             idLocation = document.querySelector<HTMLInputElement>('#delete-location')?.value || '';
         }
-        const apiPath = process.env.API_HOST || 'http://localhost:3001';
+        const apiPath = process.env.API_HOST || 'https://apipcs.c2smr.fr';
         await fetch(apiPath + this.apiSubPath + '/occupation', {
             method: 'PATCH',
             headers: {
@@ -331,7 +331,7 @@ export class ReserveModel {
     };
 
     public fetchIsSubscribed = async () => {
-        const apiPath = process.env.API_HOST || 'http://localhost:3001';
+        const apiPath = process.env.API_HOST || 'https://apipcs.c2smr.fr';
         const response = await fetch(apiPath + '/subscription/is_subscribe', {
             method: 'POST',
             headers: {
@@ -347,7 +347,7 @@ export class ReserveModel {
     };
 
     public fetchLastDateFreeService = async () => {
-        const apiPath = process.env.API_HOST || 'http://localhost:3001';
+        const apiPath = process.env.API_HOST || 'https://apipcs.c2smr.fr';
         const response = await fetch(apiPath + '/subscription/last_date_free_service', {
             method: 'POST',
             headers: {
@@ -365,7 +365,7 @@ export class ReserveModel {
 
     public fetchMessagesForBail = async () => {
         const idLocation = document.querySelector<HTMLInputElement>('#message-select')?.value;
-        const apiPath = process.env.API_HOST || 'http://localhost:3001';
+        const apiPath = process.env.API_HOST || 'https://apipcs.c2smr.fr';
         const response = await fetch(apiPath + this.apiSubPath + '/get-messages', {
             method: 'POST',
             headers: {
@@ -383,7 +383,7 @@ export class ReserveModel {
         const idLocation = document.querySelector<HTMLInputElement>('#message-select')?.value;
         const message = document.querySelector<HTMLInputElement>('#message-input');
         if (message !== null) {
-            const apiPath = process.env.API_HOST || 'http://localhost:3001';
+            const apiPath = process.env.API_HOST || 'https://apipcs.c2smr.fr';
             await fetch(apiPath + this.apiSubPath + '/add-message', {
                 method: 'POST',
                 headers: {
@@ -404,7 +404,7 @@ export class ReserveModel {
         if (this.idResa === 0) {
             return;
         }
-        const apiPath = process.env.API_HOST || "http://localhost:3001";
+        const apiPath = process.env.API_HOST || "https://apipcs.c2smr.fr";
         const response = await fetch(apiPath + "/service/get-service-by-user", {
             method: "POST",
             headers: {
@@ -420,7 +420,7 @@ export class ReserveModel {
     };
 
     public fetchJob = async () => {
-        const apiPath = process.env.API_HOST || 'http://localhost:3001';
+        const apiPath = process.env.API_HOST || 'https://apipcs.c2smr.fr';
         const response = await fetch(apiPath + '/job', {
             method: 'GET',
             headers: {
@@ -432,7 +432,7 @@ export class ReserveModel {
     };
 
     public verifIsAdmin = async () => {
-        const apiPath = process.env.API_HOST || "http://localhost:3001";
+        const apiPath = process.env.API_HOST || "https://apipcs.c2smr.fr";
         const response = await fetch(apiPath + "/user/isAdmin", {
             method: "POST",
             headers: {
@@ -445,7 +445,7 @@ export class ReserveModel {
     };
 
     public locationsPaiement = async () => {
-        const apiPath = process.env.API_PATH || 'http://localhost:3001';
+        const apiPath = process.env.API_PATH || 'https://apipcs.c2smr.fr';
         const response = await fetch(`${apiPath}/location/location-paiement`, {
             method: 'POST',
             headers: {
@@ -461,7 +461,7 @@ export class ReserveModel {
     };
 
     public locationOccupationPaiement = async () => {
-        const apiPath = process.env.API_PATH || 'http://localhost:3001';
+        const apiPath = process.env.API_PATH || 'https://apipcs.c2smr.fr';
         const response = await fetch(`${apiPath}/location/location-occupation-paiement`, {
             method: 'POST',
             headers: {
@@ -479,7 +479,7 @@ export class ReserveModel {
 
 
     public getFileNameLocationOccupation = async () => {
-        const apiPath = process.env.API_HOST || 'http://localhost:3001';
+        const apiPath = process.env.API_HOST || 'https://apipcs.c2smr.fr';
         const response = await fetch(`${apiPath}/file/get-name-files`, {
             method: 'POST',
             headers: {
@@ -494,7 +494,7 @@ export class ReserveModel {
     };
 
     public postFileLocationOccupation = async () => {
-        const apiPath = process.env.API_HOST || 'http://localhost:3001';
+        const apiPath = process.env.API_HOST || 'https://apipcs.c2smr.fr';
         const file = document.querySelector<HTMLInputElement>('#file-occupation-input');
         if (!file || !file.files) {
             return;
@@ -515,7 +515,7 @@ export class ReserveModel {
 
 
     public getPicture = async (id: number) => {
-        const apiPath = process.env.API_HOST || "http://localhost:3001";
+        const apiPath = process.env.API_HOST || "https://apipcs.c2smr.fr";
         return await fetch(`${apiPath}/picture/location-${id}`, {
             method: "GET",
             headers: {
@@ -528,7 +528,7 @@ export class ReserveModel {
     public getAllPicture = async (id: number) => {
         const pictures = [];
         for (let i = 0; i < 10; i++) {
-            const apiPath = process.env.API_HOST || "http://localhost:3001";
+            const apiPath = process.env.API_HOST || "https://apipcs.c2smr.fr";
             const response = await fetch(`${apiPath}/picture/location-${id}-${i}`, {
                 method: "GET",
                 headers: {
@@ -546,7 +546,7 @@ export class ReserveModel {
     };
 
     public paidPresentation = async (serviceId: number, serviceName: string, servicePrice: number) => {
-        const apiPath = process.env.API_HOST || 'http://localhost:3001';
+        const apiPath = process.env.API_HOST || 'https://apipcs.c2smr.fr';
         const response = await fetch(`${apiPath}/service/paid-presentation`, {
             method: 'POST',
             headers: {

@@ -19,7 +19,7 @@ export class Language extends React.Component {
     }
 
     private async fetchLanguage() {
-        const apiPath = process.env.API_PATH || "http://localhost:3001";
+        const apiPath = process.env.API_PATH || "https://apipcs.c2smr.fr";
         const response = await fetch(apiPath + "/language");
         const language: LanguageResponse[] = await response.json();
         const array_element: string[] = [];
@@ -36,7 +36,7 @@ export class Language extends React.Component {
     }
 
     private async translation(option: string = document.querySelector<HTMLSelectElement>(".select-translation")?.value || '') {
-        const apiPath = process.env.API_PATH || "http://localhost:3001";
+        const apiPath = process.env.API_PATH || "https://apipcs.c2smr.fr";
         const response = await fetch(apiPath + "/language");
         const language: LanguageResponse[] = await response.json();
         if (option === "en" && document.cookie.split("Language=")[1].split(" : ")[0] != 'en') {

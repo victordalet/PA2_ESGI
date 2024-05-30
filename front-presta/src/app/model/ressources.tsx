@@ -2,7 +2,7 @@ export class ResourcesModel {
 
 
     public fetchServices = async () => {
-        const apiPath = process.env.API_HOST || 'http://localhost:3001';
+        const apiPath = process.env.API_HOST || 'https://apipcs.c2smr.fr';
         const response = await fetch(`${apiPath}/service/service-by-email`, {
             method: 'POST',
             headers: {

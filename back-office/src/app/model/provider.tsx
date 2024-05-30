@@ -4,7 +4,7 @@ export default class ProviderModel {
 
 
     public fetchService = async () => {
-        const apiPath = process.env.API_HOST || 'http://localhost:3001';
+        const apiPath = process.env.API_HOST || 'https://apipcs.c2smr.fr';
         const response = await fetch(apiPath + '/job', {
             method: 'GET',
             headers: {
@@ -16,7 +16,7 @@ export default class ProviderModel {
     };
 
     public getLocationsOccupationAdminInfo = async () => {
-        const apiPath = process.env.API_PATH || 'http://localhost:3001';
+        const apiPath = process.env.API_PATH || 'https://apipcs.c2smr.fr';
         const response = await fetch(`${apiPath}/location/occupation-service`, {
             method: 'POST',
             headers: {
@@ -33,7 +33,7 @@ export default class ProviderModel {
         const serviceId = (document.getElementById('service-provider-select') as HTMLSelectElement).value;
         const fromDatetime = (document.getElementById('from-datetime') as HTMLSelectElement).value;
         const toDatetime = (document.getElementById('to-datetime') as HTMLSelectElement).value;
-        const apiPath = process.env.API_HOST || 'http://localhost:3001';
+        const apiPath = process.env.API_HOST || 'https://apipcs.c2smr.fr';
         await fetch(apiPath + '/service/service-by-user', {
             method: 'POST',
             headers: {
@@ -51,7 +51,7 @@ export default class ProviderModel {
     };
 
     public getProvider = async () => {
-        const apiPath = process.env.API_HOST || "http://localhost:3001";
+        const apiPath = process.env.API_HOST || "https://apipcs.c2smr.fr";
         const response = await fetch(apiPath + "/service", {
             method: "GET",
             headers: {

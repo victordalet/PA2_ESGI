@@ -19,7 +19,7 @@ export default class ConnectionController extends Component<
     private connectionViewModel = new ConnectionViewModel();
 
     private testLogin = () => {
-        const apiPath = process.env.API_HOST || "http://localhost:3001";
+        const apiPath = process.env.API_HOST || "https://apipcs.c2smr.fr";
         fetch(apiPath + "/user/connection", {
             method: "POST",
             headers: {

@@ -77,7 +77,7 @@ export class LocationService {
                 },
             ],
             mode: 'subscription',
-            success_url: `http://localhost:3001/location/create-location-validation:${uidToken}`,
+            success_url: `https://apipcs.c2smr.fr/location/create-location-validation:${uidToken}`,
             cancel_url: `${process.env.FRONTEND_URL}/home`,
         });
         return {url: session.url};
@@ -109,7 +109,7 @@ export class LocationService {
                 },
             ],
             mode: 'subscription',
-            success_url: `http://localhost:3001/location/location-occupation-paiement-validation:${uidToken}`,
+            success_url: `https://apipcs.c2smr.fr/location/location-occupation-paiement-validation:${uidToken}`,
             cancel_url: `${process.env.FRONTEND_URL}/home`,
         });
         return {url: session.url};

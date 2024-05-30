@@ -4,7 +4,7 @@ export const haveToken = () => {
     if (localStorage.getItem("token") === null || undefined) {
         document.location.href = "/login";
     } else {
-        const apiPath = process.env.API_HOST || "http://localhost:3001";
+        const apiPath = process.env.API_HOST || "https://apipcs.c2smr.fr";
         fetch(apiPath + "/user/isAdmin", {
             method: "POST",
             headers: {

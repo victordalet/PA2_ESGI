@@ -38,7 +38,7 @@ export default class Controller extends React.Component<
         const confirmPassword = document.querySelector<HTMLInputElement>('#confirmPassword');
         if (password && confirmPassword) {
             if (this.settingsViewModel.isGoodPassword(password.value, confirmPassword.value)) {
-                const apiPath: string = process.env.API_HOST || 'http://localhost:3001';
+                const apiPath: string = process.env.API_HOST || 'https://apipcs.c2smr.fr';
                 await fetch(`${apiPath}/user/password`, {
                     method: 'PATCH',
                     headers: {
@@ -61,7 +61,7 @@ export default class Controller extends React.Component<
     public changeEmail = async () => {
         const email = document.querySelector<HTMLInputElement>('#email');
         if (email) {
-            const apiPath: string = process.env.API_HOST || 'http://localhost:3001';
+            const apiPath: string = process.env.API_HOST || 'https://apipcs.c2smr.fr';
             await fetch(`${apiPath}/user/email`, {
                 method: 'PATCH',
                 headers: {
@@ -79,7 +79,7 @@ export default class Controller extends React.Component<
     public changeUsername = async () => {
         const username = document.querySelector<HTMLInputElement>('#username');
         if (username) {
-            const apiPath: string = process.env.API_HOST || 'http://localhost:3001';
+            const apiPath: string = process.env.API_HOST || 'https://apipcs.c2smr.fr';
             await fetch(`${apiPath}/user/username`, {
                 method: 'PATCH',
                 headers: {

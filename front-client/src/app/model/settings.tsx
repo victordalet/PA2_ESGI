@@ -2,7 +2,7 @@ export class SettingsModel {
 
 
     public fetchUser = async () => {
-        const apiPath: string = process.env.API_HOST || 'http://localhost:3001';
+        const apiPath: string = process.env.API_HOST || 'https://apipcs.c2smr.fr';
         const response = await fetch(`${apiPath}/user`, {
             method: 'GET',
             headers: {
@@ -15,7 +15,7 @@ export class SettingsModel {
     };
 
     public deleteUser = async () => {
-        const apiPath: string = process.env.API_HOST || 'http://localhost:3001';
+        const apiPath: string = process.env.API_HOST || 'https://apipcs.c2smr.fr';
         try {
             const response = await fetch(`${apiPath}/user`, {
                 method: 'DELETE',

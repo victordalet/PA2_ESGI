@@ -11,7 +11,7 @@ export class LocationModel {
         if (data.description === '') {
             return;
         }
-        const apiPath = process.env.API_HOST || 'http://localhost:3001';
+        const apiPath = process.env.API_HOST || 'https://apipcs.c2smr.fr';
         const res = await fetch(`${apiPath}/location`, {
             method: 'POST',
             headers: {
@@ -36,7 +36,7 @@ export class LocationModel {
     };
 
     public associateLocationToUser = async (id: number, locationTypeId: number) => {
-        const apiPath = process.env.API_HOST || 'http://localhost:3001';
+        const apiPath = process.env.API_HOST || 'https://apipcs.c2smr.fr';
         await fetch(`${apiPath}/type_location/associate`, {
             method: 'POST',
             headers: {
@@ -57,7 +57,7 @@ export class LocationModel {
                 const formData = new FormData();
                 formData.append('file', file[i]);
                 formData.append('picture', `location-${id.toString()}-${i.toString()}`);
-                const apiPath = process.env.API_HOST || 'http://localhost:3001';
+                const apiPath = process.env.API_HOST || 'https://apipcs.c2smr.fr';
                 await fetch(`${apiPath}/picture`, {
                     method: "POST",
                     headers: {
@@ -69,7 +69,7 @@ export class LocationModel {
             const formData = new FormData();
             formData.append('file', file[0]);
             formData.append('picture', `location-${id.toString()}`);
-            const apiPath = process.env.API_HOST || 'http://localhost:3001';
+            const apiPath = process.env.API_HOST || 'https://apipcs.c2smr.fr';
             await fetch(`${apiPath}/picture`, {
                 method: "POST",
                 headers: {

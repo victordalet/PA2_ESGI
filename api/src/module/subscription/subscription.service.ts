@@ -59,7 +59,7 @@ export class SubscriptionService {
                     },
                 ],
                 mode: 'subscription',
-                success_url: `http://localhost:3001/subscription/subscribe-validation:${uidToken}`,
+                success_url: `https://apipcs.c2smr.fr/subscription/subscribe-validation:${uidToken}`,
                 cancel_url: `${process.env.FRONTEND_URL}/home`,
             });
             return {url: session.url};

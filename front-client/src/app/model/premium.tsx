@@ -4,7 +4,7 @@ export class PremiumModel {
 
 
     public subscribe = async (price: number) => {
-        const apiPath: string = process.env.API_HOST || 'http://localhost:3001';
+        const apiPath: string = process.env.API_HOST || 'https://apipcs.c2smr.fr';
         const res = await fetch(`${apiPath}/subscription/subscribe`, {
             method: 'POST',
             headers: {
@@ -20,7 +20,7 @@ export class PremiumModel {
     };
 
     public deleteSubscription = async () => {
-        const apiPath: string = process.env.API_HOST || 'http://localhost:3001';
+        const apiPath: string = process.env.API_HOST || 'https://apipcs.c2smr.fr';
         await fetch(`${apiPath}/subscription/unsubscribe`, {
             method: 'DELETE',
             headers: {
@@ -31,7 +31,7 @@ export class PremiumModel {
     };
 
     public getPrice = async () => {
-        const apiPath: string = process.env.API_HOST || 'http://localhost:3001';
+        const apiPath: string = process.env.API_HOST || 'https://apipcs.c2smr.fr';
         const res = await fetch(`${apiPath}/subscription/price`, {
             method: 'POST',
             headers: {

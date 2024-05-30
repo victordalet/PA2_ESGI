@@ -16,7 +16,7 @@ export interface CardProps {
 
 export class Card extends React.Component<CardProps> {
     private getPicture = async (type: string, id: number) => {
-        const apiPath = process.env.API_HOST || "http://localhost:3001";
+        const apiPath = process.env.API_HOST || "https://apipcs.c2smr.fr";
         return await fetch(`${apiPath}/picture/${type}-${id}`, {
             method: "GET",
             headers: {

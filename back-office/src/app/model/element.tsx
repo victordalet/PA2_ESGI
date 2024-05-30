@@ -3,7 +3,7 @@ import {SubElement} from "../@types/element";
 export class ElementModel {
 
     public postJob = async () => {
-        const apiPath = process.env.API_PATH || 'http://localhost:3001';
+        const apiPath = process.env.API_PATH || 'https://apipcs.c2smr.fr';
         const name = document.querySelector<HTMLInputElement>('#job-name')?.value;
         const file = document.querySelector<HTMLInputElement>('#picture-input-job');
         const formData = new FormData();
@@ -33,7 +33,7 @@ export class ElementModel {
     };
 
     public postElement = async () => {
-        const apiPath = process.env.API_PATH || 'http://localhost:3001';
+        const apiPath = process.env.API_PATH || 'https://apipcs.c2smr.fr';
         const name = document.querySelector<HTMLInputElement>('#é')?.value;
         const file = document.querySelector<HTMLInputElement>('#picture-input-element');
         const formData = new FormData();
@@ -65,7 +65,7 @@ export class ElementModel {
 
     public updatePrice = async (name: string) => {
         const price = document.querySelector<HTMLInputElement>(`#price-${name}`)?.value;
-        const apiPath = process.env.API_PATH || 'http://localhost:3001';
+        const apiPath = process.env.API_PATH || 'https://apipcs.c2smr.fr';
         await fetch(`${apiPath}/subscription/price`, {
             method: 'PUT',
             headers: {
@@ -81,7 +81,7 @@ export class ElementModel {
     };
 
     public updateRules = async (name: string) => {
-        const apiPath = process.env.API_PATH || 'http://localhost:3001';
+        const apiPath = process.env.API_PATH || 'https://apipcs.c2smr.fr';
         const free = document.querySelector<HTMLInputElement>(`#free-${name}`)?.value;
         const reduce = document.querySelector<HTMLInputElement>(`#reduce-${name}`)?.value;
         await fetch(`${apiPath}/subscription/rules`, {
@@ -100,7 +100,7 @@ export class ElementModel {
     };
 
     public getLastPrice = async () => {
-        const apiPath = process.env.API_PATH || 'http://localhost:3001';
+        const apiPath = process.env.API_PATH || 'https://apipcs.c2smr.fr';
         const response = await fetch(`${apiPath}/subscription/price`, {
             method: 'POST',
             headers: {
