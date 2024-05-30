@@ -18,6 +18,7 @@ export default class ElementController extends React.Component<ControllerProps, 
     render() {
         return (
             <ElementView
+                updateRules={this.elementModel.updateRules}
                 updatePrice={this.elementModel.updatePrice}
                 postElement={this.elementModel.postElement}
                 postJob={this.elementModel.postJob}

@@ -44,7 +44,6 @@ export default class Controller extends React.Component<
     render() {
 
         if (this.state.price.length === 0) return (<Loading/>);
-        console.log(this.state.price);
         return <PremiumView
             price={this.state.price}
             subscribe={this.subscribe}

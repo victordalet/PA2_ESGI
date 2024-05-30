@@ -85,6 +85,16 @@ export class SubscriptionController {
         return this.subscriptionService.updateSubscriptionPrice(body);
     }
 
+    @Put('rules')
+    @ApiOperation({summary: 'Update subscription rules'})
+    @ApiOkResponse({description: 'Subscription rules updated'})
+    @ApiBadRequestResponse({description: 'Request body is not valid'})
+    async updateSubscriptionRules(@Headers('authorization') token: string, @Body() body: BodySubscriptionPrice) {
+        await this.tokenValidation.validateAdminToken(token);
+        return this.subscriptionService.updateSubscriptionRules(body);
+    }
+
+
 
     @Put(':id')
     @ApiOperation({summary: 'Update subscription'})

@@ -243,6 +243,8 @@ create table price_sub
 (
     id    int primary key auto_increment,
     price int,
+    reduce int,
+    free int,
     name  varchar(100)
 );
 

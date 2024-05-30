@@ -136,8 +136,8 @@ export class ServiceService {
         return this.serviceRepository.deleteServiceByAdmin(id);
     }
 
-    async isFreeService(service: ServiceModel, token: string): Promise<boolean> {
-        return this.serviceRepository.isFreeService(service, token);
+    async isFreeService(token: string): Promise<boolean> {
+        return this.serviceRepository.isFreeService(token);
     }
 
     async isReductionService(price: number, token: string): Promise<number> {
@@ -148,7 +148,7 @@ export class ServiceService {
         const uidPayment = uid(60);
         await this.serviceRepository.paidPresentation(service.service_id, uidPayment);
         const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
-        const isFree = await this.isFreeService(service, token);
+        const isFree = await this.isFreeService(token);
         const price = await this.isReductionService(service.price, token);
         const session = await stripe.checkout.sessions.create({
             payment_method_types: ['card'],
@@ -160,7 +160,6 @@ export class ServiceService {
                             name: service.name + (isFree ? ' (Free)' : ''),
                         },
                         unit_amount: (isFree ? 0 : price * 100),
-                        recurring: {interval: 'month'},
                     },
                     quantity: 1,
                 },

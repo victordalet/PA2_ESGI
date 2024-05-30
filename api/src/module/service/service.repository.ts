@@ -220,22 +220,37 @@ export class ServiceRepository {
         return this.db.query("UPDATE occupation_request_service SET uid_payment = ? WHERE id = ?", [uidPayment, serviceId]);
     }
 
-    async isFreeService(service: ServiceModel, token: string): Promise<boolean> {
+    async isFreeService(token: string): Promise<boolean> {
         await this.db.connect()
         const [rows, filed] = await this.db.query("SELECT email FROM USER WHERE connection = ?", [token]);
-        const [rows2, filed2] = await this.db.query("SELECT * FROM subscription WHERE user_email = ? and is_pay is NULL", [rows[0].email]);
-        const [rows3, filed3] = await this.db.query("SELECT * FROM occupation_request_service WHERE user_email = ? and service_id = ? and status = 'good' and created_at > DATE_SUB(NOW(), INTERVAL 3 MONTH)", [rows[0].email, service.service_id]);
-        return !!(rows2 && rows3);
+        const [rows2, filed2] = await this.db.query("SELECT * FROM subscription WHERE user_email = ? and (is_pay is NULL or is_pay = '') ", [rows[0].email]);
+        const [rows3, filed3] = await this.db.query("SELECT * FROM occupation_request_service WHERE user_email = ? and created_at > DATE_SUB(NOW(), INTERVAL 3 MONTH)", [rows[0].email]);
+        try {
+            const [rows4, filed4] = await this.db.query("select free from price_sub where price = ?", [rows2[0].price]);
+            if (rows2 && rows3 && rows4) {
+                if (rows4[0].free == 1) {
+                    return true;
+                }
+            }
+            return false;
+        } catch (e) {
+            return false;
+        }
     }
 
     async isReductionService(price: number, token: string): Promise<number> {
         await this.db.connect()
         const [rows, filed] = await this.db.query("SELECT email FROM USER WHERE connection = ?", [token]);
-        const [rows2, filed2] = await this.db.query("SELECT * FROM subscription WHERE user_email = ? and is_pay is NULL", [rows[0].email]);
-        if (rows2) {
-            return price * 0.9;
+        const [rows2, filed2] = await this.db.query("SELECT * FROM subscription WHERE user_email = ? and (is_pay is NULL or is_pay = '')", [rows[0].email]);
+        try {
+            const [rows3, filed3] = await this.db.query("select reduce from price_sub where price = ?", [rows2[0].price]);
+            if (rows2 && rows3) {
+                return price * (1 - (parseInt(rows3[0].reduce) / 100));
+            }
+            return price;
+        } catch (e) {
+            return price;
         }
-        return price;
     }
 
 

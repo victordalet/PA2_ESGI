@@ -67,7 +67,7 @@ export class SubscriptionService {
     }
 
     async subscribeUserValidation(token: string) {
-        await this.SubscriptionRepository.valdationSubscription(token);
+        await this.SubscriptionRepository.validationSubscription(token);
         return "User subscribed";
     }
 
@@ -80,12 +80,15 @@ export class SubscriptionService {
 
     }
 
-
     async subscriptionPrice() {
         return await this.SubscriptionRepository.subscriptionPrice();
     }
 
     async updateSubscriptionPrice(subscription: BodySubscriptionPrice) {
         return await this.SubscriptionRepository.updateSubscriptionPrice(subscription);
+    }
+
+    async updateSubscriptionRules(subscription: BodySubscriptionPrice) {
+        return await this.SubscriptionRepository.updateSubscriptionRules(subscription);
     }
 }

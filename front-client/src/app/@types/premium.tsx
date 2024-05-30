@@ -19,3 +19,10 @@ export interface ModelPrice {
     price: number;
     name: string;
 }
+
+export interface SubModel {
+    price: number;
+    name: string;
+    free: number;
+    reduce: number;
+}
