@@ -40,8 +40,10 @@ export class PremiumView extends React.Component <ViewProps> {
                             <h3 id={"price"}>{price[0].price}€ /mouth</h3>
                             <ul>
                                 <li><i className="ai-circle-plus-fill"></i>removal of advertising</li>
-                                <li><i className="ai-circle-minus-fill"></i>permanent reduction of 5%</li>
-                                <li><i className="ai-circle-plus-fill"></i>Services offered</li>
+                                <li><i className="ai-circle-plus-fill"></i>permanent reduction of <span
+                                    id={"reduce-bag"}>5</span>%
+                                </li>
+                                <li><i id={"free-bag"} className="ai-circle-plus-fill"></i>Services offered</li>
                                 <li><i className="ai-circle-minus-fill"></i>Services VIP</li>
                                 <li><i className="ai-circle-plus-fill"></i>Renewal bonus of the subscription</li>
                             </ul>
@@ -53,8 +55,10 @@ export class PremiumView extends React.Component <ViewProps> {
                             <h3 id={"price"}>{price[1].price}€ /mouth</h3>
                             <ul>
                                 <li><i className="ai-circle-plus-fill"></i>removal of advertising</li>
-                                <li><i className="ai-circle-plus-fill"></i>permanent reduction of 5%</li>
-                                <li><i className="ai-circle-plus-fill"></i>Services offered</li>
+                                <li><i className="ai-circle-plus-fill"></i>permanent reduction of <span
+                                    id={"reduce-explo"}>5</span>%
+                                </li>
+                                <li><i id={"free-explo"} className="ai-circle-plus-fill"></i>Services offered</li>
                                 <li><i className="ai-circle-plus-fill"></i>Services VIP</li>
                                 <li><i className="ai-circle-plus-fill"></i>Renewal bonus of the subscription</li>
                             </ul>
