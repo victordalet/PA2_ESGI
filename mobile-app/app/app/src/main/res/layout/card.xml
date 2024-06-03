@@ -23,6 +23,7 @@
             android:layout_gravity="center_horizontal"
             android:background="@drawable/custom_edittext"
             android:orientation="vertical"
+            android:backgroundTint="@color/purple"
             android:padding="24dp">
 
             <TextView
