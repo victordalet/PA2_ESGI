@@ -14,6 +14,7 @@ export interface ViewProps {
     addMessage: () => void;
     deleteOccupation: () => void;
     downloadFacture: () => void;
+    paidPresentation: (serviceId: number, serviceName: string, servicePrice: number) => void;
     isBail?: boolean;
     deleteLocation: () => void;
     description: LocationDescription;

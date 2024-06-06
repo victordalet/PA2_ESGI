@@ -99,7 +99,7 @@ export default class Controller extends React.Component<
             if (!this.reserveViewModel.verifyDate(dateStart.value, dateEnd.value)) {
                 this.reserveViewModel.openPopupBadDate();
             } else {
-                const apiPath = process.env.API_HOST || "http://localhost:3001";
+                const apiPath = process.env.API_HOST || "https://apipcs.c2smr.fr";
                 await fetch(apiPath + this.apiSubPath + "/occupation-bail", {
                     method: "POST",
                     headers: {
@@ -237,7 +237,7 @@ export default class Controller extends React.Component<
                 const status = document.querySelector<HTMLSelectElement>("#status-reservation")?.value;
                 const presentation = document.querySelector<HTMLInputElement>("#presentation")?.value;
                 const salary = document.querySelector<HTMLInputElement>("#salary")?.value;
-                const apiPath = process.env.API_HOST || "http://localhost:3001";
+                const apiPath = process.env.API_HOST || "https://apipcs.c2smr.fr";
                 const response = await fetch(
                     apiPath + this.apiSubPath + "/occupation",
                     {
@@ -509,7 +509,7 @@ export default class Controller extends React.Component<
 
         cardElement.forEach((card, index) => {
             if (card.classList.contains('active')) {
-                const apiPath = process.env.API_HOST || 'http://localhost:3001';
+                const apiPath = process.env.API_HOST || 'https://apipcs.c2smr.fr';
                 fetch(apiPath + '/service/service-by-user', {
                     method: 'POST',
                     headers: {
@@ -634,6 +634,7 @@ export default class Controller extends React.Component<
             locationOccupationPaiement={this.reserveModel.locationOccupationPaiement}
             deleteOccupationBail={this.reserveModel.deleteOccupationBail}
             downloadFactureService={this.downloadFactureService}
+            paidPresentation={this.reserveModel.paidPresentation}
             postFileLocationOccupation={this.reserveModel.postFileLocationOccupation}/>;
     }
 }

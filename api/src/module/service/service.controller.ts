@@ -1,4 +1,4 @@
-import {Body, Controller, Delete, Get, Headers, Param, Patch, Post, Put} from "@nestjs/common";
+import {Body, Controller, Delete, Get, Headers, Param, Patch, Post, Put, Redirect} from "@nestjs/common";
 import {ApiBadRequestResponse, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiTags} from "@nestjs/swagger";
 import {ServiceService} from "./service.service";
 import {ServiceByServiceModel, ServiceModel} from "./service.model";
@@ -136,6 +136,24 @@ export class ServiceController {
     async adminAcceptService(@Headers('authorization') token: string, @Body() body: ServiceModel) {
         await this.tokenValidation.validateAdminToken(token);
         return this.serviceService.adminAcceptService(body);
+    }
+
+    @Post('paid-presentation')
+    @ApiOperation({summary: 'Paid presentation'})
+    @ApiCreatedResponse({description: 'Service'})
+    @ApiBadRequestResponse({description: 'Request body is not valid'})
+    async paidPresentation(@Headers('authorization') token: string, @Body() body: ServiceModel) {
+        await this.tokenValidation.validateToken(token);
+        return this.serviceService.paidPresentation(body,token);
+    }
+
+    @Get('validate-payment:uid')
+    @Redirect("https://pcs.c2smr.fr", 301)
+    @ApiOperation({summary: 'Validate payment'})
+    @ApiOkResponse({description: 'Payment validated'})
+    @ApiBadRequestResponse({description: 'Request param is not valid'})
+    async validatePayment(@Param() p: any) {
+        await this.serviceService.validatePayment(p.uid);
     }
 
     @Patch('remove-location-by-service')

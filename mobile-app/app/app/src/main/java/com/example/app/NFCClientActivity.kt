@@ -101,7 +101,7 @@ class NFCClientActivity : AppCompatActivity() {
         if (nfc != value) {
             return
         }
-        val apiPath = "http://172.20.10.2:3001/service/service-is-here"
+        val apiPath = "https://apipcs.c2smr.fr/service/service-is-here"
         val request = okhttp3.Request.Builder().url(apiPath).post(
             okhttp3.RequestBody.create(
                 okhttp3.MediaType.parse("application/json"),

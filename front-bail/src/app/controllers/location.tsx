@@ -52,7 +52,7 @@ export default class Controller extends React.Component<
 
 
     private getTypeLocation = async (type: string) => {
-        const apiPath = process.env.API_HOST || 'http://localhost:3001';
+        const apiPath = process.env.API_HOST || 'https://apipcs.c2smr.fr';
         const response = await fetch(`${apiPath}/type_location`, {
             method: 'GET',
             headers: {

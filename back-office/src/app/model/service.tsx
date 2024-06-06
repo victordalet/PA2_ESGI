@@ -1,7 +1,7 @@
 export class ServiceModel {
 
     public getData = async () => {
-        const apiPath = process.env.API_HOST || "http://localhost:3001";
+        const apiPath = process.env.API_HOST || "https://apipcs.c2smr.fr";
         const response = await fetch(apiPath + "/service", {
             method: "GET",
             headers: {
@@ -14,7 +14,7 @@ export class ServiceModel {
 
 
     public deleteService = async (id: number) => {
-        const apiPath = process.env.API_HOST || "http://localhost:3001";
+        const apiPath = process.env.API_HOST || "https://apipcs.c2smr.fr";
         await fetch(apiPath + "/service/admin/" + id, {
             method: "DELETE",
             headers: {
@@ -26,7 +26,7 @@ export class ServiceModel {
     };
 
     public acceptService = async (id: number) => {
-        const apiPath = process.env.API_HOST || "http://localhost:3001";
+        const apiPath = process.env.API_HOST || "https://apipcs.c2smr.fr";
         await fetch(apiPath + "/service/admin-accept", {
             method: "POST",
             headers: {

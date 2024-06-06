@@ -4,6 +4,7 @@ export interface ViewProps {
     postElement: () => void;
     postJob: () => void;
     updatePrice: (name: string) => void;
+    updateRules: (name: string) => void;
 }
 
 export interface ControllerProps {
@@ -11,4 +12,10 @@ export interface ControllerProps {
 }
 
 export interface ControllerState {
+}
+
+export interface SubElement {
+    price: number;
+    free: number;
+    reduce: number;
 }

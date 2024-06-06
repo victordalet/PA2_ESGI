@@ -86,7 +86,7 @@ export default class LocationView extends React.Component<ViewProps> {
                                             className={dataLine.is_valid ? "ai-circle-minus-fill" : "ai-circle-plus-fill"}></i>),
                                         (<a
                                             onClick={() => {
-                                                window.location.href = `http://localhost:3003/reserve?${dataLine.id}&a=false`;
+                                                window.location.href = `https://pcs.c2smr.Fr/reserve?${dataLine.id}&a=false`;
                                             }}
                                             style={{
                                                 cursor: 'pointer',

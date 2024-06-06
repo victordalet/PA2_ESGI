@@ -32,4 +32,12 @@ export class BodySubscriptionPrice {
     @IsString()
     name: string;
 
+    @ApiProperty({example: 'reduce', description: '1'})
+    @IsNumber()
+    reduce: number;
+
+    @ApiProperty({example: 'free', description: '0'})
+    @IsNumber()
+    free: number
+
 }

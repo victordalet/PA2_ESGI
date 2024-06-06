@@ -67,7 +67,7 @@ class ReserveActivity : AppCompatActivity() {
         val token = sharedPref.getString("token", null)
         val locationID = sharedPref.getString("locationOccupationId", null)
         if (token != null) {
-            val apiPath = "http://172.20.10.2:3001/location/get-messages"
+            val apiPath = "https://apipcs.c2smr.fr/location/get-messages"
             try {
                 val request = okhttp3.Request.Builder().url(apiPath).post(
                     okhttp3.RequestBody.create(
@@ -131,7 +131,7 @@ class ReserveActivity : AppCompatActivity() {
         this.messageInput.text.clear()
         val locationID = sharedPref.getString("locationOccupationId", null)
         if (token != null) {
-            val apiPath = "http://172.20.10.2:3001/location/add-message"
+            val apiPath = "https://apipcs.c2smr.fr/location/add-message"
             try {
                 val request = okhttp3.Request.Builder().url(apiPath).post(
                     okhttp3.RequestBody.create(
@@ -168,7 +168,7 @@ class ReserveActivity : AppCompatActivity() {
         val locationOccupationId = sharedPref.getString("locationOccupationId", null)
         val locationID = sharedPref.getString("locationID", null)
         if (token != null) {
-            val apiPath = "http://172.20.10.2:3001/service/get-service-by-user-v2"
+            val apiPath = "https://apipcs.c2smr.fr/service/get-service-by-user-v2"
             try {
                 val request = okhttp3.Request.Builder().url(apiPath).post(
                     okhttp3.RequestBody.create(

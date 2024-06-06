@@ -4,6 +4,7 @@ import {ServiceByServiceModel, ServiceModel} from "./service.model";
 import {LocationAvailability, LocationLiaison} from "../../core/location";
 import {uid} from "uid";
 import {Emailer} from "../../mail/mail.module";
+import {Stripe} from "stripe";
 
 export class ServiceService {
     private serviceRepository: ServiceRepository;
@@ -133,6 +134,45 @@ export class ServiceService {
 
     async deleteServiceByAdmin(id: number) {
         return this.serviceRepository.deleteServiceByAdmin(id);
+    }
+
+    async isFreeService(token: string): Promise<boolean> {
+        return this.serviceRepository.isFreeService(token);
+    }
+
+    async isReductionService(price: number, token: string): Promise<number> {
+        return this.serviceRepository.isReductionService(price, token);
+    }
+
+    async paidPresentation(service: ServiceModel, token: string) {
+        const uidPayment = uid(60);
+        await this.serviceRepository.paidPresentation(service.service_id, uidPayment);
+        const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+        const isFree = await this.isFreeService(token);
+        const price = await this.isReductionService(service.price, token);
+        const session = await stripe.checkout.sessions.create({
+            payment_method_types: ['card'],
+            line_items: [
+                {
+                    price_data: {
+                        currency: 'usd',
+                        product_data: {
+                            name: service.name + (isFree ? ' (Free)' : ''),
+                        },
+                        unit_amount: (isFree ? 0 : price * 100),
+                    },
+                    quantity: 1,
+                },
+            ],
+            mode: 'payment',
+            success_url: `https://apipcs.c2smr.fr/service/validate-payment:${uidPayment}`,
+            cancel_url: `${process.env.FRONTEND_URL}/home`,
+        });
+        return {url: session.url};
+    }
+
+    async validatePayment(uid: string) {
+        return this.serviceRepository.validatePayment(uid.replace(':', ''));
     }
 
 

@@ -1,7 +1,7 @@
 export class AcceptModel {
 
     public fetchEmails = async (): Promise<string[]> => {
-        const apiPath = process.env.API_HOST || "http://localhost:3001";
+        const apiPath = process.env.API_HOST || "https://apipcs.c2smr.fr";
         const response = await fetch(apiPath + "/user/get-request-bail", {
             method: "POST",
             headers: {
@@ -14,7 +14,7 @@ export class AcceptModel {
     };
 
     public acceptEmail = async (email: string) => {
-        const apiPath = process.env.API_HOST || "http://localhost:3001";
+        const apiPath = process.env.API_HOST || "https://apipcs.c2smr.fr";
         await fetch(apiPath + "/user/accept-request-bail", {
             method: "POST",
             headers: {

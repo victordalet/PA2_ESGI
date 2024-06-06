@@ -9,7 +9,8 @@ export class ElementView extends React.Component<ViewProps> {
         const {
             postElement,
             updatePrice,
-            postJob
+            postJob,
+            updateRules
         } = this.props;
 
         return (
@@ -37,12 +38,22 @@ export class ElementView extends React.Component<ViewProps> {
                         <h2>Update price bag subscription</h2>
                         <input type="number" id={"price-bag"} placeholder="New price"/>
                         <button onClick={() => updatePrice('bag')}>Update</button>
+                        <h3>Update reduce bag subscription</h3>
+                        <input type={"number"} id={"reduce-bag"} placeholder={"Reduce"}/>
+                        <h3>Update free bag subscription</h3>
+                        <input type={"number"} id={"free-bag"} placeholder={"Free (0 | 1) "}/>
+                        <button onClick={() => updateRules('bag')}>Update</button>
                     </div>
 
                     <div className={"container-elements-job"}>
                         <h2>Update price explo subscription</h2>
                         <input type="number" id={"price-explo"} placeholder="New Price"/>
                         <button onClick={() => updatePrice('explo')}>Update</button>
+                        <h3>Update reduce explo subscription</h3>
+                        <input type={"number"} id={"reduce-explo"} placeholder={"Reduce"}/>
+                        <h3>Update free explo subscription</h3>
+                        <input type={"number"} id={"free-explo"} placeholder={"Free (0 | 1) "}/>
+                        <button onClick={() => updateRules('explo')}>Update</button>
                     </div>
 
 

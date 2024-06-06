@@ -47,7 +47,7 @@ export class OccupationView extends Component<ViewProps> {
                                     (<span
                                         style={{cursor: 'pointer', textDecoration: 'underline'}}
                                         onClick={() => {
-                                            const sourcePath = process.env.FRONT_CLIENT_PORT || 'http://localhost:3003';
+                                            const sourcePath = process.env.FRONT_CLIENT_PORT || 'https://pcs.c2smr.Fr';
                                             window.open(`${sourcePath}/reserve?` + dataLine.location_id, '_blank');
                                         }}> link</span>),
                                     dataLine.description,

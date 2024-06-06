@@ -52,7 +52,7 @@ export class LocationController {
     }
 
     @Get("create-location-validation:uid")
-    @Redirect("http://localhost:3000/", 302)
+    @Redirect("https://pcs.c2smr.fr", 302)
     @ApiOperation({summary: 'Create location'})
     @ApiCreatedResponse({description: 'Location created'})
     @ApiBadRequestResponse({description: 'Request body is not valid'})
@@ -69,7 +69,7 @@ export class LocationController {
     }
 
     @Get("location-occupation-paiement-validation:uid")
-    @Redirect("http://localhost:3000/", 302)
+    @Redirect("https://pcs.c2smr.fr", 302)
     @ApiOperation({summary: 'Create location'})
     @ApiCreatedResponse({description: 'Location created'})
     @ApiBadRequestResponse({description: 'Request body is not valid'})

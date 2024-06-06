@@ -23,7 +23,7 @@ export default class Controller extends React.Component<
         if (title?.value === "" || description?.value === "") {
             this.ticketViewModel.openPopup(0);
         } else {
-            const apiPath = process.env.API_HOST || "http://localhost:3001";
+            const apiPath = process.env.API_HOST || "https://apipcs.c2smr.fr";
             await fetch(`${apiPath}/ticket`, {
                 method: "POST",
                 headers: {

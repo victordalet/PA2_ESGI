@@ -35,18 +35,18 @@ create table location
 
 create table location_occupation
 (
-    id            int primary key auto_increment,
-    from_datetime datetime     not null,
-    to_datetime   datetime     not null,
-    location_id   int          not null references location (id),
-    user_email    varchar(100) not null references USER (email),
-    deleted_at    datetime,
-    notation      int,
-    `repeat`      varchar(100),
-    is_pay        varchar(100),
-    description   longtext,
-    status        varchar(50),
-    state_place   varchar(100),
+    id              int primary key auto_increment,
+    from_datetime   datetime     not null,
+    to_datetime     datetime     not null,
+    location_id     int          not null references location (id),
+    user_email      varchar(100) not null references USER (email),
+    deleted_at      datetime,
+    notation        int,
+    `repeat`        varchar(100),
+    is_pay          varchar(100),
+    description     longtext,
+    status          varchar(50),
+    state_place     varchar(100),
     nb_new_messages int
 );
 
@@ -154,7 +154,9 @@ create table occupation_request_service
     price                  int,
     from_datetime          datetime,
     to_datetime            datetime,
-    service_id             int
+    service_id             int,
+    notation               int,
+    uid_payment            varchar(100)
 );
 
 create table note_user_to_location
@@ -241,6 +243,8 @@ create table price_sub
 (
     id    int primary key auto_increment,
     price int,
+    reduce int,
+    free int,
     name  varchar(100)
 );
 

@@ -214,4 +214,48 @@ export class ServiceRepository {
             return this.db.query("INSERT INTO occupation_request_service (created_at,location_occupation_id,service_name,user_email,description,status,city,from_datetime,to_datetime,service_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
                 [new Date(), 0, 'OCCUPY', rows[0].email, 'OCCUPY', 'valid', '', body.from, body.to, body.service_id]);
     }
+
+    async paidPresentation(serviceId: number, uidPayment: string) {
+        await this.db.connect()
+        return this.db.query("UPDATE occupation_request_service SET uid_payment = ? WHERE id = ?", [uidPayment, serviceId]);
+    }
+
+    async isFreeService(token: string): Promise<boolean> {
+        await this.db.connect()
+        const [rows, filed] = await this.db.query("SELECT email FROM USER WHERE connection = ?", [token]);
+        const [rows2, filed2] = await this.db.query("SELECT * FROM subscription WHERE user_email = ? and (is_pay is NULL or is_pay = '') ", [rows[0].email]);
+        const [rows3, filed3] = await this.db.query("SELECT * FROM occupation_request_service WHERE user_email = ? and created_at > DATE_SUB(NOW(), INTERVAL 3 MONTH)", [rows[0].email]);
+        try {
+            const [rows4, filed4] = await this.db.query("select free from price_sub where price = ?", [rows2[0].price]);
+            if (rows2 && rows3 && rows4) {
+                if (rows4[0].free == 1) {
+                    return true;
+                }
+            }
+            return false;
+        } catch (e) {
+            return false;
+        }
+    }
+
+    async isReductionService(price: number, token: string): Promise<number> {
+        await this.db.connect()
+        const [rows, filed] = await this.db.query("SELECT email FROM USER WHERE connection = ?", [token]);
+        const [rows2, filed2] = await this.db.query("SELECT * FROM subscription WHERE user_email = ? and (is_pay is NULL or is_pay = '')", [rows[0].email]);
+        try {
+            const [rows3, filed3] = await this.db.query("select reduce from price_sub where price = ?", [rows2[0].price]);
+            if (rows2 && rows3) {
+                return price * (1 - (parseInt(rows3[0].reduce) / 100));
+            }
+            return price;
+        } catch (e) {
+            return price;
+        }
+    }
+
+
+    async validatePayment(uid: string) {
+        await this.db.connect()
+        return this.db.query("UPDATE occupation_request_service SET status = 'pay' WHERE uid_payment = ?", [uid]);
+    }
 }

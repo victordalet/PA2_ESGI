@@ -2,7 +2,7 @@ export class ReserveServiceModel {
 
 
     public fetchService = async () => {
-        const apiPath = process.env.API_HOST || 'http://localhost:3001';
+        const apiPath = process.env.API_HOST || 'https://apipcs.c2smr.fr';
         const response = await fetch(apiPath + '/service', {
             method: 'GET',
             headers: {
@@ -14,7 +14,7 @@ export class ReserveServiceModel {
     };
 
     public isCreator = async () => {
-        const apiPath = process.env.API_HOST || 'http://localhost:3001';
+        const apiPath = process.env.API_HOST || 'https://apipcs.c2smr.fr';
         const response = await fetch(apiPath + '/user/token-to-mail', {
             method: 'POST',
             headers: {

@@ -60,7 +60,7 @@ export default class Controller extends React.Component<
     };
 
     public postNotation = async (notation: number) => {
-        const apiPath = process.env.API_HOST || 'http://localhost:3001';
+        const apiPath = process.env.API_HOST || 'https://apipcs.c2smr.fr';
         await fetch(apiPath + '/service/notation', {
             method: 'PATCH',
             headers: {
@@ -77,7 +77,7 @@ export default class Controller extends React.Component<
     };
 
     public deleteService = async () => {
-        const apiPath = process.env.API_HOST || 'http://localhost:3001';
+        const apiPath = process.env.API_HOST || 'https://apipcs.c2smr.fr';
         await fetch(apiPath + '/service/' + this.id, {
             method: 'DELETE',
             headers: {
@@ -164,7 +164,7 @@ export default class Controller extends React.Component<
     };
 
     public deleteLocation = async (locationID: number) => {
-        const apiPath = process.env.API_HOST || 'http://localhost:3001';
+        const apiPath = process.env.API_HOST || 'https://apipcs.c2smr.fr';
         await fetch(apiPath + '/service/remove-location-by-service', {
             method: 'PATCH',
             headers: {
@@ -180,7 +180,7 @@ export default class Controller extends React.Component<
     };
 
     public getLocationsAssociated = async () => {
-        const apiPath = process.env.API_HOST || 'http://localhost:3001';
+        const apiPath = process.env.API_HOST || 'https://apipcs.c2smr.fr';
         const response = await fetch(apiPath + '/service/get-location-by-service', {
             method: 'POST',
             headers: {
@@ -201,7 +201,7 @@ export default class Controller extends React.Component<
     };
 
     private getOccupationEvent = async () => {
-        const apiPath = process.env.API_HOST || 'http://localhost:3001';
+        const apiPath = process.env.API_HOST || 'https://apipcs.c2smr.fr';
         for (const location of this.state.location) {
             const response = await fetch(apiPath + 'location/get-occupation', {
                 method: 'POST',

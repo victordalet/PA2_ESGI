@@ -85,7 +85,7 @@ export class SubscriptionRepository {
         }
     }
 
-    async valdationSubscription(token: string) {
+    async validationSubscription(token: string) {
         await this.db.connect()
         await this.db.query("UPDATE subscription set is_pay = '' where is_pay = ?", [token.replace(":", "")])
         return
@@ -109,6 +109,11 @@ export class SubscriptionRepository {
     async updateSubscriptionPrice(body: BodySubscriptionPrice) {
         await this.db.connect();
         return this.db.query("UPDATE price_sub SET price = ? WHERE name = ?", [body.price, body.name]);
+    }
+
+    async updateSubscriptionRules(body: BodySubscriptionPrice) {
+        await this.db.connect();
+        return this.db.query("UPDATE price_sub SET free = ?, reduce = ? WHERE name = ?", [body.free, body.reduce, body.name]);
     }
 
 }

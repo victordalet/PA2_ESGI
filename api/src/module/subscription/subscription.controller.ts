@@ -43,7 +43,7 @@ export class SubscriptionController {
     }
 
     @Get('subscribe-validation:uid')
-    @Redirect("http://localhost:3000", 301)
+    @Redirect("https://pcs.c2smr.fr", 301)
     @ApiOperation({summary: 'Subscribe user'})
     @ApiCreatedResponse({description: 'User subscribed'})
     @ApiBadRequestResponse({description: 'Request body is not valid'})
@@ -84,6 +84,16 @@ export class SubscriptionController {
         await this.tokenValidation.validateAdminToken(token);
         return this.subscriptionService.updateSubscriptionPrice(body);
     }
+
+    @Put('rules')
+    @ApiOperation({summary: 'Update subscription rules'})
+    @ApiOkResponse({description: 'Subscription rules updated'})
+    @ApiBadRequestResponse({description: 'Request body is not valid'})
+    async updateSubscriptionRules(@Headers('authorization') token: string, @Body() body: BodySubscriptionPrice) {
+        await this.tokenValidation.validateAdminToken(token);
+        return this.subscriptionService.updateSubscriptionRules(body);
+    }
+
 
 
     @Put(':id')

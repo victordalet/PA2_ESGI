@@ -4,7 +4,7 @@ export const haveToken = () => {
     if (localStorage.getItem("token") === null || undefined) {
         document.location.href = "/login";
     } else {
-        const apiPath = process.env.API_HOST || "http://localhost:3001";
+        const apiPath = process.env.API_HOST || "https://apipcs.c2smr.fr";
         fetch(apiPath + "/user/isBail", {
             method: "POST",
             headers: {
@@ -38,7 +38,7 @@ export const haveAdminToken = async () => {
     if (localStorage.getItem('token') === null || undefined) {
         document.location.href = '/login';
     } else {
-        const apiPath = process.env.API_HOST || 'http://localhost:3001';
+        const apiPath = process.env.API_HOST || 'https://apipcs.c2smr.fr';
         const response = await fetch(apiPath + '/user/isAdmin', {
             method: 'POST',
             headers: {
@@ -54,7 +54,7 @@ export const havePrestataireToken = async () => {
     if (localStorage.getItem('token') === null || undefined) {
         document.location.href = '/login';
     } else {
-        const apiPath = process.env.API_HOST || 'http://localhost:3001';
+        const apiPath = process.env.API_HOST || 'https://apipcs.c2smr.fr';
         const response = await fetch(apiPath + '/user/isPrestataire', {
             method: 'POST',
             headers: {
@@ -71,7 +71,7 @@ export const haveBailToken = async () => {
     if (localStorage.getItem('token') === null || undefined) {
         document.location.href = '/login';
     } else {
-        const apiPath = process.env.API_HOST || 'http://localhost:3001';
+        const apiPath = process.env.API_HOST || 'https://apipcs.c2smr.fr';
         const response = await fetch(apiPath + '/user/isBail', {
             method: 'POST',
             headers: {

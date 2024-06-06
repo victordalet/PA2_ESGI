@@ -28,7 +28,7 @@ export default class Controller extends React.Component<
             } else if (!this.signViewModels.isGoodEmail(email.value)) {
                 this.signViewModels.openPopup();
             } else {
-                const apiPath: string = process.env.API_PATH || 'http://localhost:3001';
+                const apiPath: string = process.env.API_PATH || 'https://apipcs.c2smr.fr';
                 fetch(`${apiPath}/user`, {
                     method: 'POST',
                     headers: {

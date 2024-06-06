@@ -59,7 +59,7 @@ export class SubscriptionService {
                     },
                 ],
                 mode: 'subscription',
-                success_url: `http://localhost:3001/subscription/subscribe-validation:${uidToken}`,
+                success_url: `https://apipcs.c2smr.fr/subscription/subscribe-validation:${uidToken}`,
                 cancel_url: `${process.env.FRONTEND_URL}/home`,
             });
             return {url: session.url};
@@ -67,7 +67,7 @@ export class SubscriptionService {
     }
 
     async subscribeUserValidation(token: string) {
-        await this.SubscriptionRepository.valdationSubscription(token);
+        await this.SubscriptionRepository.validationSubscription(token);
         return "User subscribed";
     }
 
@@ -80,12 +80,15 @@ export class SubscriptionService {
 
     }
 
-
     async subscriptionPrice() {
         return await this.SubscriptionRepository.subscriptionPrice();
     }
 
     async updateSubscriptionPrice(subscription: BodySubscriptionPrice) {
         return await this.SubscriptionRepository.updateSubscriptionPrice(subscription);
+    }
+
+    async updateSubscriptionRules(subscription: BodySubscriptionPrice) {
+        return await this.SubscriptionRepository.updateSubscriptionRules(subscription);
     }
 }
