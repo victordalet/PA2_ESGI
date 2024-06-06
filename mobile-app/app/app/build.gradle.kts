@@ -37,6 +37,7 @@ android {
 }
 
 dependencies {
+
     implementation("com.android.volley:volley-cronet:1.2.1")
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")

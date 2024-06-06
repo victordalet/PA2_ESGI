@@ -61,7 +61,7 @@ class HomeActivity : AppCompatActivity() {
         val sharedPref = getSharedPreferences("user", AppCompatActivity.MODE_PRIVATE)
         val token = sharedPref.getString("token", null)
         if (token != null) {
-            val apiPath = "http://172.20.10.2:3001/picture/location-${card.getId()}"
+            val apiPath = "https://apipcs.c2smr.fr/picture/location-${card.getId()}"
             try {
                 val request =
                     okhttp3.Request.Builder().url(apiPath).get().addHeader("authorization", token)
@@ -91,7 +91,7 @@ class HomeActivity : AppCompatActivity() {
         val sharedPref = getSharedPreferences("user", MODE_PRIVATE)
         val token = sharedPref.getString("token", null)
         if (token != null) {
-            val apiPath = "http://172.20.10.2:3001/location/get-location-occupation"
+            val apiPath = "https://apipcs.c2smr.fr/location/get-location-occupation"
             try {
                 val request = okhttp3.Request.Builder().url(apiPath).post(
                     okhttp3.RequestBody.create(

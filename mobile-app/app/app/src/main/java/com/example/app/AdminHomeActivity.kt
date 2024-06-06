@@ -51,7 +51,7 @@ class AdminHomeActivity : AppCompatActivity() {
         val sharedPref = getSharedPreferences("user", MODE_PRIVATE)
         val token = sharedPref.getString("token", null)
         if (token != null) {
-            val apiPath = "http://172.20.10.2:3001/service"
+            val apiPath = "https://apipcs.c2smr.fr/service"
             try {
                 val request = okhttp3.Request.Builder().url(apiPath).get(
                 ).addHeader("authorization", token).build()
