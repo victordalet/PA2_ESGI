@@ -17,7 +17,6 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
-
         val listView = findViewById<ListView>(R.id.listView)
         arrayAdapter = CardAdapter(this, cardList)
         listView.adapter = arrayAdapter
@@ -116,8 +115,12 @@ class HomeActivity : AppCompatActivity() {
                             }
                             locations.dropLast(1)
                             for (location in locations) {
+                                var location_to_split = location
+                                if (location[1] == ':') {
+                                    location_to_split = "id" + location
+                                }
                                 val id =
-                                    location.split("id")[1].split(":")[1].split(',')[0].replace(
+                                    location_to_split.split("id")[1].split(":")[1].split(',')[0].replace(
                                         "\"", ""
                                     )
                                 val name =

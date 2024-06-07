@@ -195,6 +195,7 @@ class ReserveActivity : AppCompatActivity() {
                                     arrayOf(responseBody).toList()
                                 }
                                 for (service in services) {
+                                    println(service)
                                     val name =
                                         service.split("name")[1].split(":")[1].split(",")[0].replace(
                                             "\"", ""

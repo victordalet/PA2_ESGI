@@ -66,8 +66,8 @@
 
         <Button
             android:id="@+id/sendMessage"
-            android:layout_width="583dp"
-            android:layout_height="60dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:backgroundTint="#05043e"
             android:text="Send Message"
