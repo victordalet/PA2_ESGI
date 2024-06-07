@@ -32,7 +32,7 @@
 
         <TextView
             android:id="@+id/title"
-            android:layout_width="583dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:gravity="center_horizontal"
@@ -66,8 +66,8 @@
 
         <Button
             android:id="@+id/sendMessage"
-            android:layout_width="583dp"
-            android:layout_height="60dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:backgroundTint="#05043e"
             android:text="Send Message"
@@ -97,6 +97,15 @@
             android:layout_weight="1"
             android:transcriptMode="alwaysScroll" />
 
+        <Button
+            android:id="@+id/reserveService"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:backgroundTint="#05043e"
+            android:text="Reserve Service"
+            android:textSize="18sp"
+            app:cornerRadius="20dp"/>
 
     </LinearLayout>
 
