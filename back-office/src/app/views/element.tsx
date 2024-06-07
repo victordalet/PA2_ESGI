@@ -58,6 +58,17 @@ export class ElementView extends React.Component<ViewProps> {
 
 
                 </div>
+
+                <div className={"container-elements"}>
+
+                    <div className={"container-elements-job"}>
+                        <h2>Update Bail subscription</h2>
+                        <input type="number" id={"price-job"} placeholder="New price"/>
+                        <button onClick={() => updatePrice('job')}>Update</button>
+                    </div>
+
+
+                </div>
             </div>
         );
     }
