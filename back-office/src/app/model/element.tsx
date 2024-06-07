@@ -115,13 +115,15 @@ export class ElementModel {
         const inputReduce2 = document.querySelector<HTMLInputElement>('#reduce-explo');
         const inputFree1 = document.querySelector<HTMLInputElement>('#free-bag');
         const inputFree2 = document.querySelector<HTMLInputElement>('#free-explo');
-        if (inputPrice1 && inputPrice2 && inputReduce1 && inputReduce2 && inputFree1 && inputFree2) {
+        const inputPrice3 = document.querySelector<HTMLInputElement>('#price-job');
+        if (inputPrice1 && inputPrice2 && inputReduce1 && inputReduce2 && inputFree1 && inputFree2 && inputPrice3) {
             inputPrice1.value = data[0].price.toString();
             inputPrice2.value = data[1].price.toString();
             inputFree1.value = data[0].free.toString();
             inputFree2.value = data[1].free.toString();
             inputReduce1.value = data[0].reduce.toString();
             inputReduce2.value = data[1].reduce.toString();
+            inputPrice3.value = data[2].price.toString();
         }
     };
 }

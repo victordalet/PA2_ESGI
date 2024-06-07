@@ -6,11 +6,13 @@ import {Stripe} from "stripe";
 import {RequestLocationServiceModel} from "./location.model";
 import {uid} from "uid";
 import {Emailer} from "../../mail/mail.module";
+import {SubscriptionRepository} from "../subscription/subscription.repository";
 
 export class LocationService {
 
     private locationRepository: LocationRepository;
     private emailer: Emailer;
+    private subRepository: SubscriptionRepository;
 
     constructor() {
         this.locationRepository = new LocationRepository();
@@ -60,6 +62,8 @@ export class LocationService {
         const uidToken = uid(32);
         await this.locationRepository.paiementUID(uidToken, id);
         const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+        const sub = await this.subRepository.subscriptionPrice();
+        const subPrice = sub[0].price;
         const session = await stripe.checkout.sessions.create({
             payment_method_types: ['card'],
             billing_address_collection: 'auto',
@@ -70,7 +74,7 @@ export class LocationService {
                         product_data: {
                             name: 'Bailleur subcription',
                         },
-                        unit_amount: 2000,
+                        unit_amount: subPrice * 100,
                         recurring: {interval: 'month'},
                     },
                     quantity: 1,
