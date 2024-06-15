@@ -1,13 +1,11 @@
 package com.example.app
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ListView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import okhttp3.OkHttpClient
 
@@ -21,6 +19,7 @@ class ReserveActivity : AppCompatActivity() {
     private lateinit var sendButton: Button
     private var messageAdapter: MessagesAdapter? = null
     var arrayAdapter: CardAdapter? = null
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_reserve)
@@ -45,6 +44,17 @@ class ReserveActivity : AppCompatActivity() {
             val intent = Intent(this, NFCClientActivity::class.java)
             intent.putExtra("id", item.id)
             intent.putExtra("nfc", item.nfc)
+            startActivity(intent)
+        }
+
+        val buttonOtherServices = findViewById<Button>(R.id.reserveService)
+        buttonOtherServices.setOnClickListener {
+            val intent = Intent(this, BrowserActivity::class.java)
+            val sharedPref = getSharedPreferences("user", MODE_PRIVATE)
+            val locationID = sharedPref.getString("locationID", null)
+            val locationOccupationID = sharedPref.getString("locationOccupationId", null)
+            val url = "https://pcs.c2smr.fr/reserve?" + locationID +"&a=true&id2=" + locationOccupationID
+            intent.putExtra("url", url)
             startActivity(intent)
         }
 

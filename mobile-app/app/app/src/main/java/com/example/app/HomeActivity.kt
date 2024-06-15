@@ -29,7 +29,9 @@ class HomeActivity : AppCompatActivity() {
 
         val reserveButton = findViewById<Button>(R.id.reserve)
         reserveButton.setOnClickListener {
-            startActivity(Intent(this, BrowserActivity::class.java))
+            val intent = Intent(this, BrowserActivity::class.java)
+            intent.putExtra("url", "https://pcs.c2smr.fr/")
+            startActivity(intent)
         }
 
 
