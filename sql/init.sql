@@ -47,7 +47,8 @@ create table location_occupation
     description     longtext,
     status          varchar(50),
     state_place     varchar(100),
-    nb_new_messages int
+    nb_new_messages int,
+    invotory        longtext
 );
 
 

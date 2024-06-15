@@ -93,7 +93,7 @@ export class ServiceRepository {
     async getServiceByUserV2(body: LocationLiaison) {
         await this.db.connect()
         if (body.location_occupation_id !== 0) {
-            const [rows, filed] = await this.db.query("SELECT * FROM occupation_request_service WHERE location_occupation_id = ?", [body.location_occupation_id]);
+            const [rows, filed] = await this.db.query("SELECT *, if(service_id IS NOT NULL, (select nfc from service where id = occupation_request_service.service_id), (select 0)) as nfc FROM occupation_request_service WHERE location_occupation_id = ?", [body.location_occupation_id]);
             return rows;
         } else {
             const [rows, filed] = await this.db.query("SELECT *,(select latitude from location where id = (select location_id from location_occupation where id =occupation_request_service.location_occupation_id )) as latitude,(select longitude from location where id = (select location_id from location_occupation where id =occupation_request_service.location_occupation_id )) as longitude FROM occupation_request_service WHERE service_id = ?", [body.service_id]);

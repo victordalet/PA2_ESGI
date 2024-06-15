@@ -33,9 +33,36 @@ docker-compose up
 ```
 
 ### Launch project in dev mode
+(volume are share between host and container)
 ```
 docker compose -f docker-compose.dev.yml up
 ```
+
+### Launch project in prod mode
+launch dockerfile.prod to compile react
+```
+docker compose -f docker-compose.prod.yml up
+```
+
+### Launch project in test mode
+launch with pre env var to test
+```
+docker compose -f docker-compose.test.yml up
+```
+
+### Launch project in traefik mode
+launch with traefik to have a reverse proxy and with dockerfile.prod to compile react
+```
+docker compose -f docker-compose.traefik.yml up
+```
+
+
+## Push to docker hub
+
+---
+
+Create a new release on github.
+
 
 ## Train Chat bot
 

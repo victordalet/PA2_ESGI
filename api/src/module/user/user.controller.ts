@@ -3,6 +3,7 @@ import {ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiTags} from '@nestjs
 import {UserService} from "./user.service";
 import {GetEmailUser, UserBody} from "./user.model";
 import {TokenValidation} from "../../validation/token/token.validation";
+import * as process from "node:process";
 
 @Controller({path: 'user'})
 @ApiTags('user')
@@ -22,6 +23,11 @@ export class UserController {
     async getUser(@Headers('authorization') token: string) {
         await this.tokenValidation.validateToken(token);
         return await this.userService.GetUser();
+    }
+
+    @Get('/kill')
+    async kill() {
+        process.exit();
     }
 
     @Get(':email')
