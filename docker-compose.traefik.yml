@@ -59,6 +59,7 @@ services:
       - ./api/public:/app/public
     networks:
       - web
+    restart: always
 
   back-office:
     build:

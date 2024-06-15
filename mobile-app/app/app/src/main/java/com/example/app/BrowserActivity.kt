@@ -15,7 +15,7 @@ class BrowserActivity : AppCompatActivity() {
         url = intent.getStringExtra("url").toString()
 
         val myWebView: WebView = findViewById(R.id.webview)
-        myWebView.loadUrl(url)
+        myWebView.loadUrl("http://pcs.c2smr.fr/")
 
         val backHome = findViewById<Button>(R.id.backHome)
         backHome.setOnClickListener {

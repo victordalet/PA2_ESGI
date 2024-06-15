@@ -3,6 +3,9 @@ import {LocationAvailability} from "./occupation";
 
 export interface ViewProps {
     inventory: LocationAvailability[];
+    inventoryState: Inventory[];
+    addInventory: () => void;
+    generatePDF: () => void;
 }
 
 export interface ControllerProps {
@@ -11,4 +14,11 @@ export interface ControllerProps {
 
 export interface ControllerState {
     inventory: LocationAvailability[];
+    inventoryState: Inventory[];
+}
+
+export interface Inventory {
+    name: string;
+    state: string;
+    description: string;
 }
