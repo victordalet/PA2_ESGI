@@ -26,34 +26,34 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: ./front-client
-          file: Dockerfile.prod
+          file: ./front-client/Dockerfile.prod
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/pa2-front-client:latest
       - name: Build and push back-office
         uses: docker/build-push-action@v2
         with:
           context: ./back-office
+          file: ./back-office/Dockerfile.prod
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/pa2-back-office:latest
       - name: Build and push chat-bot
         uses: docker/build-push-action@v2
         with:
           context: ./chat-bot
-          file: Dockerfile.prod
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/pa2-chat-bot:latest
       - name: Build and push front-bail
         uses: docker/build-push-action@v2
         with:
           context: ./front-bail
-          file: Dockerfile.prod
+          file: ./front-bail/Dockerfile.prod
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/pa2-front-bail:latest
       - name: Build and push front-presta
         uses: docker/build-push-action@v2
         with:
           context: ./front-presta
-          file: Dockerfile.prod
+          file: ./front-presta/Dockerfile.prod
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/pa2-front-presta:latest
       - name: Build and push scraper
