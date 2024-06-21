@@ -14,6 +14,7 @@ export class LocationService {
 
     constructor() {
         this.locationRepository = new LocationRepository();
+        this.subRepository = new SubscriptionRepository();
         this.emailer = new Emailer();
     }
 
