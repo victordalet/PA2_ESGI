@@ -34,7 +34,7 @@ export class ElementModel {
 
     public postElement = async () => {
         const apiPath = process.env.API_PATH || 'https://apipcs.c2smr.fr';
-        const name = document.querySelector<HTMLInputElement>('#é')?.value;
+        const name = document.querySelector<HTMLInputElement>('#element-name')?.value;
         const file = document.querySelector<HTMLInputElement>('#picture-input-element');
         const formData = new FormData();
         if (file?.files) {
