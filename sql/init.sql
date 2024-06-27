@@ -197,7 +197,8 @@ create table TICKET
     name        varchar(100) not null,
     description varchar(100) not null,
     status      varchar(100) not null,
-    occupy_by   varchar(100) references USER (name)
+    occupy_by   varchar(100) references USER (name),
+    cat         varchar(100)
 );
 
 create table TICKET_MESSAGE
@@ -242,11 +243,11 @@ create table job
 
 create table price_sub
 (
-    id    int primary key auto_increment,
-    price int,
+    id     int primary key auto_increment,
+    price  int,
     reduce int,
-    free int,
-    name  varchar(100)
+    free   int,
+    name   varchar(100)
 );
 
 

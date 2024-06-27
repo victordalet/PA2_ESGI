@@ -1,6 +1,7 @@
 import {resultData, ViewProps} from "../@types/service";
 import React from "react";
 import {Navbar} from "../../components/navbar";
+import {Schedule} from "../@types/provider";
 
 export default class ServiceView extends React.Component<ViewProps> {
     render() {
@@ -13,7 +14,9 @@ export default class ServiceView extends React.Component<ViewProps> {
             acceptService
         } = this.props;
 
-        console.log(data);
+
+        const dates = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+
 
         return (
             <div>
@@ -53,7 +56,7 @@ export default class ServiceView extends React.Component<ViewProps> {
                             ))
                         }
                     </div>
-                    <div className={'table-content'} style={{height: '100%',marginBottom: 200}}>
+                    <div className={'table-content'} style={{height: '100%', marginBottom: 200}}>
                         {
                             data.map(dataLine => (
                                 <div>
@@ -82,17 +85,20 @@ export default class ServiceView extends React.Component<ViewProps> {
                                     </div>
                                     <div className={'table-row'}>
                                         {
-                                            ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"].map(day => (
+                                            dates.map(day => (
                                                 <div className="table-data">{day}</div>
                                             ))
                                         }
                                     </div>
-                                    <div className={'table-row'} style={{background : '#fff'}}>
+                                    <div className={'table-row'} style={{background: '#fff'}}>
                                         {
-                                            Object.keys(JSON.parse(dataLine.schedule)).map((schedule: any) => (
-                                                <div className="table-data">
-                                                    {schedule.start} - {schedule.end}
-                                                </div>
+
+                                            dataLine.schedule.split('start":"').map((schedule: any, index) => (
+                                                index !== 0 ?
+                                                    <div className="table-data">
+                                                        {schedule.split('"')[0]} - {schedule.split('end":"')[1].split('"')[0]}
+                                                    </div>
+                                                    : ''
                                             ))
                                         }
                                     </div>

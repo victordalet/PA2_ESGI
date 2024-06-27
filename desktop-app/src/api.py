@@ -54,6 +54,14 @@ class API:
                      json={"status": status})
         return
 
+    def update_cat_ticket(self, ticket_id: str, cat: str) -> None:
+        with open("token.txt", "r") as file:
+            token = file.read()
+        requests.put(f'{self.url}/ticket/{ticket_id}/cat',
+                     headers={"authorization": token},
+                     json={"status": cat})
+        return
+
     def update_occupy_ticket(self, ticket_id: str, email: str) -> None:
         with open("token.txt", "r") as file:
             token = file.read()

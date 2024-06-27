@@ -61,6 +61,15 @@ export class TicketController {
         return this.ticketService.updateTicketStatus(id, body);
     }
 
+    @Put(':id/cat')
+    @ApiOperation({summary: 'Update ticket status'})
+    @ApiOkResponse({description: 'Ticket status updated'})
+    @ApiBadRequestResponse({description: 'Request body is not valid'})
+    async updateTicketCat(@Headers('authorization') token: string, @Param('id') id: number, @Body() body: BodyTicket) {
+        await this.tokenValidation.validateAdminToken(token);
+        return this.ticketService.updateTicketCat(id, body);
+    }
+
     @Put(':id/occupy')
     @ApiOperation({summary: 'Occupy ticket'})
     @ApiOkResponse({description: 'Ticket occupied'})

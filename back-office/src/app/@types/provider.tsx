@@ -9,6 +9,7 @@ export interface ViewProps {
     reservedService: () => void;
     eventCalendar: EventCalendar[];
     updateCalendar: (providerId: number) => void;
+    speedReco: any[]
 }
 
 export interface ControllerProps {
@@ -22,6 +23,7 @@ export interface ControllerState {
     user: UserRequest[];
     userNoFilter: UserRequest[];
     eventCalendar: EventCalendar[];
+    speedReco: any[];
 }
 
 export interface EventCalendar {

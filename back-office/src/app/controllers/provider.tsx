@@ -10,20 +10,24 @@ import {
 } from "../@types/provider";
 import {ProviderView} from "../views/provider";
 import ProviderModel from "../model/provider";
+import ProviderViewModel from "../view-models/provider";
 
 export default class ProviderController extends Component<
     ControllerProps,
     ControllerState> {
 
     providerModel: ProviderModel;
+    providerViewModel: ProviderViewModel;
 
     constructor(props: ControllerProps) {
         super(props);
         haveToken();
         this.providerModel = new ProviderModel();
+        this.providerViewModel = new ProviderViewModel();
         this.fetchService();
         this.getLocationsOccupationAdminInfo();
         this.getProvider();
+        this.getSpeedReco();
     }
 
     state: ControllerState = {
@@ -32,7 +36,8 @@ export default class ProviderController extends Component<
         providerNoFilter: [],
         user: [],
         userNoFilter: [],
-        eventCalendar: []
+        eventCalendar: [],
+        speedReco: []
     };
 
     private fetchService = async () => {
@@ -97,9 +102,15 @@ export default class ProviderController extends Component<
         this.setState({providerNoFilter: data, provider: data});
     };
 
+    private getSpeedReco = () => {
+        setTimeout(() =>
+            this.setState({speedReco: this.providerViewModel.getSpeedRoco(this.state.userNoFilter, this.state.provider)}), 1000);
+    };
+
 
     render() {
         return <ProviderView
+            speedReco={this.state.speedReco}
             eventCalendar={this.state.eventCalendar}
             reservedService={this.providerModel.reservedService}
             filterUserByService={this.filterUserByService}

@@ -14,7 +14,8 @@ export class ProviderView extends React.Component<ViewProps> {
             filterUserByService,
             reservedService,
             eventCalendar,
-            updateCalendar
+            updateCalendar,
+            speedReco
         } = this.props;
 
         const now = momentLocalizer(moment);
@@ -22,6 +23,17 @@ export class ProviderView extends React.Component<ViewProps> {
         return <div>
             <Navbar/>
             <div className={"container-services-global"}>
+
+                <div className={"container-speed-reco"}>
+                    <h2>Speed Reco : </h2>
+                    {
+                        speedReco.map((data: any) =>
+                            <h4>{data.user} {"->"} {data.provider}</h4>
+                        )
+                    }
+                </div>
+
+
                 <div className={"container-services"}>
                     <select onChange={filterUserByService} id={"service"} name={"service"}>
                         {
