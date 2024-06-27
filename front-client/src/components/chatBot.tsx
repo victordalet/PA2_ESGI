@@ -28,7 +28,7 @@ export class ChatBot extends React.Component {
     }
 
     private async getChatMessages() {
-        const chatBotAPI: string = process.env.CHAT_BOT_HOST || "http://localhost:5000";
+        const chatBotAPI: string = process.env.CHAT_BOT_HOST || "https://chatpcs.c2smr.fr";
         const input = document.querySelector<HTMLInputElement>("#chat-input");
         const response = await fetch(chatBotAPI + "/chat", {
             method: 'POST',
