@@ -1,0 +1,70 @@
+.container-pres-pages {
+    background: $lightColor;
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    h1 {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+        text-align: center;
+    }
+
+    .container-client, .container-bail, .container-services {
+        width: 100vw;
+        height: 60vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        border-bottom: 3px solid #000000;
+        background: $lightColor;
+
+        h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        p {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+
+        button {
+            margin-top: 10vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 200px;
+            height: 50px;
+            border-radius: 50px;
+            background-color: #cccccc;
+            border: 2px solid #cccccc;
+            cursor: pointer;
+            transition: .5s;
+            font-size: 16px;
+            font-weight: bold;
+
+            &:hover {
+                background-color: $secondaryColor;
+                border: 2px solid #cccccc;
+                color: #cccccc;
+            }
+        }
+
+
+    }
+
+    .container-contacts {
+        width: 100vw;
+        height: 20vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+
+}
