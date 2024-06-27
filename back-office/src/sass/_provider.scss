@@ -4,6 +4,20 @@
     justify-content: center;
     align-items: center;
 
+    .container-speed-reco {
+        width: 80%;
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+        flex-direction: column;
+        box-shadow: 0 10px 50px 0 rgba(#05043e, .25);
+        min-height: 20vh;
+        margin-top: 50px;
+        margin-bottom: 50px;
+        border-radius: 20px;
+        overflow: scroll;
+    }
+
 
     .container-services {
         width: 100%;

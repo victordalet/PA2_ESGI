@@ -6,6 +6,9 @@ from api import API
 class HomePage(QtWidgets.QWidget):
     title: QtWidgets.QLabel
     button: QtWidgets.QPushButton
+    buttonR: QtWidgets.QPushButton
+    buttonDev: QtWidgets.QPushButton
+    buttonNoDev: QtWidgets.QPushButton
     button_your_tickets: QtWidgets.QPushButton
     layout: QtWidgets.QVBoxLayout
     table: QtWidgets.QTableWidget
@@ -34,6 +37,21 @@ class HomePage(QtWidgets.QWidget):
                                       alignment=QtCore.Qt.AlignCenter)
         self.title.setFont(QtGui.QFont("Arial", 20))
         self.title.setAlignment(QtCore.Qt.AlignCenter)
+        self.buttonR = QtWidgets.QPushButton("Reload")
+        self.buttonR.setFont(QtGui.QFont("Arial", 15))
+        self.buttonR.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.buttonR.setFixedSize(100, 50)
+        self.buttonR.clicked.connect(self.reload)
+        self.buttonDev = QtWidgets.QPushButton("Dev")
+        self.buttonDev.setFont(QtGui.QFont("Arial", 15))
+        self.buttonDev.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.buttonDev.setFixedSize(100, 50)
+        self.buttonDev.clicked.connect(self.filter_dev_ticket())
+        self.buttonNoDev = QtWidgets.QPushButton("No Dev")
+        self.buttonNoDev.setFont(QtGui.QFont("Arial", 15))
+        self.buttonNoDev.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.buttonNoDev.setFixedSize(100, 50)
+        self.buttonNoDev.clicked.connect(self.filter_no_dev_ticket())
         self.button = QtWidgets.QPushButton("Logout")
         self.button.setFont(QtGui.QFont("Arial", 15))
         self.button.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
@@ -57,6 +75,24 @@ class HomePage(QtWidgets.QWidget):
         self.layout.removeWidget(self.table)
         self.create_table()
         self.status_you_tickets = not self.status_you_tickets
+
+    def filter_dev_ticket(self):
+        try:
+            self.tickets = [ticket for ticket in self.tickets
+                            if ticket["cat"] == "dev"]
+            self.layout.removeWidget(self.table)
+            self.create_table()
+        except Exception as e:
+            print(e)
+
+    def filter_no_dev_ticket(self):
+        try:
+            self.tickets = [ticket for ticket in self.tickets
+                            if ticket["cat"] == "nodev"]
+            self.layout.removeWidget(self.table)
+            self.create_table()
+        except Exception as e:
+            print(e)
 
     def create_table(self):
         self.table = QtWidgets.QTableWidget(1, 4)
@@ -149,6 +185,16 @@ class HomePage(QtWidgets.QWidget):
         btn.clicked.connect(
             lambda: self.update_status_ticket("CANCEL"))
         container.layout.addWidget(btn)
+        btn = QtWidgets.QPushButton("Apply Dev")
+        btn.setFixedSize(100, 50)
+        btn.clicked.connect(
+            lambda: self.update_cat_ticket("dev"))
+        container.layout.addWidget(btn)
+        btn = QtWidgets.QPushButton("Apply no dev")
+        btn.setFixedSize(100, 50)
+        btn.clicked.connect(
+            lambda: self.update_cat_ticket("nodev"))
+        container.layout.addWidget(btn)
         self.ticket_component.layout.addWidget(container)
 
         self.add_message_in_ticket_component(ticket)
@@ -190,6 +236,15 @@ class HomePage(QtWidgets.QWidget):
         self.tickets = self.api.get_ticket()
         self.create_table()
 
+    def update_cat_ticket(self, cat: str) -> None:
+        row = self.table.currentRow()
+        id = self.tickets[row]["id"]
+        self.api.update_cat_ticket(id, cat)
+        self.layout.removeWidget(self.ticket_component)
+        self.layout.removeWidget(self.table)
+        self.tickets = self.api.get_ticket()
+        self.create_table()
+
     def update_occupy_ticket(self, ticket_id: str, email: str) -> None:
         self.api.update_occupy_ticket(ticket_id, email)
         self.layout.removeWidget(self.ticket_component)
@@ -199,8 +254,16 @@ class HomePage(QtWidgets.QWidget):
 
     def display_element(self):
         self.layout = QtWidgets.QVBoxLayout(self)
+        self.container_button = QtWidgets.QWidget()
+        self.container_button.layout = QtWidgets.QHBoxLayout(
+            self.container_button)
+        self.container_button.layout.setAlignment(QtCore.Qt.AlignCenter)
+        self.container_button.layout.addWidget(self.button)
+        self.container_button.layout.addWidget(self.buttonR)
+        self.container_button.layout.addWidget(self.buttonDev)
+        self.container_button.layout.addWidget(self.buttonNoDev)
         self.layout.addWidget(self.title)
-        self.layout.addWidget(self.button)
+        self.layout.addWidget(self.container_button)
         self.layout.addWidget(self.button_your_tickets)
 
     def logout(self):
@@ -208,3 +271,11 @@ class HomePage(QtWidgets.QWidget):
             file.write("")
         self.close()
         sys.exit()
+
+    def reload(self):
+        self.layout.removeWidget(self.ticket_component)
+        self.layout.removeWidget(self.table)
+        self.tickets = self.api.get_ticket()
+        self.create_table()
+        self.status_you_tickets = False
+        self.ticket_component = None
