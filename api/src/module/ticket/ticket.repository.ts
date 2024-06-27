@@ -69,6 +69,11 @@ export class TicketRepository {
         return this.db.query("UPDATE TICKET SET status = ? WHERE id = ?", [ticket.status, id]);
     }
 
+    async updateTicketCat(id: number, ticket: Ticket) {
+        await this.db.connect()
+        return this.db.query("UPDATE TICKET SET cat = ? WHERE id = ?", [ticket.status, id]);
+    }
+
     async updateOccupyTicket(id: number, ticket: Ticket) {
         await this.db.connect()
         return this.db.query("UPDATE TICKET SET occupy_by = ? WHERE id = ?", [ticket.occupy_by, id]);

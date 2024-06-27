@@ -71,6 +71,13 @@ export class TicketService {
             return await this.TicketRepository.updateTicketStatus(id, ticket);
     }
 
+    async updateTicketCat(id: number, ticket: Ticket) {
+        if (!(typeof ticket.status === 'string')) {
+            throw new Error('Bad status');
+        } else
+            return await this.TicketRepository.updateTicketCat(id, ticket);
+    }
+
     async updateOccupyTicket(id: number, ticket: Ticket) {
         if (!(typeof ticket.occupy_by === 'string')) {
             throw new Error('Error');

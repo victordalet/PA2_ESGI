@@ -1,7 +1,5 @@
 import {Location, LocationAvailability} from "../../core/location";
 import {LocationRepository} from "./location.repository";
-import * as NodeGeocoder from 'node-geocoder';
-import node_geocoder from 'node-geocoder';
 import {Stripe} from "stripe";
 import {RequestLocationServiceModel} from "./location.model";
 import {uid} from "uid";
@@ -16,6 +14,7 @@ export class LocationService {
 
     constructor() {
         this.locationRepository = new LocationRepository();
+        this.subRepository = new SubscriptionRepository();
         this.emailer = new Emailer();
     }
 
@@ -43,13 +42,15 @@ export class LocationService {
         } else if (!(typeof location.created_by === 'string')) {
             throw new Error('Error');
         } else {
-            const options: NodeGeocoder.Options = {
-                provider: 'openstreetmap',
-            };
-            const geocoder = node_geocoder(options);
-            const res = await geocoder.geocode(location.address);
-            location.latitude = res[0].latitude;
-            location.longitude = res[0].longitude;
+            const response = await fetch(`https://nominatim.openstreetmap.org/search?addressdetails=1&q=${location.address.replace(" ", "+")}&format=json`)
+            const data = await response.json();
+            if (data.length === 0) {
+                location.latitude = 0;
+                location.longitude = 0;
+            } else {
+                location.longitude = data[0].lat;
+                location.longitude = data[0].lon;
+            }
             return await this.locationRepository.createLocation(location);
         }
     }
